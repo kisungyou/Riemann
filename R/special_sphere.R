@@ -17,7 +17,6 @@
 #' }
 #' 
 #' @return an object from one of the above by \code{type} option.
-#' @seealso \code{\link{wrap.sphere}}
 #' 
 #' @examples 
 #' #-------------------------------------------------------------------
@@ -32,6 +31,7 @@
 #' @references 
 #' \insertRef{chikuse_statistics_2003}{Riemann}
 #' 
+#' @seealso \code{\link{wrap.sphere}}
 #' @concept sphere
 #' @export
 sphere.runif <- function(n, p, type=c("list","matrix","riemdata")){
