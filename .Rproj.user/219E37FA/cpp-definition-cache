@@ -1,0 +1,918 @@
+[
+    {
+        "file": "/home/kisung/Desktop/Riemann/src/functions_11basic.cpp",
+        "file_last_write": 1598561641.0,
+        "definitions": [
+            {
+                "usr": "c:@F@basic_pdist#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "basic_pdist(std::string, Rcpp::List &, std::string)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_11basic.cpp",
+                "line": 14,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@basic_pdist2#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#S3_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "basic_pdist2(std::string, Rcpp::List &, Rcpp::List &, std::string)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_11basic.cpp",
+                "line": 39,
+                "column": 11
+            }
+        ]
+    },
+    {
+        "file": "/home/kisung/Desktop/Riemann/src/functions_22inference.cpp",
+        "file_last_write": 1598585860.0,
+        "definitions": [
+            {
+                "usr": "c:@F@inference_mean_intrinsic#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#$@N@arma@S@Col>#d#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "inference_mean_intrinsic(std::string, Rcpp::List &, arma::vec, int, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_22inference.cpp",
+                "line": 15,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@inference_mean_extrinsic#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#$@N@arma@S@Col>#d#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "inference_mean_extrinsic(std::string, Rcpp::List &, arma::vec, int, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_22inference.cpp",
+                "line": 64,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@run_weiszfeld#$@N@arma@S@Mat>#d#$@N@arma@S@Col>#d#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "run_weiszfeld(arma::mat, arma::vec, int, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_22inference.cpp",
+                "line": 105,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@inference_median_intrinsic#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#$@N@arma@S@Col>#d#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "inference_median_intrinsic(std::string, Rcpp::List &, arma::vec, int, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_22inference.cpp",
+                "line": 156,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@inference_median_extrinsic#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#$@N@arma@S@Col>#d#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "inference_median_extrinsic(std::string, Rcpp::List &, arma::vec, int, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_22inference.cpp",
+                "line": 228,
+                "column": 12
+            }
+        ]
+    },
+    {
+        "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
+        "file_last_write": 1598900374.0,
+        "definitions": [
+            {
+                "usr": "c:@F@helper_nunique#$@N@arma@S@Col>#i#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "helper_nunique(arma::uvec)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
+                "line": 19,
+                "column": 5
+            },
+            {
+                "usr": "c:@F@helper_kmeans_cost#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#S0_#$@N@arma@S@Cube>#d#S3_#$@N@arma@S@Col>#i#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "helper_kmeans_cost(std::string, std::string, arma::cube, arma::cube, arma::uvec)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
+                "line": 25,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@helper_centers#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#S0_#$@N@arma@S@Cube>#d#$@N@arma@S@Col>#i#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "helper_centers(std::string, std::string, arma::cube, arma::uvec)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
+                "line": 48,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@helper_assign_centroids#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#S0_#$@N@arma@S@Cube>#d#S3_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "helper_assign_centroids(std::string, std::string, arma::cube, arma::cube)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
+                "line": 67,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@clustering_nmshift_single#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#I#$@N@arma@S@field>#$@N@arma@S@Mat>#d#d#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "clustering_nmshift_single(std::string, int, arma::field<arma::mat>, double, int, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
+                "line": 91,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@clustering_nmshift#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#d#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "clustering_nmshift(std::string, Rcpp::List &, double, int, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
+                "line": 136,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@clustering_kmeans_lloyd#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#S0_#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#I#d#$@N@arma@S@Col>#i#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "clustering_kmeans_lloyd(std::string, std::string, Rcpp::List &, int, double, arma::uvec)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
+                "line": 170,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@clustering_kmeans_macqueen#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#S0_#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#I#d#$@N@arma@S@Col>#i#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "clustering_kmeans_macqueen(std::string, std::string, Rcpp::List &, int, double, arma::uvec)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
+                "line": 234,
+                "column": 12
+            }
+        ]
+    },
+    {
+        "file": "/home/kisung/Desktop/Riemann/src/functions_55learning.cpp",
+        "file_last_write": 1598585840.0,
+        "definitions": [
+            {
+                "usr": "c:@F@learning_seb_aa2013#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#$@N@arma@S@field>#$@N@arma@S@Mat>#d#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "learning_seb_aa2013(std::string, arma::field<arma::mat>, int, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_55learning.cpp",
+                "line": 12,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@learning_seb#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#I#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "learning_seb(std::string, Rcpp::List &, int, double, std::string)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_55learning.cpp",
+                "line": 48,
+                "column": 12
+            }
+        ]
+    },
+    {
+        "file": "/home/kisung/Desktop/Riemann/src/riemann_general.cpp",
+        "file_last_write": 1598583680.0,
+        "definitions": [
+            {
+                "usr": "c:@F@mat_rank#$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "mat_rank(arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_general.cpp",
+                "line": 9,
+                "column": 13
+            },
+            {
+                "usr": "c:@F@mat_symm#$@N@arma@S@Mat>#d#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "mat_symm(arma::mat, bool)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_general.cpp",
+                "line": 14,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@mat_diaghalf#$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "mat_diaghalf(arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_general.cpp",
+                "line": 24,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@mat_diaginvhalf#$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "mat_diaginvhalf(arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_general.cpp",
+                "line": 29,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@mat_cov2cor#$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "mat_cov2cor(arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_general.cpp",
+                "line": 34,
+                "column": 11
+            }
+        ]
+    },
+    {
+        "file": "/home/kisung/Desktop/Riemann/src/riemann_general.h",
+        "file_last_write": 1598583676.0,
+        "definitions": []
+    },
+    {
+        "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+        "file_last_write": 1598656439.0,
+        "definitions": [
+            {
+                "usr": "c:@F@sphere_initialize#$@N@arma@S@field>#$@N@arma@S@Mat>#d#$@N@arma@S@Col>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "sphere_initialize(arma::field<arma::mat>, arma::vec)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 28,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@sphere_exp#$@N@arma@S@Mat>#d#S0_#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "sphere_exp(arma::mat, arma::mat, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 39,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@sphere_proj#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "sphere_proj(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 50,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@sphere_dist#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "sphere_dist(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 53,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@sphere_log#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "sphere_log(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 67,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@sphere_metric#$@N@arma@S@Mat>#d#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "sphere_metric(arma::mat, arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 76,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@sphere_distext#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "sphere_distext(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 79,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@sphere_equiv#$@N@arma@S@Mat>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "sphere_equiv(arma::mat, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 82,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@sphere_invequiv#$@N@arma@S@Col>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "sphere_invequiv(arma::vec, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 86,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@spd_initialize#$@N@arma@S@field>#$@N@arma@S@Mat>#d#$@N@arma@S@Col>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "spd_initialize(arma::field<arma::mat>, arma::vec)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 93,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@spdaux_symm#$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "spdaux_symm(arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 103,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@spd_exp#$@N@arma@S@Mat>#d#S0_#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "spd_exp(arma::mat, arma::mat, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 106,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@spd_dist#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "spd_dist(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 112,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@spd_proj#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "spd_proj(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 118,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@spd_log#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "spd_log(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 121,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@spd_metric#$@N@arma@S@Mat>#d#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "spd_metric(arma::mat, arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 126,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@spd_equiv#$@N@arma@S@Mat>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "spd_equiv(arma::mat, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 132,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@spd_invequiv#$@N@arma@S@Col>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "spd_invequiv(arma::vec, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 138,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@spd_distext#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "spd_distext(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 143,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@corr_airm_findD#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "corr_airm_findD(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 155,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@correlation_initialize#$@N@arma@S@field>#$@N@arma@S@Mat>#d#$@N@arma@S@Col>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "correlation_initialize(arma::field<arma::mat>, arma::vec)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 212,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@correlation_dist#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "correlation_dist(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 222,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@correlation_exp#$@N@arma@S@Mat>#d#S0_#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "correlation_exp(arma::mat, arma::mat, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 228,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@correlation_log#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "correlation_log(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 233,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@correlation_metric#$@N@arma@S@Mat>#d#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "correlation_metric(arma::mat, arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 240,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@stiefel_metric#$@N@arma@S@Mat>#d#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "stiefel_metric(arma::mat, arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 246,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@stiefel_proj#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "stiefel_proj(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 249,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@stiefel_nearest#$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "stiefel_nearest(arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 253,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@stiefel_exp#$@N@arma@S@Mat>#d#S0_#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "stiefel_exp(arma::mat, arma::mat, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 258,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@stiefel_log#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "stiefel_log(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 277,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@stiefel_dist#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "stiefel_dist(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 324,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@stiefel_equiv#$@N@arma@S@Mat>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "stiefel_equiv(arma::mat, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 329,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@stiefel_invequiv#$@N@arma@S@Col>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "stiefel_invequiv(arma::vec, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 333,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@stiefel_distext#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "stiefel_distext(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 339,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@stiefel_initialize#$@N@arma@S@field>#$@N@arma@S@Mat>#d#$@N@arma@S@Col>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "stiefel_initialize(arma::field<arma::mat>, arma::vec)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 348,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@grassmann_metric#$@N@arma@S@Mat>#d#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "grassmann_metric(arma::mat, arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 361,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@grassmann_dist#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "grassmann_dist(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 364,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@grassmann_proj#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "grassmann_proj(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 383,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@grassmann_nearest#$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "grassmann_nearest(arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 386,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@grassmann_exp#$@N@arma@S@Mat>#d#S0_#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "grassmann_exp(arma::mat, arma::mat, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 389,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@grassmann_log#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "grassmann_log(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 406,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@grassmann_equiv#$@N@arma@S@Mat>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "grassmann_equiv(arma::mat, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 426,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@grassmann_invequiv#$@N@arma@S@Col>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "grassmann_invequiv(arma::vec, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 430,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@grassmann_distext#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "grassmann_distext(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 441,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@grassmann_initialize#$@N@arma@S@field>#$@N@arma@S@Mat>#d#$@N@arma@S@Col>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "grassmann_initialize(arma::field<arma::mat>, arma::vec)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 450,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@rotation_initialize#$@N@arma@S@field>#$@N@arma@S@Mat>#d#$@N@arma@S@Col>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "rotation_initialize(arma::field<arma::mat>, arma::vec)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 464,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@rotation_metric#$@N@arma@S@Mat>#d#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "rotation_metric(arma::mat, arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 477,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@rotation_log#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "rotation_log(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 480,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@rotation_exp#$@N@arma@S@Mat>#d#S0_#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "rotation_exp(arma::mat, arma::mat, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 485,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@rotation_dist#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "rotation_dist(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 490,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@rotation_equiv#$@N@arma@S@Mat>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "rotation_equiv(arma::mat, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 495,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@rotation_nearest#$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "rotation_nearest(arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 499,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@rotation_invequiv#$@N@arma@S@Col>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "rotation_invequiv(arma::vec, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 502,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@rotation_distext#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "rotation_distext(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 511,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@euclidean_initialize#$@N@arma@S@field>#$@N@arma@S@Mat>#d#$@N@arma@S@Col>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "euclidean_initialize(arma::field<arma::mat>, arma::vec)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 523,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@euclidean_exp#$@N@arma@S@Mat>#d#S0_#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "euclidean_exp(arma::mat, arma::mat, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 533,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@euclidean_log#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "euclidean_log(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 537,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@euclidean_metric#$@N@arma@S@Mat>#d#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "euclidean_metric(arma::mat, arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 540,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@euclidean_dist#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "euclidean_dist(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 543,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@euclidean_proj#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "euclidean_proj(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 546,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@euclidean_distext#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "euclidean_distext(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 549,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@euclidean_equiv#$@N@arma@S@Mat>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "euclidean_equiv(arma::mat, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 552,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@euclidean_invequiv#$@N@arma@S@Col>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "euclidean_invequiv(arma::vec, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 556,
+                "column": 11
+            }
+        ]
+    },
+    {
+        "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
+        "file_last_write": 1598898524.0,
+        "definitions": [
+            {
+                "usr": "c:@F@riem_initialize#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#$@N@arma@S@field>#$@N@arma@S@Mat>#d#$@N@arma@S@Col>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "riem_initialize(std::string, arma::field<arma::mat>, arma::vec)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
+                "line": 23,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@riem_initialize_cube#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#$@N@arma@S@Cube>#d#$@N@arma@S@Col>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "riem_initialize_cube(std::string, arma::cube, arma::vec)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
+                "line": 45,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@riem_exp#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#$@N@arma@S@Mat>#d#S3_#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "riem_exp(std::string, arma::mat, arma::mat, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
+                "line": 54,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@riem_log#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#$@N@arma@S@Mat>#d#S3_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "riem_log(std::string, arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
+                "line": 79,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@riem_dist#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#$@N@arma@S@Mat>#d#S3_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "riem_dist(std::string, arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
+                "line": 104,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@riem_distext#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#$@N@arma@S@Mat>#d#S3_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "riem_distext(std::string, arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
+                "line": 128,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@riem_equiv#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#$@N@arma@S@Mat>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "riem_equiv(std::string, arma::mat, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
+                "line": 150,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@riem_invequiv#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#$@N@arma@S@Col>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "riem_invequiv(std::string, arma::vec, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
+                "line": 171,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@riem_metric#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#$@N@arma@S@Mat>#d#S3_#S3_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "riem_metric(std::string, arma::mat, arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
+                "line": 192,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@internal_mean#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#S0_#$@N@arma@S@Cube>#d#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "internal_mean(std::string, std::string, arma::cube, int, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
+                "line": 218,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@internal_mean_init#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#S0_#$@N@arma@S@Cube>#d#I#d#$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "internal_mean_init(std::string, std::string, arma::cube, int, double, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
+                "line": 258,
+                "column": 11
+            }
+        ]
+    },
+    {
+        "file": "/home/kisung/Desktop/Riemann/src/riemann_src.h",
+        "file_last_write": 1598898538.0,
+        "definitions": []
+    }
+]

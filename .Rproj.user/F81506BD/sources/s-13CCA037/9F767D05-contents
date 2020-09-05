@@ -1,0 +1,201 @@
+#include <RcppArmadillo.h>
+#include "riemann_src.h"
+#include "riemann_manifolds.h"
+
+using namespace Rcpp;
+using namespace arma;
+using namespace std;
+
+// (01) riem_initialize
+// (02) riem_exp
+// (03) riem_log
+// (04) riem_dist
+// (05) riem_distext
+// (06) riem_equiv
+// (07) riem_invequiv
+// (08) riem_metric
+
+// (01) riem_initialize ========================================================
+arma::mat riem_initialize(std::string mfd, arma::field<arma::mat> data, arma::vec weight){
+  arma::mat output;
+  if (mfd=="sphere"){
+    output = sphere_initialize(data, weight);
+  } else if (mfd=="stiefel"){
+    output = stiefel_initialize(data, weight);
+  } else if (mfd=="spd"){
+    output = spd_initialize(data, weight);
+  } else if (mfd=="correlation"){
+    output = correlation_initialize(data, weight);
+  } else if (mfd=="grassmann"){
+    output = grassmann_initialize(data, weight);
+  } else if (mfd=="euclidean"){
+    output = euclidean_initialize(data, weight);
+  } else if (mfd=="rotation"){
+    output = rotation_initialize(data, weight);
+  } else {
+    std::string err = "* Riemann : 'initialization' is not implemented for " + mfd + " manifold.";
+    Rcpp::stop(err);
+  }
+  return(output);
+}
+// (02) riem_exp ===============================================================
+arma::mat riem_exp(std::string mfd, arma::mat x, arma::mat d, double t){
+  arma::mat output;
+  if (mfd=="sphere"){
+    output = sphere_exp(x, d, t);
+  } else if (mfd=="stiefel"){
+    output = stiefel_exp(x, d, t);
+  } else if (mfd=="grassmann"){
+    output = grassmann_exp(x, d, t);
+  } else if (mfd=="rotation"){
+    output = rotation_exp(x, d, t);
+  } else if (mfd=="spd"){
+    output = spd_exp(x, d, t);
+  } else if (mfd=="euclidean"){
+    output = euclidean_exp(x, d, t);
+  } else if (mfd=="correlation"){
+    output = correlation_exp(x, d, t);
+  } else {
+    std::string err = "* Riemann : 'exponential map' is not implemented for " + mfd + " manifold.";
+    Rcpp::stop(err);
+  }
+  return(output);
+}
+
+
+// (03) riem_log ===============================================================
+arma::mat riem_log(std::string mfd, arma::mat x, arma::mat y){
+  arma::mat output;
+  if (mfd=="sphere"){
+    output = sphere_log(x, y);
+  } else if (mfd=="grassmann"){
+    output = grassmann_log(x, y); 
+  } else if (mfd=="rotation"){
+    output = rotation_log(x, y);
+  } else if (mfd=="stiefel"){
+    output = stiefel_log(x, y);
+  } else if (mfd=="spd"){
+    output = spd_log(x, y);
+  } else if (mfd=="euclidean"){
+    output = euclidean_log(x, y);
+  } else if (mfd=="correlation"){
+    output = correlation_log(x, y);
+  } else {
+    std::string err = "* Riemann : 'logarithm map' is not implemented for " + mfd + " manifold.";
+    Rcpp::stop(err);
+  }
+  return(output);
+}
+
+
+// (04) riem_dist ==============================================================
+double riem_dist(std::string mfd, arma::mat x, arma::mat y){
+  double output;
+  if (mfd=="sphere"){
+    output = sphere_dist(x, y);
+  } else if (mfd=="grassmann"){
+    output = grassmann_dist(x, y); 
+  } else if (mfd=="stiefel"){
+    output = stiefel_dist(x, y); 
+  } else if (mfd=="rotation"){
+    output = rotation_dist(x, y);
+  } else if (mfd=="spd"){
+    output = spd_dist(x, y);
+  } else if (mfd=="euclidean"){
+    output = euclidean_dist(x, y);
+  } else if (mfd=="correlation"){
+    output = correlation_dist(x, y);
+  } else {
+    std::string err = "* Riemann : 'geodesic distance' is not implemented for " + mfd + " manifold.";
+    Rcpp::stop(err);
+  }
+  return(output); 
+}
+
+// (05) riem_distext ===========================================================
+double riem_distext(std::string mfd, arma::mat x, arma::mat y){
+  double output;
+  if (mfd=="sphere"){
+    output = sphere_distext(x, y);
+  } else if (mfd=="grassmann"){
+    output = grassmann_distext(x, y);
+  } else if (mfd=="stiefel"){
+    output = stiefel_distext(x, y);
+  } else if (mfd=="rotation"){
+    output = rotation_distext(x, y);
+  } else if (mfd=="spd"){
+    output = spd_distext(x, y);
+  } else if (mfd=="euclidean"){
+    output = euclidean_distext(x, y);
+  } else {
+    std::string err = "* Riemann : 'extrinsic distance' is not implemented for " + mfd + " manifold.";
+    Rcpp::stop(err);
+  }
+  return(output); 
+}
+
+// (06) riem_equiv =============================================================
+arma::vec riem_equiv(std::string mfd, arma::mat x, int m, int n){
+  arma::vec output;
+  if (mfd=="sphere"){
+    output = sphere_equiv(x, m, n);
+  } else if (mfd=="grassmann"){
+    output = grassmann_equiv(x, m, n);
+  } else if (mfd=="stiefel"){
+    output = stiefel_equiv(x, m, n);
+  } else if (mfd=="spd"){
+    output = spd_equiv(x, m, n);
+  } else if (mfd=="euclidean"){
+    output = euclidean_equiv(x, m, n);
+  } else if (mfd=="rotation"){
+    output = rotation_equiv(x, m, n);
+  } else {
+    std::string err = "* Riemann : 'equivariant embedding' is not implemented for " + mfd + " manifold.";
+    Rcpp::stop(err);
+  }
+  return(output); 
+}
+// (07) riem_invequiv ==========================================================
+arma::mat riem_invequiv(std::string mfd, arma::vec x, int m, int n){
+  arma::mat output;
+  if (mfd=="sphere"){
+    output = sphere_invequiv(x, m, n);
+  } else if (mfd=="grassmann"){
+    output = grassmann_invequiv(x, m, n);
+  } else if (mfd=="stiefel"){
+    output = stiefel_invequiv(x, m, n);
+  } else if (mfd=="spd"){
+    output = spd_invequiv(x, m, n);
+  } else if (mfd=="euclidean"){
+    output = euclidean_invequiv(x, m, n);
+  } else if (mfd=="rotation"){
+    output = rotation_invequiv(x, m, n);
+  } else {
+    std::string err = "* Riemann : 'inverse equivariant embedding' is not implemented for " + mfd + " manifold.";
+    Rcpp::stop(err);
+  }
+  return(output);  
+}
+// (08) riem_metric ============================================================
+double riem_metric(std::string mfd, arma::mat x, arma::mat d1, arma::mat d2){
+  double output;
+  if (mfd=="sphere"){
+    output = sphere_metric(x,d1,d2);
+  } else if (mfd=="grassmann"){
+    output = grassmann_metric(x,d1,d2);
+  } else if (mfd=="stiefel"){
+    output = stiefel_metric(x,d1,d2);
+  } else if (mfd=="rotation"){
+    output = rotation_metric(x,d1,d2);
+  } else if (mfd=="spd"){
+    output = spd_metric(x,d1,d2);
+  } else if (mfd=="euclidean"){
+    output = euclidean_metric(x,d1,d2);
+  } else if (mfd=="correlation"){
+    output = correlation_metric(x,d1,d2);
+  } else {
+    std::string err = "* Riemann : 'Riemannian metric' is not implemented for " + mfd + " manifold.";
+    Rcpp::stop(err);
+  }
+  return(output);  
+}

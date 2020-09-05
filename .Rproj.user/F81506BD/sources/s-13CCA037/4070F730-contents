@@ -1,0 +1,12 @@
+Package: Riemann
+Type: Package
+Title: Learning on Riemannian Manifolds
+Version: 0.1.0
+Authors@R: c(person("Kisung", "You", role = c("aut", "cre"), email = "kyoustat@gmail.com",comment=c(ORCID="0000-0002-8584-459X")))
+Description: This line is description. If anything is required any further, stop.
+License: MIT + file LICENSE
+Imports: Rcpp (>= 1.0.5), Rdpack, RiemBase, maotai, stats, utils
+Encoding: UTF-8
+LinkingTo: Rcpp, RcppArmadillo
+RoxygenNote: 7.1.1
+RdMacros: Rdpack

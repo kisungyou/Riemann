@@ -1,0 +1,245 @@
+library(Riemann)
+library(Riemann)
+library(Riemann)
+devtools::document()
+usethis::use_mit_license()
+library(Riemann)
+library(Riemann)
+mylist = list()
+for (i in 1:5){
+mylist[[i]] = rnorm(5)
+}
+library(Riemann)
+test(mylist, mfdname="sphere")
+test(mylist, mfdname="euclidean")
+library(Riemann)
+mylist = list()
+for (i in 1:5){
+mylist[[i]] = rnorm(5)
+}
+test(mylist, mfdname="sphere")
+test(mylist, mfdname="euclidean")
+mylist = list()
+for (i in 1:5){
+mylist[[i]] = matrix(rnorm(5))
+}
+test(mylist, mfdname="sphere")
+test(mylist, mfdname="euclidean")
+mylist = list()
+for (i in 1:5){
+mylist[[i]] = (rnorm(5))
+}
+test(mylist, mfdname="sphere")
+test(mylist, mfdname="euclidean")
+library(Riemann)
+mylist = list()
+for (i in 1:5){
+mylist[[i]] = (rnorm(5))
+}
+test(mylist, mfdname="sphere")
+test(mylist, mfdname="euclidean")
+mylist = list()
+for (i in 1:5){
+mylist[[i]] = (rnorm(5))
+}
+test(mylist, mfdname="sphere")
+test(mylist, mfdname="euclidean")
+mylist = list()
+for (i in 1:5){
+mylist[[i]] = (rnorm(5))
+}
+test(mylist, mfdname="sphere")
+test(mylist, mfdname="euclidean")
+library(Riemann)
+#-------------------------------------------------------------------
+#  Data Generation
+d1 = array(0,c(5,3))
+d2 = list()
+for (i in 1:5){
+single  = stats::rnorm(3)
+d1[i,]  = single
+d2[[i]] = single
+}
+#  Run
+test1 = wrap.sphere(d1)
+test2 = wrap.sphere(d2)
+test1
+test2
+test1
+test2
+library(Riemann)
+library(Riemann)
+library(Riemann)
+#-------------------------------------------------------------------
+#                 Checker for Two Types of Inputs
+#
+#  Generate 5 observations; empirical covariance of normal observations.
+#-------------------------------------------------------------------
+#  Data Generation
+d1 = array(0,c(3,3,5))
+d2 = list()
+for (i in 1:5){
+dat = matrix(rnorm(10*3),ncol=3)
+d1[,,i] = stats::cov(dat)
+d2[[i]] = d1[,,i]
+}
+#  Run
+test1 = wrap.spd(d1)
+test2 = wrap.spd(d2)
+library(Riemann)
+#-------------------------------------------------------------------
+#                 Checker for Two Types of Inputs
+#
+#  Generate 5 observations; empirical covariance of normal observations.
+#-------------------------------------------------------------------
+#  Data Generation
+d1 = array(0,c(3,3,5))
+d2 = list()
+for (i in 1:5){
+dat = matrix(rnorm(10*3),ncol=3)
+d1[,,i] = stats::cov(dat)
+d2[[i]] = d1[,,i]
+}
+#  Run
+test1 = wrap.spd(d1)
+test2 = wrap.spd(d2)
+test1
+test2
+library(Riemann)
+library(Riemann)
+library(Riemann)
+pdist(mylist)
+library(Riemann)
+pdist(mylist)
+library(Riemann)
+pdist(mylist)￣
+pdist(mylist)
+library(Riemann)
+pdist(mylist)
+library(Riemann)
+myriem = wrap.sphere(mylist)
+pdist(myriem)
+library(Riemann)
+## GENERATE DATA
+mydata = list()
+sdval  = 0.1
+for (i in 1:5){
+tgt = c(stats::rnorm(2, sd=sdval), 1)
+mydata[[i]] = tgt/sqrt(sum(tgt^2))
+}
+for (i in 6:10){
+tgt = c(1, stats::rnorm(2, sd=sdval))
+mydata[[i]] = tgt/sqrt(sum(tgt^2))
+}
+myriem = wrap.sphere(mydata)
+## COMPARE TWO DISTANCES
+dint = pdist(myriem, geometry="intrinsic", as.dist=FALSE)
+dext = pdist(myriem, geometry="extrinsic", as.dist=FALSE)
+## VISUALIZE
+opar = par(no.readonly=TRUE)
+par(mfrow=c(1,2), pty="s")
+image(dint[,10:1], main="intrinsic", axes=FALSE)
+image(dext[,10:1], main="extrinsic", axes=FALSE)
+par(opar)
+## GENERATE DATA
+mydata = list()
+sdval  = 0.1
+for (i in 1:5){
+tgt = c(stats::rnorm(2, sd=sdval), 1)
+mydata[[i]] = tgt/sqrt(sum(tgt^2))
+}
+for (i in 6:10){
+tgt = c(1, stats::rnorm(2, sd=sdval))
+mydata[[i]] = tgt/sqrt(sum(tgt^2))
+}
+myriem = wrap.sphere(mydata)
+## COMPARE TWO DISTANCES
+dint = pdist(myriem, geometry="intrinsic", as.dist=FALSE)
+dext = pdist(myriem, geometry="extrinsic", as.dist=FALSE)
+## VISUALIZE
+opar = par(no.readonly=TRUE)
+par(mfrow=c(1,2), pty="s")
+image(dint[,10:1], main="intrinsic", axes=FALSE)
+image(dext[,10:1], main="extrinsic", axes=FALSE)
+par(opar)
+#-------------------------------------------------------------------
+#          Example on Sphere : a dataset with two types
+#
+#  group1 : perturbed data points near (0,0,1) on S^2 in R^3
+#  group2 : perturbed data points near (1,0,0) on S^2 in R^3
+#-------------------------------------------------------------------
+## GENERATE DATA
+mydata = list()
+sdval  = 0.1
+for (i in 1:10){
+tgt = c(stats::rnorm(2, sd=sdval), 1)
+mydata[[i]] = tgt/sqrt(sum(tgt^2))
+}
+for (i in 11:20){
+tgt = c(1, stats::rnorm(2, sd=sdval))
+mydata[[i]] = tgt/sqrt(sum(tgt^2))
+}
+myriem = wrap.sphere(mydata)
+## COMPARE TWO DISTANCES
+dint = pdist(myriem, geometry="intrinsic", as.dist=FALSE)
+dext = pdist(myriem, geometry="extrinsic", as.dist=FALSE)
+## VISUALIZE
+opar = par(no.readonly=TRUE)
+par(mfrow=c(1,2), pty="s")
+image(dint[,nrow(dint):1], main="intrinsic", axes=FALSE)
+image(dext[,nrow(dext):1], main="extrinsic", axes=FALSE)
+par(opar)
+#-------------------------------------------------------------------
+#          Example on Sphere : a dataset with two types
+#
+#  group1 : perturbed data points near (0,0,1) on S^2 in R^3
+#  group2 : perturbed data points near (1,0,0) on S^2 in R^3
+#-------------------------------------------------------------------
+## GENERATE DATA
+mydata = list()
+sdval  = 0.1
+for (i in 1:10){
+tgt = c(stats::rnorm(2, sd=sdval), 1)
+mydata[[i]] = tgt/sqrt(sum(tgt^2))
+}
+for (i in 11:20){
+tgt = c(1, stats::rnorm(2, sd=sdval))
+mydata[[i]] = tgt/sqrt(sum(tgt^2))
+}
+myriem = wrap.sphere(mydata)
+## COMPARE TWO DISTANCES
+dint = pdist(myriem, geometry="intrinsic", as.dist=FALSE)
+dext = pdist(myriem, geometry="extrinsic", as.dist=FALSE)
+## VISUALIZE
+opar = par(no.readonly=TRUE)
+par(mfrow=c(1,2), pty="s")
+image(dint[,nrow(dint):1], main="intrinsic", axes=FALSE)
+image(dext[,nrow(dext):1], main="extrinsic", axes=FALSE)
+par(opar)
+#-------------------------------------------------------------------
+#          Example on Sphere : a dataset with two types
+#
+#  group1 : perturbed data points near (0,0,1) on S^2 in R^3
+#  group2 : perturbed data points near (1,0,0) on S^2 in R^3
+#-------------------------------------------------------------------
+## GENERATE DATA
+mydata = list()
+sdval  = 0.1
+for (i in 1:10){
+tgt = c(stats::rnorm(2, sd=sdval), 1)
+mydata[[i]] = tgt/sqrt(sum(tgt^2))
+}
+for (i in 11:20){
+tgt = c(1, stats::rnorm(2, sd=sdval))
+mydata[[i]] = tgt/sqrt(sum(tgt^2))
+}
+myriem = wrap.sphere(mydata)
+## COMPARE TWO DISTANCES
+dint = pdist(myriem, geometry="intrinsic", as.dist=FALSE)
+dext = pdist(myriem, geometry="extrinsic", as.dist=FALSE)
+## VISUALIZE
+opar = par(no.readonly=TRUE)
+par(mfrow=c(1,2), pty="s")
+image(dint[,nrow(dint):1], main="intrinsic", axes=FALSE)
+image(dext[,nrow(dext):1], main="extrinsic", axes=FALSE)
+par(opar)

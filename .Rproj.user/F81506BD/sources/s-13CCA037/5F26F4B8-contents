@@ -1,0 +1,351 @@
+
+@inproceedings{ester_densitybased_1996,
+	series = {{KDD}'96},
+	title = {A {Density}-based {Algorithm} for {Discovering} {Clusters} a {Density}-based {Algorithm} for {Discovering} {Clusters} in {Large} {Spatial} {Databases} with {Noise}},
+	booktitle = {Proceedings of the {Second} {International} {Conference} on {Knowledge} {Discovery} and {Data} {Mining}},
+	publisher = {AAAI Press},
+	author = {Ester, Martin and Kriegel, Hans-Peter and Sander, Jörg and Xu, Xiaowei},
+	year = {1996},
+	note = {event-place: Portland, Oregon},
+	keywords = {arbitrary shape of clusters, clustering algorithms, efficiency on large spatial databases, handling nlj4-275oise},
+	pages = {226--231}
+}
+
+@article{hahsler_dbscan_2019,
+	title = {dbscan : {Fast} {Density}-{Based} {Clustering} with {R}},
+	volume = {91},
+	issn = {1548-7660},
+	number = {1},
+	journal = {Journal of Statistical Software},
+	author = {Hahsler, Michael and Piekenbrock, Matthew and Doran, Derek},
+	year = {2019}
+}
+
+@article{mullner_fastcluster_2013,
+	title = {fastcluster : {Fast} {Hierarchical}, {Agglomerative} {Clustering} {Routines} for {R} and {Python}},
+	volume = {53},
+	issn = {1548-7660},
+	language = {en},
+	number = {9},
+	journal = {Journal of Statistical Software},
+	author = {Müllner, Daniel},
+	year = {2013},
+	file = {[Müllner.2013] fastcluster.pdf:/home/kisung/Dropbox/VP. Packages/Riemann/[Müllner.2013] fastcluster.pdf:application/pdf}
+}
+
+@article{minsker_geometric_2015a,
+	title = {Geometric median and robust estimation in {Banach} spaces},
+	volume = {21},
+	issn = {1350-7265},
+	number = {4},
+	journal = {Bernoulli},
+	author = {Minsker, Stanislav},
+	month = nov,
+	year = {2015},
+	note = {arXiv: 1308.1334},
+	keywords = {Mathematics - Statistics Theory},
+	pages = {2308--2335},
+	file = {[Minsker.2015] Geometric median and robust estimation in Banach spaces.pdf:/home/kisung/Dropbox/VP. Packages/Riemann/[Minsker.2015] Geometric median and robust estimation in Banach spaces.pdf:application/pdf;arXiv.org Snapshot:/home/kisung/Zotero/storage/4DZV78QY/1308.html:text/html}
+}
+
+@article{lerasle_robust_2011,
+	title = {Robust empirical mean {Estimators}},
+	journal = {arXiv:1112.3914 [math, stat]},
+	author = {Lerasle, M. and Oliveira, R. I.},
+	month = dec,
+	year = {2011},
+	note = {arXiv: 1112.3914},
+	keywords = {Mathematics - Statistics Theory},
+	file = {[Lerasle.2011] Robust empirical mean Estimators.pdf:/home/kisung/Dropbox/VP. Packages/Riemann/[Lerasle.2011] Robust empirical mean Estimators.pdf:application/pdf;arXiv.org Snapshot:/home/kisung/Zotero/storage/8MM898ND/1112.html:text/html}
+}
+
+@article{kendall_probability_1990,
+	title = {Probability, {Convexity}, and {Harmonic} {Maps} with {Small} {Image} {I}: {Uniqueness} and {Fine} {Existence}},
+	volume = {s3-61},
+	issn = {00246115},
+	language = {en},
+	number = {2},
+	journal = {Proceedings of the London Mathematical Society},
+	author = {Kendall, Wilfrid S.},
+	month = sep,
+	year = {1990},
+	pages = {371--406}
+}
+
+@article{karcher_riemannian_1977,
+	title = {Riemannian center of mass and mollifier smoothing},
+	volume = {30},
+	issn = {00103640, 10970312},
+	number = {5},
+	journal = {Communications on Pure and Applied Mathematics},
+	author = {Karcher, H.},
+	month = sep,
+	year = {1977},
+	pages = {509--541}
+}
+
+@article{fletcher_geometric_2009,
+	title = {The geometric median on {Riemannian} manifolds with application to robust atlas estimation},
+	volume = {45},
+	issn = {10538119},
+	language = {en},
+	number = {1},
+	journal = {NeuroImage},
+	author = {Fletcher, P. Thomas and Venkatasubramanian, Suresh and Joshi, Sarang},
+	month = mar,
+	year = {2009},
+	pages = {S143--S152},
+	file = {[Fletcher.2009] The geometric median on Riemannian manifolds with application to robust atlas.pdf:/home/kisung/Dropbox/VP. Packages/Riemann/[Fletcher.2009] The geometric median on Riemannian manifolds with application to robust atlas.pdf:application/pdf}
+}
+
+@article{feng_distributed_2015,
+	title = {Distributed {Robust} {Learning}},
+	url = {http://arxiv.org/abs/1409.5937},
+	journal = {arXiv:1409.5937 [cs, stat]},
+	author = {Feng, Jiashi and Xu, Huan and Mannor, Shie},
+	month = feb,
+	year = {2015},
+	note = {arXiv: 1409.5937},
+	keywords = {Statistics - Machine Learning, Computer Science - Machine Learning},
+	file = {[Feng.2015] Distributed Robust Learning.pdf:/home/kisung/Dropbox/VP. Packages/Riemann/[Feng.2015] Distributed Robust Learning.pdf:application/pdf;arXiv.org Snapshot:/home/kisung/Zotero/storage/25QG5IQ4/1409.html:text/html}
+}
+
+@article{aftab_generalized_2015,
+	title = {Generalized {Weiszfeld} {Algorithms} for {Lq} {Optimization}},
+	volume = {37},
+	issn = {0162-8828, 2160-9292, 1939-3539},
+	number = {4},
+	journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+	author = {Aftab, Khurrum and Hartley, Richard and Trumpf, Jochen},
+	month = apr,
+	year = {2015},
+	pages = {728--745},
+	file = {[Aftab.2015] Generalized Weiszfeld Algorithms for Lq Optimization.pdf:/home/kisung/Dropbox/VP. Packages/Riemann/[Aftab.2015] Generalized Weiszfeld Algorithms for Lq Optimization.pdf:application/pdf}
+}
+
+@article{afsari_convergence_2013,
+	title = {On the {Convergence} of {Gradient} {Descent} for {Finding} the {Riemannian} {Center} of {Mass}},
+	volume = {51},
+	issn = {0363-0129, 1095-7138},
+	number = {3},
+	journal = {SIAM Journal on Control and Optimization},
+	author = {Afsari, Bijan and Tron, Roberto and Vidal, René},
+	month = jan,
+	year = {2013},
+	pages = {2230--2260},
+	file = {[Afsari.2013] On the Convergence of Gradient Descent for Finding the Riemannian Center of Mass.pdf:/home/kisung/Dropbox/VP. Packages/Riemann/[Afsari.2013] On the Convergence of Gradient Descent for Finding the Riemannian Center of Mass.pdf:application/pdf}
+}
+
+@article{dubey_frechet_2019,
+	title = {Fréchet analysis of variance for random objects},
+	volume = {106},
+	issn = {0006-3444, 1464-3510},
+	doi = {10.1093/biomet/asz052},
+	language = {en},
+	number = {4},
+	journal = {Biometrika},
+	author = {Dubey, Paromita and Müller, Hans-Georg},
+	month = dec,
+	year = {2019},
+	pages = {803--821}
+}
+
+@book{chikuse_statistics_2003,
+	address = {New York, NY},
+	series = {Lecture {Notes} in {Statistics}},
+	title = {Statistics on {Special} {Manifolds}},
+	volume = {174},
+	isbn = {978-0-387-00160-9 978-0-387-21540-2},
+	publisher = {Springer New York},
+	author = {Chikuse, Yasuko},
+	editor = {Bickel, P. and Diggle, P. and Fienberg, S. and Krickeberg, K. and Olkin, I. and Wermuth, N. and Zeger, S.},
+	year = {2003},
+	doi = {10.1007/978-0-387-21540-2}
+}
+
+@article{kent_simulation_2004,
+	title = {Simulation for the complex {Bingham} distribution},
+	volume = {14},
+	number = {1},
+	journal = {Statistics and Computing},
+	author = {Kent, John T. and Constable, Patrick D.L. and Er, Fikret},
+	month = jan,
+	year = {2004},
+	pages = {53--57}
+}
+
+@book{mardia_directional_1999,
+	address = {Hoboken, NJ, USA},
+	series = {Wiley {Series} in {Probability} and {Statistics}},
+	title = {Directional {Statistics}},
+	isbn = {978-0-470-31697-9 978-0-471-95333-3},
+	language = {en},
+	publisher = {John Wiley \& Sons, Inc.},
+	editor = {Mardia, Kanti V. and Jupp, Peter E.},
+	month = jan,
+	year = {1999},
+	doi = {10.1002/9780470316979}
+}
+
+@article{torgerson_multidimensional_1952a,
+	title = {Multidimensional scaling: {I}. {Theory} and method},
+	volume = {17},
+	issn = {0033-3123, 1860-0980},
+	doi = {10.1007/BF02288916},
+	language = {en},
+	number = {4},
+	journal = {Psychometrika},
+	author = {Torgerson, Warren S.},
+	month = dec,
+	year = {1952},
+	pages = {401--419}
+}
+
+@book{bhattacharya_nonparametric_2012,
+	address = {Cambridge, UK ; New York},
+	series = {Institute of mathematical statistics monographs},
+	title = {Nonparametric inference on manifolds: with applications to shape spaces},
+	isbn = {978-1-107-01958-4},
+	shorttitle = {Nonparametric inference on manifolds},
+	number = {2},
+	publisher = {Cambridge University Press},
+	author = {Bhattacharya, Abhishek and Bhattacharya, R. N.},
+	year = {2012},
+	note = {OCLC: ocn757931398},
+	keywords = {Nonparametric statistics, Manifolds (Mathematics)}
+}
+
+@article{kent_simulation_2004b,
+	title = {Simulation for the complex {Bingham} distribution},
+	volume = {14},
+	issn = {0960-3174},
+	doi = {10.1023/B:STCO.0000009414.14099.03},
+	language = {en},
+	number = {1},
+	journal = {Statistics and Computing},
+	author = {Kent, John T. and Constable, Patrick D.L. and Er, Fikret},
+	month = jan,
+	year = {2004},
+	pages = {53--57}
+}
+
+@article{subbarao_nonlinear_2009,
+	title = {Nonlinear {Mean} {Shift} over {Riemannian} {Manifolds}},
+	volume = {84},
+	issn = {0920-5691, 1573-1405},
+	doi = {10.1007/s11263-008-0195-8},
+	language = {en},
+	number = {1},
+	journal = {International Journal of Computer Vision},
+	author = {Subbarao, Raghav and Meer, Peter},
+	month = aug,
+	year = {2009},
+	pages = {1--20}
+}
+
+@inproceedings{badoiu_smaller_2003,
+	address = {USA},
+	series = {{SODA} '03},
+	title = {Smaller core-sets for balls},
+	isbn = {0-89871-538-5},
+	booktitle = {Proceedings of the fourteenth annual {ACM}-{SIAM} symposium on discrete algorithms},
+	publisher = {Society for Industrial and Applied Mathematics},
+	author = {Bâdoiu, Mihai and Clarkson, Kenneth L.},
+	year = {2003},
+	pages = {801--802},
+	file = {[Bâdoiu.2003] Smaller core-sets for balls.pdf:/home/kisung/Dropbox/VP. Packages/Riemann/[Bâdoiu.2003] Smaller core-sets for balls.pdf:application/pdf}
+}
+
+@article{arnaudon_approximating_2013,
+	title = {On approximating the {Riemannian} 1-center},
+	volume = {46},
+	issn = {09257721},
+	doi = {10.1016/j.comgeo.2012.04.007},
+	language = {en},
+	number = {1},
+	journal = {Computational Geometry},
+	author = {Arnaudon, Marc and Nielsen, Frank},
+	month = jan,
+	year = {2013},
+	pages = {93--104},
+	file = {[Arnaudon.2013] On approximating the Riemannian 1-center.pdf:/home/kisung/Dropbox/VP. Packages/Riemann/[Arnaudon.2013] On approximating the Riemannian 1-center.pdf:application/pdf}
+}
+
+@article{journee_lowrank_2010,
+	title = {Low-rank optimization on the cone of positive semidefinite matrices},
+	volume = {20},
+	doi = {10.1137/080731359},
+	number = {5},
+	journal = {SIAM Journal on Optimization},
+	author = {Journée, M. and Bach, F. and Absil, P.-A. and Sepulchre, R.},
+	year = {2010},
+	pages = {2327--2351}
+}
+
+@inproceedings{arthur_kmeans_2007a,
+	address = {USA},
+	series = {{SODA} '07},
+	title = {K-{Means}++: {The} advantages of careful seeding},
+	isbn = {978-0-89871-624-5},
+	booktitle = {Proceedings of the eighteenth annual {ACM}-{SIAM} symposium on discrete algorithms},
+	publisher = {Society for Industrial and Applied Mathematics},
+	author = {Arthur, David and Vassilvitskii, Sergei},
+	year = {2007},
+	note = {Number of pages: 9
+Place: New Orleans, Louisiana},
+	pages = {1027--1035}
+}
+
+@article{lloyd_least_1982,
+	title = {Least squares quantization in {PCM}},
+	volume = {28},
+	issn = {0018-9448},
+	doi = {10.1109/TIT.1982.1056489},
+	language = {en},
+	number = {2},
+	journal = {IEEE Transactions on Information Theory},
+	author = {Lloyd, S.},
+	month = mar,
+	year = {1982},
+	pages = {129--137},
+	file = {[Lloyd.1982] Least squares quantization in PCM.pdf:/home/kisung/Dropbox/VP. Packages/Riemann/[Lloyd.1982] Least squares quantization in PCM.pdf:application/pdf}
+}
+
+@inproceedings{macqueen_methods_1967,
+	address = {Berkeley, Calif.},
+	title = {Some methods for classification and analysis of multivariate observations},
+	booktitle = {Proceedings of the fifth berkeley symposium on mathematical statistics and probability, volume 1: {Statistics}},
+	publisher = {University of California Press},
+	author = {MacQueen, J.},
+	year = {1967},
+	pages = {281--297}
+}
+
+@article{fletcher_principal_2004,
+	title = {Principal {Geodesic} {Analysis} for the {Study} of {Nonlinear} {Statistics} of {Shape}},
+	volume = {23},
+	issn = {0278-0062},
+	doi = {10.1109/TMI.2004.831793},
+	language = {en},
+	number = {8},
+	journal = {IEEE Transactions on Medical Imaging},
+	author = {Fletcher, P.T. and Lu, C. and Pizer, S.M. and Joshi, S.},
+	month = aug,
+	year = {2004},
+	pages = {995--1005}
+}
+
+@inproceedings{zhu_generalized_2018,
+	address = {Stockholm, Sweden},
+	title = {Towards {Generalized} and {Efficient} {Metric} {Learning} on {Riemannian} {Manifold}},
+	isbn = {978-0-9992411-2-7},
+	doi = {10.24963/ijcai.2018/449},
+	language = {en},
+	booktitle = {Proceedings of the {Twenty}-{Seventh} {International} {Joint} {Conference} on {Artificial} {Intelligence}},
+	publisher = {International Joint Conferences on Artificial Intelligence Organization},
+	author = {Zhu, Pengfei and Cheng, Hao and Hu, Qinghua and Wang, Qilong and Zhang, Changqing},
+	month = jul,
+	year = {2018},
+	pages = {3235--3241},
+	file = {[Zhu.2018] Towards Generalized and Efficient Metric Learning on Riemannian Manifold.pdf:/home/kisung/Dropbox/VP. Packages/Riemann/[Zhu.2018] Towards Generalized and Efficient Metric Learning on Riemannian Manifold.pdf:application/pdf}
+}
