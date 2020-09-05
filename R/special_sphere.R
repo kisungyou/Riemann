@@ -17,6 +17,7 @@
 #' }
 #' 
 #' @return an object from one of the above by \code{type} option.
+#' @seealso \code{\link{wrap.sphere}}
 #' 
 #' @examples 
 #' #-------------------------------------------------------------------
@@ -47,7 +48,7 @@ sphere.runif <- function(n, p, type=c("list","matrix","riemdata")){
   }
   
   # GENERATION
-  outmat = sphere_runif(N,p) 
+  outmat = runif_sphere(N,p) 
   if (all(retype=="matrix")){
     return(outmat)
   } else {

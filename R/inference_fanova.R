@@ -1,4 +1,4 @@
-#' Frechet Analysis of Variance
+#' Fréchet Analysis of Variance
 #' 
 #' Given sets of manifold-valued data \eqn{X^{(1)}_{1:{n_1}}, X^{(2)}_{1:{n_2}}, \ldots, X^{(m)}_{1:{n_m}}}, 
 #' performs analysis of variance to test equality of distributions. This means, small \eqn{p}-value implies that 

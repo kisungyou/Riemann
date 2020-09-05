@@ -9,6 +9,10 @@ basic_pdist2 <- function(mfdname, data1, data2, dtype) {
     .Call('_Riemann_basic_pdist2', PACKAGE = 'Riemann', mfdname, data1, data2, dtype)
 }
 
+basic_interpolate <- function(mfdname, dtype, mat1, mat2, vect) {
+    .Call('_Riemann_basic_interpolate', PACKAGE = 'Riemann', mfdname, dtype, mat1, mat2, vect)
+}
+
 inference_mean_intrinsic <- function(mfdname, data, myweight, myiter, myeps) {
     .Call('_Riemann_inference_mean_intrinsic', PACKAGE = 'Riemann', mfdname, data, myweight, myiter, myeps)
 }
@@ -49,8 +53,12 @@ learning_rmml <- function(mfdname, data, lambda, label) {
     .Call('_Riemann_learning_rmml', PACKAGE = 'Riemann', mfdname, data, lambda, label)
 }
 
-sphere_runif <- function(n, p) {
-    .Call('_Riemann_sphere_runif', PACKAGE = 'Riemann', n, p)
+runif_sphere <- function(n, p) {
+    .Call('_Riemann_runif_sphere', PACKAGE = 'Riemann', n, p)
+}
+
+runif_stiefel <- function(p, k, N) {
+    .Call('_Riemann_runif_stiefel', PACKAGE = 'Riemann', p, k, N)
 }
 
 mat_rank <- function(A) {

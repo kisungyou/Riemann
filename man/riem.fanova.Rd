@@ -3,7 +3,7 @@
 \name{riem.fanova}
 \alias{riem.fanova}
 \alias{riem.fanovaP}
-\title{Frechet Analysis of Variance}
+\title{Fréchet Analysis of Variance}
 \usage{
 riem.fanova(..., maxiter = 50, eps = 1e-05)
 

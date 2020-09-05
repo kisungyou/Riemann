@@ -33,6 +33,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// basic_interpolate
+arma::cube basic_interpolate(std::string mfdname, std::string dtype, arma::mat mat1, arma::mat mat2, arma::vec vect);
+RcppExport SEXP _Riemann_basic_interpolate(SEXP mfdnameSEXP, SEXP dtypeSEXP, SEXP mat1SEXP, SEXP mat2SEXP, SEXP vectSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfdname(mfdnameSEXP);
+    Rcpp::traits::input_parameter< std::string >::type dtype(dtypeSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type mat1(mat1SEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type mat2(mat2SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type vect(vectSEXP);
+    rcpp_result_gen = Rcpp::wrap(basic_interpolate(mfdname, dtype, mat1, mat2, vect));
+    return rcpp_result_gen;
+END_RCPP
+}
 // inference_mean_intrinsic
 Rcpp::List inference_mean_intrinsic(std::string mfdname, Rcpp::List& data, arma::vec myweight, int myiter, double myeps);
 RcppExport SEXP _Riemann_inference_mean_intrinsic(SEXP mfdnameSEXP, SEXP dataSEXP, SEXP myweightSEXP, SEXP myiterSEXP, SEXP myepsSEXP) {
@@ -181,15 +196,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// sphere_runif
-arma::mat sphere_runif(int n, int p);
-RcppExport SEXP _Riemann_sphere_runif(SEXP nSEXP, SEXP pSEXP) {
+// runif_sphere
+arma::mat runif_sphere(int n, int p);
+RcppExport SEXP _Riemann_runif_sphere(SEXP nSEXP, SEXP pSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
     Rcpp::traits::input_parameter< int >::type p(pSEXP);
-    rcpp_result_gen = Rcpp::wrap(sphere_runif(n, p));
+    rcpp_result_gen = Rcpp::wrap(runif_sphere(n, p));
+    return rcpp_result_gen;
+END_RCPP
+}
+// runif_stiefel
+arma::cube runif_stiefel(int p, int k, int N);
+RcppExport SEXP _Riemann_runif_stiefel(SEXP pSEXP, SEXP kSEXP, SEXP NSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type p(pSEXP);
+    Rcpp::traits::input_parameter< int >::type k(kSEXP);
+    Rcpp::traits::input_parameter< int >::type N(NSEXP);
+    rcpp_result_gen = Rcpp::wrap(runif_stiefel(p, k, N));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -253,6 +281,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_basic_pdist", (DL_FUNC) &_Riemann_basic_pdist, 3},
     {"_Riemann_basic_pdist2", (DL_FUNC) &_Riemann_basic_pdist2, 4},
+    {"_Riemann_basic_interpolate", (DL_FUNC) &_Riemann_basic_interpolate, 5},
     {"_Riemann_inference_mean_intrinsic", (DL_FUNC) &_Riemann_inference_mean_intrinsic, 5},
     {"_Riemann_inference_mean_extrinsic", (DL_FUNC) &_Riemann_inference_mean_extrinsic, 5},
     {"_Riemann_inference_median_intrinsic", (DL_FUNC) &_Riemann_inference_median_intrinsic, 5},
@@ -263,7 +292,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_visualize_pga", (DL_FUNC) &_Riemann_visualize_pga, 2},
     {"_Riemann_learning_seb", (DL_FUNC) &_Riemann_learning_seb, 5},
     {"_Riemann_learning_rmml", (DL_FUNC) &_Riemann_learning_rmml, 4},
-    {"_Riemann_sphere_runif", (DL_FUNC) &_Riemann_sphere_runif, 2},
+    {"_Riemann_runif_sphere", (DL_FUNC) &_Riemann_runif_sphere, 2},
+    {"_Riemann_runif_stiefel", (DL_FUNC) &_Riemann_runif_stiefel, 3},
     {"_Riemann_mat_rank", (DL_FUNC) &_Riemann_mat_rank, 1},
     {"_Riemann_mat_symm", (DL_FUNC) &_Riemann_mat_symm, 2},
     {"_Riemann_mat_diaghalf", (DL_FUNC) &_Riemann_mat_diaghalf, 1},

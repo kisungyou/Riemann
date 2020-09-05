@@ -6,12 +6,13 @@ using namespace arma;
 using namespace std;
 
 // SPECIAL FUNCTIONS ===========================================================
-// 01. sphere_runif
+// runif_sphere
+// runif_stiefel
 
 
-// 01. sphere_runif ------------------------------------------------------------
+// runif_sphere ----------------------------------------------------------------
 // [[Rcpp::export]]
-arma::mat sphere_runif(int n, int p){
+arma::mat runif_sphere(int n, int p){
   arma::mat output(n,p,fill::randn);
   arma::rowvec outvec(p,fill::zeros);
   for (int i=0; i<n; i++){
@@ -20,4 +21,17 @@ arma::mat sphere_runif(int n, int p){
   }
   return(output);
 }
-  
+
+// runif_stiefel ---------------------------------------------------------------
+// [[Rcpp::export]]
+arma::cube runif_stiefel(int p, int k, int N){
+  arma::cube output(p,k,N,fill::randn);
+  arma::mat X(p,k,fill::zeros);
+  arma::mat H(k,k,fill::zeros);
+  for (int n=0; n<N; n++){
+    X = output.slice(n);
+    H = arma::real(arma::powmat(X.t()*X, -0.5));
+    output.slice(n) = X*H;
+  }
+  return(output);
+}

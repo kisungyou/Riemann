@@ -1,7 +1,7 @@
 [
     {
         "file": "/home/kisung/Desktop/Riemann/src/functions_11basic.cpp",
-        "file_last_write": 1598561641.0,
+        "file_last_write": 1599326057.0,
         "definitions": [
             {
                 "usr": "c:@F@basic_pdist#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#S0_#",
@@ -9,7 +9,7 @@
                 "parent_name": "",
                 "name": "basic_pdist(std::string, Rcpp::List &, std::string)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_11basic.cpp",
-                "line": 14,
+                "line": 15,
                 "column": 11
             },
             {
@@ -18,8 +18,17 @@
                 "parent_name": "",
                 "name": "basic_pdist2(std::string, Rcpp::List &, Rcpp::List &, std::string)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_11basic.cpp",
-                "line": 39,
+                "line": 40,
                 "column": 11
+            },
+            {
+                "usr": "c:@F@basic_interpolate#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#S0_#$@N@arma@S@Mat>#d#S3_#$@N@arma@S@Col>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "basic_interpolate(std::string, std::string, arma::mat, arma::mat, arma::vec)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_11basic.cpp",
+                "line": 65,
+                "column": 12
             }
         ]
     },
@@ -238,16 +247,25 @@
     },
     {
         "file": "/home/kisung/Desktop/Riemann/src/functions_special.cpp",
-        "file_last_write": 1599257446.0,
+        "file_last_write": 1599328125.0,
         "definitions": [
             {
-                "usr": "c:@F@sphere_runif#I#I#",
+                "usr": "c:@F@runif_sphere#I#I#",
                 "kind": 6,
                 "parent_name": "",
-                "name": "sphere_runif(int, int)",
+                "name": "runif_sphere(int, int)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_special.cpp",
-                "line": 14,
+                "line": 15,
                 "column": 11
+            },
+            {
+                "usr": "c:@F@runif_stiefel#I#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "runif_stiefel(int, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_special.cpp",
+                "line": 27,
+                "column": 12
             }
         ]
     },

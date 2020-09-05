@@ -38,4 +38,7 @@ dat.riem = sphere.runif(n=10, p=5, type="riemdata")
 \references{
 \insertRef{chikuse_statistics_2003}{Riemann}
 }
+\seealso{
+\code{\link{wrap.sphere}}
+}
 \concept{sphere}

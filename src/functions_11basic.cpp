@@ -7,6 +7,7 @@ using namespace std;
 
 // 1. basic_pdist
 // 2. basic_pdist2
+// 3. basic_interpolate
 
 
 // 1. basic_pdist ==============================================================
@@ -54,6 +55,32 @@ arma::mat basic_pdist2(std::string mfdname, Rcpp::List& data1, Rcpp::List& data2
       } else {
         output(m,n) = riem_distext(mfdname, mat1, mat2);
       }
+    }
+  }
+  return(output);
+}
+
+// 3. basic_interpolate ========================================================
+// [[Rcpp::export]]
+arma::cube basic_interpolate(std::string mfdname, std::string dtype, arma::mat mat1, arma::mat mat2, arma::vec vect){
+  // PREPARE
+  int p = mat1.n_rows;
+  int k = mat1.n_cols;
+  int tt = vect.n_elem;
+  arma::cube output(p,k,tt,fill::zeros);
+  
+  if (dtype=="intrinsic"){
+    arma::mat logxy = riem_log(mfdname, mat1, mat2);
+    for (int i=0; i<tt; i++){
+      output.slice(i) = riem_exp(mfdname, mat1, logxy, vect(i));
+    }
+  } else if (dtype=="extrinsic"){
+    arma::vec vec1 = riem_equiv(mfdname, mat1, p, k);
+    arma::vec vec2 = riem_equiv(mfdname, mat2, p, k);
+    arma::vec veci(vec1.n_elem, fill::zeros);
+    for (int i=0; i<tt; i++){
+      veci = (1.0-vect(i))*vec1 + vect(i)*vec2;
+      output.slice(i) = riem_invequiv(mfdname, veci, p, k);
     }
   }
   return(output);

@@ -80,7 +80,8 @@ wrap.stiefel <- function(input){
 check_stiefel <- function(mat){
   k   = ncol(mat)
   tgt = t(mat)%*%mat
-  if ((base::norm(tgt-diag(k),"F")/sqrt(k)) > 1e-10){
+  eps = (base::norm(tgt-diag(k),"F")/sqrt(k))
+  if (eps > 1e-10){
     return(base::qr.Q(base::qr(mat)))
   } else {
     return(mat)
