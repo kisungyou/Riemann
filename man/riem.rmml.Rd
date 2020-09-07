@@ -34,7 +34,7 @@ the small regularization parameter \eqn{\lambda} is recommended with default val
 #-------------------------------------------------------------------
 ## DATA GENERATION
 data(iris)
-ndata  = 20
+ndata  = 10
 mydata = list()
 for (i in 1:ndata){
   mydata[[i]] = stats::cov(matrix(rnorm(100*4),ncol=4))

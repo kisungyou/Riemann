@@ -2,6 +2,7 @@
 
 export(grassmann.runif)
 export(grassmann.utest)
+export(riem.clrq)
 export(riem.fanova)
 export(riem.fanovaP)
 export(riem.hclust)

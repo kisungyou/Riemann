@@ -68,6 +68,7 @@
 #' 
 #' \insertRef{macqueen_methods_1967}{Riemann}
 #' 
+#' @concept clustering
 #' @export
 riem.kmeans <- function(riemobj, k=2, geometry=c("intrinsic","extrinsic"), maxiter=10, nstart=5, 
                         algorithm=c("MacQueen","Lloyd"), init=c("plus","random")){

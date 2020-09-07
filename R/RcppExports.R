@@ -41,6 +41,10 @@ clustering_kmeans_macqueen <- function(mfdname, geotype, data, iter, eps, initla
     .Call('_Riemann_clustering_kmeans_macqueen', PACKAGE = 'Riemann', mfdname, geotype, data, iter, eps, initlabel)
 }
 
+clustering_clrq <- function(mfdname, data, init_label, par_a, par_b) {
+    .Call('_Riemann_clustering_clrq', PACKAGE = 'Riemann', mfdname, data, init_label, par_a, par_b)
+}
+
 visualize_pga <- function(mfdname, data) {
     .Call('_Riemann_visualize_pga', PACKAGE = 'Riemann', mfdname, data)
 }

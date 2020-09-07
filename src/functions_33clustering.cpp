@@ -15,6 +15,7 @@ using namespace std;
 // 1. clustering_nmshift      : nonlinear mean shift; POTENTIAL TO SPEED UP BY OPENMP
 // 2. clustering_kmeans_lloyd : stop if empty cluster is generated
 // 3. clustering_kmeans_macqueen 
+// 4. clustering_clrq         : competitive learning riemannian quantization
 
 int helper_nunique(arma::uvec x){
   arma::uvec y = arma::unique(x);
@@ -311,5 +312,59 @@ Rcpp::List clustering_kmeans_macqueen(std::string mfdname, std::string geotype, 
   output["label"] = oldlabel;
   output["means"] = oldmeans;
   output["WCSS"]   = SSE;
+  return(output);
+}
+
+// 4. clustering_clrq         : competitive learning riemannian quantization
+// [[Rcpp::export]]
+Rcpp::List clustering_clrq(std::string mfdname, Rcpp::List& data, arma::uvec init_label, double par_a, double par_b){
+  // PREPARE DATA : cube is a better option
+  int N = data.size();
+  arma::mat exemplar = Rcpp::as<arma::mat>(data[0]);
+  int nrow = exemplar.n_rows;
+  int ncol = exemplar.n_cols;  
+  
+  arma::cube my_data(nrow,ncol,N,fill::zeros);
+  for (int n=0; n<N; n++){
+    my_data.slice(n) = Rcpp::as<arma::mat>(data[n]);
+  }
+  int K = init_label.n_elem;
+  
+  // PREPARE CENTROIDS : initial label
+  arma::cube my_centroids(nrow,ncol,K,fill::zeros);
+  for (int k=0; k<K; k++){
+    my_centroids.slice(k) = my_data.slice(init_label(k)-1);
+  }
+  
+  // STOCHASTIC GRADIENT DESCENT
+  double    tmp_gain = 0.0;
+  arma::mat tmp_log(nrow,ncol,fill::zeros);
+  arma::vec my_dists(K,fill::zeros);
+  arma::uword optid;
+  for (int n=0; n<N; n++){
+    // 1. compute distance from new observation to centroids
+    for (int k=0; k<K; k++){
+      my_dists(k) = riem_dist(mfdname, my_centroids.slice(k), my_data.slice(n));
+    }
+    // 2. pick the centroid with the minimal distance
+    optid = my_dists.index_min();
+    // 3. update the corresponding centroid
+    tmp_gain = par_a/(1.0 + par_b*std::sqrt(static_cast<double>(n+1)));
+    tmp_log  = riem_log(mfdname, my_centroids.slice(optid), my_data.slice(n));
+    my_centroids.slice(optid) = riem_exp(mfdname, my_centroids.slice(optid), tmp_log, tmp_gain);
+  }
+  
+  // COMPUTE PAIRWISE DISTANCES
+  arma::mat pairwise_distance(N,K,fill::zeros);
+  for (int n=0; n<N; n++){
+    for (int k=0; k<K; k++){
+      pairwise_distance(n,k) = riem_dist(mfdname, my_data.slice(n), my_centroids.slice(k));
+    }
+  }
+  
+  // RETURN
+  Rcpp::List output;
+  output["centers"] = my_centroids;
+  output["pdist2"]  = pairwise_distance;
   return(output);
 }

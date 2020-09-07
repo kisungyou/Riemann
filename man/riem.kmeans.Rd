@@ -93,3 +93,4 @@ par(opar)
 \seealso{
 \code{\link{riem.kmeanspp}}
 }
+\concept{clustering}

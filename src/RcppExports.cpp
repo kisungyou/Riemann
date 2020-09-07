@@ -155,6 +155,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// clustering_clrq
+Rcpp::List clustering_clrq(std::string mfdname, Rcpp::List& data, arma::uvec init_label, double par_a, double par_b);
+RcppExport SEXP _Riemann_clustering_clrq(SEXP mfdnameSEXP, SEXP dataSEXP, SEXP init_labelSEXP, SEXP par_aSEXP, SEXP par_bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfdname(mfdnameSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type init_label(init_labelSEXP);
+    Rcpp::traits::input_parameter< double >::type par_a(par_aSEXP);
+    Rcpp::traits::input_parameter< double >::type par_b(par_bSEXP);
+    rcpp_result_gen = Rcpp::wrap(clustering_clrq(mfdname, data, init_label, par_a, par_b));
+    return rcpp_result_gen;
+END_RCPP
+}
 // visualize_pga
 Rcpp::List visualize_pga(std::string mfdname, Rcpp::List& data);
 RcppExport SEXP _Riemann_visualize_pga(SEXP mfdnameSEXP, SEXP dataSEXP) {
@@ -289,6 +304,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_clustering_nmshift", (DL_FUNC) &_Riemann_clustering_nmshift, 5},
     {"_Riemann_clustering_kmeans_lloyd", (DL_FUNC) &_Riemann_clustering_kmeans_lloyd, 6},
     {"_Riemann_clustering_kmeans_macqueen", (DL_FUNC) &_Riemann_clustering_kmeans_macqueen, 6},
+    {"_Riemann_clustering_clrq", (DL_FUNC) &_Riemann_clustering_clrq, 5},
     {"_Riemann_visualize_pga", (DL_FUNC) &_Riemann_visualize_pga, 2},
     {"_Riemann_learning_seb", (DL_FUNC) &_Riemann_learning_seb, 5},
     {"_Riemann_learning_rmml", (DL_FUNC) &_Riemann_learning_rmml, 4},
