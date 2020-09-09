@@ -2,7 +2,7 @@
 # icons:   https://fontawesome.com/
 # pkgdown: https://pkgdown.r-lib.org/reference/index.html
 
-url: https://kyoustat.com/Riemann/
+url: https://kyoustat.com/Riemann
 
 destination: docs
 
@@ -31,16 +31,24 @@ navbar:
 
 reference:
   - title: "Prepare Data on Manifolds"
-    desc: >
-      asdf
     contents:
       - starts_with("wrap.")
   - title: "Common Functions on All Supported Manifolds"
-    desc: >
-      common functions
-  - subtitle: "(1) Basic"
+  - subtitle: "(1) Basic Operations"
     contents:
       - has_concept("basic")
+  - subtitle: "(2) Statistical Inference"
+    contents:
+      - has_concept("inference")
+  - subtitle: "(3) Clustering"
+    contents:
+      - has_concept("clustering")
+  - subtitle: "(4) Visualization and Dimension Reduction"
+    contents:
+      - has_concept("visualization")
+  - subtitle: "(5) Other Methods"
+    contents:
+      - has_concept("learning")
   - title: "Functions on Specific Manifolds"
   - subtitle: "(1) Sphere"
     contents:
@@ -48,3 +56,9 @@ reference:
   - subtitle: "(2) Stiefel"
     contents:
       - starts_with("stiefel.")
+  - subtitle: "(3) Grassmann"
+    contents:
+      - starts_with("grassmann.")
+  - title: "Introduction to the package"
+    contents:
+      - starts_with("Riemann")
