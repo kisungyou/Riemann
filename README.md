@@ -5,9 +5,12 @@
 
 <!-- badges: start -->
 
+[![Travis build
+status](https://travis-ci.com/kyoustat/Riemann.svg?branch=master)](https://travis-ci.com/kyoustat/Riemann)
 <!-- badges: end -->
 
-The goal of Riemann is to … asdf
+**Riemann** is an **R** package for learning with data on **Riemannian
+manifolds**.
 
 ## Installation
 

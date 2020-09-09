@@ -7,6 +7,8 @@ Description: We provide a variety of algorithms for manifold-valued data, includ
 License: MIT + file LICENSE
 Imports: Rcpp (>= 1.0.5), Rdpack, RiemBase, maotai, stats, utils
 Encoding: UTF-8
+URL: http://kyoustat.com/Riemann/
+BugReports: https://github.com/kyoustat/Riemann/issues
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 7.1.1
 RdMacros: Rdpack
