@@ -1,0 +1,50 @@
+# themes:  https://bootswatch.com/ {flatly, united}
+# icons:   https://fontawesome.com/
+# pkgdown: https://pkgdown.r-lib.org/reference/index.html
+
+url: https://kyoustat.com/Riemann/
+
+destination: docs
+
+template:
+  params:
+    bootswatch: flatly
+    ganalytics: UA-163713603-1
+
+home:
+  strip_header: false
+
+navbar:
+  title: "Riemann"
+  left:
+    - text: "Functions"
+      href: reference/index.html
+    - text: "News"
+      href: news/index.html
+  right:
+    - icon: fa-twitter
+      href: https://twitter.com/kyoustat
+    - icon: fa-github
+      href: https://github.com/kyoustat/Riemann
+    - icon: fa-envelope
+      href: mailto:kyoustat@gmail.com
+
+reference:
+  - title: "Prepare Data on Manifolds"
+    desc: >
+      asdf
+    contents:
+      - starts_with("wrap.")
+  - title: "Common Functions on All Supported Manifolds"
+    desc: >
+      common functions
+  - subtitle: "(1) Basic"
+    contents:
+      - has_concept("basic")
+  - title: "Functions on Specific Manifolds"
+  - subtitle: "(1) Sphere"
+    contents:
+      - has_concept("sphere")
+  - subtitle: "(2) Stiefel"
+    contents:
+      - starts_with("stiefel.")

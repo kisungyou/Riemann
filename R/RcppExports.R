@@ -45,6 +45,10 @@ clustering_clrq <- function(mfdname, data, init_label, par_a, par_b) {
     .Call('_Riemann_clustering_clrq', PACKAGE = 'Riemann', mfdname, data, init_label, par_a, par_b)
 }
 
+clustering_sup_intrinsic <- function(mfdname, data, weight, multiplier, maxiter, eps) {
+    .Call('_Riemann_clustering_sup_intrinsic', PACKAGE = 'Riemann', mfdname, data, weight, multiplier, maxiter, eps)
+}
+
 visualize_pga <- function(mfdname, data) {
     .Call('_Riemann_visualize_pga', PACKAGE = 'Riemann', mfdname, data)
 }

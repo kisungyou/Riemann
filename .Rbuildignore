@@ -2,3 +2,7 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^composition\.ods$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^README\.Rmd$

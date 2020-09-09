@@ -12,10 +12,11 @@ using namespace std;
 // helper_assign_centroids : assign each individual to the closest centroid
 
 // MAIN ALGORITHMS
-// 1. clustering_nmshift      : nonlinear mean shift; POTENTIAL TO SPEED UP BY OPENMP
-// 2. clustering_kmeans_lloyd : stop if empty cluster is generated
+// 1. clustering_nmshift       : nonlinear mean shift; POTENTIAL TO SPEED UP BY OPENMP
+// 2. clustering_kmeans_lloyd  : stop if empty cluster is generated
 // 3. clustering_kmeans_macqueen 
-// 4. clustering_clrq         : competitive learning riemannian quantization
+// 4. clustering_clrq          : competitive learning riemannian quantization
+// 5. clustering_sup_intrinsic : self-updating process
 
 int helper_nunique(arma::uvec x){
   arma::uvec y = arma::unique(x);
@@ -366,5 +367,128 @@ Rcpp::List clustering_clrq(std::string mfdname, Rcpp::List& data, arma::uvec ini
   Rcpp::List output;
   output["centers"] = my_centroids;
   output["pdist2"]  = pairwise_distance;
+  return(output);
+}
+
+// 5. clustering_sup_intrinsic : self-updating process =========================
+arma::mat clustering_sup_intrinsic_singlemean(std::string mfdname, arma::cube input_data, arma::vec input_weight, arma::mat input_init){
+  // PREPARE PARAMETERS with standard choices
+  int maxiter = 50;   
+  double eps  = 1e-5;
+  int nrow = input_data.n_rows;
+  int ncol = input_data.n_cols;
+  int N    = input_data.n_slices;
+  
+  arma::mat Xold = input_init;
+  arma::mat Xtmp(nrow,ncol,fill::zeros);
+  arma::mat Xnew(nrow,ncol,fill::zeros);
+  arma::vec Xweight = input_weight/arma::accu(input_weight);
+  double    Xinc = 100.0;
+  
+  for (int it=0; it<maxiter; it++){
+    // 1. compute the gradient
+    Xtmp.fill(0.0);
+    for (int n=0; n<N; n++){
+      Xtmp += 2.0*Xweight(n)*riem_log(mfdname, Xold, input_data.slice(n));
+    }
+    // 2. compute the target
+    Xnew = riem_exp(mfdname, Xold, Xtmp, 1.0);
+    Xinc = arma::norm(Xold-Xnew,"fro");
+    // 3. update
+    Xold = Xnew;
+    if (Xinc < eps){
+      break;
+    }
+  }
+  return(Xold);
+}
+// [[Rcpp::export]]
+Rcpp::List clustering_sup_intrinsic(std::string mfdname, Rcpp::List& data, arma::vec weight, double multiplier, int maxiter, double eps){
+  // PREPARE DATA : cube is a better option
+  int N = data.size();
+  arma::mat exemplar = Rcpp::as<arma::mat>(data[0]);
+  int nrow = exemplar.n_rows;
+  int ncol = exemplar.n_cols;  
+  
+  arma::cube my_data_old(nrow,ncol,N,fill::zeros);
+  arma::cube my_data_new(nrow,ncol,N,fill::zeros);
+  for (int n=0; n<N; n++){
+    my_data_old.slice(n) = Rcpp::as<arma::mat>(data[n]);
+  }
+  
+  // PREPARE GAMMA & LAMBDA
+  arma::mat my_data_dist(N,N,fill::zeros);
+  double gamma = 0.0;
+  for (int i=0; i<(N-1); i++){
+    for (int j=(i+1); j<N; j++){
+      my_data_dist(i,j) = riem_dist(mfdname, my_data_old.slice(i), my_data_old.slice(j));
+      my_data_dist(j,i) = my_data_dist(i,j);
+      gamma += my_data_dist(i,j)*2.0/(static_cast<double>(N*(N-1)));
+    }
+  }
+  double lambda = multiplier*gamma;
+  
+  // ITERATION
+  arma::mat  now_init(nrow,ncol,fill::zeros);
+  arma::vec  now_dist(N,fill::zeros);
+  arma::uvec now_smaller(N,fill::zeros);
+  arma::vec  now_weight(N,fill::zeros);
+  arma::cube now_data(nrow,ncol,1,fill::zeros);
+  arma::vec  compare_distance(N,fill::zeros);
+  for (int it=0; it<maxiter; it++){
+    // 1. compute pairwise distance [except for iteration=0]
+    if (it > 0){
+      for (int i=0; i<(N-1); i++){
+        for (int j=(i+1); j<N; j++){
+          my_data_dist(i,j) = riem_dist(mfdname, my_data_old.slice(i), my_data_old.slice(j));
+          my_data_dist(j,i) = my_data_dist(i,j);
+        }
+      }
+    }
+    // 2. iteratively update for each element
+    for (int n=0; n<N; n++){
+      // 2-1. reset the current ones
+      now_smaller.reset(); 
+      now_weight.reset();
+      now_data.reset();
+      
+      // 2-2. update
+      now_dist    = my_data_dist.col(n);
+      now_smaller = arma::find(now_dist <= gamma);
+      if (now_smaller.n_elem < 1){
+        my_data_new.slice(n) = my_data_old.slice(n);
+      } else {
+        // 2-2-1. find the corresponding information
+        now_weight = arma::exp(-now_dist.elem(now_smaller)/lambda)%(weight.elem(now_smaller));
+        now_data   = my_data_old.slices(now_smaller);
+        now_init   = my_data_old.slice(n);  
+        
+        // 2-2-2. compute the local update
+        my_data_new.slice(n) = clustering_sup_intrinsic_singlemean(mfdname, now_data, now_weight, now_init);
+      }
+    }
+    // 3. compute the maximum distance for stopping criterion
+    for (int n=0; n<N; n++){
+      compare_distance(n) = riem_dist(mfdname, my_data_old.slice(n), my_data_new.slice(n));
+    }
+    my_data_old = my_data_new;
+    if (compare_distance.max() < eps){
+      break;
+    }
+  }
+  
+  // COMPUTE PAIRWISE DISTANCE
+  arma::mat my_solution_pdist(N,N,fill::zeros);
+  for (int i=0; i<(N-1); i++){
+    for (int j=(i+1); j<N; j++){
+      my_solution_pdist(i,j) = riem_dist(mfdname, my_data_old.slice(i), my_data_old.slice(j));
+      my_solution_pdist(j,i) = my_solution_pdist(i,j);
+    }
+  }
+  
+  // WRAP AND RETURN
+  Rcpp::List output;
+  output["limits"]   = my_data_old;
+  output["distance"] = my_solution_pdist;
   return(output);
 }

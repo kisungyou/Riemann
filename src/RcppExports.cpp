@@ -170,6 +170,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// clustering_sup_intrinsic
+Rcpp::List clustering_sup_intrinsic(std::string mfdname, Rcpp::List& data, arma::vec weight, double multiplier, int maxiter, double eps);
+RcppExport SEXP _Riemann_clustering_sup_intrinsic(SEXP mfdnameSEXP, SEXP dataSEXP, SEXP weightSEXP, SEXP multiplierSEXP, SEXP maxiterSEXP, SEXP epsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfdname(mfdnameSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type weight(weightSEXP);
+    Rcpp::traits::input_parameter< double >::type multiplier(multiplierSEXP);
+    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
+    Rcpp::traits::input_parameter< double >::type eps(epsSEXP);
+    rcpp_result_gen = Rcpp::wrap(clustering_sup_intrinsic(mfdname, data, weight, multiplier, maxiter, eps));
+    return rcpp_result_gen;
+END_RCPP
+}
 // visualize_pga
 Rcpp::List visualize_pga(std::string mfdname, Rcpp::List& data);
 RcppExport SEXP _Riemann_visualize_pga(SEXP mfdnameSEXP, SEXP dataSEXP) {
@@ -305,6 +321,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_clustering_kmeans_lloyd", (DL_FUNC) &_Riemann_clustering_kmeans_lloyd, 6},
     {"_Riemann_clustering_kmeans_macqueen", (DL_FUNC) &_Riemann_clustering_kmeans_macqueen, 6},
     {"_Riemann_clustering_clrq", (DL_FUNC) &_Riemann_clustering_clrq, 5},
+    {"_Riemann_clustering_sup_intrinsic", (DL_FUNC) &_Riemann_clustering_sup_intrinsic, 6},
     {"_Riemann_visualize_pga", (DL_FUNC) &_Riemann_visualize_pga, 2},
     {"_Riemann_learning_seb", (DL_FUNC) &_Riemann_learning_seb, 5},
     {"_Riemann_learning_rmml", (DL_FUNC) &_Riemann_learning_rmml, 4},
