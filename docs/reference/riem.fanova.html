@@ -92,7 +92,7 @@ at least one of the equalities does not hold." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Riemann</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -227,10 +227,17 @@ ISSN 0006-3444, 1464-3510, doi: <a href='https://doi.org/10.1093/biomet/asz052'>
 #&gt; Tn = 0.049137, p-value = 0.9971
 #&gt; alternative hypothesis: at least one of equalities does not hold.
 #&gt; </div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># \donttest{</span>
 <span class='co'>## RUN THE PERMUTATION TEST WITH MANY PERMUTATIONS</span>
-<span class='fu'>riem.fanovaP</span>(<span class='no'>obj1</span>, <span class='no'>obj2</span>, <span class='no'>obj3</span>, <span class='no'>obj4</span>, <span class='kw'>nperm</span><span class='kw'>=</span><span class='fl'>9999</span>)
-}</div></pre>
+<span class='fu'>riem.fanovaP</span>(<span class='no'>obj1</span>, <span class='no'>obj2</span>, <span class='no'>obj3</span>, <span class='no'>obj4</span>, <span class='kw'>nperm</span><span class='kw'>=</span><span class='fl'>9999</span>)</div><div class='output co'>#&gt; 
+#&gt; 	Frechet Analysis of Variance on Sphere Manifold
+#&gt; 
+#&gt; data:  obj1, obj2, obj3, and obj4
+#&gt; Tn = 0.049137, p-value = 0.1257
+#&gt; alternative hypothesis: at least one of equalities does not hold.
+#&gt; </div><div class='input'># }
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

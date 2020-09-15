@@ -91,7 +91,7 @@ data is distributed uniformly." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Riemann</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -241,21 +241,7 @@ ISBN 978-0-470-31697-9 978-0-471-95333-3, doi: <a href='https://doi.org/10.1002/
 #&gt; statistic = 239.32, p-value &lt; 2.2e-16
 #&gt; alternative hypothesis: data is not uniformly distributed on Gr(2,4).
 #&gt; </div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='co'>#  Empirical Type 1 Error using the same setting as above.</span>
-<span class='no'>niter</span>   <span class='kw'>=</span> <span class='fl'>10000</span>
-<span class='no'>counter</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0</span>,<span class='no'>niter</span>)  <span class='co'># record p-values</span>
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='no'>niter</span>){
-  <span class='no'>X</span> <span class='kw'>=</span> <span class='fu'><a href='grassmann.runif.html'>grassmann.runif</a></span>(<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>100</span>, <span class='kw'>k</span><span class='kw'>=</span><span class='fl'>2</span>, <span class='kw'>p</span><span class='kw'>=</span><span class='fl'>4</span>)
-  <span class='no'>counter</span>[<span class='no'>i</span>] <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'>grassmann.utest</span>(<span class='no'>X</span>)$<span class='no'>p.value</span> <span class='kw'>&lt;</span> <span class='fl'>0.05</span>, <span class='fl'>1</span>, <span class='fl'>0</span>)
-  <span class='kw'>if</span> (<span class='no'>i</span><span class='kw'>%%</span><span class='fl'>50</span> <span class='kw'>==</span> <span class='fl'>0</span>){
-    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"iteration "</span>,<span class='no'>i</span>,<span class='st'>"/"</span>,<span class='no'>niter</span>,<span class='st'>" complete..."</span>))
-  }
-}
-
-<span class='co'>#  Print the result</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"* empirical Type 1 error: "</span>,<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>counter</span>/<span class='no'>niter</span>),<span class='fl'>5</span>)))
-}</div></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

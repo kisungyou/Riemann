@@ -2,7 +2,7 @@ pandoc: 2.7.3
 pkgdown: 1.5.1
 pkgdown_sha: ~
 articles: []
-last_built: 2020-09-09T23:01Z
+last_built: 2020-09-15T11:37Z
 urls:
   reference: https://kyoustat.com/Riemann//reference
   article: https://kyoustat.com/Riemann//articles

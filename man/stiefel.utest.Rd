@@ -57,23 +57,6 @@ stiefel.utest(myobj1, method="RayleighM")
 stiefel.utest(myobj2, method="rayleIgh")   # method names are 
 stiefel.utest(myobj2, method="raYleiGhM")  # CASE - INSENSITIVE !
 
-\dontrun{
-#  Empirical Type 1 Error using the same setting as above.
-niter   = 1000
-counter = rep(0,niter)  # record p-values
-for (i in 1:niter){
-  X = stiefel.runif(n=100, k=2, p=4)
-  counter[i] = ifelse(stiefel.utest(X)$p.value < 0.05, 1, 0)
-  if (i\%\%50 == 0){
-    print(paste0("iteration ",i,"/",niter," complete..."))
-  }
-}
-
-#  Print the result
-print(paste0("* empirical Type 1 error : ",round(sum(counter/niter),5)))
-}
-
-
 }
 \references{
 \insertRef{chikuse_statistics_2003}{Riemann}

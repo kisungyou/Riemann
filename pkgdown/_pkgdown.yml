@@ -59,6 +59,3 @@ reference:
   - subtitle: "(3) Grassmann"
     contents:
       - starts_with("grassmann.")
-  - title: "Introduction to the package"
-    contents:
-      - starts_with("Riemann")

@@ -62,7 +62,7 @@ obj4 = wrap.sphere(class4)
 ## RUN THE ASYMPTOTIC TEST
 riem.fanova(obj1, obj2, obj3, obj4)
 
-\dontrun{
+\donttest{
 ## RUN THE PERMUTATION TEST WITH MANY PERMUTATIONS
 riem.fanovaP(obj1, obj2, obj3, obj4, nperm=9999)
 }

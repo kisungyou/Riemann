@@ -108,22 +108,6 @@ grassmann.runif <- function(n, k, p, type=c("list","array","riemdata")){
 #' grassmann.utest(myobj2, method="bINg")   # method names are 
 #' grassmann.utest(myobj2, method="BiNgM")  # CASE - INSENSITIVE !
 #' 
-#' \dontrun{
-#' #  Empirical Type 1 Error using the same setting as above.
-#' niter   = 10000
-#' counter = rep(0,niter)  # record p-values
-#' for (i in 1:niter){
-#'   X = grassmann.runif(n=100, k=2, p=4)
-#'   counter[i] = ifelse(grassmann.utest(X)$p.value < 0.05, 1, 0)
-#'   if (i%%50 == 0){
-#'     print(paste0("iteration ",i,"/",niter," complete..."))
-#'   }
-#' }
-#' 
-#' #  Print the result
-#' print(paste0("* empirical Type 1 error: ",round(sum(counter/niter),5)))
-#' }
-#' 
 #' @references 
 #' \insertRef{chikuse_statistics_2003}{Riemann}
 #' 

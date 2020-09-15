@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Riemann <a href='https://kyoustat.com/Riemann/'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# Riemann <a href='https://kyoustat.com/Riemann/'><img src='man/figures/logo.png' align="right" height="150" /></a>
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/kyoustat/Riemann.svg?branch=master)](https://travis-ci.com/kyoustat/Riemann)

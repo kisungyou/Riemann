@@ -39,22 +39,6 @@ myobj = sphere.runif(n=100, p=5, type="riemdata")
 sphere.utest(myobj, method="rayleigh")
 sphere.utest(myobj, method="rayleighm")
 
-\dontrun{
-#  Empirical Type 1 Error using the same setting as above.
-niter   = 5000
-counter = rep(0,niter)  # record p-values
-for (i in 1:niter){
-  myobj = sphere.runif(n=100, p=5, type="riemdata")
-  counter[i] = ifelse(sphere.utest(myobj)$p.value < 0.05, 1, 0)
-  if (i\%\%50 == 0){
-    print(paste0("iteration ",i,"/",niter," complete..."))
-  }
-}
-
-#  Print the result
-pm = paste0("* empirical Type 1 error for 'sphere.utest': ",round(sum(counter/niter),5))
-print(pm)
-}
 
 }
 \references{

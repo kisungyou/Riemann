@@ -5,6 +5,7 @@
 #' 
 #' @docType package
 #' @name Package Introduction
+#' @noRd
 #' @aliases Riemann-package
 #' @import Rdpack
 #' @import maotai
