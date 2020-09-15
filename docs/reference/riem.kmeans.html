@@ -93,7 +93,7 @@ option with multiple starts and return the best result with respect to WCSS." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Riemann</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -150,15 +150,7 @@ Since the problem is NP-hard and sensitive to the initialization, we provide an
 option with multiple starts and return the best result with respect to WCSS.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>riem.kmeans</span>(
-  <span class='no'>riemobj</span>,
-  <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>geometry</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"intrinsic"</span>, <span class='st'>"extrinsic"</span>),
-  <span class='kw'>maxiter</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>nstart</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>algorithm</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"MacQueen"</span>, <span class='st'>"Lloyd"</span>),
-  <span class='kw'>init</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"plus"</span>, <span class='st'>"random"</span>)
-)</pre>
+    <pre class="usage"><span class='fu'>riem.kmeans</span>(<span class='no'>riemobj</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>geometry</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"intrinsic"</span>, <span class='st'>"extrinsic"</span>), <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,20 +168,14 @@ option with multiple starts and return the best result with respect to WCSS.</p>
       <td><p>(case-insensitive) name of geometry; either geodesic (<code>"intrinsic"</code>) or embedded (<code>"extrinsic"</code>) geometry.</p></td>
     </tr>
     <tr>
-      <th>maxiter</th>
-      <td><p>the maximum number of iterations allowed.</p></td>
-    </tr>
-    <tr>
-      <th>nstart</th>
-      <td><p>the number of random starts.</p></td>
-    </tr>
-    <tr>
-      <th>algorithm</th>
-      <td><p>(case-insensitive) name of an algorithm to be run. (default: <code>"MacQueen"</code>)</p></td>
-    </tr>
-    <tr>
-      <th>init</th>
-      <td><p>(case-insensitive) name of an initialization scheme. (default: <code>"plus"</code>)</p></td>
+      <th>...</th>
+      <td><p>extra parameters including</p><dl'>
+<dt>algorithm</dt><dd><p>(case-insensitive) name of an algorithm; <code>"MacQueen"</code> (default), or <code>"Lloyd"</code>.</p></dd>
+<dt>init</dt><dd><p>(case-insensitive) name of an initialization scheme; <code>"plus"</code> for k-means++ (default), or <code>"random"</code>.</p></dd>
+<dt>maxiter</dt><dd><p>maximum number of iterations to be run (default:50).</p></dd>
+<dt>nstart</dt><dd><p>the number of random starts (default: 5).</p></dd>
+
+</dl></td>
     </tr>
     </table>
 

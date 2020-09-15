@@ -8,8 +8,7 @@ riem.median(
   riemobj,
   weight = NULL,
   geometry = c("intrinsic", "extrinsic"),
-  maxiter = 50,
-  eps = 1e-05
+  ...
 )
 }
 \arguments{
@@ -19,9 +18,10 @@ riem.median(
 
 \item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
 
-\item{maxiter}{maximum number of iterations to be run.}
-
-\item{eps}{tolerance level for stopping criterion.}
+\item{...}{extra parameters including\describe{
+\item{maxiter}{maximum number of iterations to be run (default:50).}
+\item{eps}{tolerance level for stopping criterion (default: 1e-5).}
+}}
 }
 \value{
 a named list containing\describe{

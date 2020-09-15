@@ -10,8 +10,10 @@
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
 #' @param weight weight of observations; if \code{NULL} it assumes equal weights, or a nonnegative length-\eqn{N} vector that sums to 1 should be given.
 #' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
-#' @param maxiter maximum number of iterations to be run.
-#' @param eps tolerance level for stopping criterion.
+#' @param ... extra parameters including\describe{
+#' \item{maxiter}{maximum number of iterations to be run (default:50).}
+#' \item{eps}{tolerance level for stopping criterion (default: 1e-5).}
+#' }
 #' 
 #' @return a named list containing\describe{
 #' \item{median}{a median matrix on \eqn{\mathcal{M}}.}
@@ -45,8 +47,7 @@
 #' 
 #' @concept inference
 #' @export
-riem.median <- function(riemobj, weight=NULL, geometry=c("intrinsic","extrinsic"), 
-                        maxiter=50, eps=1e-5){
+riem.median <- function(riemobj, weight=NULL, geometry=c("intrinsic","extrinsic"), ...){
   ## PREPARE
   DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
   if (!inherits(riemobj,"riemdata")){
@@ -60,9 +61,13 @@ riem.median <- function(riemobj, weight=NULL, geometry=c("intrinsic","extrinsic"
   }
   mygeom = ifelse(missing(geometry),"intrinsic",
                   match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  myiter = max(50, round(maxiter))
-  myeps  = min(max(as.double(eps),0),1e-5)
   
+  # IMPLICIT PARAMETERS 
+  pars   = list(...)
+  pnames = names(pars)
+  myiter = ifelse(("maxiter"%in%pnames), max(50, round(pars$maxiter)), 50)
+  myeps  = ifelse(("eps"%in%pnames), min(max(as.double(pars$eps),0),1e-5), 1e-5)
+
   ## MAIN COMPUTATION
   if (all(mygeom=="intrinsic")){
     output = inference_median_intrinsic(riemobj$name, riemobj$data, myweight, myiter, myeps)

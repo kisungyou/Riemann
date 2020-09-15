@@ -6,8 +6,10 @@
 #' @param method (case-insensitive) name of the algorithm to be used as follows;\describe{
 #' \item{\code{"aa2013"}}{Arnaudon and Nielsen (2013).}
 #' }
-#' @param maxiter maximum number of iterations to be run.
-#' @param eps tolerance level for stopping criterion.
+#' @param ... extra parameters including\describe{
+#' \item{maxiter}{maximum number of iterations to be run (default:50).}
+#' \item{eps}{tolerance level for stopping criterion (default: 1e-5).}
+#' }
 #' 
 #' @return a named list containing \describe{
 #' \item{center}{a matrix on \eqn{\mathcal{M}} that minimizes the radius.}
@@ -55,17 +57,22 @@
 #' 
 #' @concept learning
 #' @export
-riem.seb <- function(riemobj, method=c("aa2013"), maxiter=50, eps=1e-5){
+riem.seb <- function(riemobj, method=c("aa2013"), ...){
   ## PREPARE
   DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
   if (!inherits(riemobj,"riemdata")){
     stop(paste0("* riem.seb : input ",DNAME," should be an object of 'riemdata' class."))
   }
-  myiter   = max(50, round(maxiter))
-  myeps    = as.double(eps)
   mymethod = ifelse(missing(method), "aa2013",
                     match.arg(tolower(method),
                               c("aa2013")))
+  
+  # IMPLICIT PARAMETERS 
+  pars   = list(...)
+  pnames = names(pars)
+  myiter = ifelse(("maxiter"%in%pnames), max(50, round(pars$maxiter)), 50)
+  myeps  = ifelse(("eps"%in%pnames), min(max(as.double(pars$eps),0),1e-5), 1e-5)
+  
   
   ## COMPUTE AND RETURN
   output = learning_seb(riemobj$name, riemobj$data, myiter, myeps, mymethod)

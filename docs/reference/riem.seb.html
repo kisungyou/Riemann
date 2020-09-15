@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Riemann</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@
     <p>Given \(N\) observations \(X_1, X_2, \ldots, X_N \in \mathcal{M}\), find the smallest enclosing ball.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>riem.seb</span>(<span class='no'>riemobj</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aa2013"</span>), <span class='kw'>maxiter</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>eps</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>)</pre>
+    <pre class="usage"><span class='fu'>riem.seb</span>(<span class='no'>riemobj</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aa2013"</span>), <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,12 +161,12 @@
 </dl></td>
     </tr>
     <tr>
-      <th>maxiter</th>
-      <td><p>maximum number of iterations to be run.</p></td>
-    </tr>
-    <tr>
-      <th>eps</th>
-      <td><p>tolerance level for stopping criterion.</p></td>
+      <th>...</th>
+      <td><p>extra parameters including</p><dl'>
+<dt>maxiter</dt><dd><p>maximum number of iterations to be run (default:50).</p></dd>
+<dt>eps</dt><dd><p>tolerance level for stopping criterion (default: 1e-5).</p></dd>
+
+</dl></td>
     </tr>
     </table>
 

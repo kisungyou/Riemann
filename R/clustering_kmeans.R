@@ -8,10 +8,12 @@
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
 #' @param k the number of clusters.
 #' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
-#' @param maxiter the maximum number of iterations allowed.
-#' @param nstart the number of random starts.
-#' @param algorithm (case-insensitive) name of an algorithm to be run. (default: \code{"MacQueen"})
-#' @param init (case-insensitive) name of an initialization scheme. (default: \code{"plus"})
+#' @param ... extra parameters including\describe{
+#' \item{algorithm}{(case-insensitive) name of an algorithm; \code{"MacQueen"} (default), or \code{"Lloyd"}.}
+#' \item{init}{(case-insensitive) name of an initialization scheme; \code{"plus"} for k-means++ (default), or \code{"random"}.}
+#' \item{maxiter}{maximum number of iterations to be run (default:50).}
+#' \item{nstart}{the number of random starts (default: 5).}
+#' }
 #' 
 #' @return a named list containing\describe{
 #' \item{means}{a 3d array where each slice along 3rd dimension is a matrix representation of class mean.}
@@ -70,17 +72,20 @@
 #' 
 #' @concept clustering
 #' @export
-riem.kmeans <- function(riemobj, k=2, geometry=c("intrinsic","extrinsic"), maxiter=10, nstart=5, 
-                        algorithm=c("MacQueen","Lloyd"), init=c("plus","random")){
+riem.kmeans <- function(riemobj, k=2, geometry=c("intrinsic","extrinsic"), ...){
   ## PREPARE
   N          = length(riemobj$data)
-  par.init   = ifelse(missing(init), "plus", match.arg(tolower(init),c("plus","random")))
-  par.alg    = ifelse(missing(algorithm), "macqueen", match.arg(tolower(algorithm), c("macqueen","lloyd")))
-  par.nstart = max(2, round(nstart))
   par.geo    = ifelse(missing(geometry),"intrinsic",match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  par.iter   = max(5, round(maxiter))
   par.k      = max(1, round(k))
   
+  # IMPLICIT PARAMETERS 
+  pars   = list(...)
+  pnames = names(pars)
+  par.iter = ifelse(("maxiter"%in%pnames), max(50, round(pars$maxiter)), 50)
+  par.init = ifelse(("init"%in%pnames), match.arg(tolower(pars$init),c("plus","random")), "plus")
+  par.alg  = ifelse(("algorithm"%in%pnames), match.arg(tolower(pars$algorithm),c("macqueen","lloyd")), "macqueen")
+  par.nstart = ifelse(("nstart"%in%pnames), max(2, round(pars$nstart)), 5)
+
   ## INITIALIZATION
   rec.lab0 = list()
   if (all(par.init=="random")){

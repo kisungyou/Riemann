@@ -4,7 +4,7 @@
 \alias{riem.seb}
 \title{Find the Smallest Enclosing Ball}
 \usage{
-riem.seb(riemobj, method = c("aa2013"), maxiter = 50, eps = 1e-05)
+riem.seb(riemobj, method = c("aa2013"), ...)
 }
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
@@ -13,9 +13,10 @@ riem.seb(riemobj, method = c("aa2013"), maxiter = 50, eps = 1e-05)
 \item{\code{"aa2013"}}{Arnaudon and Nielsen (2013).}
 }}
 
-\item{maxiter}{maximum number of iterations to be run.}
-
-\item{eps}{tolerance level for stopping criterion.}
+\item{...}{extra parameters including\describe{
+\item{maxiter}{maximum number of iterations to be run (default:50).}
+\item{eps}{tolerance level for stopping criterion (default: 1e-5).}
+}}
 }
 \value{
 a named list containing \describe{
