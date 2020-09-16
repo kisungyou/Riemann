@@ -1,6 +1,7 @@
 # Riemann 0.1.1
 
 * Interfaces to some of the functions are changed to emphasize key parameters only for users.
+* Clustering : `riem.scNJW()`, `riem.scSM()`, `riem.scUL()` are added.
 
 # Riemann 0.1.0
 

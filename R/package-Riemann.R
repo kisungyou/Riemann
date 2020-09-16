@@ -9,6 +9,7 @@
 #' @aliases Riemann-package
 #' @import Rdpack
 #' @import maotai
+#' @importFrom T4cluster scNJW scSM scUL
 #' @importFrom RiemBase riemfactory
 #' @importFrom utils packageVersion getFromNamespace
 #' @importFrom stats cor rnorm pchisq cov cutree
