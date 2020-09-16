@@ -44,6 +44,12 @@
 <script src="../pkgdown.js"></script>
 
 
+<!-- docsearch -->
+<script src="../docsearch.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
 
 
 <meta property="og:title" content="Test of Uniformity on Stiefel Manifold — stiefel.utest" />
@@ -103,6 +109,18 @@ data is distributed uniformly." />
 <li>
   <a href="../news/index.html">News</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Other Packages
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://kyoustat.com/T4cluster/">T4cluster</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -124,6 +142,12 @@ data is distributed uniformly." />
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -219,13 +243,13 @@ ISBN 978-0-470-31697-9 978-0-471-95333-3, doi: <a href='https://doi.org/10.1002/
 #&gt; 	Rayleigh Test of Uniformity on Stiefel Manifold
 #&gt; 
 #&gt; data:  myobj1
-#&gt; statistic = 9.6043, p-value = 0.2939
+#&gt; statistic = 8.1249, p-value = 0.4214
 #&gt; alternative hypothesis: data is not uniformly distributed on St(2,4).
 #&gt; </div><div class='input'><span class='fu'>stiefel.utest</span>(<span class='no'>myobj1</span>, <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"RayleighM"</span>)</div><div class='output co'>#&gt; 
 #&gt; 	Modified Rayleigh Test of Uniformity on Stiefel Manifold
 #&gt; 
 #&gt; data:  myobj1
-#&gt; statistic = 9.6024, p-value = 0.294
+#&gt; statistic = 8.1173, p-value = 0.4221
 #&gt; alternative hypothesis: data is not uniformly distributed on St(2,4).
 #&gt; </div><div class='input'>
 <span class='co'>#  2. concentrated data</span>
@@ -233,13 +257,13 @@ ISBN 978-0-470-31697-9 978-0-471-95333-3, doi: <a href='https://doi.org/10.1002/
 #&gt; 	Rayleigh Test of Uniformity on Stiefel Manifold
 #&gt; 
 #&gt; data:  myobj2
-#&gt; statistic = 76.818, p-value = 2.132e-13
+#&gt; statistic = 60.748, p-value = 3.324e-10
 #&gt; alternative hypothesis: data is not uniformly distributed on St(2,4).
 #&gt; </div><div class='input'><span class='fu'>stiefel.utest</span>(<span class='no'>myobj2</span>, <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"raYleiGhM"</span>)  <span class='co'># CASE - INSENSITIVE !</span></div><div class='output co'>#&gt; 
 #&gt; 	Modified Rayleigh Test of Uniformity on Stiefel Manifold
 #&gt; 
 #&gt; data:  myobj2
-#&gt; statistic = 79.384, p-value = 6.503e-14
+#&gt; statistic = 62.289, p-value = 1.654e-10
 #&gt; alternative hypothesis: data is not uniformly distributed on St(2,4).
 #&gt; </div><div class='input'>
 </div></pre>
@@ -265,6 +289,23 @@ ISBN 978-0-470-31697-9 978-0-471-95333-3, doi: <a href='https://doi.org/10.1002/
    </div>
 
   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: '',
+    indexName: '',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
 
   </body>

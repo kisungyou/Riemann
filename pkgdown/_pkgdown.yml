@@ -1,6 +1,7 @@
 # themes:  https://bootswatch.com/ {flatly, united}
 # icons:   https://fontawesome.com/
 # pkgdown: https://pkgdown.r-lib.org/reference/index.html
+# search:  https://docsearch.algolia.com/
 
 url: https://kyoustat.com/Riemann/
 
@@ -10,6 +11,9 @@ template:
   params:
     bootswatch: flatly
     ganalytics: UA-163713603-1
+    docsearch:
+      api_key:
+      indexname: Riemann
 
 home:
   strip_header: false
@@ -21,6 +25,10 @@ navbar:
       href: reference/index.html
     - text: "News"
       href: news/index.html
+    - text: "Other Packages"
+      menu:
+        - text: "T4cluster"
+          href: https://kyoustat.com/T4cluster/
   right:
     - icon: fa-twitter
       href: https://twitter.com/kyoustat
