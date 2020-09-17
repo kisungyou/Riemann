@@ -114,13 +114,18 @@ riem.wasserstein <- function(riemobj1, riemobj2, p=2, geometry=c("intrinsic","ex
   
   ## SWITCHING, COMPUTATION, AND RETURN
   dxy    = riem.pdist2(riemobj1, riemobj2, geometry=mygeometry)
-  output = switch(mymethod,
-               lp = Wasserstein_lp(dxy, myp, myweight1, myweight2)
-  )
+  output = riem.wasserstein.internal(dxy, myp, myweight1, myweight2, mymethod)
   return(output)
 }
 
 # extra functions ---------------------------------------------------------
+#' @keywords internal
+#' @noRd
+riem.wasserstein.internal <- function(dxy, p, wx, wy, mymethod){
+  output = switch(mymethod,
+                  lp = Wasserstein_lp(dxy, p, wx, wy))
+  return(output)
+}
 #' @keywords internal
 #' @noRd
 Wasserstein_lp <- function(dxy, p, wx, wy){

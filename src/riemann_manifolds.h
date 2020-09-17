@@ -658,4 +658,92 @@ arma::mat euclidean_invequiv(arma::vec x, int m, int n){
   return(out);
 }
 
+// 12. LANDMARK ================================================================
+arma::mat landmark_aux_nearest(arma::mat x){ // auxiliary for landmark : nearest
+  int n = x.n_rows;
+  int p = x.n_cols;
+  
+  arma::rowvec xvec = arma::mean(x, 0);
+  arma::mat y(n,p,fill::zeros);
+  for (int i=0; i<n; i++){
+    y.row(i) = x.row(i)-xvec;
+  }
+  return(y/arma::norm(y,"fro"));
+}
+arma::mat landmark_aux_matching(arma::mat x, arma::mat y){ // aux : matching
+  arma::mat xy = arma::trans(x)*y;                         // OPS problem 
+  
+  arma::mat U; 
+  arma::vec s;
+  arma::mat V;
+  arma::svd(U,s,V,xy);
+  
+  arma::mat output = y*V*arma::trans(U);
+  return(output);
+}
+arma::mat landmark_initialize(arma::field<arma::mat> data, arma::vec weight){
+  int N       = data.n_elem;
+  double wsum = arma::accu(weight);
+  
+  arma::mat outmat(data(0).n_rows, data(0).n_cols, fill::zeros);
+  for (int n=0; n<N; n++){
+    outmat += (weight(n)/wsum)*data(n);
+  }
+  arma::mat output = landmark_aux_nearest(outmat);
+  return(output);
+}
+arma::mat landmark_exp(arma::mat x, arma::mat d, double t){
+  int n = x.n_rows;
+  int p = x.n_cols;
+  
+  arma::mat xx = arma::reshape(x, n*p, 1);
+  arma::mat dd = arma::reshape(d, n*p, 1);
+  arma::mat zz = sphere_exp(xx, dd, t);
+  arma::mat ZZ = arma::reshape(zz, n, p);
+  arma::mat output = landmark_aux_nearest(ZZ);
+  return(output);
+}
+arma::mat landmark_log(arma::mat X, arma::mat Y){
+  int n = X.n_rows;
+  int p = X.n_cols;
+  arma::mat YY = landmark_aux_matching(X,Y);
+  arma::mat xx = arma::reshape(X, n*p, 1);  // resize for sphere
+  arma::mat yy = arma::reshape(YY, n*p, 1);
+  
+  arma::mat zz = sphere_log(xx, yy);
+  arma::mat ZZ = arma::reshape(zz, n, p);
+  return(ZZ);
+}
+double landmark_metric(arma::mat x, arma::mat d1, arma::mat d2){
+  return(arma::dot(arma::vectorise(d1),arma::vectorise(d2)));  
+}
+double landmark_dist(arma::mat x, arma::mat y){
+  arma::mat logxy = landmark_log(x, y);
+  double output = std::sqrt(landmark_metric(x, logxy, logxy));
+  return(output);
+}
+double landmark_distext(arma::mat x, arma::mat y){
+  arma::mat yy  = landmark_aux_matching(x,y);
+  double output = arma::norm(x-yy, "fro");
+  return(output);
+}
+arma::vec landmark_equiv(arma::mat x, int m, int n){
+  arma::vec out = arma::vectorise(x,0);
+  return(out);
+}
+arma::mat landmark_invequiv(arma::vec x, int m, int n){
+  arma::mat out = landmark_aux_nearest(arma::reshape(x,m,n));
+  return(out);
+}
+
+
+
+
+
+
+
+
+
+
+
 #endif

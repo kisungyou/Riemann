@@ -44,6 +44,8 @@ wrap_mfd2full <- function(x){
     return("Gaussian")
   } else if (all(x=="sphere")){
     return("Sphere")
+  } else if (all(x=="landmark")){
+    return("Landmark")
   } else {
     stop("* no such manifold name.")
   }

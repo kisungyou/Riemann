@@ -24,6 +24,8 @@ arma::mat riem_initialize(std::string mfd, arma::field<arma::mat> data, arma::ve
   arma::mat output;
   if (mfd=="sphere"){
     output = sphere_initialize(data, weight);
+  } else if (mfd=="landmark"){
+    output = landmark_initialize(data, weight);
   } else if (mfd=="spdk"){
     output = spdk_initialize(data, weight);
   } else if (mfd=="multinomial"){
@@ -59,6 +61,8 @@ arma::mat riem_exp(std::string mfd, arma::mat x, arma::mat d, double t){
   arma::mat output;
   if (mfd=="sphere"){
     output = sphere_exp(x, d, t);
+  } else if (mfd=="landmark"){
+    output = landmark_exp(x, d, t);
   } else if (mfd=="spdk"){
     output = spdk_exp(x,d,t);
   } else if (mfd=="multinomial"){
@@ -88,6 +92,8 @@ arma::mat riem_log(std::string mfd, arma::mat x, arma::mat y){
   arma::mat output;
   if (mfd=="sphere"){
     output = sphere_log(x, y);
+  } else if (mfd=="landmark"){
+    output = landmark_log(x, y);
   } else if (mfd=="spdk"){
     output = spdk_log(x,y);
   } else if (mfd=="multinomial"){
@@ -117,6 +123,8 @@ double riem_dist(std::string mfd, arma::mat x, arma::mat y){
   double output;
   if (mfd=="sphere"){
     output = sphere_dist(x, y);
+  } else if (mfd=="landmark"){
+    output = landmark_dist(x, y);
   } else if (mfd=="spdk"){
     output = spdk_dist(x, y);
   } else if (mfd=="multinomial"){
@@ -145,6 +153,8 @@ double riem_distext(std::string mfd, arma::mat x, arma::mat y){
   double output;
   if (mfd=="sphere"){
     output = sphere_distext(x, y);
+  } else if (mfd=="landmark"){
+    output = landmark_distext(x, y);
   } else if (mfd=="multinomial"){
     output = multinomial_distext(x, y);
   } else if (mfd=="grassmann"){
@@ -169,6 +179,8 @@ arma::vec riem_equiv(std::string mfd, arma::mat x, int m, int n){
   arma::vec output;
   if (mfd=="sphere"){
     output = sphere_equiv(x, m, n);
+  } else if (mfd=="landmark"){
+    output = landmark_equiv(x, m, n);
   } else if (mfd=="multinomial"){
     output = multinomial_equiv(x, m, n);
   } else if (mfd=="grassmann"){
@@ -192,6 +204,8 @@ arma::mat riem_invequiv(std::string mfd, arma::vec x, int m, int n){
   arma::mat output;
   if (mfd=="sphere"){
     output = sphere_invequiv(x, m, n);
+  } else if (mfd=="landmark"){
+    output = landmark_invequiv(x, m, n);
   } else if (mfd=="multinomial"){
     output = multinomial_invequiv(x, m, n);
   } else if (mfd=="grassmann"){
@@ -215,6 +229,8 @@ double riem_metric(std::string mfd, arma::mat x, arma::mat d1, arma::mat d2){
   double output;
   if (mfd=="sphere"){
     output = sphere_metric(x,d1,d2);
+  } else if (mfd=="landmark"){
+    output = landmark_metric(x,d1,d2);
   } else if (mfd=="spdk"){
     output = spdk_metric(x,d1,d2);
   } else if (mfd=="grassmann"){

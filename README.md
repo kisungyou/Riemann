@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Riemann <a href='https://kyoustat.com/Riemann/'><img src='man/figures/logo.png' align="right" height="150" /></a>
+# Learning on Riemannian Manifolds <a href='https://kyoustat.com/Riemann/'><img src='man/figures/logo.png' align="right" height="150" /></a>
 
 <!-- badges: start -->
 

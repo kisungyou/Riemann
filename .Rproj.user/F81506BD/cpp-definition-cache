@@ -349,12 +349,12 @@
     },
     {
         "file": "/home/kisung/Desktop/Riemann/src/riemann_general.h",
-        "file_last_write": 1598583676.0,
+        "file_last_write": 1600356993.0,
         "definitions": []
     },
     {
         "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
-        "file_last_write": 1599248009.0,
+        "file_last_write": 1600356830.0,
         "definitions": [
             {
                 "usr": "c:@F@sphere_initialize#$@N@arma@S@field>#$@N@arma@S@Mat>#d#$@N@arma@S@Col>#d#",
@@ -1039,12 +1039,102 @@
                 "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
                 "line": 656,
                 "column": 11
+            },
+            {
+                "usr": "c:@F@landmark_aux_nearest#$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "landmark_aux_nearest(arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 662,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@landmark_aux_matching#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "landmark_aux_matching(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 673,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@landmark_initialize#$@N@arma@S@field>#$@N@arma@S@Mat>#d#$@N@arma@S@Col>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "landmark_initialize(arma::field<arma::mat>, arma::vec)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 684,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@landmark_exp#$@N@arma@S@Mat>#d#S0_#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "landmark_exp(arma::mat, arma::mat, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 695,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@landmark_log#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "landmark_log(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 706,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@landmark_metric#$@N@arma@S@Mat>#d#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "landmark_metric(arma::mat, arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 717,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@landmark_dist#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "landmark_dist(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 720,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@landmark_distext#$@N@arma@S@Mat>#d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "landmark_distext(arma::mat, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 725,
+                "column": 8
+            },
+            {
+                "usr": "c:@F@landmark_equiv#$@N@arma@S@Mat>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "landmark_equiv(arma::mat, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 730,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@landmark_invequiv#$@N@arma@S@Col>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "landmark_invequiv(arma::vec, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_manifolds.h",
+                "line": 734,
+                "column": 11
             }
         ]
     },
     {
         "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
-        "file_last_write": 1599248145.0,
+        "file_last_write": 1600357126.0,
         "definitions": [
             {
                 "usr": "c:@F@riem_initialize#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#$@N@arma@S@field>#$@N@arma@S@Mat>#d#$@N@arma@S@Col>#d#",
@@ -1061,7 +1151,7 @@
                 "parent_name": "",
                 "name": "riem_initialize_cube(std::string, arma::cube, arma::vec)",
                 "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
-                "line": 49,
+                "line": 51,
                 "column": 11
             },
             {
@@ -1070,7 +1160,7 @@
                 "parent_name": "",
                 "name": "riem_exp(std::string, arma::mat, arma::mat, double)",
                 "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
-                "line": 58,
+                "line": 60,
                 "column": 11
             },
             {
@@ -1079,7 +1169,7 @@
                 "parent_name": "",
                 "name": "riem_log(std::string, arma::mat, arma::mat)",
                 "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
-                "line": 87,
+                "line": 91,
                 "column": 11
             },
             {
@@ -1088,7 +1178,7 @@
                 "parent_name": "",
                 "name": "riem_dist(std::string, arma::mat, arma::mat)",
                 "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
-                "line": 116,
+                "line": 122,
                 "column": 8
             },
             {
@@ -1097,7 +1187,7 @@
                 "parent_name": "",
                 "name": "riem_distext(std::string, arma::mat, arma::mat)",
                 "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
-                "line": 144,
+                "line": 152,
                 "column": 8
             },
             {
@@ -1106,7 +1196,7 @@
                 "parent_name": "",
                 "name": "riem_equiv(std::string, arma::mat, int, int)",
                 "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
-                "line": 168,
+                "line": 178,
                 "column": 11
             },
             {
@@ -1115,7 +1205,7 @@
                 "parent_name": "",
                 "name": "riem_invequiv(std::string, arma::vec, int, int)",
                 "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
-                "line": 191,
+                "line": 203,
                 "column": 11
             },
             {
@@ -1124,7 +1214,7 @@
                 "parent_name": "",
                 "name": "riem_metric(std::string, arma::mat, arma::mat, arma::mat)",
                 "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
-                "line": 214,
+                "line": 228,
                 "column": 8
             },
             {
@@ -1133,7 +1223,7 @@
                 "parent_name": "",
                 "name": "internal_mean(std::string, std::string, arma::cube, int, double)",
                 "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
-                "line": 244,
+                "line": 260,
                 "column": 11
             },
             {
@@ -1142,7 +1232,7 @@
                 "parent_name": "",
                 "name": "internal_mean_init(std::string, std::string, arma::cube, int, double, arma::mat)",
                 "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
-                "line": 284,
+                "line": 300,
                 "column": 11
             }
         ]

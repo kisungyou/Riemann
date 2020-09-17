@@ -34,6 +34,7 @@ r-packages:
   - Rcpp
   - Rdpack
   - RiemBase
+  - T4cluster
   - maotai
   - stats
   - utils

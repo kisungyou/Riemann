@@ -4,6 +4,9 @@
     <loc>https://kyoustat.com/Riemann//index.html</loc>
   </url>
   <url>
+    <loc>https://kyoustat.com/Riemann//reference/gorilla.html</loc>
+  </url>
+  <url>
     <loc>https://kyoustat.com/Riemann//reference/grassmann.runif.html</loc>
   </url>
   <url>
@@ -73,6 +76,9 @@
     <loc>https://kyoustat.com/Riemann//reference/riem.seb.html</loc>
   </url>
   <url>
+    <loc>https://kyoustat.com/Riemann//reference/riem.test2wass.html</loc>
+  </url>
+  <url>
     <loc>https://kyoustat.com/Riemann//reference/riem.tsne.html</loc>
   </url>
   <url>
@@ -98,6 +104,9 @@
   </url>
   <url>
     <loc>https://kyoustat.com/Riemann//reference/wrap.grassmann.html</loc>
+  </url>
+  <url>
+    <loc>https://kyoustat.com/Riemann//reference/wrap.landmark.html</loc>
   </url>
   <url>
     <loc>https://kyoustat.com/Riemann//reference/wrap.multinomial.html</loc>

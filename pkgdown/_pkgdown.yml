@@ -27,6 +27,9 @@ navbar:
       href: news/index.html
     - text: "Other Packages"
       menu:
+        - text: "(CRAN) RiemBase"
+          href: https://CRAN.R-project.org/package=RiemBase
+        - text : -----------------------------
         - text: "T4cluster"
           href: https://kyoustat.com/T4cluster/
   right:
@@ -42,28 +45,31 @@ reference:
     contents:
       - starts_with("wrap.")
   - title: "Common Functions on All Supported Manifolds"
-  - subtitle: "(1) Basic Operations"
+  - subtitle: "[1] Basic Operations"
     contents:
       - has_concept("basic")
-  - subtitle: "(2) Statistical Inference"
+  - subtitle: "[2] Statistical Inference"
     contents:
       - has_concept("inference")
-  - subtitle: "(3) Clustering"
+  - subtitle: "[3] Clustering"
     contents:
       - has_concept("clustering")
-  - subtitle: "(4) Visualization and Dimension Reduction"
+  - subtitle: "[4] Visualization and Dimension Reduction"
     contents:
       - has_concept("visualization")
-  - subtitle: "(5) Other Methods"
+  - subtitle: "[5] Other Methods"
     contents:
       - has_concept("learning")
   - title: "Functions on Specific Manifolds"
-  - subtitle: "(1) Sphere"
+  - subtitle: "1) Sphere"
     contents:
       - has_concept("sphere")
-  - subtitle: "(2) Stiefel"
+  - subtitle: "2) Stiefel"
     contents:
       - starts_with("stiefel.")
-  - subtitle: "(3) Grassmann"
+  - subtitle: "3) Grassmann"
     contents:
       - starts_with("grassmann.")
+  - title: "Data"
+    contents:
+      - has_concept("data")
