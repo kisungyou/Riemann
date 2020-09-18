@@ -5,7 +5,7 @@
 #' in Euclidean space. Usually, \code{ndim=2,3} are chosen for visualization.
 #' 
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
-#' @param ndim an integer-valued target dimension.
+#' @param ndim an integer-valued target dimension (default: 2).
 #' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
 #' 
 #' @return a named list containing \describe{

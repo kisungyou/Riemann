@@ -46,9 +46,11 @@
 #' myriem1 = wrap.sphere(mydata1)
 #' myriem2 = wrap.sphere(mydata2)
 #' 
-#' ## PERFORM PERMUTATION TEST (SMALL FOR CRAN PURPOSE)
+#' ## PERFORM PERMUTATION TEST
 #' #  it is expected to return a very small number.
+#' \donttest{
 #' riem.test2wass(myriem1, myriem2, nperm=999)
+#' }
 #' 
 #' @concept inference
 #' @export

@@ -3,7 +3,7 @@
 \docType{data}
 \name{gorilla}
 \alias{gorilla}
-\title{Gorilla skull data}
+\title{Data : Gorilla Skull}
 \format{
 a named list containing\describe{
 \item{male}{a 3d array of size \eqn{(8\times 2\times 29)}}
@@ -19,10 +19,22 @@ individual is represented as 8-ad/landmarks in 2 dimensions. This is a
 re-arranged version of the data from \pkg{shapes} package.
 }
 \examples{
-# LOAD AND WRAP AS RIEMOBJ
-data(gorilla)
-riem.female = wrap.landmark(gorilla$female)
-riem.male   = wrap.landmark(gorilla$male)
+data(gorilla)                               # load the data
+riem.female = wrap.landmark(gorilla$female) # wrap as RIEMOBJ
+opar <- par(no.readonly=TRUE)
+for (i in 1:30){
+  if (i < 2){
+    plot(riem.female$data[[i]], cex=0.5, 
+         xlim=c(-1,1)/2, ylim=c(-2,2)/5,
+         main="30 female gorilla skull preshapes",
+         xlab="dimension 1", ylab="dimension 2")
+    lines(riem.female$data[[i]])
+  } else {
+    points(riem.female$data[[i]], cex=0.5)
+    lines(riem.female$data[[i]])
+  }
+}
+par(opar)
 
 }
 \references{

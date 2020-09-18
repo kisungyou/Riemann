@@ -190,7 +190,7 @@
     },
     {
         "file": "/home/kisung/Desktop/Riemann/src/functions_44visualization.cpp",
-        "file_last_write": 1599252916.0,
+        "file_last_write": 1600442590.0,
         "definitions": [
             {
                 "usr": "c:@F@visualize_pga#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#",
@@ -198,7 +198,16 @@
                 "parent_name": "",
                 "name": "visualize_pga(std::string, Rcpp::List &)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_44visualization.cpp",
-                "line": 12,
+                "line": 13,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@visualize_kpca#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#d#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "visualize_kpca(std::string, Rcpp::List &, double, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_44visualization.cpp",
+                "line": 51,
                 "column": 12
             }
         ]

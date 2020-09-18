@@ -9,7 +9,7 @@ riem.mds(riemobj, ndim = 2, geometry = c("intrinsic", "extrinsic"))
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
 
-\item{ndim}{an integer-valued target dimension.}
+\item{ndim}{an integer-valued target dimension (default: 2).}
 
 \item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
 }

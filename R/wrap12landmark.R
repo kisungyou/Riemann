@@ -5,7 +5,9 @@
 #' point is a labeled object. We consider general landmarks in \eqn{p=2,3,\ldots}. 
 #' Note that when \eqn{p > 2}, it is stratified space but we assume singularities do not exist or 
 #' are omitted. The wrapper takes translation and scaling out from the data to make it 
-#' \emph{preshape} (centered, unit-norm).
+#' \emph{preshape} (centered, unit-norm). Also, for convenience, orthogonal 
+#' Procrustes analysis is applied with the first observation being the reference so 
+#' that all the other data are rotated to match the shape of the first.
 #' 
 #' @param input data matrices to be wrapped as \code{riemdata} class. Following inputs are considered,
 #' \describe{

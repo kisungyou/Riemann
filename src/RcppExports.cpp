@@ -198,6 +198,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// visualize_kpca
+Rcpp::List visualize_kpca(std::string mfdname, Rcpp::List& data, double sigma, int ndim);
+RcppExport SEXP _Riemann_visualize_kpca(SEXP mfdnameSEXP, SEXP dataSEXP, SEXP sigmaSEXP, SEXP ndimSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfdname(mfdnameSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< int >::type ndim(ndimSEXP);
+    rcpp_result_gen = Rcpp::wrap(visualize_kpca(mfdname, data, sigma, ndim));
+    return rcpp_result_gen;
+END_RCPP
+}
 // learning_seb
 Rcpp::List learning_seb(std::string mfdname, Rcpp::List& data, int myiter, double myeps, std::string method);
 RcppExport SEXP _Riemann_learning_seb(SEXP mfdnameSEXP, SEXP dataSEXP, SEXP myiterSEXP, SEXP myepsSEXP, SEXP methodSEXP) {
@@ -323,6 +337,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_clustering_clrq", (DL_FUNC) &_Riemann_clustering_clrq, 5},
     {"_Riemann_clustering_sup_intrinsic", (DL_FUNC) &_Riemann_clustering_sup_intrinsic, 6},
     {"_Riemann_visualize_pga", (DL_FUNC) &_Riemann_visualize_pga, 2},
+    {"_Riemann_visualize_kpca", (DL_FUNC) &_Riemann_visualize_kpca, 4},
     {"_Riemann_learning_seb", (DL_FUNC) &_Riemann_learning_seb, 5},
     {"_Riemann_learning_rmml", (DL_FUNC) &_Riemann_learning_rmml, 4},
     {"_Riemann_runif_sphere", (DL_FUNC) &_Riemann_runif_sphere, 2},

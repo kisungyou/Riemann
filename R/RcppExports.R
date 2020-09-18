@@ -53,6 +53,10 @@ visualize_pga <- function(mfdname, data) {
     .Call('_Riemann_visualize_pga', PACKAGE = 'Riemann', mfdname, data)
 }
 
+visualize_kpca <- function(mfdname, data, sigma, ndim) {
+    .Call('_Riemann_visualize_kpca', PACKAGE = 'Riemann', mfdname, data, sigma, ndim)
+}
+
 learning_seb <- function(mfdname, data, myiter, myeps, method) {
     .Call('_Riemann_learning_seb', PACKAGE = 'Riemann', mfdname, data, myiter, myeps, method)
 }

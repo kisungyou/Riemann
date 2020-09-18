@@ -5,7 +5,8 @@ using namespace Rcpp;
 using namespace arma;
 using namespace std;
 
-// 1. visualize_pga : (intrinsic) method by Fletcher
+// 1. visualize_pga  : (intrinsic) method by Fletcher
+// 2. visualize_kpca : kernel principal component analysis
 
 // 1. visualize_pga : (intrinsic) method by Fletcher ===========================
 // [[Rcpp::export]]
@@ -44,4 +45,57 @@ Rcpp::List visualize_pga(std::string mfdname, Rcpp::List& data){
   result["embed"]  = cppembed;
   return(result);
 }
+
+// 2. visualize_kpca : kernel principal component analysis =====================
+// [[Rcpp::export]]
+Rcpp::List visualize_kpca(std::string mfdname, Rcpp::List& data, double sigma, int ndim){
+  // PREPARE
+  arma::mat tmpdata = Rcpp::as<arma::mat>(data[0]);
+  int N = data.size();
+  int p = tmpdata.n_rows;
+  int k = tmpdata.n_cols;
   
+  arma::cube mydata(p,k,N,fill::zeros);
+  for (int n=0; n<N; n++){
+    mydata.slice(n) = Rcpp::as<arma::mat>(data[n]);
+  }
+  
+  // COMPUTE KERNEL MATRIX : exp(-d^2/(2*sigma^2))
+  double dval = 0.0;
+  arma::mat mat_kernel(N,N,fill::ones);
+  for (int i=0; i<(N-1); i++){
+    for (int j=(i+1); j<N; j++){
+      dval = riem_distext(mfdname, mydata.slice(i), mydata.slice(j));
+      mat_kernel(i,j) = std::exp(-(dval*dval)/(2*sigma*sigma));
+      mat_kernel(j,i) = mat_kernel(i,j);
+    }
+  }
+  
+  // COMPUTE CENTERED KERNEL MATRIX
+  double    NN  = static_cast<double>(N);
+  double    NN2 = NN*NN;
+  double    sum_all     = arma::accu(mat_kernel);
+  arma::vec vec_rowsums = arma::sum(mat_kernel, 1);
+  arma::mat mat_centered(N,N,fill::zeros);
+  for (int i=0; i<N; i++){
+    for (int j=i; j<N; j++){
+      if (i==j){
+        mat_centered(i,i) = mat_kernel(i,i) - (2.0/NN)*vec_rowsums(i) + (1.0/NN2)*sum_all;
+      } else {
+        mat_centered(i,j) = mat_kernel(i,j) - (1.0/NN)*vec_rowsums(i) - (1.0/NN)*vec_rowsums(j) + (1.0/NN2)*sum_all;
+        mat_centered(j,i) = mat_centered(i,j);
+      }
+    }
+  }
+  
+  // EIGENDECOMPOSITION FOR KPCA : ASCENDING ORDER
+  arma::vec eigval;
+  arma::mat eigvec;
+  arma::eig_sym(eigval, eigvec, mat_centered);
+
+  // FINALIZE
+  Rcpp::List output;
+  output["embed"] = mat_centered*eigvec.tail_cols(ndim);
+  output["vars"]  = arma::reverse(eigval); // change to descending order
+  return(output);
+}

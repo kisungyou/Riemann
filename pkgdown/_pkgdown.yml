@@ -2,6 +2,9 @@
 # icons:   https://fontawesome.com/
 # pkgdown: https://pkgdown.r-lib.org/reference/index.html
 # search:  https://docsearch.algolia.com/
+#     docsearch:
+#     api_key:
+#      indexname: Riemann
 
 url: https://kyoustat.com/Riemann/
 
@@ -11,9 +14,6 @@ template:
   params:
     bootswatch: flatly
     ganalytics: UA-163713603-1
-    docsearch:
-      api_key:
-      indexname: Riemann
 
 home:
   strip_header: false

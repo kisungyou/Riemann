@@ -44,12 +44,6 @@
 <script src="../pkgdown.js"></script>
 
 
-<!-- docsearch -->
-<script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
-<link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
-
 
 
 <meta property="og:title" content="Wrap Landmark Data on Shape Space — wrap.landmark" />
@@ -58,7 +52,9 @@ Each shape is a point set of \(k\) points in \(\mathbf{R}^p\) where each
 point is a labeled object. We consider general landmarks in \(p=2,3,\ldots\). 
 Note that when \(p &amp;gt; 2\), it is stratified space but we assume singularities do not exist or 
 are omitted. The wrapper takes translation and scaling out from the data to make it 
-preshape (centered, unit-norm)." />
+preshape (centered, unit-norm). Also, for convenience, orthogonal 
+Procrustes analysis is applied with the first observation being the reference so 
+that all the other data are rotated to match the shape of the first." />
 <meta property="og:image" content="https://kyoustat.com/Riemann/logo.png" />
 
 
@@ -151,12 +147,6 @@ preshape (centered, unit-norm)." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
-        <div class="form-group">
-          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
-        </div>
-      </form>
-      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -179,7 +169,9 @@ Each shape is a point set of \(k\) points in \(\mathbf{R}^p\) where each
 point is a labeled object. We consider general landmarks in \(p=2,3,\ldots\). 
 Note that when \(p &gt; 2\), it is stratified space but we assume singularities do not exist or 
 are omitted. The wrapper takes translation and scaling out from the data to make it 
-<em>preshape</em> (centered, unit-norm).</p>
+<em>preshape</em> (centered, unit-norm). Also, for convenience, orthogonal 
+Procrustes analysis is applied with the first observation being the reference so 
+that all the other data are rotated to match the shape of the first.</p>
     </div>
 
     <pre class="usage"><span class='fu'>wrap.landmark</span>(<span class='no'>input</span>)</pre>
@@ -239,23 +231,6 @@ ISBN 978-1-119-07251-5 978-1-119-07250-8.</p>
    </div>
 
   
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
-<script>
-  docsearch({
-    
-    
-    apiKey: '',
-    indexName: '',
-    inputSelector: 'input#search-input.form-control',
-    transformData: function(hits) {
-      return hits.map(function (hit) {
-        hit.url = updateHitURL(hit);
-        return hit;
-      });
-    }
-  });
-</script>
-
 
 
   </body>
