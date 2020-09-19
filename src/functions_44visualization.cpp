@@ -5,8 +5,9 @@ using namespace Rcpp;
 using namespace arma;
 using namespace std;
 
-// 1. visualize_pga  : (intrinsic) method by Fletcher
-// 2. visualize_kpca : kernel principal component analysis
+// 1. visualize_pga    : (intrinsic) method by Fletcher
+// 2. visualize_kpca   : kernel principal component analysis
+// 3. visualize_isomap : weighted distance function
 
 // 1. visualize_pga : (intrinsic) method by Fletcher ===========================
 // [[Rcpp::export]]
@@ -97,5 +98,60 @@ Rcpp::List visualize_kpca(std::string mfdname, Rcpp::List& data, double sigma, i
   Rcpp::List output;
   output["embed"] = mat_centered*eigvec.tail_cols(ndim);
   output["vars"]  = arma::reverse(eigval); // change to descending order
+  return(output);
+}
+
+// 3. visualize_isomap : weighted distance function ============================
+// [[Rcpp::export]]
+arma::mat visualize_isomap(std::string mfdname, Rcpp::List& data, std::string geometry, int nnbd){
+  // PREPARE
+  arma::mat tmpdata = Rcpp::as<arma::mat>(data[0]);
+  int N = data.size();
+  int p = tmpdata.n_rows;
+  int k = tmpdata.n_cols;
+  
+  arma::cube mydata(p,k,N,fill::zeros);
+  for (int n=0; n<N; n++){
+    mydata.slice(n) = Rcpp::as<arma::mat>(data[n]);
+  }
+  
+  // COMPUTE PAIRWISE DISTANCE
+  arma::mat mat_dist(N,N,fill::zeros);
+  for (int i=0; i<(N-1); i++){
+    for (int j=(i+1); j<N; j++){
+      if (geometry=="intrinsic"){
+        mat_dist(i,j) = riem_dist(mfdname, mydata.slice(i), mydata.slice(j));
+      } else {
+        mat_dist(i,j) = riem_distext(mfdname, mydata.slice(i), mydata.slice(j));
+      }
+      mat_dist(j,i) = mat_dist(i,j);
+    }
+  }
+  
+  // COMPUTE NEAREST NEIGHBOR : K-NN WITH INTERSECTION TYPE
+  arma::uvec tmpidx;
+  arma::field<arma::uvec> record_minimal(N);
+  for (int n=0; n<N; n++){
+    tmpidx = arma::sort_index(mat_dist.col(n));
+    record_minimal(n) = tmpidx.head(nnbd+1);
+  }
+  arma::mat mat_index(N,N,fill::zeros);
+  arma::uvec uvec1;
+  arma::uvec uvec2;
+  arma::uvec commons;
+  for (int i=0; i<N; i++){
+    uvec1 = record_minimal(i);
+    for (int j=(i+1); j<N; j++){
+      uvec2 = record_minimal(j);
+      commons = arma::intersect(uvec1, uvec2);
+      if (commons.n_elem > 0){
+        mat_index(i,j) = 1.0;
+        mat_index(j,i) = 1.0;
+      }
+    }
+  }
+  
+  // RETURN THE WEIGHTED
+  arma::mat output = mat_dist%mat_index;
   return(output);
 }

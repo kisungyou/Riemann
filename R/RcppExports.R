@@ -57,6 +57,10 @@ visualize_kpca <- function(mfdname, data, sigma, ndim) {
     .Call('_Riemann_visualize_kpca', PACKAGE = 'Riemann', mfdname, data, sigma, ndim)
 }
 
+visualize_isomap <- function(mfdname, data, geometry, nnbd) {
+    .Call('_Riemann_visualize_isomap', PACKAGE = 'Riemann', mfdname, data, geometry, nnbd)
+}
+
 learning_seb <- function(mfdname, data, myiter, myeps, method) {
     .Call('_Riemann_learning_seb', PACKAGE = 'Riemann', mfdname, data, myiter, myeps, method)
 }

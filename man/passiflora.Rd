@@ -25,7 +25,7 @@ riemobj = wrap.landmark(passiflora$data) # wrap as RIEMOBJ
 pga2d   = riem.pga(riemobj)$embed        # embedding via PGA
 
 opar <- par(no.readonly=TRUE)            # visualize
-plot(pga2d, col=passiflora$class, pch=19, 
+plot(pga2d, col=passiflora$class, pch=19, cex=0.7,
      main="PGA Embedding of Passiflora Leaves",
      xlab="dimension 1", ylab="dimension 2")
 par(opar)

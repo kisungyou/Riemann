@@ -19,7 +19,7 @@
 #' pga2d   = riem.pga(riemobj)$embed        # embedding via PGA
 #' 
 #' opar <- par(no.readonly=TRUE)            # visualize
-#' plot(pga2d, col=passiflora$class, pch=19, 
+#' plot(pga2d, col=passiflora$class, pch=19, cex=0.7,
 #'      main="PGA Embedding of Passiflora Leaves",
 #'      xlab="dimension 1", ylab="dimension 2")
 #' par(opar)
@@ -33,7 +33,15 @@
 #' @concept data
 "passiflora"
 
-
+# library(ggplot2)
+# plotter = data.frame(x=pga2d[,1], y=pga2d[,2], cluster=passiflora$class)
+# leaves  = ggplot(data=plotter, aes(x=x,y=y,color=cluster)) +
+#   geom_point(size=1.5) +
+#   theme_bw() +
+#   ggtitle("Principal Geodesic Analysis for Passiflora Leaves") +
+#   xlab("Dimension 1") +
+#   ylab("Dimension 2")
+# plot(leaves)
 # data("passiflora")
 # riemobj = wrap.landmark(passiflora$data)
 # d2.pga  = riem.pga(riemobj, ndim=2)
@@ -48,3 +56,22 @@
 # plot(d2.mds$embed,  xlab="x", ylab="y", col=passiflora$class, pch=19, main="MDS")
 # plot(d2.tsne$embed, xlab="x", ylab="y", col=passiflora$class, pch=19, main="t-SNE")
 # plot(d2.rmml,       xlab="x", ylab="y", col=passiflora$class, pch=19, main="RMML")
+
+
+# # EXTRINSIC : PLANAR SHAPE IS SAME AS WHAT I HAD
+# mydat = passiflora$data[,,1:3]
+# myriem = wrap.landmark(mydat)
+# riem.pdist(myriem, geometry="intrinsic")
+# riem.pdist(myriem, geometry="extrinsic")
+# test = array(0,c(3,3))
+# for (i in 1:3){
+#   datx = myriem$data[[i]]
+#   xnow = base::complex(real=datx[,1], imaginary = datx[,2])
+#   for (j in 1:3){
+#     daty = myriem$data[[j]]
+#     ynow = base::complex(real=daty[,1], imaginary = daty[,2])
+#     znow = xnow-ynow
+#     test[j,i] <- test[i,j] <- sqrt(base::Re(sum(diag(outer(znow,Conj(znow)))))) #== sum(znow*Conj(znow))
+#   }
+# }
+# test

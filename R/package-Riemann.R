@@ -9,6 +9,7 @@
 #' @aliases Riemann-package
 #' @import Rdpack
 #' @import maotai
+#' @importFrom Rdimtools aux.shortestpath
 #' @importFrom lpSolve lp
 #' @importFrom T4cluster scNJW scSM scUL
 #' @importFrom RiemBase riemfactory

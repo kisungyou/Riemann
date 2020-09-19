@@ -1,7 +1,7 @@
 # Riemann 0.1.1
 
 * Interfaces to some of the functions are changed to emphasize key parameters only for users.
-* Added functionalities : `riem.scNJW()`, `riem.scSM()`, `riem.scUL()`, `riem.wasserstein()`, `riem.kpca()`.
+* Added functionalities : `riem.scNJW()`, `riem.scSM()`, `riem.scUL()`, `riem.wasserstein()`, `riem.kpca()`, `riem.isomap()`.
 * Support for landmark-based shape shape with `wrap.landmark()` added. 
 
 # Riemann 0.1.0
