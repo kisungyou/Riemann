@@ -110,10 +110,10 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><strong>Riemann</strong> is an <strong>R</strong> package for learning with data on <strong>Riemannian manifolds</strong>.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<p><strong>Riemann</strong> is an R package for learning with data on <strong>Riemannian manifolds</strong>.</p>
+<div id="installation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h3>
 <ul>
 <li>Option 1 : <strong>released</strong> version from <a href="https://CRAN.R-project.org">CRAN</a>.</li>
 </ul>
@@ -121,7 +121,9 @@
 <ul>
 <li>Option 2 : <strong>development</strong> version from <a href="https://github.com/">GitHub</a>.</li>
 </ul>
-<!-- end list --><div class="sourceCode" id="cb2"><pre class="r"><span class="co"># install.packages("devtools")</span>
+<!-- end list --><div class="sourceCode" id="cb2"><pre class="r"><span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"devtools"</span>)) {
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)
+}
 <span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"kyoustat/Riemann"</span>)</pre></div>
 </div>
 </div>

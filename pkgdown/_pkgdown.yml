@@ -30,6 +30,8 @@ navbar:
         - text: "(CRAN) RiemBase"
           href: https://CRAN.R-project.org/package=RiemBase
         - text : -----------------------------
+        - text: "Rdimtools"
+          href: https://kyoustat.com/Rdimtools/
         - text: "T4cluster"
           href: https://kyoustat.com/T4cluster/
   right:

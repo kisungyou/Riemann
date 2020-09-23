@@ -12,7 +12,10 @@ status](https://travis-ci.com/kyoustat/Riemann.svg?branch=master)](https://travi
 <!-- badges: end -->
 
 **Riemann** is an R package for learning with data on **Riemannian
-manifolds**.
+manifolds**. In statistics and machine learning, the term *manifold*
+appears in two realms; one is *dimensionality reduction* where
+low-dimensional manifold \(\mathcal{M}\) is assumed to be embedded in
+high-dimensional Euclidean space. The other
 
 ### Installation
 
