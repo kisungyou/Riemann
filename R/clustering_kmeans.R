@@ -16,8 +16,8 @@
 #' }
 #' 
 #' @return a named list containing\describe{
-#' \item{means}{a 3d array where each slice along 3rd dimension is a matrix representation of class mean.}
 #' \item{cluster}{a length-\eqn{N} vector of class labels (from \eqn{1:k}).}
+#' \item{means}{a 3d array where each slice along 3rd dimension is a matrix representation of class mean.}
 #' \item{score}{within-cluster sum of squares (WCSS).}
 #' }
 #' 
@@ -46,7 +46,7 @@
 #' myriem = wrap.sphere(mydata)
 #' mylabs = rep(c(1,2,3), each=10)
 #' 
-#' ## K-MEDOIDS WITH K=2,3,4
+#' ## K-MEANS WITH K=2,3,4
 #' clust2 = riem.kmeans(myriem, k=2)
 #' clust3 = riem.kmeans(myriem, k=3)
 #' clust4 = riem.kmeans(myriem, k=4)
@@ -113,10 +113,10 @@ riem.kmeans <- function(riemobj, k=2, geometry=c("intrinsic","extrinsic"), ...){
   
   ## SELECT, WRAP, AND RETURN
   bestout = rec.list[[which.min(rec.SSE)]]
-  bestout$cluster = as.vector(bestout$label)+1
-  bestout$label   = NULL
-  bestout$score   = bestout$WCSS
-  bestout$WCSS    = NULL
-  return(bestout)
-    
+  
+  output = list()
+  output$cluster = as.vector(bestout$label)+1
+  output$means   = bestout$means
+  output$score   = as.double(bestout$WCSS)
+  return(output)
 }

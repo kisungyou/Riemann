@@ -186,6 +186,82 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// clustering_kmeans18B
+Rcpp::List clustering_kmeans18B(std::string mfdname, std::string geotype, Rcpp::List& data, int K, int M, int maxiter);
+RcppExport SEXP _Riemann_clustering_kmeans18B(SEXP mfdnameSEXP, SEXP geotypeSEXP, SEXP dataSEXP, SEXP KSEXP, SEXP MSEXP, SEXP maxiterSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfdname(mfdnameSEXP);
+    Rcpp::traits::input_parameter< std::string >::type geotype(geotypeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type K(KSEXP);
+    Rcpp::traits::input_parameter< int >::type M(MSEXP);
+    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
+    rcpp_result_gen = Rcpp::wrap(clustering_kmeans18B(mfdname, geotype, data, K, M, maxiter));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_scNJW
+Rcpp::List cpp_scNJW(arma::mat& D, int K, double sigma, bool usekmeans, int maxiter);
+RcppExport SEXP _Riemann_cpp_scNJW(SEXP DSEXP, SEXP KSEXP, SEXP sigmaSEXP, SEXP usekmeansSEXP, SEXP maxiterSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< int >::type K(KSEXP);
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< bool >::type usekmeans(usekmeansSEXP);
+    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_scNJW(D, K, sigma, usekmeans, maxiter));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_scUL
+Rcpp::List cpp_scUL(arma::mat& D, int K, double sigma, bool usekmeans, int maxiter);
+RcppExport SEXP _Riemann_cpp_scUL(SEXP DSEXP, SEXP KSEXP, SEXP sigmaSEXP, SEXP usekmeansSEXP, SEXP maxiterSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< int >::type K(KSEXP);
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< bool >::type usekmeans(usekmeansSEXP);
+    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_scUL(D, K, sigma, usekmeans, maxiter));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_scSM
+Rcpp::List cpp_scSM(arma::mat& D, int K, double sigma, bool usekmeans, int maxiter);
+RcppExport SEXP _Riemann_cpp_scSM(SEXP DSEXP, SEXP KSEXP, SEXP sigmaSEXP, SEXP usekmeansSEXP, SEXP maxiterSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< int >::type K(KSEXP);
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< bool >::type usekmeans(usekmeansSEXP);
+    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_scSM(D, K, sigma, usekmeans, maxiter));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_sc05Z
+Rcpp::List cpp_sc05Z(arma::mat& D, int K, int nnbd, bool usekmeans, int maxiter);
+RcppExport SEXP _Riemann_cpp_sc05Z(SEXP DSEXP, SEXP KSEXP, SEXP nnbdSEXP, SEXP usekmeansSEXP, SEXP maxiterSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< int >::type K(KSEXP);
+    Rcpp::traits::input_parameter< int >::type nnbd(nnbdSEXP);
+    Rcpp::traits::input_parameter< bool >::type usekmeans(usekmeansSEXP);
+    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_sc05Z(D, K, nnbd, usekmeans, maxiter));
+    return rcpp_result_gen;
+END_RCPP
+}
 // visualize_pga
 Rcpp::List visualize_pga(std::string mfdname, Rcpp::List& data);
 RcppExport SEXP _Riemann_visualize_pga(SEXP mfdnameSEXP, SEXP dataSEXP) {
@@ -350,6 +426,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_clustering_kmeans_macqueen", (DL_FUNC) &_Riemann_clustering_kmeans_macqueen, 6},
     {"_Riemann_clustering_clrq", (DL_FUNC) &_Riemann_clustering_clrq, 5},
     {"_Riemann_clustering_sup_intrinsic", (DL_FUNC) &_Riemann_clustering_sup_intrinsic, 6},
+    {"_Riemann_clustering_kmeans18B", (DL_FUNC) &_Riemann_clustering_kmeans18B, 6},
+    {"_Riemann_cpp_scNJW", (DL_FUNC) &_Riemann_cpp_scNJW, 5},
+    {"_Riemann_cpp_scUL", (DL_FUNC) &_Riemann_cpp_scUL, 5},
+    {"_Riemann_cpp_scSM", (DL_FUNC) &_Riemann_cpp_scSM, 5},
+    {"_Riemann_cpp_sc05Z", (DL_FUNC) &_Riemann_cpp_sc05Z, 5},
     {"_Riemann_visualize_pga", (DL_FUNC) &_Riemann_visualize_pga, 2},
     {"_Riemann_visualize_kpca", (DL_FUNC) &_Riemann_visualize_kpca, 4},
     {"_Riemann_visualize_isomap", (DL_FUNC) &_Riemann_visualize_isomap, 4},

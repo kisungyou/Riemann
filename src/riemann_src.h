@@ -17,5 +17,6 @@ double    riem_metric(std::string mfd, arma::mat x, arma::mat d1, arma::mat d2);
 // OTHER FUNCTIONS TO BE USED IN OTHER CPP MODULES =============================
 arma::mat internal_mean(std::string mfd, std::string dtype, arma::cube data, int iter, double eps);
 arma::mat internal_mean_init(std::string mfd, std::string dtype, arma::cube data, int iter, double eps, arma::mat Sinit);
+arma::mat internal_logvectors(std::string mfd, arma::cube data); // row-stacked vectors
 
 #endif

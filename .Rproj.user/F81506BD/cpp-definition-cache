@@ -85,7 +85,7 @@
     },
     {
         "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
-        "file_last_write": 1599509153.0,
+        "file_last_write": 1600795458.0,
         "definitions": [
             {
                 "usr": "c:@F@helper_nunique#$@N@arma@S@Col>#i#",
@@ -93,7 +93,7 @@
                 "parent_name": "",
                 "name": "helper_nunique(arma::uvec)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
-                "line": 21,
+                "line": 26,
                 "column": 5
             },
             {
@@ -102,7 +102,7 @@
                 "parent_name": "",
                 "name": "helper_kmeans_cost(std::string, std::string, arma::cube, arma::cube, arma::uvec)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
-                "line": 27,
+                "line": 32,
                 "column": 8
             },
             {
@@ -111,7 +111,7 @@
                 "parent_name": "",
                 "name": "helper_centers(std::string, std::string, arma::cube, arma::uvec)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
-                "line": 50,
+                "line": 55,
                 "column": 12
             },
             {
@@ -120,7 +120,25 @@
                 "parent_name": "",
                 "name": "helper_assign_centroids(std::string, std::string, arma::cube, arma::cube)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
-                "line": 69,
+                "line": 74,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@helper_sample#I#I#$@N@arma@S@Col>#d#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "helper_sample(int, int, arma::vec, bool)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
+                "line": 95,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@helper_kmeans_initlabel#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#$@N@arma@S@Cube>#d#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "helper_kmeans_initlabel(std::string, arma::cube, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
+                "line": 101,
                 "column": 12
             },
             {
@@ -129,7 +147,7 @@
                 "parent_name": "",
                 "name": "clustering_nmshift_single(std::string, int, arma::field<arma::mat>, double, int, double)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
-                "line": 93,
+                "line": 130,
                 "column": 11
             },
             {
@@ -138,7 +156,7 @@
                 "parent_name": "",
                 "name": "clustering_nmshift(std::string, Rcpp::List &, double, int, double)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
-                "line": 138,
+                "line": 175,
                 "column": 12
             },
             {
@@ -147,7 +165,7 @@
                 "parent_name": "",
                 "name": "clustering_kmeans_lloyd(std::string, std::string, Rcpp::List &, int, double, arma::uvec)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
-                "line": 172,
+                "line": 209,
                 "column": 12
             },
             {
@@ -156,7 +174,7 @@
                 "parent_name": "",
                 "name": "clustering_kmeans_macqueen(std::string, std::string, Rcpp::List &, int, double, arma::uvec)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
-                "line": 236,
+                "line": 273,
                 "column": 12
             },
             {
@@ -165,7 +183,7 @@
                 "parent_name": "",
                 "name": "clustering_clrq(std::string, Rcpp::List &, arma::uvec, double, double)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
-                "line": 321,
+                "line": 358,
                 "column": 12
             },
             {
@@ -174,7 +192,7 @@
                 "parent_name": "",
                 "name": "clustering_sup_intrinsic_singlemean(std::string, arma::cube, arma::vec, arma::mat)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
-                "line": 374,
+                "line": 411,
                 "column": 11
             },
             {
@@ -183,7 +201,121 @@
                 "parent_name": "",
                 "name": "clustering_sup_intrinsic(std::string, Rcpp::List &, arma::vec, double, int, double)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
-                "line": 406,
+                "line": 443,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@clustering_kmeans18B_macqueen#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#S0_#$@N@arma@S@Cube>#d#I#d#$@N@arma@S@Col>#i#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "clustering_kmeans18B_macqueen(std::string, std::string, arma::cube, int, double, arma::uvec)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
+                "line": 534,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@clustering_kmeans18B_kcenters#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#S0_#$@N@arma@S@Cube>#d#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "clustering_kmeans18B_kcenters(std::string, std::string, arma::cube, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
+                "line": 602,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@clustering_kmeans18B#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#S0_#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#I#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "clustering_kmeans18B(std::string, std::string, Rcpp::List &, int, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering.cpp",
+                "line": 615,
+                "column": 12
+            }
+        ]
+    },
+    {
+        "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering_spectral.cpp",
+        "file_last_write": 1600821871.0,
+        "definitions": [
+            {
+                "usr": "c:@F@label_kmeans#$@N@arma@S@Mat>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "label_kmeans(arma::mat, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering_spectral.cpp",
+                "line": 19,
+                "column": 15
+            },
+            {
+                "usr": "c:@F@label_gmm#$@N@arma@S@Mat>#d#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "label_gmm(arma::mat, int, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering_spectral.cpp",
+                "line": 41,
+                "column": 15
+            },
+            {
+                "usr": "c:@F@sc_unnormalized#$@N@arma@S@Mat>#d#I#b#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "sc_unnormalized(arma::mat, int, bool, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering_spectral.cpp",
+                "line": 50,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@sc_normalNJW#$@N@arma@S@Mat>#d#I#b#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "sc_normalNJW(arma::mat, int, bool, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering_spectral.cpp",
+                "line": 74,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@sc_normalSM#$@N@arma@S@Mat>#d#I#b#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "sc_normalSM(arma::mat, int, bool, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering_spectral.cpp",
+                "line": 108,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@cpp_scNJW#&$@N@arma@S@Mat>#d#I#d#b#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "cpp_scNJW(arma::mat &, int, double, bool, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering_spectral.cpp",
+                "line": 145,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@cpp_scUL#&$@N@arma@S@Mat>#d#I#d#b#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "cpp_scUL(arma::mat &, int, double, bool, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering_spectral.cpp",
+                "line": 159,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@cpp_scSM#&$@N@arma@S@Mat>#d#I#d#b#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "cpp_scSM(arma::mat &, int, double, bool, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering_spectral.cpp",
+                "line": 173,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@cpp_sc05Z#&$@N@arma@S@Mat>#d#I#I#b#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "cpp_sc05Z(arma::mat &, int, int, bool, int)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_33clustering_spectral.cpp",
+                "line": 187,
                 "column": 12
             }
         ]
@@ -1152,7 +1284,7 @@
     },
     {
         "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
-        "file_last_write": 1600357126.0,
+        "file_last_write": 1600795444.0,
         "definitions": [
             {
                 "usr": "c:@F@riem_initialize#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#$@N@arma@S@field>#$@N@arma@S@Mat>#d#$@N@arma@S@Col>#d#",
@@ -1252,12 +1384,21 @@
                 "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
                 "line": 300,
                 "column": 11
+            },
+            {
+                "usr": "c:@F@internal_logvectors#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#$@N@arma@S@Cube>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "internal_logvectors(std::string, arma::cube)",
+                "file": "/home/kisung/Desktop/Riemann/src/riemann_src.cpp",
+                "line": 340,
+                "column": 11
             }
         ]
     },
     {
         "file": "/home/kisung/Desktop/Riemann/src/riemann_src.h",
-        "file_last_write": 1598898538.0,
+        "file_last_write": 1600795438.0,
         "definitions": []
     }
 ]

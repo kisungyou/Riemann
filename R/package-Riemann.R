@@ -11,7 +11,6 @@
 #' @import maotai
 #' @importFrom Rdimtools aux.shortestpath
 #' @importFrom lpSolve lp
-#' @importFrom T4cluster scNJW scSM scUL sc05Z
 #' @importFrom RiemBase riemfactory
 #' @importFrom utils packageVersion getFromNamespace
 #' @importFrom stats cor rnorm pchisq cov cutree

@@ -337,3 +337,23 @@ arma::mat internal_mean_init(std::string mfd, std::string dtype, arma::cube data
   }
   return(Sold);
 }
+arma::mat internal_logvectors(std::string mfd, arma::cube data){
+  // PARAMETERS
+  int nrow = data.n_rows;
+  int ncol = data.n_cols;
+  int N    = data.n_slices;
+  
+  // COMPUTE MEAN
+  arma::mat X = internal_mean(mfd, "intrinsic", data, 50, 1e-6);
+  
+  // EXEMPLARY VECTOR
+  arma::vec logvec = arma::vectorise(riem_log(mfd, X, data.slice(0)));
+  int P = logvec.n_elem;
+  
+  // ITERATION
+  arma::mat output(N,P,fill::zeros);
+  for (int n=0; n<N; n++){
+    output.row(n) = arma::trans(arma::vectorise(riem_log(mfd, X, data.slice(n))));
+  }
+  return(output);
+}

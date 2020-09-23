@@ -1,5 +1,7 @@
 #include <RcppArmadillo.h>
+#include <RcppArmadilloExtensions/sample.h>
 #include "riemann_src.h"
+#include <algorithm>
 
 using namespace Rcpp;
 using namespace arma;
@@ -10,6 +12,8 @@ using namespace std;
 // helper_centers          : given uvec & datacube, return the centers of cubes
 // helper_kmeans_cost      : compute the cost of k-means objective
 // helper_assign_centroids : assign each individual to the closest centroid
+// helper_sample           : sample integers
+// helper_kmeans_initlabel : compute the approximate cluster label
 
 // MAIN ALGORITHMS
 // 1. clustering_nmshift       : nonlinear mean shift; POTENTIAL TO SPEED UP BY OPENMP
@@ -17,6 +21,7 @@ using namespace std;
 // 3. clustering_kmeans_macqueen 
 // 4. clustering_clrq          : competitive learning riemannian quantization
 // 5. clustering_sup_intrinsic : self-updating process
+// 6. clustering_kmeans18B     : lightweight coreset
 
 int helper_nunique(arma::uvec x){
   arma::uvec y = arma::unique(x);
@@ -87,7 +92,39 @@ arma::uvec helper_assign_centroids(std::string mfd, std::string dtype, arma::cub
   }
   return(output);
 }
-
+arma::uvec helper_sample(int N, int m, arma::vec prob, bool replace){
+  arma::uvec x     = arma::linspace<arma::uvec>(0L, N-1L, N);
+  arma::vec myprob = prob/arma::accu(prob);
+  arma::uvec output = Rcpp::RcppArmadillo::sample(x, m, replace, myprob);
+  return(output);
+}
+arma::uvec helper_kmeans_initlabel(std::string mfdname, arma::cube data, int K){
+  int nrow = data.n_rows;
+  int ncol = data.n_cols;
+  int N    = data.n_slices;
+  
+  // apply kmeans from Armadillo
+  arma::mat logvecs = internal_logvectors(mfdname, data); 
+  int P    = logvecs.n_cols;
+  arma::mat means(P,K);
+  bool status = arma::kmeans(means, arma::trans(logvecs), K, random_subset, 50, false);
+  arma::mat centers = means.t();
+  
+  // compute the distance
+  arma::mat distmat(N,K,fill::zeros);
+  for (int n=0; n<N; n++){
+    for (int k=0; k<K; k++){
+      distmat(n,k) = arma::norm(logvecs.row(n)-centers.row(k),2);
+    }
+  }
+  
+  // compute the label
+  arma::uvec output(N,fill::zeros);
+  for (int n=0; n<N; n++){
+    output(n) = arma::index_min(distmat.row(n));
+  }
+  return(output);
+}
 
 // main 1. clustering_nmshift : nonlinear mean shift by Subbarao  ==============
 arma::mat clustering_nmshift_single(std::string mfdname, int id, arma::field<arma::mat> mydata, double myh, int myiter, double myeps){
@@ -490,5 +527,151 @@ Rcpp::List clustering_sup_intrinsic(std::string mfdname, Rcpp::List& data, arma:
   Rcpp::List output;
   output["limits"]   = my_data_old;
   output["distance"] = my_solution_pdist;
+  return(output);
+}
+
+// 6. clustering_kmeans18B     : lightweight coreset ===========================
+arma::cube clustering_kmeans18B_macqueen(std::string mfdname, std::string geotype, arma::cube mydata, int iter, double eps, arma::uvec initlabel){
+  // PREPARE
+  int nrow = mydata.n_rows;
+  int ncol = mydata.n_cols;
+  int N    = mydata.n_slices;
+  
+  // labels 
+  arma::uvec oldlabel = initlabel - initlabel.min(); 
+  arma::cube oldmeans = helper_centers(mfdname, geotype, mydata, oldlabel);
+  if (oldmeans.has_nan()){
+    Rcpp::stop("MacQueen's Algorithm Terminated at Initialization.");
+  }
+  int K     = oldmeans.n_slices;
+  double KK = static_cast<double>(K);
+  
+  arma::uvec newlabel(N,fill::zeros);
+  arma::cube newmeans(nrow,ncol,K,fill::zeros);
+  double     meanincs = 0.0;
+  
+  // MAIN ITERATION
+  arma::uword idnow;
+  arma::uvec update_order;
+  arma::vec  distctd(K,fill::zeros);
+  arma::uword newclass;
+  arma::uword oldclass;
+  for (int it=0; it<iter; it++){
+    // Random Permutation
+    update_order = arma::randperm(N);
+    newlabel = oldlabel;
+    newmeans = oldmeans;
+    for (int n=0; n<N; n++){
+      // 1. compute distance to the centroids
+      idnow = update_order(n);
+      for (int k=0; k<K; k++){
+        if (geotype=="intrinsic"){
+          distctd(k) = riem_dist(mfdname, mydata.slice(idnow), newmeans.slice(k));  
+        } else {
+          distctd(k) = riem_distext(mfdname, mydata.slice(idnow), newmeans.slice(k));
+        }
+      }
+      // 2. re-assign to the nearest and re-compute
+      newclass = distctd.index_min();
+      oldclass = newlabel(idnow);
+      if (oldclass!=newclass){
+        newlabel(idnow) = newclass;
+        newmeans.slice(oldclass) = internal_mean_init(mfdname, geotype, mydata.slices(arma::find(newlabel==oldclass)), 50, 1e-5, newmeans.slice(oldclass));
+        newmeans.slice(newclass) = internal_mean_init(mfdname, geotype, mydata.slices(arma::find(newlabel==newclass)), 50, 1e-5, newmeans.slice(newclass));
+      }
+    }
+    if (helper_nunique(newlabel) < K){ // if there is any empty cluster, stop.
+      break;
+    }
+    
+    // Update & Termination
+    meanincs = 0.0;
+    for (int k=0; k<K; k++){
+      meanincs += arma::norm(oldmeans.slice(k)-newmeans.slice(k),"fro")/KK;
+    }
+    oldlabel = newlabel;
+    oldmeans = newmeans;
+    if (meanincs < eps){
+      break;
+    }
+  }
+  // RETURN
+  return(oldmeans);
+}
+//    given the subset of the data, run k-means / MacQueen algorithm
+arma::cube clustering_kmeans18B_kcenters(std::string mfdname, std::string geotype, arma::cube data, int K){
+  // get parameter
+  int M = data.n_slices;
+  int nrow = data.n_rows;
+  int ncol = data.n_cols;
+  
+  // compute initlabel
+  arma::uvec initlabel = helper_kmeans_initlabel(mfdname, data, K);
+  arma::cube centroids = clustering_kmeans18B_macqueen(mfdname, geotype, data, 50, 1e-7, initlabel);
+  return(centroids);
+}
+
+// [[Rcpp::export]]
+Rcpp::List clustering_kmeans18B(std::string mfdname, std::string geotype, Rcpp::List& data, int K, int M, int maxiter){
+  // PARAMETER AND DATA PREP
+  int N = data.size(); double NN = static_cast<double>(N);
+  arma::mat exemplar = Rcpp::as<arma::mat>(data[0]);
+  int nrow = exemplar.n_rows;
+  int ncol = exemplar.n_cols;  
+  arma::cube mydata(nrow,ncol,N,fill::zeros);
+  for (int n=0; n<N; n++){
+    mydata.slice(n) = Rcpp::as<arma::mat>(data[n]);
+  }
+  
+  // STEP 1. COMPUTE MEAN AND DISTANCE
+  arma::mat Xmean = internal_mean(mfdname, geotype, mydata, 50, 1e-6);
+  arma::vec distsq(N,fill::zeros);
+  double    dval = 0.0;
+  for (int n=0; n<N; n++){
+    if (geotype=="intrinsic"){
+      dval = riem_dist(mfdname, Xmean, mydata.slice(n));
+    } else {
+      dval = riem_distext(mfdname, Xmean, mydata.slice(n));
+    }
+    distsq(n) = dval*dval;
+  }
+  double distsqsum = arma::accu(distsq);
+  
+  // STEP 2. COMPUTE PROBABILITY
+  arma::vec probability(N,fill::zeros);
+  for (int n=0; n<N; n++){
+    probability(n) = (0.5/NN) + (0.5*distsq(n)/distsqsum);
+  }
+  
+  // STEP 3. DRAW INDEX FOR CORESET
+  arma::uvec coreid = helper_sample(N, M, probability, false);
+  
+  // RUN K-MEANS CLUSTERING
+  arma::cube sub_data = mydata.slices(coreid);
+  arma::cube kcenters = clustering_kmeans18B_kcenters(mfdname, geotype, sub_data, K);
+
+  arma::mat  distmat(N,K,fill::zeros);
+  for (int n=0; n<N; n++){
+    for (int k=0; k<K; k++){
+      if (geotype=="intrinsic"){
+        distmat(n,k) = riem_dist(mfdname, mydata.slice(n), kcenters.slice(k));
+      } else {
+        distmat(n,k) = riem_distext(mfdname, mydata.slice(n), kcenters.slice(k));
+      }
+    }
+  }
+  arma::uvec cluster(N,fill::zeros);
+  for (int n=0; n<N; n++){
+    cluster(n) = arma::index_min(distmat.row(n));
+  }
+  
+  // COMPUTE SSE
+  double wcss = helper_kmeans_cost(mfdname, geotype, mydata, kcenters, cluster);
+  
+  // RETURN OUTPUT
+  Rcpp::List output;
+  output["means"]   = kcenters;
+  output["cluster"] = cluster;
+  output["wcss"]    = wcss;
   return(output);
 }

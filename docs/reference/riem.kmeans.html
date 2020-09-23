@@ -198,8 +198,8 @@ option with multiple starts and return the best result with respect to WCSS.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a named list containing</p><dl'>
-<dt>means</dt><dd><p>a 3d array where each slice along 3rd dimension is a matrix representation of class mean.</p></dd>
 <dt>cluster</dt><dd><p>a length-\(N\) vector of class labels (from \(1:k\)).</p></dd>
+<dt>means</dt><dd><p>a 3d array where each slice along 3rd dimension is a matrix representation of class mean.</p></dd>
 <dt>score</dt><dd><p>within-cluster sum of squares (WCSS).</p></dd>
 
 </dl>
@@ -243,7 +243,7 @@ In <em>Proceedings of the fifth berkeley symposium on mathematical statistics an
 <span class='no'>myriem</span> <span class='kw'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span>(<span class='no'>mydata</span>)
 <span class='no'>mylabs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>), <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>10</span>)
 
-<span class='co'>## K-MEDOIDS WITH K=2,3,4</span>
+<span class='co'>## K-MEANS WITH K=2,3,4</span>
 <span class='no'>clust2</span> <span class='kw'>=</span> <span class='fu'>riem.kmeans</span>(<span class='no'>myriem</span>, <span class='kw'>k</span><span class='kw'>=</span><span class='fl'>2</span>)
 <span class='no'>clust3</span> <span class='kw'>=</span> <span class='fu'>riem.kmeans</span>(<span class='no'>myriem</span>, <span class='kw'>k</span><span class='kw'>=</span><span class='fl'>3</span>)
 <span class='no'>clust4</span> <span class='kw'>=</span> <span class='fu'>riem.kmeans</span>(<span class='no'>myriem</span>, <span class='kw'>k</span><span class='kw'>=</span><span class='fl'>4</span>)

@@ -49,6 +49,26 @@ clustering_sup_intrinsic <- function(mfdname, data, weight, multiplier, maxiter,
     .Call('_Riemann_clustering_sup_intrinsic', PACKAGE = 'Riemann', mfdname, data, weight, multiplier, maxiter, eps)
 }
 
+clustering_kmeans18B <- function(mfdname, geotype, data, K, M, maxiter) {
+    .Call('_Riemann_clustering_kmeans18B', PACKAGE = 'Riemann', mfdname, geotype, data, K, M, maxiter)
+}
+
+cpp_scNJW <- function(D, K, sigma, usekmeans, maxiter) {
+    .Call('_Riemann_cpp_scNJW', PACKAGE = 'Riemann', D, K, sigma, usekmeans, maxiter)
+}
+
+cpp_scUL <- function(D, K, sigma, usekmeans, maxiter) {
+    .Call('_Riemann_cpp_scUL', PACKAGE = 'Riemann', D, K, sigma, usekmeans, maxiter)
+}
+
+cpp_scSM <- function(D, K, sigma, usekmeans, maxiter) {
+    .Call('_Riemann_cpp_scSM', PACKAGE = 'Riemann', D, K, sigma, usekmeans, maxiter)
+}
+
+cpp_sc05Z <- function(D, K, nnbd, usekmeans, maxiter) {
+    .Call('_Riemann_cpp_sc05Z', PACKAGE = 'Riemann', D, K, nnbd, usekmeans, maxiter)
+}
+
 visualize_pga <- function(mfdname, data) {
     .Call('_Riemann_visualize_pga', PACKAGE = 'Riemann', mfdname, data)
 }

@@ -35,7 +35,6 @@ r-packages:
   - Rdpack
   - RiemBase
   - Rdimtools
-  - T4cluster
   - maotai
   - stats
   - utils
@@ -44,5 +43,6 @@ env:
   global:
     - R_CHECK_ARGS="--no-build-vignettes --no-manual --ignore-vignettes --no-examples"
     - R_BUILD_ARGS="--no-build-vignettes"
+    - RGL_USE_NULL=TRUE
 
 warnings_are_errors: false
