@@ -24,7 +24,10 @@ riem.coreset18B(
 }}
 }
 \value{
-
+a named list containing\describe{
+\item{coreid}{a length-\eqn{M} index vector of the coreset.}
+\item{weight}{a length-\eqn{M} vector of weights for each element.}
+}
 }
 \description{
 Given manifold-valued data \eqn{X_1,X_2,\ldots,X_N \in \mathcal{M}}, this algorithm 

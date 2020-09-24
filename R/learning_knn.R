@@ -91,3 +91,13 @@ riem.knn <- function(riemobj, k=2, geometry=c("intrinsic","extrinsic"), ...){
   output$nn.dists = obj.knn$nn.dists[,2:(myk+1)]
   return(output)
 }
+
+# library(usmap)
+# library(ggplot2)
+# data("cities")
+# mygeo = usmap_transform(data.frame(lon=cities$coord[,2], lat=cities$coord[,1]))
+# 
+# myriem = riem.sphere(cities$cartesian)
+# 
+# plot_usmap(regions="states") + 
+#   geom_point(data=mygeo, aes(x=lon.1, y=lat.1), alpha=0.25)

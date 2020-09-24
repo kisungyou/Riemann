@@ -14,7 +14,7 @@
 #' 
 #' @return a named list containing\describe{
 #' \item{coreid}{a length-\eqn{M} index vector of the coreset.}
-#' \item{weight}{a length-\eqn{M] vector of weights for each element.}
+#' \item{weight}{a length-\eqn{M} vector of weights for each element.}
 #' }
 #' 
 #' @examples 

@@ -14,3 +14,9 @@ RoxygenNote: 7.1.1
 RdMacros: Rdpack
 Depends: 
     R (>= 2.10)
+Suggests: 
+    knitr,
+    rmarkdown,
+    usmap,
+    ggplot2
+VignetteBuilder: knitr

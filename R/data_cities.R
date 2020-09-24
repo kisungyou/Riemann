@@ -1,6 +1,6 @@
 #' Populated Cities in the U.S.
 #' 
-#' As of January 2006, there are 60 cities in the continental U.S. with population size 
+#' As of January 2006, there are 60 cities in the contiguous U.S. with population size 
 #' larger than \eqn{300000}. We extracted information of the cities from the data 
 #' delivered by \pkg{maps} package. Variables \code{coord} and \code{cartesian} are 
 #' two identical representations of locations, which can be mutually converted by 
