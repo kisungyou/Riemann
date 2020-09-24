@@ -1,6 +1,7 @@
 #include <RcppArmadillo.h>
 #include "riemann_src.h"
 #include "riemann_manifolds.h"
+#include <RcppArmadilloExtensions/sample.h>
 
 using namespace Rcpp;
 using namespace arma;
@@ -355,5 +356,11 @@ arma::mat internal_logvectors(std::string mfd, arma::cube data){
   for (int n=0; n<N; n++){
     output.row(n) = arma::trans(arma::vectorise(riem_log(mfd, X, data.slice(n))));
   }
+  return(output);
+}
+arma::uvec helper_sample(int N, int m, arma::vec prob, bool replace){
+  arma::uvec x     = arma::linspace<arma::uvec>(0L, N-1L, N);
+  arma::vec myprob = prob/arma::accu(prob);
+  arma::uvec output = Rcpp::RcppArmadillo::sample(x, m, replace, myprob);
   return(output);
 }

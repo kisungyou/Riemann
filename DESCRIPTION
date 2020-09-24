@@ -5,7 +5,7 @@ Version: 0.1.1
 Authors@R: c(person("Kisung", "You", role = c("aut", "cre"), email = "kyoustat@gmail.com",comment=c(ORCID="0000-0002-8584-459X")))
 Description: We provide a variety of algorithms for manifold-valued data, including Fréchet summaries, hypothesis testing, clustering, visualization, and other learning tasks. See Bhattacharya and Bhattacharya (2012) <doi:10.1017/CBO9781139094764> for general exposition to statistics on manifolds.
 License: MIT + file LICENSE
-Imports: Rcpp (>= 1.0.5), Rdpack, RiemBase, Rdimtools, lpSolve, maotai, stats, utils
+Imports: Rcpp (>= 1.0.5), Rdpack, RiemBase, Rdimtools, T4cluster, lpSolve, maotai, stats, utils
 Encoding: UTF-8
 URL: http://kyoustat.com/Riemann/
 BugReports: https://github.com/kyoustat/Riemann/issues

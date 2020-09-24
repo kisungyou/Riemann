@@ -89,6 +89,10 @@ learning_rmml <- function(mfdname, data, lambda, label) {
     .Call('_Riemann_learning_rmml', PACKAGE = 'Riemann', mfdname, data, lambda, label)
 }
 
+learning_coreset18B <- function(mfdname, geoname, data, M, myiter, myeps) {
+    .Call('_Riemann_learning_coreset18B', PACKAGE = 'Riemann', mfdname, geoname, data, M, myiter, myeps)
+}
+
 runif_sphere <- function(n, p) {
     .Call('_Riemann_runif_sphere', PACKAGE = 'Riemann', n, p)
 }

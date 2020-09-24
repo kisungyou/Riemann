@@ -331,6 +331,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// learning_coreset18B
+Rcpp::List learning_coreset18B(std::string mfdname, std::string geoname, Rcpp::List& data, int M, int myiter, double myeps);
+RcppExport SEXP _Riemann_learning_coreset18B(SEXP mfdnameSEXP, SEXP geonameSEXP, SEXP dataSEXP, SEXP MSEXP, SEXP myiterSEXP, SEXP myepsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfdname(mfdnameSEXP);
+    Rcpp::traits::input_parameter< std::string >::type geoname(geonameSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type M(MSEXP);
+    Rcpp::traits::input_parameter< int >::type myiter(myiterSEXP);
+    Rcpp::traits::input_parameter< double >::type myeps(myepsSEXP);
+    rcpp_result_gen = Rcpp::wrap(learning_coreset18B(mfdname, geoname, data, M, myiter, myeps));
+    return rcpp_result_gen;
+END_RCPP
+}
 // runif_sphere
 arma::mat runif_sphere(int n, int p);
 RcppExport SEXP _Riemann_runif_sphere(SEXP nSEXP, SEXP pSEXP) {
@@ -436,6 +452,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_visualize_isomap", (DL_FUNC) &_Riemann_visualize_isomap, 4},
     {"_Riemann_learning_seb", (DL_FUNC) &_Riemann_learning_seb, 5},
     {"_Riemann_learning_rmml", (DL_FUNC) &_Riemann_learning_rmml, 4},
+    {"_Riemann_learning_coreset18B", (DL_FUNC) &_Riemann_learning_coreset18B, 6},
     {"_Riemann_runif_sphere", (DL_FUNC) &_Riemann_runif_sphere, 2},
     {"_Riemann_runif_stiefel", (DL_FUNC) &_Riemann_runif_stiefel, 3},
     {"_Riemann_mat_rank", (DL_FUNC) &_Riemann_mat_rank, 1},

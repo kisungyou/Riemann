@@ -38,6 +38,8 @@ r-packages:
   - maotai
   - stats
   - utils
+  - ggplot2
+  - usmap
 
 env:
   global:

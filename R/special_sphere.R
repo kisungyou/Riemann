@@ -1,6 +1,7 @@
 ## SOME SPECIAL FUNCTIONS ON SPHERE
 #  (01) sphere.runif
 #  (02) sphere.utest
+#  (03) sphere.convert
 
 # (01) sphere.runif ============================================================
 #' Generate Uniform Samples on Sphere
@@ -152,4 +153,65 @@ sp.utest.Rayleigh <- function(x, dname, is.original=TRUE){
   res   = list(statistic=thestat, p.value=pvalue, alternative = Ha, method=hname, data.name = dname)
   class(res) = "htest"
   return(res)
+}
+
+#  (03) sphere.convert =========================================================
+#  https://stackoverflow.com/questions/1185408/converting-from-longitude-latitude-to-cartesian-coordinates
+#' Convert between Cartesian Coordinates and Geographic Coordinates
+#' 
+#' In geospatial data analysis, it is common to consider locations on the Earth as 
+#' data. These locations, usually provided by latitude and longitude, are not directly 
+#' applicable for spherical data analysis. We provide two functions - \code{sphere.geo2xyz} and \code{sphere.xyz2geo} - 
+#' that convert geographic coordinates in longitude/latitude into a unit-norm vector on \eqn{\mathcal{S}^2}, and vice versa. 
+#' As a convention, latitude and longitude are represented as \emph{decimal degrees}. 
+#' 
+#' @param lat latitude (in decimal degrees).
+#' @param lon longitude (in decimal degrees).
+#' @param xyz a unit-norm vector in \eqn{\mathcal{S}^{2}}.
+#' 
+#' @return transformed data.
+#' 
+#' @examples 
+#' ## EXAMPLE DATA WITH POPULATED US CITIES
+#' data(cities)
+#' 
+#' ## SELECT ALBUQUERQUE
+#' geo = cities$coord[1,]
+#' xyz = cities$cartesian[1,]
+#' 
+#' ## CHECK TWO INPUT TYPES AND THEIR CONVERSIONS
+#' sphere.geo2xyz(geo[1], geo[2])
+#' sphere.xyz2geo(xyz)
+#' 
+#' @name sphere.convert
+#' @concept sphere
+#' @rdname sphere.convert
+NULL
+
+#' @rdname sphere.convert
+#' @export
+sphere.geo2xyz <- function(lat, lon){
+  xlat = as.double(lat)*pi/180
+  xlon = as.double(lon)*pi/180
+  
+  x = cos(xlat)*cos(xlon)
+  y = cos(xlat)*sin(xlon)
+  z = sin(xlat)
+  
+  outvec = c(x,y,z)
+  return(outvec/sqrt(sum(outvec^2)))
+}
+
+#' @rdname sphere.convert
+#' @export
+sphere.xyz2geo <- function(xyz){
+  x = as.double(xyz[1])
+  y = as.double(xyz[2])
+  z = as.double(xyz[3])
+  
+  latitude  = 180*asin(z)/pi
+  longitude = 180*atan2(y,x)/pi
+  
+  output = c(latitude, longitude)
+  return(output)
 }

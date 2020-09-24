@@ -66,8 +66,8 @@ riem.mean <- function(riemobj, weight=NULL, geometry=c("intrinsic","extrinsic"),
   # IMPLICIT PARAMETERS 
   pars   = list(...)
   pnames = names(pars)
-  myiter = ifelse(("maxiter"%in%pnames), max(50, round(pars$maxiter)), 50)
-  myeps  = ifelse(("eps"%in%pnames), min(max(as.double(pars$eps),0),1e-5), 1e-5)
+  myiter = max(50, ifelse(("maxiter"%in%pnames), pars$maxiter, 50))
+  myeps  = min(1e-5, max(0, ifelse(("eps"%in%pnames), as.double(pars$eps), 1e-5)))
   
   
   ## MAIN COMPUTATION

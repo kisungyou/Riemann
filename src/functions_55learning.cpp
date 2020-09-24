@@ -1,12 +1,14 @@
 #include <RcppArmadillo.h>
 #include "riemann_src.h"
+#include <algorithm>
 
 using namespace Rcpp;
 using namespace arma;
 using namespace std;
 
-// 1. learning_seb  : smallest enclosing ball
-// 2. learning_rmml : riemannian manifold metric learning
+// 1. learning_seb        : smallest enclosing ball
+// 2. learning_rmml       : riemannian manifold metric learning
+// 3. learning_coreset18B : lightweight coreset
 
 // 1. learning_seb : smallest enclosing ball ===================================
 arma::mat learning_seb_aa2013(std::string mfdname, arma::field<arma::mat> mydata, int myiter, double myeps){
@@ -168,5 +170,48 @@ arma::mat learning_rmml(std::string mfdname, Rcpp::List& data, double lambda, ar
 
   // COMPUTE GMML
   arma::mat output = alg_GMMLreg(eqmat, label, lambda);
+  return(output);
+}
+
+// 3. learning_coreset18B : lightweight coreset ================================
+// [[Rcpp::export]]
+Rcpp::List learning_coreset18B(std::string mfdname, std::string geoname, Rcpp::List& data, int M, int myiter, double myeps){
+  // PARAMETER AND DATA PREP
+  int N = data.size(); double NN = static_cast<double>(N);
+  arma::mat exemplar = Rcpp::as<arma::mat>(data[0]);
+  int nrow = exemplar.n_rows;
+  int ncol = exemplar.n_cols;  
+  arma::cube mydata(nrow,ncol,N,fill::zeros);
+  for (int n=0; n<N; n++){
+    mydata.slice(n) = Rcpp::as<arma::mat>(data[n]);
+  }
+  
+  // STEP 1. COMPUTE MEAN AND DISTANCE
+  arma::mat Xmean = internal_mean(mfdname, geoname, mydata, myiter, myeps);
+  arma::vec distsq(N,fill::zeros);
+  double    dval = 0.0;
+  for (int n=0; n<N; n++){
+    if (geoname=="intrinsic"){
+      dval = riem_dist(mfdname, Xmean, mydata.slice(n));
+    } else {
+      dval = riem_distext(mfdname, Xmean, mydata.slice(n));
+    }
+    distsq(n) = dval*dval;
+  }
+  double distsqsum = arma::accu(distsq);
+  
+  // STEP 2. COMPUTE PROBABILITY
+  arma::vec probability(N,fill::zeros);
+  for (int n=0; n<N; n++){
+    probability(n) = (0.5/NN) + (0.5*distsq(n)/distsqsum);
+  }
+  
+  // STEP 3. DRAW INDEX FOR CORESET
+  arma::uvec coreid = helper_sample(N, M, probability, false);
+  
+  // RETURN
+  Rcpp::List output;
+  output["qx"] = probability;
+  output["id"] = coreid;
   return(output);
 }

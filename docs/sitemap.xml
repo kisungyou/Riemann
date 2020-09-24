@@ -4,6 +4,9 @@
     <loc>https://kyoustat.com/Riemann//index.html</loc>
   </url>
   <url>
+    <loc>https://kyoustat.com/Riemann//reference/cities.html</loc>
+  </url>
+  <url>
     <loc>https://kyoustat.com/Riemann//reference/gorilla.html</loc>
   </url>
   <url>
@@ -17,6 +20,9 @@
   </url>
   <url>
     <loc>https://kyoustat.com/Riemann//reference/riem.clrq.html</loc>
+  </url>
+  <url>
+    <loc>https://kyoustat.com/Riemann//reference/riem.coreset18B.html</loc>
   </url>
   <url>
     <loc>https://kyoustat.com/Riemann//reference/riem.fanova.html</loc>
@@ -98,6 +104,9 @@
   </url>
   <url>
     <loc>https://kyoustat.com/Riemann//reference/riem.wasserstein.html</loc>
+  </url>
+  <url>
+    <loc>https://kyoustat.com/Riemann//reference/sphere.convert.html</loc>
   </url>
   <url>
     <loc>https://kyoustat.com/Riemann//reference/sphere.runif.html</loc>

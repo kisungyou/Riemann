@@ -4,7 +4,7 @@
 #' \eqn{N} observations \eqn{Y_1, Y_2, \ldots, Y_N \in \mathcal{M}}, permutation 
 #' test based on the Wasserstein metric (see \code{\link{riem.wasserstein}} for 
 #' more details) is applied to test whether two distributions are same or not, i.e.,
-#' \deqn{H_0~:~\mu_X = \mu_Y}
+#' \deqn{H_0~:~\mathcal{P}_X = \mathcal{P}_Y}
 #' with Wasserstein metric \eqn{\mathcal{W}_p} being the measure of discrepancy 
 #' between two samples.
 #' 

@@ -9,11 +9,12 @@
 #' @aliases Riemann-package
 #' @import Rdpack
 #' @import maotai
+#' @importFrom T4cluster sc05Z
 #' @importFrom Rdimtools aux.shortestpath
 #' @importFrom lpSolve lp
 #' @importFrom RiemBase riemfactory
 #' @importFrom utils packageVersion getFromNamespace
-#' @importFrom stats cor rnorm pchisq cov cutree
+#' @importFrom stats cor rnorm pchisq cov cutree as.dist
 #' @importFrom Rcpp evalCpp
 #' @useDynLib Riemann
 NULL

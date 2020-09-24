@@ -1,5 +1,4 @@
 #include <RcppArmadillo.h>
-#include <RcppArmadilloExtensions/sample.h>
 #include "riemann_src.h"
 #include <algorithm>
 
@@ -12,7 +11,6 @@ using namespace std;
 // helper_centers          : given uvec & datacube, return the centers of cubes
 // helper_kmeans_cost      : compute the cost of k-means objective
 // helper_assign_centroids : assign each individual to the closest centroid
-// helper_sample           : sample integers
 // helper_kmeans_initlabel : compute the approximate cluster label
 
 // MAIN ALGORITHMS
@@ -90,12 +88,6 @@ arma::uvec helper_assign_centroids(std::string mfd, std::string dtype, arma::cub
   for (int n=0; n<N; n++){
     output(n) = index_min(distmat.row(n));
   }
-  return(output);
-}
-arma::uvec helper_sample(int N, int m, arma::vec prob, bool replace){
-  arma::uvec x     = arma::linspace<arma::uvec>(0L, N-1L, N);
-  arma::vec myprob = prob/arma::accu(prob);
-  arma::uvec output = Rcpp::RcppArmadillo::sample(x, m, replace, myprob);
   return(output);
 }
 arma::uvec helper_kmeans_initlabel(std::string mfdname, arma::cube data, int K){

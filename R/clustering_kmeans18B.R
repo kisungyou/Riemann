@@ -1,12 +1,12 @@
 #' K-Means Clustering with Lightweight Coreset
 #' 
 #' The modified version of lightweight coreset for scalable \eqn{k}-means computation 
-#' is applied for manifold-valued data \eqn{X_1,X_2,\ldots,X_N \in \mathcal{N}}. 
+#' is applied for manifold-valued data \eqn{X_1,X_2,\ldots,X_N \in \mathcal{M}}. 
 #' The smaller the set is, the faster the execution becomes with potentially larger quantization errors.
 #' 
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
 #' @param k the number of clusters.
-#' @param m the size of coreset (default: \eqn{N/2}).
+#' @param M the size of coreset (default: \eqn{N/2}).
 #' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
 #' @param ... extra parameters including\describe{
 #' \item{maxiter}{maximum number of iterations to be run (default:50).}
@@ -45,9 +45,9 @@
 #' mylabs = rep(c(1,2,3), each=10)
 #' 
 #' ## TRY DIFFERENT SIZES OF CORESET WITH K=4 FIXED
-#' core1 = riem.kmeans18B(myriem, k=3, m=5)
-#' core2 = riem.kmeans18B(myriem, k=3, m=10)
-#' core3 = riem.kmeans18B(myriem, k=3, m=15)
+#' core1 = riem.kmeans18B(myriem, k=3, M=5)
+#' core2 = riem.kmeans18B(myriem, k=3, M=10)
+#' core3 = riem.kmeans18B(myriem, k=3, M=15)
 #' 
 #' ## MDS FOR VISUALIZATION
 #' mds2d = riem.mds(myriem, ndim=2)$embed
@@ -56,22 +56,23 @@
 #' opar <- par(no.readonly=TRUE)
 #' par(mfrow=c(2,2), pty="s")
 #' plot(mds2d, pch=19, main="true label", col=mylabs)
-#' plot(mds2d, pch=19, main="kmeans18B: m=5",  col=core1$cluster)
-#' plot(mds2d, pch=19, main="kmeans18B: m=10", col=core2$cluster)
-#' plot(mds2d, pch=19, main="kmeans18B: m=15", col=core3$cluster)
+#' plot(mds2d, pch=19, main="kmeans18B: M=5",  col=core1$cluster)
+#' plot(mds2d, pch=19, main="kmeans18B: M=10", col=core2$cluster)
+#' plot(mds2d, pch=19, main="kmeans18B: M=15", col=core3$cluster)
 #' par(opar)
 #' 
 #' @references 
 #' \insertRef{bachem_scalable_2018a}{Riemann}
 #' 
+#' @seealso \code{\link{riem.coreset18B}}
 #' @concept clustering
 #' @export
-riem.kmeans18B <- function(riemobj, k=2, m=length(riemobj$data)/2, geometry=c("intrinsic","extrinsic"), ...){
+riem.kmeans18B <- function(riemobj, k=2, M=length(riemobj$data)/2, geometry=c("intrinsic","extrinsic"), ...){
   ## PREPARE
   N       = length(riemobj$data)
   par.geo = ifelse(missing(geometry),"intrinsic",match.arg(tolower(geometry),c("intrinsic","extrinsic")))
   par.k   = max(1, round(k))
-  par.m   = max(2*par.k, round(m))
+  par.m   = max(2*par.k, round(M))
   
   # IMPLICIT PARAMETERS 
   pars   = list(...)
