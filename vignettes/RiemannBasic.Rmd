@@ -103,4 +103,4 @@ plot(myplot)
 ```
 
 
-From the plot above, we can observe that **\textcolor{blue}{geometric}** center is right next to Wichita, KS whereas **\textcolor{red}{euclidean}** center of locations is a bit deviated, lying between Wichita and Albuquerque, NM. 
+From the plot above, we can observe that **geometric** center is right next to Wichita, KS whereas **euclidean** center of locations is a bit deviated, lying between Wichita and Albuquerque, NM. 
