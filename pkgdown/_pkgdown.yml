@@ -6,7 +6,7 @@
 #     api_key:
 #      indexname: Riemann
 
-url: https://kyoustat.com/Riemann/
+url: https://kyoustat.com/Riemann
 
 destination: docs
 
