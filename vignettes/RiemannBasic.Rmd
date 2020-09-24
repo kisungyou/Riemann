@@ -40,7 +40,7 @@ Now we are ready to go by loading the library.
 library(Riemann)
 ```
 
-## What You Need to Do : Wrap the Data
+## Users, Wrap the Data!
 
 Our package is designed to be a *friendly toolkit* for those with less computational expertise. Therefore, we decided to make the structure and workflow of the package exposed to users as simple as possible. To serve its purpose best, we decided to be a bit coercive; **users, prepare the data** (please).
 
