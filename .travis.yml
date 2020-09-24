@@ -38,7 +38,17 @@ r-packages:
   - maotai
   - stats
   - utils
+  - maptools
   - ggplot2
+  - ggrepel
+  - knitr
+  - proto
+  - rgdal
+  - rmarkdown
+  - scales
+  - sp
+  - stringr
+  - testthat
   - usmap
 
 env:

@@ -18,5 +18,6 @@ Suggests:
     knitr,
     rmarkdown,
     usmap,
-    ggplot2
+    ggplot2,
+    maptools
 VignetteBuilder: knitr
