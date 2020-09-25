@@ -179,13 +179,13 @@ is applied for manifold-valued data \(X_1,X_2,\ldots,X_N \in \mathcal{M}\).
 The smaller the set is, the faster the execution becomes with potentially larger quantization errors.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>riem.kmeans18B</span>(
-  <span class='no'>riemobj</span>,
-  <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>M</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>riemobj</span>$<span class='no'>data</span>)/<span class='fl'>2</span>,
-  <span class='kw'>geometry</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"intrinsic"</span>, <span class='st'>"extrinsic"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>riem.kmeans18B</span><span class='op'>(</span>
+  <span class='va'>riemobj</span>,
+  k <span class='op'>=</span> <span class='fl'>2</span>,
+  M <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>riemobj</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>2</span>,
+  geometry <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"intrinsic"</span>, <span class='st'>"extrinsic"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -208,7 +208,7 @@ The smaller the set is, the faster the execution becomes with potentially larger
     </tr>
     <tr>
       <th>...</th>
-      <td><p>extra parameters including</p><dl'>
+      <td><p>extra parameters including</p><dl>
 <dt>maxiter</dt><dd><p>maximum number of iterations to be run (default:50).</p></dd>
 <dt>nstart</dt><dd><p>the number of random starts (default: 5).</p></dd>
 
@@ -218,7 +218,7 @@ The smaller the set is, the faster the execution becomes with potentially larger
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a named list containing</p><dl'>
+    <p>a named list containing</p><dl>
 <dt>cluster</dt><dd><p>a length-\(N\) vector of class labels (from \(1:k\)).</p></dd>
 <dt>means</dt><dd><p>a 3d array where each slice along 3rd dimension is a matrix representation of class mean.</p></dd>
 <dt>score</dt><dd><p>within-cluster sum of squares (WCSS).</p></dd>
@@ -245,37 +245,40 @@ ISBN 978-1-4503-5552-0, doi: <a href='https://doi.org/10.1145/3219819.3219973'>1
 <span class='co'># class 3 : 10 perturbed data points near (0,0,1) on S^2 in R^3</span>
 <span class='co'>#-------------------------------------------------------------------</span>
 <span class='co'>## GENERATE DATA</span>
-<span class='no'>mydata</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>10</span>){
-  <span class='no'>tgt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>2</span>, <span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>))
-  <span class='no'>mydata</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tgt</span>/<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>tgt</span>^<span class='fl'>2</span>))
-}
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>11</span>:<span class='fl'>20</span>){
-  <span class='no'>tgt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>,<span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>),<span class='fl'>1</span>,<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>,<span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>))
-  <span class='no'>mydata</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tgt</span>/<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>tgt</span>^<span class='fl'>2</span>))
-}
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>21</span>:<span class='fl'>30</span>){
-  <span class='no'>tgt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>2</span>, <span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>), <span class='fl'>1</span>)
-  <span class='no'>mydata</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tgt</span>/<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>tgt</span>^<span class='fl'>2</span>))
-}
-<span class='no'>myriem</span> <span class='kw'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span>(<span class='no'>mydata</span>)
-<span class='no'>mylabs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>), <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>10</span>)
+<span class='va'>mydata</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>tgt</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>2</span>, sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>mydata</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tgt</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>tgt</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>11</span><span class='op'>:</span><span class='fl'>20</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>tgt</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>1</span>,sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span>,<span class='fl'>1</span>,<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>1</span>,sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>mydata</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tgt</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>tgt</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>21</span><span class='op'>:</span><span class='fl'>30</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>tgt</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>2</span>, sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>
+  <span class='va'>mydata</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tgt</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>tgt</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='va'>myriem</span> <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='va'>mydata</span><span class='op'>)</span>
+<span class='va'>mylabs</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>, each<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span>
 
 <span class='co'>## TRY DIFFERENT SIZES OF CORESET WITH K=4 FIXED</span>
-<span class='no'>core1</span> <span class='kw'>=</span> <span class='fu'>riem.kmeans18B</span>(<span class='no'>myriem</span>, <span class='kw'>k</span><span class='kw'>=</span><span class='fl'>3</span>, <span class='kw'>M</span><span class='kw'>=</span><span class='fl'>5</span>)
-<span class='no'>core2</span> <span class='kw'>=</span> <span class='fu'>riem.kmeans18B</span>(<span class='no'>myriem</span>, <span class='kw'>k</span><span class='kw'>=</span><span class='fl'>3</span>, <span class='kw'>M</span><span class='kw'>=</span><span class='fl'>10</span>)
-<span class='no'>core3</span> <span class='kw'>=</span> <span class='fu'>riem.kmeans18B</span>(<span class='no'>myriem</span>, <span class='kw'>k</span><span class='kw'>=</span><span class='fl'>3</span>, <span class='kw'>M</span><span class='kw'>=</span><span class='fl'>15</span>)
+<span class='va'>core1</span> <span class='op'>=</span> <span class='fu'>riem.kmeans18B</span><span class='op'>(</span><span class='va'>myriem</span>, k<span class='op'>=</span><span class='fl'>3</span>, M<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span>
+<span class='va'>core2</span> <span class='op'>=</span> <span class='fu'>riem.kmeans18B</span><span class='op'>(</span><span class='va'>myriem</span>, k<span class='op'>=</span><span class='fl'>3</span>, M<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span>
+<span class='va'>core3</span> <span class='op'>=</span> <span class='fu'>riem.kmeans18B</span><span class='op'>(</span><span class='va'>myriem</span>, k<span class='op'>=</span><span class='fl'>3</span>, M<span class='op'>=</span><span class='fl'>15</span><span class='op'>)</span>
 
 <span class='co'>## MDS FOR VISUALIZATION</span>
-<span class='no'>mds2d</span> <span class='kw'>=</span> <span class='fu'><a href='riem.mds.html'>riem.mds</a></span>(<span class='no'>myriem</span>, <span class='kw'>ndim</span><span class='kw'>=</span><span class='fl'>2</span>)$<span class='no'>embed</span>
+<span class='va'>mds2d</span> <span class='op'>=</span> <span class='fu'><a href='riem.mds.html'>riem.mds</a></span><span class='op'>(</span><span class='va'>myriem</span>, ndim<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>$</span><span class='va'>embed</span>
 
 <span class='co'>## VISUALIZE</span>
-<span class='no'>opar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>no.readonly</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>2</span>), <span class='kw'>pty</span><span class='kw'>=</span><span class='st'>"s"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>mds2d</span>, <span class='kw'>pch</span><span class='kw'>=</span><span class='fl'>19</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"true label"</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>mylabs</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>mds2d</span>, <span class='kw'>pch</span><span class='kw'>=</span><span class='fl'>19</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"kmeans18B: M=5"</span>,  <span class='kw'>col</span><span class='kw'>=</span><span class='no'>core1</span>$<span class='no'>cluster</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>mds2d</span>, <span class='kw'>pch</span><span class='kw'>=</span><span class='fl'>19</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"kmeans18B: M=10"</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>core2</span>$<span class='no'>cluster</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>mds2d</span>, <span class='kw'>pch</span><span class='kw'>=</span><span class='fl'>19</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"kmeans18B: M=15"</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>core3</span>$<span class='no'>cluster</span>)</div><div class='img'><img src='riem.kmeans18B-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='no'>opar</span>)</div></pre>
+<span class='va'>opar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>2</span><span class='op'>)</span>, pty<span class='op'>=</span><span class='st'>"s"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mds2d</span>, pch<span class='op'>=</span><span class='fl'>19</span>, main<span class='op'>=</span><span class='st'>"true label"</span>, col<span class='op'>=</span><span class='va'>mylabs</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mds2d</span>, pch<span class='op'>=</span><span class='fl'>19</span>, main<span class='op'>=</span><span class='st'>"kmeans18B: M=5"</span>,  col<span class='op'>=</span><span class='va'>core1</span><span class='op'>$</span><span class='va'>cluster</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mds2d</span>, pch<span class='op'>=</span><span class='fl'>19</span>, main<span class='op'>=</span><span class='st'>"kmeans18B: M=10"</span>, col<span class='op'>=</span><span class='va'>core2</span><span class='op'>$</span><span class='va'>cluster</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mds2d</span>, pch<span class='op'>=</span><span class='fl'>19</span>, main<span class='op'>=</span><span class='st'>"kmeans18B: M=15"</span>, col<span class='op'>=</span><span class='va'>core3</span><span class='op'>$</span><span class='va'>cluster</span><span class='op'>)</span>
+</div><div class='img'><img src='riem.kmeans18B-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -291,7 +294,7 @@ ISBN 978-1-4503-5552-0, doi: <a href='https://doi.org/10.1145/3219819.3219973'>1
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

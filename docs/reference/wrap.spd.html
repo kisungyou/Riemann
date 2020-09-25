@@ -183,14 +183,14 @@ where the rank condition means it is strictly positive definite. Please note tha
 the geometry involving semi-definite matrices is considered in <code>wrap.spdk</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>wrap.spd</span>(<span class='no'>input</span>)</pre>
+    <pre class="usage"><span class='fu'>wrap.spd</span><span class='op'>(</span><span class='va'>input</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>input</th>
-      <td><p>SPD data matrices to be wrapped as <code>riemdata</code> class. Following inputs are considered,</p><dl'>
+      <td><p>SPD data matrices to be wrapped as <code>riemdata</code> class. Following inputs are considered,</p><dl>
 <dt>array</dt><dd><p>an \((p\times p\times n)\) array where each slice along 3rd dimension is a SPD matrix.</p></dd>
 <dt>list</dt><dd><p>a length-\(n\) list whose elements are \((p\times p)\) SPD matrices.</p></dd>
 
@@ -200,7 +200,7 @@ the geometry involving semi-definite matrices is considered in <code>wrap.spdk</
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a named <code>riemdata</code> S3 object containing</p><dl'>
+    <p>a named <code>riemdata</code> S3 object containing</p><dl>
   <dt>data</dt><dd><p>a list of \((p\times p)\) correlation matrices.</p></dd>
   <dt>size</dt><dd><p>size of each correlation matrix.</p></dd>
   <dt>name</dt><dd><p>name of the manifold of interests, <em>"spd"</em></p></dd>
@@ -215,17 +215,19 @@ the geometry involving semi-definite matrices is considered in <code>wrap.spdk</
 <span class='co'>#  Generate 5 observations; empirical covariance of normal observations.</span>
 <span class='co'>#-------------------------------------------------------------------</span>
 <span class='co'>#  Data Generation</span>
-<span class='no'>d1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/array.html'>array</a></span>(<span class='fl'>0</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>5</span>))
-<span class='no'>d2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>5</span>){
-  <span class='no'>dat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>10</span>*<span class='fl'>3</span>),<span class='kw'>ncol</span><span class='kw'>=</span><span class='fl'>3</span>)
-  <span class='no'>d1</span>[,,<span class='no'>i</span>] <span class='kw'>=</span> <span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cov</a></span>(<span class='no'>dat</span>)
-  <span class='no'>d2</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>d1</span>[,,<span class='no'>i</span>]
-}
+<span class='va'>d1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/array.html'>array</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>d2</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>dat</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>*</span><span class='fl'>3</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span>
+  <span class='va'>d1</span><span class='op'>[</span>,,<span class='va'>i</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cov</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
+  <span class='va'>d2</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>d1</span><span class='op'>[</span>,,<span class='va'>i</span><span class='op'>]</span>
+<span class='op'>}</span>
 
 <span class='co'>#  Run</span>
-<span class='no'>test1</span> <span class='kw'>=</span> <span class='fu'>wrap.spd</span>(<span class='no'>d1</span>)
-<span class='no'>test2</span> <span class='kw'>=</span> <span class='fu'>wrap.spd</span>(<span class='no'>d2</span>)</div></pre>
+<span class='va'>test1</span> <span class='op'>=</span> <span class='fu'>wrap.spd</span><span class='op'>(</span><span class='va'>d1</span><span class='op'>)</span>
+<span class='va'>test2</span> <span class='op'>=</span> <span class='fu'>wrap.spd</span><span class='op'>(</span><span class='va'>d2</span><span class='op'>)</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -241,7 +243,7 @@ the geometry involving semi-definite matrices is considered in <code>wrap.spdk</
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

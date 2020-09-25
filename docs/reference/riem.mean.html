@@ -185,7 +185,7 @@ If non-uniform weights are given, normalized version of the mean is computed
 and if <code>weight=NULL</code>, it automatically sets equal weights for all observations.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>riem.mean</span>(<span class='no'>riemobj</span>, <span class='kw'>weight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>geometry</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"intrinsic"</span>, <span class='st'>"extrinsic"</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>riem.mean</span><span class='op'>(</span><span class='va'>riemobj</span>, weight <span class='op'>=</span> <span class='cn'>NULL</span>, geometry <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"intrinsic"</span>, <span class='st'>"extrinsic"</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -204,7 +204,7 @@ and if <code>weight=NULL</code>, it automatically sets equal weights for all obs
     </tr>
     <tr>
       <th>...</th>
-      <td><p>extra parameters including</p><dl'>
+      <td><p>extra parameters including</p><dl>
 <dt>maxiter</dt><dd><p>maximum number of iterations to be run (default:50).</p></dd>
 <dt>eps</dt><dd><p>tolerance level for stopping criterion (default: 1e-5).</p></dd>
 
@@ -214,7 +214,7 @@ and if <code>weight=NULL</code>, it automatically sets equal weights for all obs
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a named list containing</p><dl'>
+    <p>a named list containing</p><dl>
 <dt>mean</dt><dd><p>a mean matrix on \(\mathcal{M}\).</p></dd>
 <dt>variation</dt><dd><p>sum of (weighted) squared distances.</p></dd>
 
@@ -226,22 +226,27 @@ and if <code>weight=NULL</code>, it automatically sets equal weights for all obs
 <span class='co'>#        Example on Sphere : points near (0,1) on S^1 in R^2</span>
 <span class='co'>#-------------------------------------------------------------------</span>
 <span class='co'>## GENERATE DATA</span>
-<span class='no'>ndata</span> <span class='kw'>=</span> <span class='fl'>50</span>
-<span class='no'>mydat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/array.html'>array</a></span>(<span class='fl'>0</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>ndata</span>,<span class='fl'>2</span>))
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='no'>ndata</span>){
-  <span class='no'>tgt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>, <span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>2</span>), <span class='fl'>1</span>)
-  <span class='no'>mydat</span>[<span class='no'>i</span>,] <span class='kw'>=</span> <span class='no'>tgt</span>/<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>tgt</span>^<span class='fl'>2</span>))
-}
-<span class='no'>myriem</span> <span class='kw'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span>(<span class='no'>mydat</span>)
+<span class='va'>ndata</span> <span class='op'>=</span> <span class='fl'>50</span>
+<span class='va'>mydat</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/array.html'>array</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>ndata</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>ndata</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>tgt</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>1</span>, sd<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>
+  <span class='va'>mydat</span><span class='op'>[</span><span class='va'>i</span>,<span class='op'>]</span> <span class='op'>=</span> <span class='va'>tgt</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>tgt</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='va'>myriem</span> <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='va'>mydat</span><span class='op'>)</span>
 
 <span class='co'>## COMPUTE TWO MEANS</span>
-<span class='no'>mean.int</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/vector.html'>as.vector</a></span>(<span class='fu'>riem.mean</span>(<span class='no'>myriem</span>, <span class='kw'>geometry</span><span class='kw'>=</span><span class='st'>"intrinsic"</span>)$<span class='no'>mean</span>)
-<span class='no'>mean.ext</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/vector.html'>as.vector</a></span>(<span class='fu'>riem.mean</span>(<span class='no'>myriem</span>, <span class='kw'>geometry</span><span class='kw'>=</span><span class='st'>"extrinsic"</span>)$<span class='no'>mean</span>)
+<span class='va'>mean.int</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/vector.html'>as.vector</a></span><span class='op'>(</span><span class='fu'>riem.mean</span><span class='op'>(</span><span class='va'>myriem</span>, geometry<span class='op'>=</span><span class='st'>"intrinsic"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>mean</span><span class='op'>)</span>
+<span class='va'>mean.ext</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/vector.html'>as.vector</a></span><span class='op'>(</span><span class='fu'>riem.mean</span><span class='op'>(</span><span class='va'>myriem</span>, geometry<span class='op'>=</span><span class='st'>"extrinsic"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>mean</span><span class='op'>)</span>
 
 <span class='co'>## VISUALIZE</span>
-<span class='no'>opar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>no.readonly</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>mydat</span>[,<span class='fl'>1</span>], <span class='no'>mydat</span>[,<span class='fl'>2</span>], <span class='kw'>pch</span><span class='kw'>=</span><span class='fl'>19</span>, <span class='kw'>xlim</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1.1</span>,<span class='fl'>1.1</span>), <span class='kw'>ylim</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>1.1</span>),
-     <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"BLUE-extrinsic vs RED-intrinsic"</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/arrows.html'>arrows</a></span>(<span class='kw'>x0</span><span class='kw'>=</span><span class='fl'>0</span>,<span class='kw'>y0</span><span class='kw'>=</span><span class='fl'>0</span>,<span class='kw'>x1</span><span class='kw'>=</span><span class='no'>mean.int</span>[<span class='fl'>1</span>],<span class='kw'>y1</span><span class='kw'>=</span><span class='no'>mean.int</span>[<span class='fl'>2</span>],<span class='kw'>col</span><span class='kw'>=</span><span class='st'>"red"</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/arrows.html'>arrows</a></span>(<span class='kw'>x0</span><span class='kw'>=</span><span class='fl'>0</span>,<span class='kw'>y0</span><span class='kw'>=</span><span class='fl'>0</span>,<span class='kw'>x1</span><span class='kw'>=</span><span class='no'>mean.ext</span>[<span class='fl'>1</span>],<span class='kw'>y1</span><span class='kw'>=</span><span class='no'>mean.ext</span>[<span class='fl'>2</span>],<span class='kw'>col</span><span class='kw'>=</span><span class='st'>"blue"</span>)</div><div class='img'><img src='riem.mean-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='no'>opar</span>)</div></pre>
+<span class='va'>opar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mydat</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span>, <span class='va'>mydat</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>]</span>, pch<span class='op'>=</span><span class='fl'>19</span>, xlim<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1.1</span>,<span class='fl'>1.1</span><span class='op'>)</span>, ylim<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1.1</span><span class='op'>)</span>,
+     main<span class='op'>=</span><span class='st'>"BLUE-extrinsic vs RED-intrinsic"</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/arrows.html'>arrows</a></span><span class='op'>(</span>x0<span class='op'>=</span><span class='fl'>0</span>,y0<span class='op'>=</span><span class='fl'>0</span>,x1<span class='op'>=</span><span class='va'>mean.int</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,y1<span class='op'>=</span><span class='va'>mean.int</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>,col<span class='op'>=</span><span class='st'>"red"</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/arrows.html'>arrows</a></span><span class='op'>(</span>x0<span class='op'>=</span><span class='fl'>0</span>,y0<span class='op'>=</span><span class='fl'>0</span>,x1<span class='op'>=</span><span class='va'>mean.ext</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,y1<span class='op'>=</span><span class='va'>mean.ext</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>,col<span class='op'>=</span><span class='st'>"blue"</span><span class='op'>)</span>
+</div><div class='img'><img src='riem.mean-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -257,7 +262,7 @@ and if <code>weight=NULL</code>, it automatically sets equal weights for all obs
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

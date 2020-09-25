@@ -8,6 +8,7 @@ using namespace std;
 // 1. basic_pdist
 // 2. basic_pdist2
 // 3. basic_interpolate
+// 4. basic_curvedist_lp
 
 
 // 1. basic_pdist ==============================================================
@@ -84,4 +85,41 @@ arma::cube basic_interpolate(std::string mfdname, std::string dtype, arma::mat m
     }
   }
   return(output);
+}
+
+// 4. basic_curvedist_lp =======================================================
+// [[Rcpp::export]]
+double basic_curvedist_lp(std::string mfd, std::string geo, Rcpp::List& data1, Rcpp::List& data2, arma::vec vect, double myp){
+  // PARAMETER AND DATA PREP
+  int N = vect.n_elem;
+  arma::mat exemplar = Rcpp::as<arma::mat>(data1[0]);
+  int nrow = exemplar.n_rows;
+  int ncol = exemplar.n_cols;  
+  
+  arma::cube mydata1(nrow,ncol,N,fill::zeros);
+  arma::cube mydata2(nrow,ncol,N,fill::zeros);
+  for (int n=0; n<N; n++){
+    mydata1.slice(n) = Rcpp::as<arma::mat>(data1[n]);
+    mydata2.slice(n) = Rcpp::as<arma::mat>(data2[n]);
+  }
+  
+  // COMPUTE DISTANCE ACROSS POINTS P-TH POWER
+  double    dval = 0.0;
+  arma::vec distp(N,fill::zeros);
+  for (int n=0; n<N; n++){
+    if (geo=="intrinsic"){
+      dval = riem_dist(mfd, mydata1.slice(n), mydata2.slice(n));
+    } else {
+      dval = riem_distext(mfd, mydata1.slice(n), mydata2.slice(n));
+    }
+    distp(n) = std::pow(dval, myp);
+  }
+  
+  // AGGREGATE
+  double output = 0.0;
+  for (int n=0; n<(N-1); n++){
+    output += (distp(n) + distp(n+1))*std::abs(vect(n+1)-vect(n))/2.0;
+  }
+  double outval = std::pow(output, (1.0/myp));
+  return(outval);
 }

@@ -183,14 +183,14 @@ where the name originates from an observation that when \(p=2,3\) these matrices
 shapes/configurations.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>wrap.rotation</span>(<span class='no'>input</span>)</pre>
+    <pre class="usage"><span class='fu'>wrap.rotation</span><span class='op'>(</span><span class='va'>input</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>input</th>
-      <td><p>data matrices to be wrapped as <code>riemdata</code> class. Following inputs are considered,</p><dl'>
+      <td><p>data matrices to be wrapped as <code>riemdata</code> class. Following inputs are considered,</p><dl>
 <dt>array</dt><dd><p>a \((p\times p\times n)\) array where each slice along 3rd dimension is a rotation matrix.</p></dd>
 <dt>list</dt><dd><p>a length-\(n\) list whose elements are \((p\times p)\) rotation matrices.</p></dd>
 
@@ -200,7 +200,7 @@ shapes/configurations.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a named <code>riemdata</code> S3 object containing</p><dl'>
+    <p>a named <code>riemdata</code> S3 object containing</p><dl>
   <dt>data</dt><dd><p>a list of \((p\times p)\) rotation matrices.</p></dd>
   <dt>size</dt><dd><p>size of each rotation matrix.</p></dd>
   <dt>name</dt><dd><p>name of the manifold of interests, <em>"rotation"</em></p></dd>
@@ -213,17 +213,19 @@ shapes/configurations.</p>
 <span class='co'>#                 Checker for Two Types of Inputs</span>
 <span class='co'>#-------------------------------------------------------------------</span>
 <span class='co'>## DATA GENERATION</span>
-<span class='no'>d1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/array.html'>array</a></span>(<span class='fl'>0</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>5</span>))
-<span class='no'>d2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>5</span>){
-  <span class='no'>single</span>  <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/qraux.html'>qr.Q</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/qr.html'>qr</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>9</span>),<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>3</span>)))
-  <span class='no'>d1</span>[,,<span class='no'>i</span>] <span class='kw'>=</span> <span class='no'>single</span>
-  <span class='no'>d2</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>single</span>
-}
+<span class='va'>d1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/array.html'>array</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>d2</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>single</span>  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/qraux.html'>qr.Q</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/qr.html'>qr</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>9</span><span class='op'>)</span>,nrow<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>d1</span><span class='op'>[</span>,,<span class='va'>i</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>single</span>
+  <span class='va'>d2</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>single</span>
+<span class='op'>}</span>
 
 <span class='co'>## RUN</span>
-<span class='no'>test1</span> <span class='kw'>=</span> <span class='fu'>wrap.rotation</span>(<span class='no'>d1</span>)
-<span class='no'>test2</span> <span class='kw'>=</span> <span class='fu'>wrap.rotation</span>(<span class='no'>d2</span>)</div></pre>
+<span class='va'>test1</span> <span class='op'>=</span> <span class='fu'>wrap.rotation</span><span class='op'>(</span><span class='va'>d1</span><span class='op'>)</span>
+<span class='va'>test2</span> <span class='op'>=</span> <span class='fu'>wrap.rotation</span><span class='op'>(</span><span class='va'>d2</span><span class='op'>)</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -239,7 +241,7 @@ shapes/configurations.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

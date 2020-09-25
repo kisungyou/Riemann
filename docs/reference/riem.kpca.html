@@ -187,7 +187,7 @@ where \(\sigma\) is a bandwidth parameter and \(d(\cdot, \cdot)\) is
 an extrinsic distance defined on a specific manifold.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>riem.kpca</span>(<span class='no'>riemobj</span>, <span class='kw'>ndim</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>riem.kpca</span><span class='op'>(</span><span class='va'>riemobj</span>, ndim <span class='op'>=</span> <span class='fl'>2</span>, sigma <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -208,7 +208,7 @@ an extrinsic distance defined on a specific manifold.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a named list containing</p><dl'>
+    <p>a named list containing</p><dl>
 <dt>embed</dt><dd><p>an \((N\times ndim)\) matrix whose rows are embedded observations.</p></dd>
 <dt>vars</dt><dd><p>a length-\(N\) vector of eigenvalues from kernelized covariance matrix.</p></dd>
 
@@ -230,29 +230,32 @@ ISBN 978-3-540-63631-1 978-3-540-69620-9, doi: <a href='https://doi.org/10.1007/
 <span class='co'>#-------------------------------------------------------------------</span>
 <span class='co'>## PREPARE THE DATA</span>
 <span class='co'>#  Aggregate two classes into one set</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>gorilla</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>gorilla</span><span class='op'>)</span>
 
-<span class='no'>mygorilla</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/array.html'>array</a></span>(<span class='fl'>0</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>8</span>,<span class='fl'>2</span>,<span class='fl'>59</span>))
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>29</span>){
-  <span class='no'>mygorilla</span>[,,<span class='no'>i</span>] <span class='kw'>=</span> <span class='no'>gorilla</span>$<span class='no'>male</span>[,,<span class='no'>i</span>]
-}
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>30</span>:<span class='fl'>59</span>){
-  <span class='no'>mygorilla</span>[,,<span class='no'>i</span>] <span class='kw'>=</span> <span class='no'>gorilla</span>$<span class='no'>female</span>[,,<span class='no'>i</span>-<span class='fl'>29</span>]
-}
+<span class='va'>mygorilla</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/array.html'>array</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>8</span>,<span class='fl'>2</span>,<span class='fl'>59</span><span class='op'>)</span><span class='op'>)</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>29</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>mygorilla</span><span class='op'>[</span>,,<span class='va'>i</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>gorilla</span><span class='op'>$</span><span class='va'>male</span><span class='op'>[</span>,,<span class='va'>i</span><span class='op'>]</span>
+<span class='op'>}</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>30</span><span class='op'>:</span><span class='fl'>59</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>mygorilla</span><span class='op'>[</span>,,<span class='va'>i</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>gorilla</span><span class='op'>$</span><span class='va'>female</span><span class='op'>[</span>,,<span class='va'>i</span><span class='op'>-</span><span class='fl'>29</span><span class='op'>]</span>
+<span class='op'>}</span>
 
-<span class='no'>gor.riem</span> <span class='kw'>=</span> <span class='fu'><a href='wrap.landmark.html'>wrap.landmark</a></span>(<span class='no'>mygorilla</span>)
-<span class='no'>gor.labs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"red"</span>,<span class='fl'>29</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"blue"</span>,<span class='fl'>30</span>))
+<span class='va'>gor.riem</span> <span class='op'>=</span> <span class='fu'><a href='wrap.landmark.html'>wrap.landmark</a></span><span class='op'>(</span><span class='va'>mygorilla</span><span class='op'>)</span>
+<span class='va'>gor.labs</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"red"</span>,<span class='fl'>29</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"blue"</span>,<span class='fl'>30</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## APPLY KPCA WITH DIFFERENT KERNEL BANDWIDTHS</span>
-<span class='no'>kpca1</span> <span class='kw'>=</span> <span class='fu'>riem.kpca</span>(<span class='no'>gor.riem</span>, <span class='kw'>sigma</span><span class='kw'>=</span><span class='fl'>0.01</span>)
-<span class='no'>kpca2</span> <span class='kw'>=</span> <span class='fu'>riem.kpca</span>(<span class='no'>gor.riem</span>, <span class='kw'>sigma</span><span class='kw'>=</span><span class='fl'>1</span>)
-<span class='no'>kpca3</span> <span class='kw'>=</span> <span class='fu'>riem.kpca</span>(<span class='no'>gor.riem</span>, <span class='kw'>sigma</span><span class='kw'>=</span><span class='fl'>100</span>)
+<span class='va'>kpca1</span> <span class='op'>=</span> <span class='fu'>riem.kpca</span><span class='op'>(</span><span class='va'>gor.riem</span>, sigma<span class='op'>=</span><span class='fl'>0.01</span><span class='op'>)</span>
+<span class='va'>kpca2</span> <span class='op'>=</span> <span class='fu'>riem.kpca</span><span class='op'>(</span><span class='va'>gor.riem</span>, sigma<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>kpca3</span> <span class='op'>=</span> <span class='fu'>riem.kpca</span><span class='op'>(</span><span class='va'>gor.riem</span>, sigma<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>
 <span class='co'>## VISUALIZE</span>
-<span class='no'>opar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>no.readonly</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>3</span>), <span class='kw'>pty</span><span class='kw'>=</span><span class='st'>"s"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>kpca1</span>$<span class='no'>embed</span>, <span class='kw'>pch</span><span class='kw'>=</span><span class='fl'>19</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>gor.labs</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"sigma=1/100"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>kpca2</span>$<span class='no'>embed</span>, <span class='kw'>pch</span><span class='kw'>=</span><span class='fl'>19</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>gor.labs</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"sigma=1"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>kpca3</span>$<span class='no'>embed</span>, <span class='kw'>pch</span><span class='kw'>=</span><span class='fl'>19</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>gor.labs</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"sigma=100"</span>)</div><div class='img'><img src='riem.kpca-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='no'>opar</span>)</div></pre>
+<span class='va'>opar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>3</span><span class='op'>)</span>, pty<span class='op'>=</span><span class='st'>"s"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>kpca1</span><span class='op'>$</span><span class='va'>embed</span>, pch<span class='op'>=</span><span class='fl'>19</span>, col<span class='op'>=</span><span class='va'>gor.labs</span>, main<span class='op'>=</span><span class='st'>"sigma=1/100"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>kpca2</span><span class='op'>$</span><span class='va'>embed</span>, pch<span class='op'>=</span><span class='fl'>19</span>, col<span class='op'>=</span><span class='va'>gor.labs</span>, main<span class='op'>=</span><span class='st'>"sigma=1"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>kpca3</span><span class='op'>$</span><span class='va'>embed</span>, pch<span class='op'>=</span><span class='fl'>19</span>, col<span class='op'>=</span><span class='va'>gor.labs</span>, main<span class='op'>=</span><span class='st'>"sigma=100"</span><span class='op'>)</span>
+</div><div class='img'><img src='riem.kpca-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -268,7 +271,7 @@ ISBN 978-3-540-63631-1 978-3-540-69620-9, doi: <a href='https://doi.org/10.1007/
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -183,9 +183,9 @@ that convert geographic coordinates in longitude/latitude into a unit-norm vecto
 As a convention, latitude and longitude are represented as <em>decimal degrees</em>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sphere.geo2xyz</span>(<span class='no'>lat</span>, <span class='no'>lon</span>)
+    <pre class="usage"><span class='fu'>sphere.geo2xyz</span><span class='op'>(</span><span class='va'>lat</span>, <span class='va'>lon</span><span class='op'>)</span>
 
-<span class='fu'>sphere.xyz2geo</span>(<span class='no'>xyz</span>)</pre>
+<span class='fu'>sphere.xyz2geo</span><span class='op'>(</span><span class='va'>xyz</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -210,14 +210,16 @@ As a convention, latitude and longitude are represented as <em>decimal degrees</
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## EXAMPLE DATA WITH POPULATED US CITIES</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cities</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cities</span><span class='op'>)</span>
 
 <span class='co'>## SELECT ALBUQUERQUE</span>
-<span class='no'>geo</span> <span class='kw'>=</span> <span class='no'>cities</span>$<span class='no'>coord</span>[<span class='fl'>1</span>,]
-<span class='no'>xyz</span> <span class='kw'>=</span> <span class='no'>cities</span>$<span class='no'>cartesian</span>[<span class='fl'>1</span>,]
+<span class='va'>geo</span> <span class='op'>=</span> <span class='va'>cities</span><span class='op'>$</span><span class='va'>coord</span><span class='op'>[</span><span class='fl'>1</span>,<span class='op'>]</span>
+<span class='va'>xyz</span> <span class='op'>=</span> <span class='va'>cities</span><span class='op'>$</span><span class='va'>cartesian</span><span class='op'>[</span><span class='fl'>1</span>,<span class='op'>]</span>
 
 <span class='co'>## CHECK TWO INPUT TYPES AND THEIR CONVERSIONS</span>
-<span class='fu'>sphere.geo2xyz</span>(<span class='no'>geo</span>[<span class='fl'>1</span>], <span class='no'>geo</span>[<span class='fl'>2</span>])</div><div class='output co'>#&gt; [1] -0.2339521 -0.7837773  0.5752908</div><div class='input'><span class='fu'>sphere.xyz2geo</span>(<span class='no'>xyz</span>)</div><div class='output co'>#&gt; [1]   35.12 -106.62</div><div class='input'>
+<span class='fu'>sphere.geo2xyz</span><span class='op'>(</span><span class='va'>geo</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>, <span class='va'>geo</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] -0.2339521 -0.7837773  0.5752908</div><div class='input'><span class='fu'>sphere.xyz2geo</span><span class='op'>(</span><span class='va'>xyz</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1]   35.12 -106.62</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -234,7 +236,7 @@ As a convention, latitude and longitude are represented as <em>decimal degrees</
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

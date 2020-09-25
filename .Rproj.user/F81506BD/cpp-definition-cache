@@ -1,7 +1,7 @@
 [
     {
         "file": "/home/kisung/Desktop/Riemann/src/functions_11basic.cpp",
-        "file_last_write": 1599326057.0,
+        "file_last_write": 1601053133.0,
         "definitions": [
             {
                 "usr": "c:@F@basic_pdist#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#S0_#",
@@ -9,7 +9,7 @@
                 "parent_name": "",
                 "name": "basic_pdist(std::string, Rcpp::List &, std::string)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_11basic.cpp",
-                "line": 15,
+                "line": 16,
                 "column": 11
             },
             {
@@ -18,7 +18,7 @@
                 "parent_name": "",
                 "name": "basic_pdist2(std::string, Rcpp::List &, Rcpp::List &, std::string)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_11basic.cpp",
-                "line": 40,
+                "line": 41,
                 "column": 11
             },
             {
@@ -27,8 +27,17 @@
                 "parent_name": "",
                 "name": "basic_interpolate(std::string, std::string, arma::mat, arma::mat, arma::vec)",
                 "file": "/home/kisung/Desktop/Riemann/src/functions_11basic.cpp",
-                "line": 65,
+                "line": 66,
                 "column": 12
+            },
+            {
+                "usr": "c:@F@basic_curvedist_lp#$@N@std@N@__cxx11@S@basic_string>#C#$@N@std@S@char_traits>#C#$@N@std@S@allocator>#C#S0_#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#S3_#$@N@arma@S@Col>#d#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "basic_curvedist_lp(std::string, std::string, Rcpp::List &, Rcpp::List &, arma::vec, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/functions_11basic.cpp",
+                "line": 92,
+                "column": 8
             }
         ]
     },

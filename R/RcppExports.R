@@ -13,6 +13,10 @@ basic_interpolate <- function(mfdname, dtype, mat1, mat2, vect) {
     .Call('_Riemann_basic_interpolate', PACKAGE = 'Riemann', mfdname, dtype, mat1, mat2, vect)
 }
 
+basic_curvedist_lp <- function(mfd, geo, data1, data2, vect, myp) {
+    .Call('_Riemann_basic_curvedist_lp', PACKAGE = 'Riemann', mfd, geo, data1, data2, vect, myp)
+}
+
 inference_mean_intrinsic <- function(mfdname, data, myweight, myiter, myeps) {
     .Call('_Riemann_inference_mean_intrinsic', PACKAGE = 'Riemann', mfdname, data, myweight, myiter, myeps)
 }

@@ -64,7 +64,7 @@ riem.pdist2 <- function(riemobj1, riemobj2, geometry=c("intrinsic","extrinsic"))
   if (!inherits(riemobj2,"riemdata")){
     stop(paste0("* riem.pdist2 : input ",DNAME2," should be an object of 'riemdata' class."))
   }
-  if (riemobj1$name!=riemobj2$name){
+  if (!all(riemobj1$name==riemobj2$name)){
     stop("* riem.pdist2 : two inputs are from different manifolds.")
   }
   if (!all(riemobj1$size==riemobj2$size)){

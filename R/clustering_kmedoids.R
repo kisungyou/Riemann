@@ -78,6 +78,5 @@ riem.kmedoids <- function(riemobj, k=2, geometry=c("intrinsic","extrinsic")){
   output = list()
   output$medoids = obj.kmedoids$id.med
   output$cluster = as.integer(obj.kmedoids$clustering)
-  return(obj.kmedoids)
-  
+  return(output)
 }

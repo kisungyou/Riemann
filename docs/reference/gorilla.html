@@ -179,12 +179,12 @@ individual is represented as 8-ad/landmarks in 2 dimensions. This is a
 re-arranged version of the data from <span class="pkg">shapes</span> package.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>gorilla</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>gorilla</span><span class='op'>)</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>a named list containing</p><dl'>
+    <p>a named list containing</p><dl>
 <dt>male</dt><dd><p>a 3d array of size \((8\times 2\times 29)\)</p></dd>
 <dt>female</dt><dd><p>a 3d array of size \((8\times 2\times 30)\)</p></dd>
 
@@ -206,21 +206,24 @@ ISSN 0027-8424, 1091-6490, doi: <a href='https://doi.org/10.1073/pnas.1133180100
     <div class='dont-index'><p><code><a href='wrap.landmark.html'>wrap.landmark</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>gorilla</span>)                               <span class='co'># load the data</span>
-<span class='no'>riem.female</span> <span class='kw'>=</span> <span class='fu'><a href='wrap.landmark.html'>wrap.landmark</a></span>(<span class='no'>gorilla</span>$<span class='no'>female</span>) <span class='co'># wrap as RIEMOBJ</span>
-<span class='no'>opar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>no.readonly</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>30</span>){
-  <span class='kw'>if</span> (<span class='no'>i</span> <span class='kw'>&lt;</span> <span class='fl'>2</span>){
-    <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>riem.female</span>$<span class='no'>data</span><span class='kw'>[[</span><span class='no'>i</span>]], <span class='kw'>cex</span><span class='kw'>=</span><span class='fl'>0.5</span>,
-         <span class='kw'>xlim</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>,<span class='fl'>1</span>)/<span class='fl'>2</span>, <span class='kw'>ylim</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>2</span>,<span class='fl'>2</span>)/<span class='fl'>5</span>,
-         <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"30 female gorilla skull preshapes"</span>,
-         <span class='kw'>xlab</span><span class='kw'>=</span><span class='st'>"dimension 1"</span>, <span class='kw'>ylab</span><span class='kw'>=</span><span class='st'>"dimension 2"</span>)
-    <span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='no'>riem.female</span>$<span class='no'>data</span><span class='kw'>[[</span><span class='no'>i</span>]])
-  } <span class='kw'>else</span> {
-    <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(<span class='no'>riem.female</span>$<span class='no'>data</span><span class='kw'>[[</span><span class='no'>i</span>]], <span class='kw'>cex</span><span class='kw'>=</span><span class='fl'>0.5</span>)
-    <span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='no'>riem.female</span>$<span class='no'>data</span><span class='kw'>[[</span><span class='no'>i</span>]])
-  }
-}</div><div class='img'><img src='gorilla-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='no'>opar</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>gorilla</span><span class='op'>)</span>                               <span class='co'># load the data</span>
+<span class='va'>riem.female</span> <span class='op'>=</span> <span class='fu'><a href='wrap.landmark.html'>wrap.landmark</a></span><span class='op'>(</span><span class='va'>gorilla</span><span class='op'>$</span><span class='va'>female</span><span class='op'>)</span> <span class='co'># wrap as RIEMOBJ</span>
+<span class='va'>opar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>30</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>i</span> <span class='op'>&lt;</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>{</span>
+    <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>riem.female</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span>, cex<span class='op'>=</span><span class='fl'>0.5</span>, 
+         xlim<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>2</span>, ylim<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>5</span>,
+         main<span class='op'>=</span><span class='st'>"30 female gorilla skull preshapes"</span>,
+         xlab<span class='op'>=</span><span class='st'>"dimension 1"</span>, ylab<span class='op'>=</span><span class='st'>"dimension 2"</span><span class='op'>)</span>
+    <span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>riem.female</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+  <span class='op'>}</span> <span class='kw'>else</span> <span class='op'>{</span>
+    <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span><span class='op'>(</span><span class='va'>riem.female</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span>, cex<span class='op'>=</span><span class='fl'>0.5</span><span class='op'>)</span>
+    <span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>riem.female</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+  <span class='op'>}</span>
+<span class='op'>}</span>
+</div><div class='img'><img src='gorilla-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -236,7 +239,7 @@ ISSN 0027-8424, 1091-6490, doi: <a href='https://doi.org/10.1073/pnas.1133180100
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

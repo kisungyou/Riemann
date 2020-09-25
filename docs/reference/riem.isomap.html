@@ -191,13 +191,13 @@ parameter <code>padding=TRUE</code>, infinite distances are replaced by 2 times
 the maximal finite geodesic distance.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>riem.isomap</span>(
-  <span class='no'>riemobj</span>,
-  <span class='kw'>ndim</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>nnbd</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>geometry</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"intrinsic"</span>, <span class='st'>"extrinsic"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>riem.isomap</span><span class='op'>(</span>
+  <span class='va'>riemobj</span>,
+  ndim <span class='op'>=</span> <span class='fl'>2</span>,
+  nnbd <span class='op'>=</span> <span class='fl'>5</span>,
+  geometry <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"intrinsic"</span>, <span class='st'>"extrinsic"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -220,7 +220,7 @@ the maximal finite geodesic distance.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>extra parameters including</p><dl'>
+      <td><p>extra parameters including</p><dl>
 <dt>padding</dt><dd><p>a logical; if <code>TRUE</code>, <code>Inf</code>-valued geodesic distances are replaced by 2 times the maximal geodesic distance in the data.</p></dd>
 
 </dl></td>
@@ -229,7 +229,7 @@ the maximal finite geodesic distance.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a named list containing</p><dl'>
+    <p>a named list containing</p><dl>
 <dt>embed</dt><dd><p>an \((N\times ndim)\) matrix whose rows are embedded observations.</p></dd>
 
 </dl>
@@ -250,32 +250,36 @@ MIT Press.</p>
 <span class='co'># 10 perturbed data points near (0,0,1) on S^2 in R^3</span>
 <span class='co'>#-------------------------------------------------------------------</span>
 <span class='co'>## GENERATE DATA</span>
-<span class='no'>mydata</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>10</span>){
-  <span class='no'>tgt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>2</span>, <span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>))
-  <span class='no'>mydata</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tgt</span>/<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>tgt</span>^<span class='fl'>2</span>))
-}
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>11</span>:<span class='fl'>20</span>){
-  <span class='no'>tgt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>,<span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>),<span class='fl'>1</span>,<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>,<span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>))
-  <span class='no'>mydata</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tgt</span>/<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>tgt</span>^<span class='fl'>2</span>))
-}
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>21</span>:<span class='fl'>30</span>){
-  <span class='no'>tgt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>2</span>, <span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>), <span class='fl'>1</span>)
-  <span class='no'>mydata</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tgt</span>/<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>tgt</span>^<span class='fl'>2</span>))
-}
-<span class='no'>myriem</span> <span class='kw'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span>(<span class='no'>mydata</span>)
-<span class='no'>mylabs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>), <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>10</span>)
+<span class='va'>mydata</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>tgt</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>2</span>, sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>mydata</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tgt</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>tgt</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>11</span><span class='op'>:</span><span class='fl'>20</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>tgt</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>1</span>,sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span>,<span class='fl'>1</span>,<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>1</span>,sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>mydata</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tgt</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>tgt</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>21</span><span class='op'>:</span><span class='fl'>30</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>tgt</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>2</span>, sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>
+  <span class='va'>mydata</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tgt</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>tgt</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='va'>myriem</span> <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='va'>mydata</span><span class='op'>)</span>
+<span class='va'>mylabs</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>, each<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span>
 
 <span class='co'>## MDS AND ISOMAP WITH DIFFERENT NEIGHBORHOOD SIZE</span>
-<span class='no'>mdss</span> <span class='kw'>=</span> <span class='fu'><a href='riem.mds.html'>riem.mds</a></span>(<span class='no'>myriem</span>)$<span class='no'>embed</span>
-<span class='no'>iso1</span> <span class='kw'>=</span> <span class='fu'>riem.isomap</span>(<span class='no'>myriem</span>, <span class='kw'>nnbd</span><span class='kw'>=</span><span class='fl'>5</span>)$<span class='no'>embed</span></div><div class='output co'>#&gt; [1] "* riem.isomap : some of the geodesic distances are Inf, so 'padding' is applied."</div><div class='input'><span class='no'>iso2</span> <span class='kw'>=</span> <span class='fu'>riem.isomap</span>(<span class='no'>myriem</span>, <span class='kw'>nnbd</span><span class='kw'>=</span><span class='fl'>10</span>)$<span class='no'>embed</span>
+<span class='va'>mdss</span> <span class='op'>=</span> <span class='fu'><a href='riem.mds.html'>riem.mds</a></span><span class='op'>(</span><span class='va'>myriem</span><span class='op'>)</span><span class='op'>$</span><span class='va'>embed</span>
+<span class='va'>iso1</span> <span class='op'>=</span> <span class='fu'>riem.isomap</span><span class='op'>(</span><span class='va'>myriem</span>, nnbd<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>$</span><span class='va'>embed</span>
+</div><div class='output co'>#&gt; [1] "* riem.isomap : some of the geodesic distances are Inf, so 'padding' is applied."</div><div class='input'><span class='va'>iso2</span> <span class='op'>=</span> <span class='fu'>riem.isomap</span><span class='op'>(</span><span class='va'>myriem</span>, nnbd<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>$</span><span class='va'>embed</span>
 
 <span class='co'>## VISUALIZE</span>
-<span class='no'>opar</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>no.readonly</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>3</span>), <span class='kw'>pty</span><span class='kw'>=</span><span class='st'>"s"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>mdss</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>mylabs</span>, <span class='kw'>pch</span><span class='kw'>=</span><span class='fl'>19</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"MDS"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iso1</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>mylabs</span>, <span class='kw'>pch</span><span class='kw'>=</span><span class='fl'>19</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"ISOMAP:nnbd=5"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iso2</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='no'>mylabs</span>, <span class='kw'>pch</span><span class='kw'>=</span><span class='fl'>19</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"ISOMAP:nnbd=10"</span>)</div><div class='img'><img src='riem.isomap-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='no'>opar</span>)</div></pre>
+<span class='va'>opar</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>3</span><span class='op'>)</span>, pty<span class='op'>=</span><span class='st'>"s"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mdss</span>, col<span class='op'>=</span><span class='va'>mylabs</span>, pch<span class='op'>=</span><span class='fl'>19</span>, main<span class='op'>=</span><span class='st'>"MDS"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>iso1</span>, col<span class='op'>=</span><span class='va'>mylabs</span>, pch<span class='op'>=</span><span class='fl'>19</span>, main<span class='op'>=</span><span class='st'>"ISOMAP:nnbd=5"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>iso2</span>, col<span class='op'>=</span><span class='va'>mylabs</span>, pch<span class='op'>=</span><span class='fl'>19</span>, main<span class='op'>=</span><span class='st'>"ISOMAP:nnbd=10"</span><span class='op'>)</span>
+</div><div class='img'><img src='riem.isomap-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -291,7 +295,7 @@ MIT Press.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

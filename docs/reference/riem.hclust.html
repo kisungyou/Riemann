@@ -179,13 +179,13 @@ perform hierarchical agglomerative clustering with
 <span class="pkg">fastcluster</span> package's implementation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>riem.hclust</span>(
-  <span class='no'>riemobj</span>,
-  <span class='kw'>geometry</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"intrinsic"</span>, <span class='st'>"extrinsic"</span>),
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"single"</span>, <span class='st'>"complete"</span>, <span class='st'>"average"</span>, <span class='st'>"mcquitty"</span>, <span class='st'>"ward.D"</span>, <span class='st'>"ward.D2"</span>,
-    <span class='st'>"centroid"</span>, <span class='st'>"median"</span>),
-  <span class='kw'>members</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>riem.hclust</span><span class='op'>(</span>
+  <span class='va'>riemobj</span>,
+  geometry <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"intrinsic"</span>, <span class='st'>"extrinsic"</span><span class='op'>)</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"single"</span>, <span class='st'>"complete"</span>, <span class='st'>"average"</span>, <span class='st'>"mcquitty"</span>, <span class='st'>"ward.D"</span>, <span class='st'>"ward.D2"</span>,
+    <span class='st'>"centroid"</span>, <span class='st'>"median"</span><span class='op'>)</span>,
+  members <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -224,30 +224,33 @@ perform hierarchical agglomerative clustering with
 <span class='co'># class 3 : 10 perturbed data points near (0,0,1) on S^2 in R^3</span>
 <span class='co'>#-------------------------------------------------------------------</span>
 <span class='co'>## GENERATE DATA</span>
-<span class='no'>mydata</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>10</span>){
-  <span class='no'>tgt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>2</span>, <span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>))
-  <span class='no'>mydata</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tgt</span>/<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>tgt</span>^<span class='fl'>2</span>))
-}
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>11</span>:<span class='fl'>20</span>){
-  <span class='no'>tgt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>,<span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>),<span class='fl'>1</span>,<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>,<span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>))
-  <span class='no'>mydata</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tgt</span>/<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>tgt</span>^<span class='fl'>2</span>))
-}
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>21</span>:<span class='fl'>30</span>){
-  <span class='no'>tgt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>2</span>, <span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>), <span class='fl'>1</span>)
-  <span class='no'>mydata</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tgt</span>/<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>tgt</span>^<span class='fl'>2</span>))
-}
-<span class='no'>myriem</span> <span class='kw'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span>(<span class='no'>mydata</span>)
+<span class='va'>mydata</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>tgt</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>2</span>, sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>mydata</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tgt</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>tgt</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>11</span><span class='op'>:</span><span class='fl'>20</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>tgt</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>1</span>,sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span>,<span class='fl'>1</span>,<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>1</span>,sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>mydata</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tgt</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>tgt</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>21</span><span class='op'>:</span><span class='fl'>30</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>tgt</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>2</span>, sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span>
+  <span class='va'>mydata</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tgt</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>tgt</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='va'>myriem</span> <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='va'>mydata</span><span class='op'>)</span>
 
 <span class='co'>## COMPUTE SINGLE AND COMPLETE LINKAGE</span>
-<span class='no'>hc.sing</span> <span class='kw'>&lt;-</span> <span class='fu'>riem.hclust</span>(<span class='no'>myriem</span>, <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"single"</span>)
-<span class='no'>hc.comp</span> <span class='kw'>&lt;-</span> <span class='fu'>riem.hclust</span>(<span class='no'>myriem</span>, <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"complete"</span>)
+<span class='va'>hc.sing</span> <span class='op'>&lt;-</span> <span class='fu'>riem.hclust</span><span class='op'>(</span><span class='va'>myriem</span>, method<span class='op'>=</span><span class='st'>"single"</span><span class='op'>)</span>
+<span class='va'>hc.comp</span> <span class='op'>&lt;-</span> <span class='fu'>riem.hclust</span><span class='op'>(</span><span class='va'>myriem</span>, method<span class='op'>=</span><span class='st'>"complete"</span><span class='op'>)</span>
 
 <span class='co'>## VISUALIZE</span>
-<span class='no'>opar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>no.readonly</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>mfrow</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>hc.sing</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"single linkage"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>hc.comp</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"complete linkage"</span>)</div><div class='img'><img src='riem.hclust-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='no'>opar</span>)</div></pre>
+<span class='va'>opar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>hc.sing</span>, main<span class='op'>=</span><span class='st'>"single linkage"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>hc.comp</span>, main<span class='op'>=</span><span class='st'>"complete linkage"</span><span class='op'>)</span>
+</div><div class='img'><img src='riem.hclust-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -263,7 +266,7 @@ perform hierarchical agglomerative clustering with
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

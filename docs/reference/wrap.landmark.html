@@ -189,14 +189,14 @@ Procrustes analysis is applied with the first observation being the reference so
 that all the other data are rotated to match the shape of the first.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>wrap.landmark</span>(<span class='no'>input</span>)</pre>
+    <pre class="usage"><span class='fu'>wrap.landmark</span><span class='op'>(</span><span class='va'>input</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>input</th>
-      <td><p>data matrices to be wrapped as <code>riemdata</code> class. Following inputs are considered,</p><dl'>
+      <td><p>data matrices to be wrapped as <code>riemdata</code> class. Following inputs are considered,</p><dl>
 <dt>array</dt><dd><p>a \((k\times p\times n)\) array where each slice along 3rd dimension is a \(k\)-ad in \(\mathbf{R}^p\).</p></dd>
 <dt>list</dt><dd><p>a length-\(n\) list whose elements are \(k\)-ads.</p></dd>
 
@@ -206,7 +206,7 @@ that all the other data are rotated to match the shape of the first.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a named <code>riemdata</code> S3 object containing</p><dl'>
+    <p>a named <code>riemdata</code> S3 object containing</p><dl>
   <dt>data</dt><dd><p>a list of preshapes in \(\mathbf{R}^p\).</p></dd>
   <dt>size</dt><dd><p>size of each preshape.</p></dd>
   <dt>name</dt><dd><p>name of the manifold of interests, <em>"landmark"</em></p></dd>
@@ -222,8 +222,10 @@ ISBN 978-1-119-07251-5 978-1-119-07250-8.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## USE 'GORILLA' DATA</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>gorilla</span>)
-<span class='no'>riemobj</span> <span class='kw'>=</span> <span class='fu'>wrap.landmark</span>(<span class='no'>gorilla</span>$<span class='no'>male</span>)</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>gorilla</span><span class='op'>)</span>
+<span class='va'>riemobj</span> <span class='op'>=</span> <span class='fu'>wrap.landmark</span><span class='op'>(</span><span class='va'>gorilla</span><span class='op'>$</span><span class='va'>male</span><span class='op'>)</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -239,7 +241,7 @@ ISBN 978-1-119-07251-5 978-1-119-07250-8.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

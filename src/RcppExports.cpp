@@ -48,6 +48,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// basic_curvedist_lp
+double basic_curvedist_lp(std::string mfd, std::string geo, Rcpp::List& data1, Rcpp::List& data2, arma::vec vect, double myp);
+RcppExport SEXP _Riemann_basic_curvedist_lp(SEXP mfdSEXP, SEXP geoSEXP, SEXP data1SEXP, SEXP data2SEXP, SEXP vectSEXP, SEXP mypSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfd(mfdSEXP);
+    Rcpp::traits::input_parameter< std::string >::type geo(geoSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data1(data1SEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data2(data2SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type vect(vectSEXP);
+    Rcpp::traits::input_parameter< double >::type myp(mypSEXP);
+    rcpp_result_gen = Rcpp::wrap(basic_curvedist_lp(mfd, geo, data1, data2, vect, myp));
+    return rcpp_result_gen;
+END_RCPP
+}
 // inference_mean_intrinsic
 Rcpp::List inference_mean_intrinsic(std::string mfdname, Rcpp::List& data, arma::vec myweight, int myiter, double myeps);
 RcppExport SEXP _Riemann_inference_mean_intrinsic(SEXP mfdnameSEXP, SEXP dataSEXP, SEXP myweightSEXP, SEXP myiterSEXP, SEXP myepsSEXP) {
@@ -433,6 +449,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_basic_pdist", (DL_FUNC) &_Riemann_basic_pdist, 3},
     {"_Riemann_basic_pdist2", (DL_FUNC) &_Riemann_basic_pdist2, 4},
     {"_Riemann_basic_interpolate", (DL_FUNC) &_Riemann_basic_interpolate, 5},
+    {"_Riemann_basic_curvedist_lp", (DL_FUNC) &_Riemann_basic_curvedist_lp, 6},
     {"_Riemann_inference_mean_intrinsic", (DL_FUNC) &_Riemann_inference_mean_intrinsic, 5},
     {"_Riemann_inference_mean_extrinsic", (DL_FUNC) &_Riemann_inference_mean_extrinsic, 5},
     {"_Riemann_inference_median_intrinsic", (DL_FUNC) &_Riemann_inference_median_intrinsic, 5},

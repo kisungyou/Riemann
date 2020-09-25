@@ -187,13 +187,13 @@ with Wasserstein metric \(\mathcal{W}_p\) being the measure of discrepancy
 between two samples.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>riem.test2wass</span>(
-  <span class='no'>riemobj1</span>,
-  <span class='no'>riemobj2</span>,
-  <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>geometry</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"intrinsic"</span>, <span class='st'>"extrinsic"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>riem.test2wass</span><span class='op'>(</span>
+  <span class='va'>riemobj1</span>,
+  <span class='va'>riemobj2</span>,
+  p <span class='op'>=</span> <span class='fl'>2</span>,
+  geometry <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"intrinsic"</span>, <span class='st'>"extrinsic"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -216,7 +216,7 @@ between two samples.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>extra parameters including</p><dl'>
+      <td><p>extra parameters including</p><dl>
 <dt>nperm</dt><dd><p>the number of permutations (default: 999).</p></dd>
 <dt>method</dt><dd><p>algorithm to compute the distance (default:<code>"lp"</code>).</p></dd>
 
@@ -226,7 +226,7 @@ between two samples.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a (list) object of <code>S3</code> class <code>htest</code> containing:</p><dl'>
+    <p>a (list) object of <code>S3</code> class <code>htest</code> containing:</p><dl>
 <dt>statistic</dt><dd><p>a test statistic.</p></dd>
 <dt>p.value</dt><dd><p>\(p\)-value under \(H_0\).</p></dd>
 <dt>alternative</dt><dd><p>alternative hypothesis.</p></dd>
@@ -244,29 +244,30 @@ between two samples.</p>
 <span class='co'># class 2 : 30 perturbed data points near (0,1,0) on S^2 in R^3</span>
 <span class='co'>#-------------------------------------------------------------------</span>
 <span class='co'>## GENERATE DATA</span>
-<span class='no'>mydata1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()
-<span class='no'>mydata2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>20</span>){
-  <span class='no'>tgt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>2</span>, <span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>))
-  <span class='no'>mydata1</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tgt</span>/<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>tgt</span>^<span class='fl'>2</span>))
-}
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>20</span>){
-  <span class='no'>tgt</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>,<span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>),<span class='fl'>1</span>,<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>1</span>,<span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>0.1</span>))
-  <span class='no'>mydata2</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tgt</span>/<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>tgt</span>^<span class='fl'>2</span>))
-}
-<span class='no'>myriem1</span> <span class='kw'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span>(<span class='no'>mydata1</span>)
-<span class='no'>myriem2</span> <span class='kw'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span>(<span class='no'>mydata2</span>)
+<span class='va'>mydata1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>mydata2</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>tgt</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>2</span>, sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>mydata1</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tgt</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>tgt</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>tgt</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>1</span>,sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span>,<span class='fl'>1</span>,<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>1</span>,sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>mydata2</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tgt</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>tgt</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='va'>myriem1</span> <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='va'>mydata1</span><span class='op'>)</span>
+<span class='va'>myriem2</span> <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='va'>mydata2</span><span class='op'>)</span>
 
 <span class='co'>## PERFORM PERMUTATION TEST</span>
 <span class='co'>#  it is expected to return a very small number.</span>
 <span class='co'># \donttest{</span>
-<span class='fu'>riem.test2wass</span>(<span class='no'>myriem1</span>, <span class='no'>myriem2</span>, <span class='kw'>nperm</span><span class='kw'>=</span><span class='fl'>999</span>)</div><div class='output co'>#&gt; 
+<span class='fu'>riem.test2wass</span><span class='op'>(</span><span class='va'>myriem1</span>, <span class='va'>myriem2</span>, nperm<span class='op'>=</span><span class='fl'>999</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt; 	Wasserstein Two-Sample Test on Sphere Manifold
 #&gt; 
 #&gt; data:  'myriem1' and 'myriem2'
 #&gt; Wmn = 1.5698, p-value = 0.001
 #&gt; alternative hypothesis: two distributions are not equal.
-#&gt; </div><div class='input'># }
+#&gt; </div><div class='input'><span class='co'># }</span>
 
 </div></pre>
   </div>
@@ -284,7 +285,7 @@ between two samples.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

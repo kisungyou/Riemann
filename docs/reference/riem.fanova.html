@@ -179,9 +179,9 @@ performs analysis of variance to test equality of distributions. This means, sma
 at least one of the equalities does not hold.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>riem.fanova</span>(<span class='no'>...</span>, <span class='kw'>maxiter</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>eps</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>)
+    <pre class="usage"><span class='fu'>riem.fanova</span><span class='op'>(</span><span class='va'>...</span>, maxiter <span class='op'>=</span> <span class='fl'>50</span>, eps <span class='op'>=</span> <span class='fl'>1e-05</span><span class='op'>)</span>
 
-<span class='fu'>riem.fanovaP</span>(<span class='no'>...</span>, <span class='kw'>maxiter</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>eps</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>, <span class='kw'>nperm</span> <span class='kw'>=</span> <span class='fl'>99</span>)</pre>
+<span class='fu'>riem.fanovaP</span><span class='op'>(</span><span class='va'>...</span>, maxiter <span class='op'>=</span> <span class='fl'>50</span>, eps <span class='op'>=</span> <span class='fl'>1e-05</span>, nperm <span class='op'>=</span> <span class='fl'>99</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -206,7 +206,7 @@ at least one of the equalities does not hold.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a (list) object of <code>S3</code> class <code>htest</code> containing:</p><dl'>
+    <p>a (list) object of <code>S3</code> class <code>htest</code> containing:</p><dl>
 <dt>statistic</dt><dd><p>a test statistic.</p></dd>
 <dt>p.value</dt><dd><p>\(p\)-value under \(H_0\).</p></dd>
 <dt>alternative</dt><dd><p>alternative hypothesis.</p></dd>
@@ -231,42 +231,44 @@ ISSN 0006-3444, 1464-3510, doi: <a href='https://doi.org/10.1093/biomet/asz052'>
 <span class='co'>#  density on 2-dimensional sphere S^2 in R^3.</span>
 <span class='co'>#-------------------------------------------------------------------</span>
 <span class='co'>## PREPARE DATA OF 4 CLASSES</span>
-<span class='no'>ndata</span>  <span class='kw'>=</span> <span class='fl'>20</span>
-<span class='no'>class1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()
-<span class='no'>class2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()
-<span class='no'>class3</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()
-<span class='no'>class4</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='no'>ndata</span>){
-  <span class='no'>tmp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>4</span>*<span class='fl'>3</span>), <span class='kw'>ncol</span><span class='kw'>=</span><span class='fl'>3</span>)
-  <span class='no'>tmp</span> <span class='kw'>=</span> <span class='no'>tmp</span>/<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span>(<span class='no'>tmp</span>^<span class='fl'>2</span>))
-
-  <span class='no'>class1</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tmp</span>[<span class='fl'>1</span>,]
-  <span class='no'>class2</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tmp</span>[<span class='fl'>2</span>,]
-  <span class='no'>class3</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tmp</span>[<span class='fl'>3</span>,]
-  <span class='no'>class4</span><span class='kw'>[[</span><span class='no'>i</span>]] <span class='kw'>=</span> <span class='no'>tmp</span>[<span class='fl'>4</span>,]
-}
-<span class='no'>obj1</span> <span class='kw'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span>(<span class='no'>class1</span>)
-<span class='no'>obj2</span> <span class='kw'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span>(<span class='no'>class2</span>)
-<span class='no'>obj3</span> <span class='kw'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span>(<span class='no'>class3</span>)
-<span class='no'>obj4</span> <span class='kw'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span>(<span class='no'>class4</span>)
+<span class='va'>ndata</span>  <span class='op'>=</span> <span class='fl'>20</span>
+<span class='va'>class1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>class2</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>class3</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>class4</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>ndata</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>tmp</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>4</span><span class='op'>*</span><span class='fl'>3</span><span class='op'>)</span>, ncol<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span>
+  <span class='va'>tmp</span> <span class='op'>=</span> <span class='va'>tmp</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span><span class='op'>(</span><span class='va'>tmp</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+  
+  <span class='va'>class1</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tmp</span><span class='op'>[</span><span class='fl'>1</span>,<span class='op'>]</span>
+  <span class='va'>class2</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tmp</span><span class='op'>[</span><span class='fl'>2</span>,<span class='op'>]</span>
+  <span class='va'>class3</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tmp</span><span class='op'>[</span><span class='fl'>3</span>,<span class='op'>]</span>
+  <span class='va'>class4</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tmp</span><span class='op'>[</span><span class='fl'>4</span>,<span class='op'>]</span>
+<span class='op'>}</span>
+<span class='va'>obj1</span> <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='va'>class1</span><span class='op'>)</span>
+<span class='va'>obj2</span> <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='va'>class2</span><span class='op'>)</span>
+<span class='va'>obj3</span> <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='va'>class3</span><span class='op'>)</span>
+<span class='va'>obj4</span> <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='va'>class4</span><span class='op'>)</span>
 
 <span class='co'>## RUN THE ASYMPTOTIC TEST</span>
-<span class='fu'>riem.fanova</span>(<span class='no'>obj1</span>, <span class='no'>obj2</span>, <span class='no'>obj3</span>, <span class='no'>obj4</span>)</div><div class='output co'>#&gt; 
+<span class='fu'>riem.fanova</span><span class='op'>(</span><span class='va'>obj1</span>, <span class='va'>obj2</span>, <span class='va'>obj3</span>, <span class='va'>obj4</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt; 	Frechet Analysis of Variance on Sphere Manifold
 #&gt; 
 #&gt; data:  obj1, obj2, obj3, and obj4
-#&gt; Tn = 0.015336, p-value = 0.9995
+#&gt; Tn = 0.019765, p-value = 0.9993
 #&gt; alternative hypothesis: at least one of equalities does not hold.
 #&gt; </div><div class='input'>
 <span class='co'># \donttest{</span>
 <span class='co'>## RUN THE PERMUTATION TEST WITH MANY PERMUTATIONS</span>
-<span class='fu'>riem.fanovaP</span>(<span class='no'>obj1</span>, <span class='no'>obj2</span>, <span class='no'>obj3</span>, <span class='no'>obj4</span>, <span class='kw'>nperm</span><span class='kw'>=</span><span class='fl'>9999</span>)</div><div class='output co'>#&gt; 
+<span class='fu'>riem.fanovaP</span><span class='op'>(</span><span class='va'>obj1</span>, <span class='va'>obj2</span>, <span class='va'>obj3</span>, <span class='va'>obj4</span>, nperm<span class='op'>=</span><span class='fl'>9999</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
 #&gt; 	Frechet Analysis of Variance on Sphere Manifold
 #&gt; 
 #&gt; data:  obj1, obj2, obj3, and obj4
-#&gt; Tn = 0.015336, p-value = 0.5905
+#&gt; Tn = 0.019765, p-value = 0.6365
 #&gt; alternative hypothesis: at least one of equalities does not hold.
-#&gt; </div><div class='input'># }
+#&gt; </div><div class='input'><span class='co'># }</span>
 
 </div></pre>
   </div>
@@ -284,7 +286,7 @@ ISSN 0006-3444, 1464-3510, doi: <a href='https://doi.org/10.1093/biomet/asz052'>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
