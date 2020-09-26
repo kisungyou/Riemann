@@ -57,12 +57,9 @@ riem.hclust <- function(riemobj, geometry=c("intrinsic","extrinsic"),
   if (!inherits(riemobj,"riemdata")){
     stop(paste0("* riem.hclust : input ",DNAME," should be an object of 'riemdata' class."))
   }
-  mygeom = ifelse(missing(geometry),"intrinsic",
-                  match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  mymethod = ifelse(missing(method),"single",
-                    match.arg(tolower(method), 
-                              c("single", "complete", "average", "mcquitty", 
-                                "ward.D", "ward.D2", "centroid", "median")))
+  mygeom    = ifelse(missing(geometry),"intrinsic",
+                     match.arg(tolower(geometry),c("intrinsic","extrinsic")))
+  mymethod  = match.arg(method)
   mymembers = members
   
   ## COMPUTE DISTANCE, HCLUST, AND RETURN
