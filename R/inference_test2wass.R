@@ -14,7 +14,6 @@
 #' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
 #' @param ... extra parameters including\describe{
 #' \item{nperm}{the number of permutations (default: 999).}
-#' \item{method}{algorithm to compute the distance (default:\code{"lp"}).}
 #' }
 #' 
 #' @return a (list) object of \code{S3} class \code{htest} containing: \describe{
@@ -73,11 +72,8 @@ riem.test2wass <- function(riemobj1, riemobj2, p=2, geometry=c("intrinsic","extr
   w2 = rep(1/N, N)
   
   ## INPUTS : IMPLICIT
-  param  = list(...)
-  pnames = names(param)
-  mymethod = ifelse(("method"%in%pnames), 
-                    match.arg(tolower(param$method), c("lp")), 
-                    "lp")
+  param    = list(...)
+  pnames   = names(param)
   mynperm  = ifelse(("nperm"%in%pnames), max(9, round(param$nperm)), 999)
   
   ## COMPUTE : DISTANCE AND STATISTIC UNDER NULL
@@ -87,11 +83,12 @@ riem.test2wass <- function(riemobj1, riemobj2, p=2, geometry=c("intrinsic","extr
   ## COMPUTE : ITERATION
   distvals = rep(0, mynperm)
   for (i in 1:mynperm){
-    id.all = sample(1:(M+N))
-    id.gp1 = id.all[1:M]
-    id.gp2 = id.all[(M+1):(M+N)]
+    id.all  = sample(1:(M+N))
+    id.gp1  = id.all[1:M]
+    id.gp2  = id.all[(M+1):(M+N)]
+    partdxy = distmat[id.gp1, id.gp2]
     
-    distvals[i] = riem.wasserstein.internal(distmat[id.gp1, id.gp2], myp, w1, w2, mymethod)$distance
+    distvals[i] = T4transport::wassersteinD(partdxy, myp, wx=w1, wy=w2)$distance
   }
   
   ## WRAP

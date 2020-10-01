@@ -9,9 +9,9 @@
 #' @aliases Riemann-package
 #' @import Rdpack
 #' @import maotai
-#' @importFrom T4cluster sc05Z
+#' @importFrom T4cluster sc05Z scNJW scSM scUL
 #' @importFrom Rdimtools aux.shortestpath
-#' @importFrom lpSolve lp
+#' @importFrom T4transport wassersteinD
 #' @importFrom RiemBase riemfactory
 #' @importFrom utils packageVersion getFromNamespace
 #' @importFrom stats cor rnorm pchisq cov cutree as.dist

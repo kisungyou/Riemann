@@ -38,6 +38,8 @@ navbar:
           href: https://kyoustat.com/Rdimtools/
         - text: "T4cluster"
           href: https://kyoustat.com/T4cluster/
+        - text: "T4transport"
+          href: https://kyoustat.com/T4transport/
   right:
     - icon: fa-twitter
       href: https://twitter.com/kyoustat
@@ -60,10 +62,13 @@ reference:
   - subtitle: "[3] Clustering"
     contents:
       - has_concept("clustering")
-  - subtitle: "[4] Visualization and Dimension Reduction"
+  - subtitle: "[5] Visualization and Dimension Reduction"
     contents:
       - has_concept("visualization")
-  - subtitle: "[5] Other Methods"
+  - subtitle: "[6] Curves"
+    contents:
+      - has_concept("curve")
+  - subtitle: "[7] Other Methods"
     contents:
       - has_concept("learning")
   - title: "Functions on Specific Manifolds"

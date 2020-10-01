@@ -25,7 +25,10 @@
     <loc>https://kyoustat.com/Riemann/reference/riem.coreset18B.html</loc>
   </url>
   <url>
-    <loc>https://kyoustat.com/Riemann/reference/riem.curvedist.html</loc>
+    <loc>https://kyoustat.com/Riemann/reference/riem.distlp.html</loc>
+  </url>
+  <url>
+    <loc>https://kyoustat.com/Riemann/reference/riem.dtw.html</loc>
   </url>
   <url>
     <loc>https://kyoustat.com/Riemann/reference/riem.fanova.html</loc>
@@ -83,6 +86,9 @@
   </url>
   <url>
     <loc>https://kyoustat.com/Riemann/reference/riem.rmml.html</loc>
+  </url>
+  <url>
+    <loc>https://kyoustat.com/Riemann/reference/riem.sammon.html</loc>
   </url>
   <url>
     <loc>https://kyoustat.com/Riemann/reference/riem.sc05Z.html</loc>

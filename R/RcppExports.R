@@ -13,10 +13,6 @@ basic_interpolate <- function(mfdname, dtype, mat1, mat2, vect) {
     .Call('_Riemann_basic_interpolate', PACKAGE = 'Riemann', mfdname, dtype, mat1, mat2, vect)
 }
 
-basic_curvedist_lp <- function(mfd, geo, data1, data2, vect, myp) {
-    .Call('_Riemann_basic_curvedist_lp', PACKAGE = 'Riemann', mfd, geo, data1, data2, vect, myp)
-}
-
 inference_mean_intrinsic <- function(mfdname, data, myweight, myiter, myeps) {
     .Call('_Riemann_inference_mean_intrinsic', PACKAGE = 'Riemann', mfdname, data, myweight, myiter, myeps)
 }
@@ -57,22 +53,6 @@ clustering_kmeans18B <- function(mfdname, geotype, data, K, M, maxiter) {
     .Call('_Riemann_clustering_kmeans18B', PACKAGE = 'Riemann', mfdname, geotype, data, K, M, maxiter)
 }
 
-cpp_scNJW <- function(D, K, sigma, usekmeans, maxiter) {
-    .Call('_Riemann_cpp_scNJW', PACKAGE = 'Riemann', D, K, sigma, usekmeans, maxiter)
-}
-
-cpp_scUL <- function(D, K, sigma, usekmeans, maxiter) {
-    .Call('_Riemann_cpp_scUL', PACKAGE = 'Riemann', D, K, sigma, usekmeans, maxiter)
-}
-
-cpp_scSM <- function(D, K, sigma, usekmeans, maxiter) {
-    .Call('_Riemann_cpp_scSM', PACKAGE = 'Riemann', D, K, sigma, usekmeans, maxiter)
-}
-
-cpp_sc05Z <- function(D, K, nnbd, usekmeans, maxiter) {
-    .Call('_Riemann_cpp_sc05Z', PACKAGE = 'Riemann', D, K, nnbd, usekmeans, maxiter)
-}
-
 visualize_pga <- function(mfdname, data) {
     .Call('_Riemann_visualize_pga', PACKAGE = 'Riemann', mfdname, data)
 }
@@ -83,6 +63,22 @@ visualize_kpca <- function(mfdname, data, sigma, ndim) {
 
 visualize_isomap <- function(mfdname, data, geometry, nnbd) {
     .Call('_Riemann_visualize_isomap', PACKAGE = 'Riemann', mfdname, data, geometry, nnbd)
+}
+
+visualize_cmds <- function(mfd, geo, data, ndim) {
+    .Call('_Riemann_visualize_cmds', PACKAGE = 'Riemann', mfd, geo, data, ndim)
+}
+
+visualize_sammon <- function(mfd, geo, data, ndim, maxiter, abstol) {
+    .Call('_Riemann_visualize_sammon', PACKAGE = 'Riemann', mfd, geo, data, ndim, maxiter, abstol)
+}
+
+curvedist_lp <- function(mfd, geo, data1, data2, vect, myp) {
+    .Call('_Riemann_curvedist_lp', PACKAGE = 'Riemann', mfd, geo, data1, data2, vect, myp)
+}
+
+curvedist_dtwbasic <- function(mfd, geo, data1, data2) {
+    .Call('_Riemann_curvedist_dtwbasic', PACKAGE = 'Riemann', mfd, geo, data1, data2)
 }
 
 learning_seb <- function(mfdname, data, myiter, myeps, method) {

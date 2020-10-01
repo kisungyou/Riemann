@@ -48,22 +48,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// basic_curvedist_lp
-double basic_curvedist_lp(std::string mfd, std::string geo, Rcpp::List& data1, Rcpp::List& data2, arma::vec vect, double myp);
-RcppExport SEXP _Riemann_basic_curvedist_lp(SEXP mfdSEXP, SEXP geoSEXP, SEXP data1SEXP, SEXP data2SEXP, SEXP vectSEXP, SEXP mypSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type mfd(mfdSEXP);
-    Rcpp::traits::input_parameter< std::string >::type geo(geoSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type data1(data1SEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type data2(data2SEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type vect(vectSEXP);
-    Rcpp::traits::input_parameter< double >::type myp(mypSEXP);
-    rcpp_result_gen = Rcpp::wrap(basic_curvedist_lp(mfd, geo, data1, data2, vect, myp));
-    return rcpp_result_gen;
-END_RCPP
-}
 // inference_mean_intrinsic
 Rcpp::List inference_mean_intrinsic(std::string mfdname, Rcpp::List& data, arma::vec myweight, int myiter, double myeps);
 RcppExport SEXP _Riemann_inference_mean_intrinsic(SEXP mfdnameSEXP, SEXP dataSEXP, SEXP myweightSEXP, SEXP myiterSEXP, SEXP myepsSEXP) {
@@ -218,66 +202,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// cpp_scNJW
-Rcpp::List cpp_scNJW(arma::mat& D, int K, double sigma, bool usekmeans, int maxiter);
-RcppExport SEXP _Riemann_cpp_scNJW(SEXP DSEXP, SEXP KSEXP, SEXP sigmaSEXP, SEXP usekmeansSEXP, SEXP maxiterSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat& >::type D(DSEXP);
-    Rcpp::traits::input_parameter< int >::type K(KSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    Rcpp::traits::input_parameter< bool >::type usekmeans(usekmeansSEXP);
-    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_scNJW(D, K, sigma, usekmeans, maxiter));
-    return rcpp_result_gen;
-END_RCPP
-}
-// cpp_scUL
-Rcpp::List cpp_scUL(arma::mat& D, int K, double sigma, bool usekmeans, int maxiter);
-RcppExport SEXP _Riemann_cpp_scUL(SEXP DSEXP, SEXP KSEXP, SEXP sigmaSEXP, SEXP usekmeansSEXP, SEXP maxiterSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat& >::type D(DSEXP);
-    Rcpp::traits::input_parameter< int >::type K(KSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    Rcpp::traits::input_parameter< bool >::type usekmeans(usekmeansSEXP);
-    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_scUL(D, K, sigma, usekmeans, maxiter));
-    return rcpp_result_gen;
-END_RCPP
-}
-// cpp_scSM
-Rcpp::List cpp_scSM(arma::mat& D, int K, double sigma, bool usekmeans, int maxiter);
-RcppExport SEXP _Riemann_cpp_scSM(SEXP DSEXP, SEXP KSEXP, SEXP sigmaSEXP, SEXP usekmeansSEXP, SEXP maxiterSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat& >::type D(DSEXP);
-    Rcpp::traits::input_parameter< int >::type K(KSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    Rcpp::traits::input_parameter< bool >::type usekmeans(usekmeansSEXP);
-    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_scSM(D, K, sigma, usekmeans, maxiter));
-    return rcpp_result_gen;
-END_RCPP
-}
-// cpp_sc05Z
-Rcpp::List cpp_sc05Z(arma::mat& D, int K, int nnbd, bool usekmeans, int maxiter);
-RcppExport SEXP _Riemann_cpp_sc05Z(SEXP DSEXP, SEXP KSEXP, SEXP nnbdSEXP, SEXP usekmeansSEXP, SEXP maxiterSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat& >::type D(DSEXP);
-    Rcpp::traits::input_parameter< int >::type K(KSEXP);
-    Rcpp::traits::input_parameter< int >::type nnbd(nnbdSEXP);
-    Rcpp::traits::input_parameter< bool >::type usekmeans(usekmeansSEXP);
-    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_sc05Z(D, K, nnbd, usekmeans, maxiter));
-    return rcpp_result_gen;
-END_RCPP
-}
 // visualize_pga
 Rcpp::List visualize_pga(std::string mfdname, Rcpp::List& data);
 RcppExport SEXP _Riemann_visualize_pga(SEXP mfdnameSEXP, SEXP dataSEXP) {
@@ -315,6 +239,66 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::string >::type geometry(geometrySEXP);
     Rcpp::traits::input_parameter< int >::type nnbd(nnbdSEXP);
     rcpp_result_gen = Rcpp::wrap(visualize_isomap(mfdname, data, geometry, nnbd));
+    return rcpp_result_gen;
+END_RCPP
+}
+// visualize_cmds
+Rcpp::List visualize_cmds(std::string mfd, std::string geo, Rcpp::List& data, int ndim);
+RcppExport SEXP _Riemann_visualize_cmds(SEXP mfdSEXP, SEXP geoSEXP, SEXP dataSEXP, SEXP ndimSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfd(mfdSEXP);
+    Rcpp::traits::input_parameter< std::string >::type geo(geoSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type ndim(ndimSEXP);
+    rcpp_result_gen = Rcpp::wrap(visualize_cmds(mfd, geo, data, ndim));
+    return rcpp_result_gen;
+END_RCPP
+}
+// visualize_sammon
+Rcpp::List visualize_sammon(std::string mfd, std::string geo, Rcpp::List& data, int ndim, int maxiter, double abstol);
+RcppExport SEXP _Riemann_visualize_sammon(SEXP mfdSEXP, SEXP geoSEXP, SEXP dataSEXP, SEXP ndimSEXP, SEXP maxiterSEXP, SEXP abstolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfd(mfdSEXP);
+    Rcpp::traits::input_parameter< std::string >::type geo(geoSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type ndim(ndimSEXP);
+    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
+    Rcpp::traits::input_parameter< double >::type abstol(abstolSEXP);
+    rcpp_result_gen = Rcpp::wrap(visualize_sammon(mfd, geo, data, ndim, maxiter, abstol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// curvedist_lp
+double curvedist_lp(std::string mfd, std::string geo, Rcpp::List& data1, Rcpp::List& data2, arma::vec vect, double myp);
+RcppExport SEXP _Riemann_curvedist_lp(SEXP mfdSEXP, SEXP geoSEXP, SEXP data1SEXP, SEXP data2SEXP, SEXP vectSEXP, SEXP mypSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfd(mfdSEXP);
+    Rcpp::traits::input_parameter< std::string >::type geo(geoSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data1(data1SEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data2(data2SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type vect(vectSEXP);
+    Rcpp::traits::input_parameter< double >::type myp(mypSEXP);
+    rcpp_result_gen = Rcpp::wrap(curvedist_lp(mfd, geo, data1, data2, vect, myp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// curvedist_dtwbasic
+double curvedist_dtwbasic(std::string mfd, std::string geo, Rcpp::List& data1, Rcpp::List& data2);
+RcppExport SEXP _Riemann_curvedist_dtwbasic(SEXP mfdSEXP, SEXP geoSEXP, SEXP data1SEXP, SEXP data2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfd(mfdSEXP);
+    Rcpp::traits::input_parameter< std::string >::type geo(geoSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data1(data1SEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data2(data2SEXP);
+    rcpp_result_gen = Rcpp::wrap(curvedist_dtwbasic(mfd, geo, data1, data2));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -449,7 +433,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_basic_pdist", (DL_FUNC) &_Riemann_basic_pdist, 3},
     {"_Riemann_basic_pdist2", (DL_FUNC) &_Riemann_basic_pdist2, 4},
     {"_Riemann_basic_interpolate", (DL_FUNC) &_Riemann_basic_interpolate, 5},
-    {"_Riemann_basic_curvedist_lp", (DL_FUNC) &_Riemann_basic_curvedist_lp, 6},
     {"_Riemann_inference_mean_intrinsic", (DL_FUNC) &_Riemann_inference_mean_intrinsic, 5},
     {"_Riemann_inference_mean_extrinsic", (DL_FUNC) &_Riemann_inference_mean_extrinsic, 5},
     {"_Riemann_inference_median_intrinsic", (DL_FUNC) &_Riemann_inference_median_intrinsic, 5},
@@ -460,13 +443,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_clustering_clrq", (DL_FUNC) &_Riemann_clustering_clrq, 5},
     {"_Riemann_clustering_sup_intrinsic", (DL_FUNC) &_Riemann_clustering_sup_intrinsic, 6},
     {"_Riemann_clustering_kmeans18B", (DL_FUNC) &_Riemann_clustering_kmeans18B, 6},
-    {"_Riemann_cpp_scNJW", (DL_FUNC) &_Riemann_cpp_scNJW, 5},
-    {"_Riemann_cpp_scUL", (DL_FUNC) &_Riemann_cpp_scUL, 5},
-    {"_Riemann_cpp_scSM", (DL_FUNC) &_Riemann_cpp_scSM, 5},
-    {"_Riemann_cpp_sc05Z", (DL_FUNC) &_Riemann_cpp_sc05Z, 5},
     {"_Riemann_visualize_pga", (DL_FUNC) &_Riemann_visualize_pga, 2},
     {"_Riemann_visualize_kpca", (DL_FUNC) &_Riemann_visualize_kpca, 4},
     {"_Riemann_visualize_isomap", (DL_FUNC) &_Riemann_visualize_isomap, 4},
+    {"_Riemann_visualize_cmds", (DL_FUNC) &_Riemann_visualize_cmds, 4},
+    {"_Riemann_visualize_sammon", (DL_FUNC) &_Riemann_visualize_sammon, 6},
+    {"_Riemann_curvedist_lp", (DL_FUNC) &_Riemann_curvedist_lp, 6},
+    {"_Riemann_curvedist_dtwbasic", (DL_FUNC) &_Riemann_curvedist_dtwbasic, 4},
     {"_Riemann_learning_seb", (DL_FUNC) &_Riemann_learning_seb, 5},
     {"_Riemann_learning_rmml", (DL_FUNC) &_Riemann_learning_rmml, 4},
     {"_Riemann_learning_coreset18B", (DL_FUNC) &_Riemann_learning_coreset18B, 6},

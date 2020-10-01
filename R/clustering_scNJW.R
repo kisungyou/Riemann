@@ -77,15 +77,15 @@ riem.scNJW <- function(riemobj, k=2, sigma=1, geometry=c("intrinsic","extrinsic"
   mysig = max(sqrt(.Machine$double.eps), as.double(sigma))
   
   ## COMPUTE DISTANCE
-  pdmat   = basic_pdist(riemobj$name, riemobj$data, mygeom)
+  pdmat   = stats::as.dist(basic_pdist(riemobj$name, riemobj$data, mygeom))
   
   ## RUN SPECTRAL CLUSTERING
-  runT4cluster = cpp_scNJW(pdmat, myk, mysig, TRUE, 100)
+  runT4cluster = T4cluster::scNJW(pdmat, k=myk, sigma=mysig)
   
   ## WRAP AND RETURN
   output = list()
-  output$cluster = as.vector(runT4cluster$labels)+1
-  output$eigval  = base::sort(as.vector(runT4cluster$values), decreasing=TRUE)
+  output$cluster = runT4cluster$cluster
+  output$eigval  = runT4cluster$eigval
   output$embeds  = runT4cluster$embeds
   return(output)
 }

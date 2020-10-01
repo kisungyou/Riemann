@@ -24,7 +24,6 @@ riem.wasserstein(
 \item{...}{extra parameters including\describe{
 \item{weight1}{a length-\eqn{M} weight vector for \eqn{\mu}; if \code{NULL} (default), uniform weight is set.}
 \item{weight2}{a length-\eqn{N} weight vector for \eqn{\nu}; if \code{NULL} (default), uniform weight is set.}
-\item{method}{algorithm to compute the distance (default:\code{"lp"}).}
 }}
 }
 \value{

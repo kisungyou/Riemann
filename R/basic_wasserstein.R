@@ -13,7 +13,6 @@
 #' @param ... extra parameters including\describe{
 #' \item{weight1}{a length-\eqn{M} weight vector for \eqn{\mu}; if \code{NULL} (default), uniform weight is set.}
 #' \item{weight2}{a length-\eqn{N} weight vector for \eqn{\nu}; if \code{NULL} (default), uniform weight is set.}
-#' \item{method}{algorithm to compute the distance (default:\code{"lp"}).}
 #' }
 #' 
 #' @return a named list containing \describe{
@@ -80,9 +79,6 @@ riem.wasserstein <- function(riemobj1, riemobj2, p=2, geometry=c("intrinsic","ex
   ## INPUTS : IMPLICIT
   param  = list(...)
   pnames = names(param)
-  mymethod = ifelse(("method"%in%pnames), 
-                    match.arg(tolower(param$method), c("lp")), 
-                    "lp")
   
   if ("weight1"%in%pnames){
     myweight1 = param$weight1
@@ -114,42 +110,9 @@ riem.wasserstein <- function(riemobj1, riemobj2, p=2, geometry=c("intrinsic","ex
   
   ## SWITCHING, COMPUTATION, AND RETURN
   dxy    = riem.pdist2(riemobj1, riemobj2, geometry=mygeometry)
-  output = riem.wasserstein.internal(dxy, myp, myweight1, myweight2, mymethod)
+  output = T4cluster::wassersteinD(dxy, myp, wx=myweight1, wy=myweight2)
   return(output)
 }
-
-# extra functions ---------------------------------------------------------
-#' @keywords internal
-#' @noRd
-riem.wasserstein.internal <- function(dxy, p, wx, wy, mymethod){
-  output = switch(mymethod,
-                  lp = Wasserstein_lp(dxy, p, wx, wy))
-  return(output)
-}
-#' @keywords internal
-#' @noRd
-Wasserstein_lp <- function(dxy, p, wx, wy){
-  cxy = (dxy^p)
-  m = nrow(cxy)
-  n = ncol(cxy)
-  
-  c  = as.vector(cxy)
-  A1 = base::kronecker(matrix(1,nrow=1,ncol=n), diag(m))
-  A2 = base::kronecker(diag(n), matrix(1,nrow=1,ncol=m))
-  A  = rbind(A1, A2)
-  
-  f.obj = c
-  f.con = A
-  f.dir = rep("==",nrow(A))
-  f.rhs = c(rep(1/m,m),rep(1/n,n))
-  f.sol = (lpSolve::lp("min", f.obj, f.con, f.dir, f.rhs))
-  
-  gamma = matrix(f.sol$solution, nrow=m)
-  value = (sum(gamma*cxy)^(1/p))
-  
-  return(list(distance=value, plan=gamma))
-}
-
 
 # ## WANT TO SEE CONCENTRATION OF EMPIRICAL DISTANCE FOR
 # ## TWO EMPIRICAL MEASURES : EXPECTED DISTANCE IS "pi/2"

@@ -23,7 +23,6 @@ riem.test2wass(
 
 \item{...}{extra parameters including\describe{
 \item{nperm}{the number of permutations (default: 999).}
-\item{method}{algorithm to compute the distance (default:\code{"lp"}).}
 }}
 }
 \value{

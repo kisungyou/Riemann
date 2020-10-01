@@ -50,6 +50,8 @@ r-packages:
   - stringr
   - testthat
   - usmap
+  - T4transport
+  - T4cluster
 
 env:
   global:
