@@ -36,3 +36,12 @@ arma::mat mat_cov2cor(arma::mat A){
   arma::mat D = arma::diagmat(1.0/d);
   return(D*A*D);
 }
+
+
+// [[Rcpp::export]]
+arma::mat cpp_rmvnorm(int n, arma::vec mu, arma::mat sigma){
+  int p = sigma.n_rows;
+  arma::mat Y(n,p,fill::randn);
+  arma::mat output = (Y*arma::chol(sigma)) + arma::repmat(mu, 1, n).t();
+  return(output);
+}

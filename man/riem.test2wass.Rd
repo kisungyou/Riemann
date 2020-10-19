@@ -23,6 +23,7 @@ riem.test2wass(
 
 \item{...}{extra parameters including\describe{
 \item{nperm}{the number of permutations (default: 999).}
+\item{use.smooth}{a logical; \code{TRUE} to use a smoothed Wasserstein distance, \code{FALSE} otherwise.}
 }}
 }
 \value{
@@ -67,7 +68,29 @@ myriem2 = wrap.sphere(mydata2)
 ## PERFORM PERMUTATION TEST
 #  it is expected to return a very small number.
 \donttest{
-riem.test2wass(myriem1, myriem2, nperm=999)
+riem.test2wass(myriem1, myriem2, nperm=999, use.smooth=FALSE)
+}
+
+\dontrun{
+## CHECK WITH EMPIRICAL TYPE-1 ERROR
+set.seed(777)
+ntest = 1000
+pvals = rep(0,ntest)
+
+for (i in 1:ntest){
+  X = cbind(matrix(rnorm(30*2, sd=0.1),ncol=2), rep(1,30))
+  Y = cbind(matrix(rnorm(30*2, sd=0.1),ncol=2), rep(1,30))
+  Xnorm = X/sqrt(rowSums(X^2))
+  Ynorm = Y/sqrt(rowSums(Y^2))
+  
+  Xriem = wrap.sphere(Xnorm)
+  Yriem = wrap.sphere(Ynorm)
+  pvals[i] = riem.test2wass(Xriem, Yriem, nperm=999)$p.value
+  print(paste0("iteration ",i,"/",ntest," complete.."))
+}
+
+emperr = round(sum((pvals <= 0.05))/ntest, 5)
+print(paste0("* EMPIRICAL TYPE-1 ERROR=", emperr))
 }
 
 }

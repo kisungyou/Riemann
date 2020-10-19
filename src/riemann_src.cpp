@@ -364,3 +364,13 @@ arma::uvec helper_sample(int N, int m, arma::vec prob, bool replace){
   arma::uvec output = Rcpp::RcppArmadillo::sample(x, m, replace, myprob);
   return(output);
 }
+arma::uvec helper_setdiff(arma::uvec& x, arma::uvec& y){
+  std::vector<int> a = arma::conv_to< std::vector<int> >::from(arma::sort(x));
+  std::vector<int> b = arma::conv_to< std::vector<int> >::from(arma::sort(y));
+  std::vector<int> out;
+  
+  std::set_difference(a.begin(), a.end(), b.begin(), b.end(),
+                      std::inserter(out, out.end()));
+  
+  return arma::conv_to<arma::uvec>::from(out);
+}

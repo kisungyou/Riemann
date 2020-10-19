@@ -25,14 +25,16 @@
 #' #  density on 2-dimensional sphere S^2 in R^3.
 #' #-------------------------------------------------------------------
 #' ## PREPARE DATA OF 4 CLASSES
-#' ndata  = 20
+#' ndata  = 200
 #' class1 = list()
 #' class2 = list()
 #' class3 = list()
 #' class4 = list()
 #' for (i in 1:ndata){
-#'   tmp = matrix(rnorm(4*3), ncol=3)
-#'   tmp = tmp/sqrt(rowSums(tmp^2))
+#'   tmpxy = matrix(rnorm(4*2, sd=0.1), ncol=2)
+#'   tmpz  = rep(1,4)
+#'   tmp3d = cbind(tmpxy, tmpz)
+#'   tmp  = tmp3d/sqrt(rowSums(tmp3d^2))
 #'   
 #'   class1[[i]] = tmp[1,]
 #'   class2[[i]] = tmp[2,]

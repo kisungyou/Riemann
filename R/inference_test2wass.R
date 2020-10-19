@@ -14,6 +14,7 @@
 #' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
 #' @param ... extra parameters including\describe{
 #' \item{nperm}{the number of permutations (default: 999).}
+#' \item{use.smooth}{a logical; \code{TRUE} to use a smoothed Wasserstein distance, \code{FALSE} otherwise.}
 #' }
 #' 
 #' @return a (list) object of \code{S3} class \code{htest} containing: \describe{
@@ -48,7 +49,29 @@
 #' ## PERFORM PERMUTATION TEST
 #' #  it is expected to return a very small number.
 #' \donttest{
-#' riem.test2wass(myriem1, myriem2, nperm=999)
+#' riem.test2wass(myriem1, myriem2, nperm=999, use.smooth=FALSE)
+#' }
+#' 
+#' \dontrun{
+#' ## CHECK WITH EMPIRICAL TYPE-1 ERROR
+#' set.seed(777)
+#' ntest = 1000
+#' pvals = rep(0,ntest)
+#' 
+#' for (i in 1:ntest){
+#'   X = cbind(matrix(rnorm(30*2, sd=0.1),ncol=2), rep(1,30))
+#'   Y = cbind(matrix(rnorm(30*2, sd=0.1),ncol=2), rep(1,30))
+#'   Xnorm = X/sqrt(rowSums(X^2))
+#'   Ynorm = Y/sqrt(rowSums(Y^2))
+#'   
+#'   Xriem = wrap.sphere(Xnorm)
+#'   Yriem = wrap.sphere(Ynorm)
+#'   pvals[i] = riem.test2wass(Xriem, Yriem, nperm=999)$p.value
+#'   print(paste0("iteration ",i,"/",ntest," complete.."))
+#' }
+#' 
+#' emperr = round(sum((pvals <= 0.05))/ntest, 5)
+#' print(paste0("* EMPIRICAL TYPE-1 ERROR=", emperr))
 #' }
 #' 
 #' @concept inference
@@ -75,10 +98,15 @@ riem.test2wass <- function(riemobj1, riemobj2, p=2, geometry=c("intrinsic","extr
   param    = list(...)
   pnames   = names(param)
   mynperm  = ifelse(("nperm"%in%pnames), max(9, round(param$nperm)), 999)
+  myipot   = as.logical(ifelse(("use.smooth"%in%pnames), param$use.smooth, TRUE))
   
   ## COMPUTE : DISTANCE AND STATISTIC UNDER NULL
   distmat = basic_pdist(riemobj1$name, c(riemobj1$data, riemobj2$data), mygeometry)
-  thestat = riem.wasserstein.internal(distmat[1:M, (M+1):(M+N)], myp, w1, w2, mymethod)$distance
+  if (myipot){
+    thestat = T4transport::ipotD(distmat[1:M, (M+1):(M+N)],p=myp,wx = w1, wy=w2)$distance
+  } else {
+    thestat = T4transport::wassersteinD(distmat[1:M, (M+1):(M+N)], myp, wx=w1, wy=w2)$distance
+  }
   
   ## COMPUTE : ITERATION
   distvals = rep(0, mynperm)
@@ -88,7 +116,11 @@ riem.test2wass <- function(riemobj1, riemobj2, p=2, geometry=c("intrinsic","extr
     id.gp2  = id.all[(M+1):(M+N)]
     partdxy = distmat[id.gp1, id.gp2]
     
-    distvals[i] = T4transport::wassersteinD(partdxy, myp, wx=w1, wy=w2)$distance
+    if (myipot){
+      distvals[i] = T4transport::ipotD(partdxy,p=myp,wx = w1, wy=w2)$distance
+    } else {
+      distvals[i] = T4transport::wassersteinD(partdxy, myp, wx=w1, wy=w2)$distance  
+    }
   }
   
   ## WRAP

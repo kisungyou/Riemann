@@ -16,6 +16,10 @@
 #' @noRd
 riem.rsup <- function(riemobj, weight=NULL, c=5, maxiter=50, eps=1e-5){
   ## PREPARE
+  DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
+  if (!inherits(riemobj,"riemdata")){
+    stop(paste0("* riem.rsup : input ",DNAME," should be an object of 'riemdata' class."))
+  }
   N = length(riemobj$data)
   myc    = max(sqrt(.Machine$double.eps), as.double(c))
   mymult = 1/myc

@@ -39,6 +39,7 @@ r-packages:
   - stats
   - utils
   - maptools
+  - rgdal
   - ggplot2
   - ggrepel
   - knitr
@@ -50,8 +51,8 @@ r-packages:
   - stringr
   - testthat
   - usmap
-  - T4transport
   - T4cluster
+  - T4transport
 
 env:
   global:

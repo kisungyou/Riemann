@@ -221,6 +221,7 @@ between two samples.</p>
       <th>...</th>
       <td><p>extra parameters including</p><dl>
 <dt>nperm</dt><dd><p>the number of permutations (default: 999).</p></dd>
+<dt>use.smooth</dt><dd><p>a logical; <code>TRUE</code> to use a smoothed Wasserstein distance, <code>FALSE</code> otherwise.</p></dd>
 
 </dl></td>
     </tr>
@@ -262,8 +263,36 @@ between two samples.</p>
 <span class='co'>## PERFORM PERMUTATION TEST</span>
 <span class='co'>#  it is expected to return a very small number.</span>
 <span class='co'># \donttest{</span>
-<span class='fu'>riem.test2wass</span><span class='op'>(</span><span class='va'>myriem1</span>, <span class='va'>myriem2</span>, nperm<span class='op'>=</span><span class='fl'>999</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in riem.wasserstein.internal(distmat[1:M, (M + 1):(M + N)], myp,     w1, w2, mymethod): could not find function "riem.wasserstein.internal"</span></div><div class='input'><span class='co'># }</span>
+<span class='fu'>riem.test2wass</span><span class='op'>(</span><span class='va'>myriem1</span>, <span class='va'>myriem2</span>, nperm<span class='op'>=</span><span class='fl'>999</span>, use.smooth<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt; 	Wasserstein Two-Sample Test on Sphere Manifold
+#&gt; 
+#&gt; data:  'myriem1' and 'myriem2'
+#&gt; Wmn = 1.5597, p-value = 0.001
+#&gt; alternative hypothesis: two distributions are not equal.
+#&gt; </div><div class='input'><span class='co'># }</span>
+
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'>## CHECK WITH EMPIRICAL TYPE-1 ERROR</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>777</span><span class='op'>)</span>
+<span class='va'>ntest</span> <span class='op'>=</span> <span class='fl'>1000</span>
+<span class='va'>pvals</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='va'>ntest</span><span class='op'>)</span>
+
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>ntest</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>X</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>30</span><span class='op'>*</span><span class='fl'>2</span>, sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>30</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>Y</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>30</span><span class='op'>*</span><span class='fl'>2</span>, sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>30</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>Xnorm</span> <span class='op'>=</span> <span class='va'>X</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>Ynorm</span> <span class='op'>=</span> <span class='va'>Y</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span><span class='op'>(</span><span class='va'>Y</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+  
+  <span class='va'>Xriem</span> <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='va'>Xnorm</span><span class='op'>)</span>
+  <span class='va'>Yriem</span> <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='va'>Ynorm</span><span class='op'>)</span>
+  <span class='va'>pvals</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'>riem.test2wass</span><span class='op'>(</span><span class='va'>Xriem</span>, <span class='va'>Yriem</span>, nperm<span class='op'>=</span><span class='fl'>999</span><span class='op'>)</span><span class='op'>$</span><span class='va'>p.value</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"iteration "</span>,<span class='va'>i</span>,<span class='st'>"/"</span>,<span class='va'>ntest</span>,<span class='st'>" complete.."</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+<span class='va'>emperr</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='op'>(</span><span class='va'>pvals</span> <span class='op'>&lt;=</span> <span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='va'>ntest</span>, <span class='fl'>5</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"* EMPIRICAL TYPE-1 ERROR="</span>, <span class='va'>emperr</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 </div></pre>
   </div>

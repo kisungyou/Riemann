@@ -11,7 +11,7 @@
 #' @import maotai
 #' @importFrom T4cluster sc05Z scNJW scSM scUL
 #' @importFrom Rdimtools aux.shortestpath
-#' @importFrom T4transport wassersteinD
+#' @importFrom T4transport wassersteinD ipotD
 #' @importFrom RiemBase riemfactory
 #' @importFrom utils packageVersion getFromNamespace
 #' @importFrom stats cor rnorm pchisq cov cutree as.dist

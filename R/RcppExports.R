@@ -53,6 +53,30 @@ clustering_kmeans18B <- function(mfdname, geotype, data, K, M, maxiter) {
     .Call('_Riemann_clustering_kmeans18B', PACKAGE = 'Riemann', mfdname, geotype, data, K, M, maxiter)
 }
 
+cvi_internal_score <- function(mfd, dtype, data, mylabel) {
+    .Call('_Riemann_cvi_internal_score', PACKAGE = 'Riemann', mfd, dtype, data, mylabel)
+}
+
+cvi_internal_gdxx <- function(mfd, dtype, data, mylabel, delta, Delta) {
+    .Call('_Riemann_cvi_internal_gdxx', PACKAGE = 'Riemann', mfd, dtype, data, mylabel, delta, Delta)
+}
+
+cvi_internal_db <- function(mfd, dtype, data, mylabel) {
+    .Call('_Riemann_cvi_internal_db', PACKAGE = 'Riemann', mfd, dtype, data, mylabel)
+}
+
+cvi_internal_ci <- function(mfd, dtype, data, mylabel) {
+    .Call('_Riemann_cvi_internal_ci', PACKAGE = 'Riemann', mfd, dtype, data, mylabel)
+}
+
+cvi_internal_ch <- function(mfd, dtype, data, mylabel) {
+    .Call('_Riemann_cvi_internal_ch', PACKAGE = 'Riemann', mfd, dtype, data, mylabel)
+}
+
+cvi_internal_dunn <- function(mfd, dtype, data, mylabel) {
+    .Call('_Riemann_cvi_internal_dunn', PACKAGE = 'Riemann', mfd, dtype, data, mylabel)
+}
+
 visualize_pga <- function(mfdname, data) {
     .Call('_Riemann_visualize_pga', PACKAGE = 'Riemann', mfdname, data)
 }
@@ -119,5 +143,9 @@ mat_diaginvhalf <- function(D) {
 
 mat_cov2cor <- function(A) {
     .Call('_Riemann_mat_cov2cor', PACKAGE = 'Riemann', A)
+}
+
+cpp_rmvnorm <- function(n, mu, sigma) {
+    .Call('_Riemann_cpp_rmvnorm', PACKAGE = 'Riemann', n, mu, sigma)
 }
 

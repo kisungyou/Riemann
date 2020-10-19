@@ -202,6 +202,92 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cvi_internal_score
+double cvi_internal_score(std::string mfd, std::string dtype, Rcpp::List& data, arma::uvec mylabel);
+RcppExport SEXP _Riemann_cvi_internal_score(SEXP mfdSEXP, SEXP dtypeSEXP, SEXP dataSEXP, SEXP mylabelSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfd(mfdSEXP);
+    Rcpp::traits::input_parameter< std::string >::type dtype(dtypeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type mylabel(mylabelSEXP);
+    rcpp_result_gen = Rcpp::wrap(cvi_internal_score(mfd, dtype, data, mylabel));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cvi_internal_gdxx
+double cvi_internal_gdxx(std::string mfd, std::string dtype, Rcpp::List& data, arma::uvec mylabel, int delta, int Delta);
+RcppExport SEXP _Riemann_cvi_internal_gdxx(SEXP mfdSEXP, SEXP dtypeSEXP, SEXP dataSEXP, SEXP mylabelSEXP, SEXP deltaSEXP, SEXP DeltaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfd(mfdSEXP);
+    Rcpp::traits::input_parameter< std::string >::type dtype(dtypeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type mylabel(mylabelSEXP);
+    Rcpp::traits::input_parameter< int >::type delta(deltaSEXP);
+    Rcpp::traits::input_parameter< int >::type Delta(DeltaSEXP);
+    rcpp_result_gen = Rcpp::wrap(cvi_internal_gdxx(mfd, dtype, data, mylabel, delta, Delta));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cvi_internal_db
+double cvi_internal_db(std::string mfd, std::string dtype, Rcpp::List& data, arma::uvec mylabel);
+RcppExport SEXP _Riemann_cvi_internal_db(SEXP mfdSEXP, SEXP dtypeSEXP, SEXP dataSEXP, SEXP mylabelSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfd(mfdSEXP);
+    Rcpp::traits::input_parameter< std::string >::type dtype(dtypeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type mylabel(mylabelSEXP);
+    rcpp_result_gen = Rcpp::wrap(cvi_internal_db(mfd, dtype, data, mylabel));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cvi_internal_ci
+double cvi_internal_ci(std::string mfd, std::string dtype, Rcpp::List& data, arma::uvec mylabel);
+RcppExport SEXP _Riemann_cvi_internal_ci(SEXP mfdSEXP, SEXP dtypeSEXP, SEXP dataSEXP, SEXP mylabelSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfd(mfdSEXP);
+    Rcpp::traits::input_parameter< std::string >::type dtype(dtypeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type mylabel(mylabelSEXP);
+    rcpp_result_gen = Rcpp::wrap(cvi_internal_ci(mfd, dtype, data, mylabel));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cvi_internal_ch
+double cvi_internal_ch(std::string mfd, std::string dtype, Rcpp::List& data, arma::uvec mylabel);
+RcppExport SEXP _Riemann_cvi_internal_ch(SEXP mfdSEXP, SEXP dtypeSEXP, SEXP dataSEXP, SEXP mylabelSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfd(mfdSEXP);
+    Rcpp::traits::input_parameter< std::string >::type dtype(dtypeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type mylabel(mylabelSEXP);
+    rcpp_result_gen = Rcpp::wrap(cvi_internal_ch(mfd, dtype, data, mylabel));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cvi_internal_dunn
+double cvi_internal_dunn(std::string mfd, std::string dtype, Rcpp::List& data, arma::uvec mylabel);
+RcppExport SEXP _Riemann_cvi_internal_dunn(SEXP mfdSEXP, SEXP dtypeSEXP, SEXP dataSEXP, SEXP mylabelSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfd(mfdSEXP);
+    Rcpp::traits::input_parameter< std::string >::type dtype(dtypeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< arma::uvec >::type mylabel(mylabelSEXP);
+    rcpp_result_gen = Rcpp::wrap(cvi_internal_dunn(mfd, dtype, data, mylabel));
+    return rcpp_result_gen;
+END_RCPP
+}
 // visualize_pga
 Rcpp::List visualize_pga(std::string mfdname, Rcpp::List& data);
 RcppExport SEXP _Riemann_visualize_pga(SEXP mfdnameSEXP, SEXP dataSEXP) {
@@ -428,6 +514,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_rmvnorm
+arma::mat cpp_rmvnorm(int n, arma::vec mu, arma::mat sigma);
+RcppExport SEXP _Riemann_cpp_rmvnorm(SEXP nSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type mu(muSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type sigma(sigmaSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_rmvnorm(n, mu, sigma));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_basic_pdist", (DL_FUNC) &_Riemann_basic_pdist, 3},
@@ -443,6 +542,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_clustering_clrq", (DL_FUNC) &_Riemann_clustering_clrq, 5},
     {"_Riemann_clustering_sup_intrinsic", (DL_FUNC) &_Riemann_clustering_sup_intrinsic, 6},
     {"_Riemann_clustering_kmeans18B", (DL_FUNC) &_Riemann_clustering_kmeans18B, 6},
+    {"_Riemann_cvi_internal_score", (DL_FUNC) &_Riemann_cvi_internal_score, 4},
+    {"_Riemann_cvi_internal_gdxx", (DL_FUNC) &_Riemann_cvi_internal_gdxx, 6},
+    {"_Riemann_cvi_internal_db", (DL_FUNC) &_Riemann_cvi_internal_db, 4},
+    {"_Riemann_cvi_internal_ci", (DL_FUNC) &_Riemann_cvi_internal_ci, 4},
+    {"_Riemann_cvi_internal_ch", (DL_FUNC) &_Riemann_cvi_internal_ch, 4},
+    {"_Riemann_cvi_internal_dunn", (DL_FUNC) &_Riemann_cvi_internal_dunn, 4},
     {"_Riemann_visualize_pga", (DL_FUNC) &_Riemann_visualize_pga, 2},
     {"_Riemann_visualize_kpca", (DL_FUNC) &_Riemann_visualize_kpca, 4},
     {"_Riemann_visualize_isomap", (DL_FUNC) &_Riemann_visualize_isomap, 4},
@@ -460,6 +565,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_mat_diaghalf", (DL_FUNC) &_Riemann_mat_diaghalf, 1},
     {"_Riemann_mat_diaginvhalf", (DL_FUNC) &_Riemann_mat_diaginvhalf, 1},
     {"_Riemann_mat_cov2cor", (DL_FUNC) &_Riemann_mat_cov2cor, 1},
+    {"_Riemann_cpp_rmvnorm", (DL_FUNC) &_Riemann_cpp_rmvnorm, 3},
     {NULL, NULL, 0}
 };
 

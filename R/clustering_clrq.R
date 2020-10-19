@@ -75,6 +75,10 @@
 #' @export
 riem.clrq <- function(riemobj, k=2, init=c("plus","random"), gain.a = 1, gain.b = 1){
   ## PREPARE
+  DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
+  if (!inherits(riemobj,"riemdata")){
+    stop(paste0("* riem.clrq : input ",DNAME," should be an object of 'riemdata' class."))
+  }
   N          = length(riemobj$data)
   par.init   = ifelse(missing(init), "plus", match.arg(tolower(init),c("plus","random")))
   par.k      = max(1, round(k))

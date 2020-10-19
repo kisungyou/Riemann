@@ -110,7 +110,7 @@ riem.wasserstein <- function(riemobj1, riemobj2, p=2, geometry=c("intrinsic","ex
   
   ## SWITCHING, COMPUTATION, AND RETURN
   dxy    = riem.pdist2(riemobj1, riemobj2, geometry=mygeometry)
-  output = T4cluster::wassersteinD(dxy, myp, wx=myweight1, wy=myweight2)
+  output = T4transport::wassersteinD(dxy, myp, wx=myweight1, wy=myweight2)
   return(output)
 }
 

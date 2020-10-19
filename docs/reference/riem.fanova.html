@@ -234,14 +234,16 @@ ISSN 0006-3444, 1464-3510, doi: <a href='https://doi.org/10.1093/biomet/asz052'>
 <span class='co'>#  density on 2-dimensional sphere S^2 in R^3.</span>
 <span class='co'>#-------------------------------------------------------------------</span>
 <span class='co'>## PREPARE DATA OF 4 CLASSES</span>
-<span class='va'>ndata</span>  <span class='op'>=</span> <span class='fl'>20</span>
+<span class='va'>ndata</span>  <span class='op'>=</span> <span class='fl'>200</span>
 <span class='va'>class1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>class2</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>class3</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>class4</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>ndata</span><span class='op'>)</span><span class='op'>{</span>
-  <span class='va'>tmp</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>4</span><span class='op'>*</span><span class='fl'>3</span><span class='op'>)</span>, ncol<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span>
-  <span class='va'>tmp</span> <span class='op'>=</span> <span class='va'>tmp</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span><span class='op'>(</span><span class='va'>tmp</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>tmpxy</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>4</span><span class='op'>*</span><span class='fl'>2</span>, sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span>, ncol<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
+  <span class='va'>tmpz</span>  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>)</span>
+  <span class='va'>tmp3d</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>tmpxy</span>, <span class='va'>tmpz</span><span class='op'>)</span>
+  <span class='va'>tmp</span>  <span class='op'>=</span> <span class='va'>tmp3d</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span><span class='op'>(</span><span class='va'>tmp3d</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
   
   <span class='va'>class1</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tmp</span><span class='op'>[</span><span class='fl'>1</span>,<span class='op'>]</span>
   <span class='va'>class2</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>tmp</span><span class='op'>[</span><span class='fl'>2</span>,<span class='op'>]</span>
@@ -259,7 +261,7 @@ ISSN 0006-3444, 1464-3510, doi: <a href='https://doi.org/10.1093/biomet/asz052'>
 #&gt; 	Frechet Analysis of Variance on Sphere Manifold
 #&gt; 
 #&gt; data:  obj1, obj2, obj3, and obj4
-#&gt; Tn = 0.047535, p-value = 0.9973
+#&gt; Tn = 0.0022631, p-value = 1
 #&gt; alternative hypothesis: at least one of equalities does not hold.
 #&gt; </div><div class='input'>
 <span class='co'># \donttest{</span>
@@ -269,7 +271,7 @@ ISSN 0006-3444, 1464-3510, doi: <a href='https://doi.org/10.1093/biomet/asz052'>
 #&gt; 	Frechet Analysis of Variance on Sphere Manifold
 #&gt; 
 #&gt; data:  obj1, obj2, obj3, and obj4
-#&gt; Tn = 0.047535, p-value = 0.2307
+#&gt; Tn = 0.0022631, p-value = 0.6163
 #&gt; alternative hypothesis: at least one of equalities does not hold.
 #&gt; </div><div class='input'><span class='co'># }</span>
 
