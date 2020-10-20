@@ -244,3 +244,26 @@ common_fanova <- function(distall, distvecs, manifold, dataname){
   class(res) = "htest"
   return(res)
 }
+
+
+
+# set.seed(777)
+# ntest = 1000
+# pvals.a = rep(0,ntest)
+# pvals.p = rep(0,ntest)
+# 
+# for (i in 1:ntest){
+#   X = cbind(matrix(rnorm(30*2, sd=0.1),ncol=2), rep(1,30))
+#   Y = cbind(matrix(rnorm(30*2, sd=0.1),ncol=2), rep(1,30))
+#   Xnorm = X/sqrt(rowSums(X^2))
+#   Ynorm = Y/sqrt(rowSums(Y^2))
+# 
+#   Xriem = wrap.sphere(Xnorm)
+#   Yriem = wrap.sphere(Ynorm)
+#   pvals.a[i] = riem.fanova(Xriem, Yriem)$p.value
+#   pvals.p[i] = riem.fanovaP(Xriem, Yriem, nperm=999)$p.value
+#   print(paste0("iteration ",i,"/",ntest," complete.."))
+# }
+# 
+# round(sum((pvals.a <= 0.05))/ntest, 5) # asymptotic theory is nice
+# round(sum((pvals.p <= 0.05))/ntest, 5) # but PERMUTATION SEEMS TO WORK BETTER! (0.052)
