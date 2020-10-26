@@ -125,6 +125,14 @@ runif_stiefel <- function(p, k, N) {
     .Call('_Riemann_runif_stiefel', PACKAGE = 'Riemann', p, k, N)
 }
 
+spd_dist <- function(X, Y, geometry) {
+    .Call('_Riemann_spd_dist', PACKAGE = 'Riemann', X, Y, geometry)
+}
+
+spd_pdist <- function(data, geometry) {
+    .Call('_Riemann_spd_pdist', PACKAGE = 'Riemann', data, geometry)
+}
+
 mat_rank <- function(A) {
     .Call('_Riemann_mat_rank', PACKAGE = 'Riemann', A)
 }

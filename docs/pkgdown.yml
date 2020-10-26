@@ -3,7 +3,7 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   RiemannBasic: RiemannBasic.html
-last_built: 2020-10-19T04:10Z
+last_built: 2020-10-26T02:36Z
 urls:
   reference: https://kyoustat.com/Riemann/reference
   article: https://kyoustat.com/Riemann/articles

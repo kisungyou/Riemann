@@ -52,7 +52,7 @@ compute Fréchet mean and variation with respect to the geometry by minimizing
 $$\textrm{min}_x \sum_{n=1}^N w_n \rho^2 (x, x_n),\quad x\in\mathcal{M}$$ where
 \(\rho (x, y)\) is a distance for two points \(x,y\in\mathcal{M}\). 
 If non-uniform weights are given, normalized version of the mean is computed 
-and if weight=NULL, it automatically sets equal weights for all observations." />
+and if weight=NULL, it automatically sets equal weights (\(w_i = 1/n\)) for all observations." />
 <meta property="og:image" content="https://kyoustat.com/Riemann/logo.png" />
 
 
@@ -185,7 +185,7 @@ compute Fréchet mean and variation with respect to the geometry by minimizing
 $$\textrm{min}_x \sum_{n=1}^N w_n \rho^2 (x, x_n),\quad x\in\mathcal{M}$$ where
 \(\rho (x, y)\) is a distance for two points \(x,y\in\mathcal{M}\). 
 If non-uniform weights are given, normalized version of the mean is computed 
-and if <code>weight=NULL</code>, it automatically sets equal weights for all observations.</p>
+and if <code>weight=NULL</code>, it automatically sets equal weights (\(w_i = 1/n\)) for all observations.</p>
     </div>
 
     <pre class="usage"><span class='fu'>riem.mean</span><span class='op'>(</span><span class='va'>riemobj</span>, weight <span class='op'>=</span> <span class='cn'>NULL</span>, geometry <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"intrinsic"</span>, <span class='st'>"extrinsic"</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>

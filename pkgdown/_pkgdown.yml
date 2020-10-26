@@ -84,3 +84,6 @@ reference:
   - title: "Data"
     contents:
       - has_concept("data")
+  - title: "Others"
+    contents:
+      - has_concept("utility")

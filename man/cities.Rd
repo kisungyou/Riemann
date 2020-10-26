@@ -3,7 +3,7 @@
 \docType{data}
 \name{cities}
 \alias{cities}
-\title{Populated Cities in the U.S.}
+\title{Data : Populated Cities in the U.S.}
 \format{
 a named list containing\describe{
 \item{names}{a length-\eqn{60} vector of city names.}

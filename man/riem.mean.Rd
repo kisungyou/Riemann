@@ -30,7 +30,7 @@ compute Fréchet mean and variation with respect to the geometry by minimizing
 \deqn{\textrm{min}_x \sum_{n=1}^N w_n \rho^2 (x, x_n),\quad x\in\mathcal{M}} where
 \eqn{\rho (x, y)} is a distance for two points \eqn{x,y\in\mathcal{M}}. 
 If non-uniform weights are given, normalized version of the mean is computed 
-and if \code{weight=NULL}, it automatically sets equal weights for all observations.
+and if \code{weight=NULL}, it automatically sets equal weights (\eqn{w_i = 1/n}) for all observations.
 }
 \examples{
 #-------------------------------------------------------------------

@@ -5,7 +5,7 @@
 #' \deqn{\textrm{min}_x \sum_{n=1}^N w_n \rho^2 (x, x_n),\quad x\in\mathcal{M}} where
 #' \eqn{\rho (x, y)} is a distance for two points \eqn{x,y\in\mathcal{M}}. 
 #' If non-uniform weights are given, normalized version of the mean is computed 
-#' and if \code{weight=NULL}, it automatically sets equal weights for all observations.
+#' and if \code{weight=NULL}, it automatically sets equal weights (\eqn{w_i = 1/n}) for all observations.
 #' 
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
 #' @param weight weight of observations; if \code{NULL} it assumes equal weights, or a nonnegative length-\eqn{N} vector that sums to 1 should be given.

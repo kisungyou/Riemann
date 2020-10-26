@@ -1,4 +1,4 @@
-#' Populated Cities in the U.S.
+#' Data : Populated Cities in the U.S.
 #' 
 #' As of January 2006, there are 60 cities in the contiguous U.S. with population size 
 #' larger than \eqn{300000}. We extracted information of the cities from the data 

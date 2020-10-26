@@ -51,7 +51,7 @@
 #' 
 #' \donttest{
 #' ## RUN THE PERMUTATION TEST WITH MANY PERMUTATIONS
-#' riem.fanovaP(obj1, obj2, obj3, obj4, nperm=9999)
+#' riem.fanovaP(obj1, obj2, obj3, obj4, nperm=999)
 #' }
 #' 
 #' @references 
