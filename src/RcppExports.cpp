@@ -6,6 +6,69 @@
 
 using namespace Rcpp;
 
+// macg_mle
+arma::mat macg_mle(Rcpp::List& data, int maxiter, double abstol);
+RcppExport SEXP _Riemann_macg_mle(SEXP dataSEXP, SEXP maxiterSEXP, SEXP abstolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
+    Rcpp::traits::input_parameter< double >::type abstol(abstolSEXP);
+    rcpp_result_gen = Rcpp::wrap(macg_mle(data, maxiter, abstol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// macg_sample
+arma::cube macg_sample(int n, int r, arma::mat sigma);
+RcppExport SEXP _Riemann_macg_sample(SEXP nSEXP, SEXP rSEXP, SEXP sigmaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type r(rSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type sigma(sigmaSEXP);
+    rcpp_result_gen = Rcpp::wrap(macg_sample(n, r, sigma));
+    return rcpp_result_gen;
+END_RCPP
+}
+// macg_density
+arma::vec macg_density(Rcpp::List& data, arma::mat sigma);
+RcppExport SEXP _Riemann_macg_density(SEXP dataSEXP, SEXP sigmaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type sigma(sigmaSEXP);
+    rcpp_result_gen = Rcpp::wrap(macg_density(data, sigma));
+    return rcpp_result_gen;
+END_RCPP
+}
+// acg_mle
+arma::mat acg_mle(Rcpp::List& data, int maxiter, double abstol);
+RcppExport SEXP _Riemann_acg_mle(SEXP dataSEXP, SEXP maxiterSEXP, SEXP abstolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
+    Rcpp::traits::input_parameter< double >::type abstol(abstolSEXP);
+    rcpp_result_gen = Rcpp::wrap(acg_mle(data, maxiter, abstol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// acg_density
+arma::vec acg_density(Rcpp::List& data, arma::mat A);
+RcppExport SEXP _Riemann_acg_density(SEXP dataSEXP, SEXP ASEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type A(ASEXP);
+    rcpp_result_gen = Rcpp::wrap(acg_density(data, A));
+    return rcpp_result_gen;
+END_RCPP
+}
 // basic_pdist
 arma::mat basic_pdist(std::string mfdname, Rcpp::List& data, std::string dtype);
 RcppExport SEXP _Riemann_basic_pdist(SEXP mfdnameSEXP, SEXP dataSEXP, SEXP dtypeSEXP) {
@@ -554,6 +617,11 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_Riemann_macg_mle", (DL_FUNC) &_Riemann_macg_mle, 3},
+    {"_Riemann_macg_sample", (DL_FUNC) &_Riemann_macg_sample, 3},
+    {"_Riemann_macg_density", (DL_FUNC) &_Riemann_macg_density, 2},
+    {"_Riemann_acg_mle", (DL_FUNC) &_Riemann_acg_mle, 3},
+    {"_Riemann_acg_density", (DL_FUNC) &_Riemann_acg_density, 2},
     {"_Riemann_basic_pdist", (DL_FUNC) &_Riemann_basic_pdist, 3},
     {"_Riemann_basic_pdist2", (DL_FUNC) &_Riemann_basic_pdist2, 4},
     {"_Riemann_basic_interpolate", (DL_FUNC) &_Riemann_basic_interpolate, 5},

@@ -9,6 +9,7 @@
 #' @aliases Riemann-package
 #' @import Rdpack
 #' @import maotai
+#' @importFrom Matrix nearPD
 #' @importFrom T4cluster sc05Z scNJW scSM scUL
 #' @importFrom Rdimtools aux.shortestpath
 #' @importFrom T4transport wassersteinD ipotD

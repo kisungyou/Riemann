@@ -261,14 +261,15 @@ between two samples.</p>
 <span class='va'>myriem2</span> <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='va'>mydata2</span><span class='op'>)</span>
 
 <span class='co'>## PERFORM PERMUTATION TEST</span>
-<span class='co'>#  it is expected to return a very small number.</span>
+<span class='co'>#  it is expected to return a very small number, but </span>
+<span class='co'>#  small number of 'nperm' may not give a reasonable p-value.</span>
 <span class='co'># \donttest{</span>
-<span class='fu'>riem.test2wass</span><span class='op'>(</span><span class='va'>myriem1</span>, <span class='va'>myriem2</span>, nperm<span class='op'>=</span><span class='fl'>999</span>, use.smooth<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'>riem.test2wass</span><span class='op'>(</span><span class='va'>myriem1</span>, <span class='va'>myriem2</span>, nperm<span class='op'>=</span><span class='fl'>99</span>, use.smooth<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt; 	Wasserstein Two-Sample Test on Sphere Manifold
 #&gt; 
 #&gt; data:  'myriem1' and 'myriem2'
-#&gt; Wmn = 1.5597, p-value = 0.001
+#&gt; Wmn = 1.5596, p-value = 0.01
 #&gt; alternative hypothesis: two distributions are not equal.
 #&gt; </div><div class='input'><span class='co'># }</span>
 

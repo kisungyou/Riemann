@@ -2,6 +2,23 @@
 # check_list_eqsize : for a list, all elements are of same size
 # check_3darray     : check if 3d array of (p,p,N) type
 # check_inputmfd    : check the object to abide by the structure
+# check_spdmat      : check SPD matrix
+
+
+# check_spdmat ------------------------------------------------------------
+#' @keywords internal
+#' @noRd
+check_spdmat <- function(x){
+  p = nrow(x)
+  cond1 = (nrow(x)==ncol(x))
+  cond2 = (round(mat_rank(x))==p) # full-rank
+  cond3 = isSymmetric(x)
+  if (cond1&&cond2&&cond3){
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
 
 
 # check_weight      : nonnegative numbers that sum to 1 of given length ========

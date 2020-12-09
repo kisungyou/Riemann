@@ -47,9 +47,10 @@
 #' myriem2 = wrap.sphere(mydata2)
 #' 
 #' ## PERFORM PERMUTATION TEST
-#' #  it is expected to return a very small number.
+#' #  it is expected to return a very small number, but 
+#' #  small number of 'nperm' may not give a reasonable p-value.
 #' \donttest{
-#' riem.test2wass(myriem1, myriem2, nperm=999, use.smooth=FALSE)
+#' riem.test2wass(myriem1, myriem2, nperm=99, use.smooth=FALSE)
 #' }
 #' 
 #' \dontrun{

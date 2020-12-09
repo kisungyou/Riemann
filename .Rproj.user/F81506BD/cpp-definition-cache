@@ -1,5 +1,62 @@
 [
     {
+        "file": "/home/kisung/Desktop/Riemann/src/distribution_grassmann.cpp",
+        "file_last_write": 1603737633.0,
+        "definitions": [
+            {
+                "usr": "c:@F@macg_mle#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "macg_mle(Rcpp::List &, int, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/distribution_grassmann.cpp",
+                "line": 16,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@macg_sample#I#I#$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "macg_sample(int, int, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/distribution_grassmann.cpp",
+                "line": 67,
+                "column": 12
+            },
+            {
+                "usr": "c:@F@macg_density#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "macg_density(Rcpp::List &, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/distribution_grassmann.cpp",
+                "line": 86,
+                "column": 11
+            }
+        ]
+    },
+    {
+        "file": "/home/kisung/Desktop/Riemann/src/distribution_sphere.cpp",
+        "file_last_write": 1603726119.0,
+        "definitions": [
+            {
+                "usr": "c:@F@acg_mle#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#I#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "acg_mle(Rcpp::List &, int, double)",
+                "file": "/home/kisung/Desktop/Riemann/src/distribution_sphere.cpp",
+                "line": 16,
+                "column": 11
+            },
+            {
+                "usr": "c:@F@acg_density#&$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#$@N@arma@S@Mat>#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "acg_density(Rcpp::List &, arma::mat)",
+                "file": "/home/kisung/Desktop/Riemann/src/distribution_sphere.cpp",
+                "line": 67,
+                "column": 11
+            }
+        ]
+    },
+    {
         "file": "/home/kisung/Desktop/Riemann/src/functions_01_basic.cpp",
         "file_last_write": 1601156168.0,
         "definitions": [
