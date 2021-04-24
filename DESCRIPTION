@@ -12,6 +12,7 @@ Imports:
     Rdimtools,
     T4cluster,
     T4transport,
+    DEoptim,
     Matrix,
     maotai,
     stats,

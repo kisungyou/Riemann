@@ -10,7 +10,6 @@ using namespace std;
 // (02) acg_mle     : MLE
 
 
-
 // (02) acg_mle ----------------------------------------------------------------
 // [[Rcpp::export]]
 arma::mat acg_mle(Rcpp::List& data, int maxiter, double abstol){

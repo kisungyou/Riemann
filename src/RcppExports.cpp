@@ -69,6 +69,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cppdist_int_1toN
+arma::vec cppdist_int_1toN(arma::vec x, arma::mat& Y);
+RcppExport SEXP _Riemann_cppdist_int_1toN(SEXP xSEXP, SEXP YSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type Y(YSEXP);
+    rcpp_result_gen = Rcpp::wrap(cppdist_int_1toN(x, Y));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cppdist_ext_1toN
+arma::vec cppdist_ext_1toN(arma::vec x, arma::mat& Y);
+RcppExport SEXP _Riemann_cppdist_ext_1toN(SEXP xSEXP, SEXP YSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type Y(YSEXP);
+    rcpp_result_gen = Rcpp::wrap(cppdist_ext_1toN(x, Y));
+    return rcpp_result_gen;
+END_RCPP
+}
 // basic_pdist
 arma::mat basic_pdist(std::string mfdname, Rcpp::List& data, std::string dtype);
 RcppExport SEXP _Riemann_basic_pdist(SEXP mfdnameSEXP, SEXP dataSEXP, SEXP dtypeSEXP) {
@@ -622,6 +646,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_macg_density", (DL_FUNC) &_Riemann_macg_density, 2},
     {"_Riemann_acg_mle", (DL_FUNC) &_Riemann_acg_mle, 3},
     {"_Riemann_acg_density", (DL_FUNC) &_Riemann_acg_density, 2},
+    {"_Riemann_cppdist_int_1toN", (DL_FUNC) &_Riemann_cppdist_int_1toN, 2},
+    {"_Riemann_cppdist_ext_1toN", (DL_FUNC) &_Riemann_cppdist_ext_1toN, 2},
     {"_Riemann_basic_pdist", (DL_FUNC) &_Riemann_basic_pdist, 3},
     {"_Riemann_basic_pdist2", (DL_FUNC) &_Riemann_basic_pdist2, 4},
     {"_Riemann_basic_interpolate", (DL_FUNC) &_Riemann_basic_interpolate, 5},

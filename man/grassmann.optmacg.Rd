@@ -40,6 +40,7 @@ using MACG distribution.
 # considered as an optimization on Grassmann manifold. Here, 
 # we are trying to find top 3 eigenvalues and compare.
 #-------------------------------------------------------------------
+\donttest{
 ## PREPARE
 A = cov(matrix(rnorm(100*5), ncol=5)) # define covariance
 myfunc <- function(p){                # cost function to minimize
@@ -67,6 +68,7 @@ lines(1:3, eig3dec, type="b", col="blue", pch=19)
 legend(1.55, max(yran), legend=c("optimization","decomposition"), col=c("red","blue"),
        lty=rep(1,2), pch=19)
 par(opar)
+}
 
 }
 \concept{grassmann}

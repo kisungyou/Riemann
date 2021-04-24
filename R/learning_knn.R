@@ -79,18 +79,35 @@ riem.knn <- function(riemobj, k=2, geometry=c("intrinsic","extrinsic"), ...){
                   match.arg(tolower(geometry),c("intrinsic","extrinsic")))
   
   ## COMPUTE PAIRWISE DISTANCE
-  distobj = stats::as.dist(basic_pdist(riemobj$name, riemobj$data, mygeom))
+  distobj = as.matrix(basic_pdist(riemobj$name, riemobj$data, mygeom))
   
-  ## RUN KNN
-  func.import = utils::getFromNamespace("hidden_knn", "maotai")
-  obj.knn     = func.import(distobj, nnbd=(myk+1), ...)
+  ## COMPUTE AND RETURN
+  return(nearest_neighbor(distobj, myk))
+}
+
+
+#' @keywords internal
+#' @noRd
+nearest_neighbor <- function(dmat, k){
+  n = base::nrow(dmat)
   
-  ## WRAP AND RETURN
+  nn.idx   = array(0,c(n,k))
+  nn.dists = array(0,c(n,k))
+  
+  for (i in 1:n){
+    tgt  = as.vector(dmat[i,])
+    i_id = order(tgt)[2:(k+1)]
+
+    nn.idx[i,]   = i_id
+    nn.dists[i,] = tgt[i_id]
+  }
+  
   output = list()
-  output$nn.idx   = obj.knn$nn.idx[,2:(myk+1)]
-  output$nn.dists = obj.knn$nn.dists[,2:(myk+1)]
+  output$nn.idx   = nn.idx
+  output$nn.dists = nn.dists
   return(output)
 }
+
 
 # library(usmap)
 # library(ggplot2)

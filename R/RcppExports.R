@@ -21,6 +21,14 @@ acg_density <- function(data, A) {
     .Call('_Riemann_acg_density', PACKAGE = 'Riemann', data, A)
 }
 
+cppdist_int_1toN <- function(x, Y) {
+    .Call('_Riemann_cppdist_int_1toN', PACKAGE = 'Riemann', x, Y)
+}
+
+cppdist_ext_1toN <- function(x, Y) {
+    .Call('_Riemann_cppdist_ext_1toN', PACKAGE = 'Riemann', x, Y)
+}
+
 basic_pdist <- function(mfdname, data, dtype) {
     .Call('_Riemann_basic_pdist', PACKAGE = 'Riemann', mfdname, data, dtype)
 }

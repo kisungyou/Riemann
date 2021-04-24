@@ -3,6 +3,31 @@
 #  (2) wrap_mfd2full : convert a simple manifold name into full expression
 #  (3) aux_shuffle   : random permutation 
 #  (4) aux_rmat2array3d & aux_rvec2array3d : riemdata object to 3d array
+#  (5) aux_which{max/min}
+
+# (5) aux_whichXXX =============================================================
+#' @keywords internal
+#' @noRd
+aux_whichmax <- function(vec){
+  mval = base::max(vec)
+  idlarge = which(vec>=mval)
+  if (length(idlarge)==1){
+    return(idlarge)
+  } else {
+    return(base::sample(idlarge, 1))
+  }
+}
+#' @keywords internal
+#' @noRd
+aux_whichmin <- function(vec){
+  mval = base::min(vec)
+  idlarge = which(vec<=mval)
+  if (length(idlarge)==1){
+    return(idlarge)
+  } else {
+    return(base::sample(idlarge, 1))
+  }
+}
 
 # (1) wrap_vec2mat : if a vector is given, return a matrix =====================
 #' @keywords internal
