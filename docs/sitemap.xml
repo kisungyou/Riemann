@@ -22,10 +22,22 @@
     <loc>https://kyoustat.com/Riemann/reference/grassmann.utest.html</loc>
   </url>
   <url>
+    <loc>https://kyoustat.com/Riemann/reference/hands.html</loc>
+  </url>
+  <url>
     <loc>https://kyoustat.com/Riemann/reference/macg.html</loc>
   </url>
   <url>
+    <loc>https://kyoustat.com/Riemann/reference/mixspnorm.html</loc>
+  </url>
+  <url>
+    <loc>https://kyoustat.com/Riemann/reference/orbital.html</loc>
+  </url>
+  <url>
     <loc>https://kyoustat.com/Riemann/reference/passiflora.html</loc>
+  </url>
+  <url>
+    <loc>https://kyoustat.com/Riemann/reference/predict.mixspnorm.html</loc>
   </url>
   <url>
     <loc>https://kyoustat.com/Riemann/reference/riem.clrq.html</loc>
@@ -130,9 +142,6 @@
     <loc>https://kyoustat.com/Riemann/reference/rmvnorm.html</loc>
   </url>
   <url>
-    <loc>https://kyoustat.com/Riemann/reference/spd.pdist.html</loc>
-  </url>
-  <url>
     <loc>https://kyoustat.com/Riemann/reference/sphere.convert.html</loc>
   </url>
   <url>
@@ -140,6 +149,9 @@
   </url>
   <url>
     <loc>https://kyoustat.com/Riemann/reference/sphere.utest.html</loc>
+  </url>
+  <url>
+    <loc>https://kyoustat.com/Riemann/reference/spnorm.html</loc>
   </url>
   <url>
     <loc>https://kyoustat.com/Riemann/reference/stiefel.optSA.html</loc>

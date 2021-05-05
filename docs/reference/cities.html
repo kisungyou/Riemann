@@ -144,19 +144,19 @@ sphere.convert." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/kyoustat">
-    <span class="fa fa-twitter"></span>
+    <span class="fas fa-twitter"></span>
      
   </a>
 </li>
 <li>
   <a href="https://github.com/kyoustat/Riemann">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
 <li>
   <a href="../mailto:kyoustat@gmail.com">
-    <span class="fa fa-envelope"></span>
+    <span class="fas fa-envelope"></span>
      
   </a>
 </li>
@@ -204,7 +204,8 @@ two identical representations of locations, which can be mutually converted by
     <div class='dont-index'><p><code><a href='wrap.sphere.html'>wrap.sphere</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## LOAD THE DATA AND WRAP AS RIEMOBJ</span>
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='co'>## LOAD THE DATA AND WRAP AS RIEMOBJ</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cities</span><span class='op'>)</span>
 <span class='va'>myriem</span> <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='va'>cities</span><span class='op'>$</span><span class='va'>cartesian</span><span class='op'>)</span>
 
@@ -215,6 +216,7 @@ two identical representations of locations, which can be mutually converted by
 <span class='co'>## CONVERT TO GEOGRAPHIC COORDINATES (Lat/Lon)</span>
 <span class='va'>geo.int</span> <span class='op'>=</span> <span class='fu'><a href='sphere.convert.html'>sphere.xyz2geo</a></span><span class='op'>(</span><span class='va'>intmean</span><span class='op'>)</span>
 <span class='va'>geo.ext</span> <span class='op'>=</span> <span class='fu'><a href='sphere.convert.html'>sphere.xyz2geo</a></span><span class='op'>(</span><span class='va'>extmean</span><span class='op'>)</span>
+<span class='co'># }</span>
 
 </div></pre>
   </div>

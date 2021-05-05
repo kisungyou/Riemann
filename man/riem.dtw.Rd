@@ -23,6 +23,7 @@ no window constraints and others at all. Although the scope of DTW in Euclidean 
 If you are interested in the topic, we refer to \pkg{dtw} package.
 }
 \examples{
+\donttest{
 #-------------------------------------------------------------------
 #                          Curves on Sphere
 #
@@ -64,6 +65,7 @@ par(mfrow=c(1,2), pty="s")
 image(outint[,20:1], axes=FALSE, main="intrinsic DTW Distance")
 image(outext[,20:1], axes=FALSE, main="extrinsic DTW Distance")
 par(opar)
+}
 
 }
 \seealso{

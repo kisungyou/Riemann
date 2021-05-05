@@ -1,8 +1,66 @@
 #' Spherical Normal Distribution
 #' 
-#' Spherical normal (SN) distribution
+#' We provide tools for an isotropic spherical normal (SN) distributions on 
+#' a \eqn{(p-1)}-sphere in \eqn{\mathbf{R}^p} for sampling, density evaluation, and maximum likelihood estimation 
+#' of the parameters where the density is defined as
+#' \deqn{f_SN(x; \mu, \lambda) = \frac{1}{Z(\lambda)} \exp \left( -\frac{\lambda}{2} d^2(x,\mu) \right)}
+#' for location and concentration parameters \eqn{\mu} and \eqn{\lambda} respectively and the normalizing constant \eqn{Z(\lambda)}.
 #' 
 #' 
+#' @param data data vectors in form of either an \eqn{(n\times p)} matrix or a length-\eqn{n} list.  See \code{\link{wrap.sphere}} for descriptions on supported input types.
+#' @param mu a length-\eqn{p} unit-norm vector of location.
+#' @param log a logical; \code{TRUE} to return log-density, \code{FALSE} for densities without logarithm applied.
+#' @param lambda a concentration parameter that is positive.
+#' @param n the number of samples to be generated.
+#' @param method an algorithm name for concentration parameter estimation.i
+#' @param ... extra parameters for computations, including\describe{
+#' \item{maxiter}{maximum number of iterations to be run (default:50).}
+#' \item{eps}{tolerance level for stopping criterion (default: 1e-5).}
+#' }
+#' 
+#' @return 
+#' \code{dspnorm} gives a vector of evaluated densities given samples. \code{rspnorm} generates 
+#' unit-norm vectors in \eqn{\mathbf{R}^p} wrapped in a list. \code{mle.spnorm} computes MLEs and returns a list 
+#' containing estimates of location (\code{mu}) and concentration (\code{lambda}) parameters.
+#' 
+#' @examples 
+#' \donttest{
+#' # -------------------------------------------------------------------
+#' #          Example with Spherical Normal Distribution
+#' #
+#' # Given a fixed set of parameters, generate samples and acquire MLEs.
+#' # Especially, we will see the evolution of estimation accuracy.
+#' # -------------------------------------------------------------------
+#' ## DEFAULT PARAMETERS
+#' true.mu  = c(1,0,0,0,0)
+#' true.lbd = 5
+#' 
+#' ## GENERATE DATA N=1000
+#' big.data = rspnorm(1000, true.mu, true.lbd)
+#' 
+#' ## ITERATE FROM 50 TO 1000 by 10
+#' idseq = seq(from=50, to=1000, by=10)
+#' nseq  = length(idseq)
+#' 
+#' hist.mu  = rep(0, nseq)
+#' hist.lbd = rep(0, nseq)
+#' 
+#' for (i in 1:nseq){
+#'   small.data = big.data[1:idseq[i]]          # data subsetting
+#'   small.MLE  = mle.spnorm(small.data) # compute MLE
+#'   
+#'   hist.mu[i]  = acos(sum(small.MLE$mu*true.mu)) # difference in mu
+#'   hist.lbd[i] = small.MLE$lambda
+#' }
+#' 
+#' ## VISUALIZE
+#' opar <- par(no.readonly=TRUE)
+#' par(mfrow=c(1,2))
+#' plot(idseq, hist.mu,  "b", pch=19, cex=0.5, main="difference in location")
+#' plot(idseq, hist.lbd, "b", pch=19, cex=0.5, main="concentration param")
+#' abline(h=true.lbd, lwd=2, col="red")
+#' par(opar)
+#' }
 #' 
 #' 
 #' @name spnorm
@@ -12,15 +70,15 @@ NULL
 
 #' @rdname spnorm
 #' @export
-dspnorm <- function(datalist, mu, lambda, log=FALSE){
+dspnorm <- function(data, mu, lambda, log=FALSE){
   ## PREPROCESSING
-  spobj  = wrap.sphere(datalist)
+  spobj  = wrap.sphere(data)
   x      = sp2mat(spobj)
   FNAME  = "dspnorm"
   mu     = check_unitvec(mu, FNAME)
   lambda = check_num_nonneg(lambda, FNAME)
-  D      = length(mu) # dimension
- 
+  p      = length(mu) # dimension
+
   ## EVALUATION
   #   1. normalizing constant
   nconstant = dspnorm.constant(lambda, p)
@@ -90,11 +148,15 @@ rspnorm <- function(n, mu, lambda){
   n      = max(1, round(n))
   mu     = check_unitvec(mu, FNAME)
   lambda = check_num_nonneg(lambda, FNAME)
-  D      = length(mymu) # dimension
+  D      = length(mu) # dimension
   
   ## ITERATE or RANDOM
   if (lambda==0){
-    output = rvmf_uniform(n,mu,k=0)
+    output = array(0,c(n,D))
+    for (i in 1:n){
+      tgt = stats::rnorm(D)
+      output[i,] = tgt/ sqrt(sum(tgt^2))
+    }
   } else {
     #   1. tangent vectors
     vectors = array(0,c(n,D))
@@ -122,9 +184,9 @@ rspnorm <- function(n, mu, lambda){
 
 #' @rdname spnorm
 #' @export
-mle.spnorm <- function(datalist, method=c("Newton","Halley","Optimize","DE"), ...){
+mle.spnorm <- function(data, method=c("Newton","Halley","Optimize","DE"), ...){
   ## PREPROCESSING
-  spobj  = wrap.sphere(datalist)
+  spobj  = wrap.sphere(data)
   x      = sp2mat(spobj)
   pars   = list(...)
   pnames = names(pars)
@@ -383,7 +445,7 @@ lambda_method_DE <- function(data, mean){
   mymin  = stats::var(d1N)*0.01
   mymax  = stats::var(d1N)*100
   # output = as.double(tail(DEoptim(opt.fun, 10*.Machine$double.eps, 12345678, control=DEoptim.control(trace=FALSE))$member$bestmemit, n=1L))
-  output = as.double(tail(DEoptim::DEoptim(opt.fun, mymin, mymax, control=DEoptim.control(trace=FALSE))$member$bestmemit, n=1L))
+  output = as.double(utils::tail(DEoptim::DEoptim(opt.fun, mymin, mymax, control=DEoptim.control(trace=FALSE))$member$bestmemit, n=1L))
   return(output)
 }
 

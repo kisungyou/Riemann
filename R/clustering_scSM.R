@@ -61,7 +61,7 @@
 #' par(opar)
 #' 
 #' @references 
-#' \insertRef{jianboshi_normalized_2000}{T4cluster}
+#' Shi J, Malik J (2000). “Normalized Cuts and Image Segmentation." \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence}, 22(8):888–905.
 #' 
 #' @concept clustering
 #' @export

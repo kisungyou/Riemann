@@ -23,6 +23,7 @@ two identical representations of locations, which can be mutually converted by
 \code{\link{sphere.convert}}.
 }
 \examples{
+\donttest{
 ## LOAD THE DATA AND WRAP AS RIEMOBJ
 data(cities)
 myriem = wrap.sphere(cities$cartesian)
@@ -34,6 +35,7 @@ extmean = as.vector(riem.mean(myriem, geometry="extrinsic")$mean)
 ## CONVERT TO GEOGRAPHIC COORDINATES (Lat/Lon)
 geo.int = sphere.xyz2geo(intmean)
 geo.ext = sphere.xyz2geo(extmean)
+}
 
 }
 \seealso{

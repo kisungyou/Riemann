@@ -4,7 +4,6 @@
 #' 15 landmarks in 2 dimension of 3319 leaves of 40 species. Papers listed in the 
 #' reference section analyzed the data and found 7 clusters.
 #' 
-#' 
 #' @usage data(passiflora)
 #' 
 #' @format a named list containing\describe{

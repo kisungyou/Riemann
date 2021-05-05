@@ -74,6 +74,6 @@ par(opar)
 
 }
 \references{
-\insertRef{ng_spectral_2002a}{T4cluster}
+Ng AY, Jordan MI, Weiss Y (2002). "On Spectral Clustering: Analysis and an Algorithm." In Dietterich TG, Becker S, Ghahramani Z (eds.), \emph{Advances in Neural Information Processing Systems 14}, 849–856. MIT Press.
 }
 \concept{clustering}

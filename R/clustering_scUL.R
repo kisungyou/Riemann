@@ -61,7 +61,7 @@
 #' par(opar)
 #' 
 #' @references 
-#' \insertRef{vonluxburg_tutorial_2007a}{T4cluster}
+#' von Luxburg U (2007). “A Tutorial on Spectral Clustering.” \emph{Statistics and Computing}, 17(4):395–416.
 #' 
 #' @concept clustering
 #' @export

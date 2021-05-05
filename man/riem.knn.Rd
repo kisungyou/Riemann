@@ -4,7 +4,7 @@
 \alias{riem.knn}
 \title{Find K-Nearest Neighbors}
 \usage{
-riem.knn(riemobj, k = 2, geometry = c("intrinsic", "extrinsic"), ...)
+riem.knn(riemobj, k = 2, geometry = c("intrinsic", "extrinsic"))
 }
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
@@ -12,8 +12,6 @@ riem.knn(riemobj, k = 2, geometry = c("intrinsic", "extrinsic"), ...)
 \item{k}{the number of neighbors to find.}
 
 \item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
-
-\item{...}{extra parameters to be passed onto \code{\link[nabor]{knn}} function.}
 }
 \value{
 a named list containing\describe{
@@ -23,10 +21,7 @@ a named list containing\describe{
 }
 \description{
 Given \eqn{N} observations  \eqn{X_1, X_2, \ldots, X_N \in \mathcal{M}}, 
-\code{riem.knn} constructs \eqn{k}-nearest neighbors. This is 
-a wrapper for a main function in \pkg{nabor} package. Note that the original 
-function contains index for each data point itself, but our function does not 
-consider self-neighborhood scenario.
+\code{riem.knn} constructs \eqn{k}-nearest neighbors.
 }
 \examples{
 #-------------------------------------------------------------------
@@ -77,8 +72,5 @@ for (i in 1:30){
 }
 par(opar)
 
-}
-\seealso{
-\code{\link[nabor]{knn}}
 }
 \concept{learning}

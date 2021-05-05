@@ -6,6 +6,24 @@
 
 using namespace Rcpp;
 
+// cpp_ipot20
+Rcpp::List cpp_ipot20(arma::vec a, arma::vec b, arma::mat dab, double lambda, double p, int maxiter, double abstol, int L);
+RcppExport SEXP _Riemann_cpp_ipot20(SEXP aSEXP, SEXP bSEXP, SEXP dabSEXP, SEXP lambdaSEXP, SEXP pSEXP, SEXP maxiterSEXP, SEXP abstolSEXP, SEXP LSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type a(aSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type b(bSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type dab(dabSEXP);
+    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< double >::type p(pSEXP);
+    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
+    Rcpp::traits::input_parameter< double >::type abstol(abstolSEXP);
+    Rcpp::traits::input_parameter< int >::type L(LSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_ipot20(a, b, dab, lambda, p, maxiter, abstol, L));
+    return rcpp_result_gen;
+END_RCPP
+}
 // macg_mle
 arma::mat macg_mle(Rcpp::List& data, int maxiter, double abstol);
 RcppExport SEXP _Riemann_macg_mle(SEXP dataSEXP, SEXP maxiterSEXP, SEXP abstolSEXP) {
@@ -641,6 +659,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_Riemann_cpp_ipot20", (DL_FUNC) &_Riemann_cpp_ipot20, 8},
     {"_Riemann_macg_mle", (DL_FUNC) &_Riemann_macg_mle, 3},
     {"_Riemann_macg_sample", (DL_FUNC) &_Riemann_macg_sample, 3},
     {"_Riemann_macg_density", (DL_FUNC) &_Riemann_macg_density, 2},

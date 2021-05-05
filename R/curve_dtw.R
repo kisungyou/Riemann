@@ -5,7 +5,6 @@
 #' no window constraints and others at all. Although the scope of DTW in Euclidean space-valued objects is rich, it is scarce for manifold-valued curves. 
 #' If you are interested in the topic, we refer to \pkg{dtw} package.
 #' 
-#' 
 #' @param riemobj1 a S3 \code{"riemdata"} class for \eqn{M} manifold-valued data along the curve.
 #' @param riemobj2 a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data along the curve.
 #' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
@@ -15,6 +14,7 @@
 #' @seealso \code{\link[dtw]{dtw}}
 #' 
 #' @examples 
+#' \donttest{
 #' #-------------------------------------------------------------------
 #' #                          Curves on Sphere
 #' #
@@ -56,6 +56,7 @@
 #' image(outint[,20:1], axes=FALSE, main="intrinsic DTW Distance")
 #' image(outext[,20:1], axes=FALSE, main="extrinsic DTW Distance")
 #' par(opar)
+#' }
 #' 
 #' @concept curve
 #' @export

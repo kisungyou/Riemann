@@ -104,9 +104,9 @@ riem.test2wass <- function(riemobj1, riemobj2, p=2, geometry=c("intrinsic","extr
   ## COMPUTE : DISTANCE AND STATISTIC UNDER NULL
   distmat = basic_pdist(riemobj1$name, c(riemobj1$data, riemobj2$data), mygeometry)
   if (myipot){
-    thestat = T4transport::ipotD(distmat[1:M, (M+1):(M+N)],p=myp,wx = w1, wy=w2)$distance
+    thestat = T4transport_ipotD(distmat[1:M, (M+1):(M+N)],p=myp,wx = w1, wy=w2)$distance
   } else {
-    thestat = T4transport::wassersteinD(distmat[1:M, (M+1):(M+N)], myp, wx=w1, wy=w2)$distance
+    thestat = T4transport_wassersteinD(distmat[1:M, (M+1):(M+N)], myp, wx=w1, wy=w2)$distance
   }
   
   ## COMPUTE : ITERATION
@@ -118,9 +118,9 @@ riem.test2wass <- function(riemobj1, riemobj2, p=2, geometry=c("intrinsic","extr
     partdxy = distmat[id.gp1, id.gp2]
     
     if (myipot){
-      distvals[i] = T4transport::ipotD(partdxy,p=myp,wx = w1, wy=w2)$distance
+      distvals[i] = T4transport_ipotD(partdxy,p=myp,wx = w1, wy=w2)$distance
     } else {
-      distvals[i] = T4transport::wassersteinD(partdxy, myp, wx=w1, wy=w2)$distance  
+      distvals[i] = T4transport_wassersteinD(partdxy, myp, wx=w1, wy=w2)$distance
     }
   }
   

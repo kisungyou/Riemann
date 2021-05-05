@@ -71,7 +71,7 @@ dmacg <- function(datalist, Sigma){
   }
   
   ## COMPUTE
-  output = macg_density(grobj$data, mysig)
+  output = macg_density(myobj$data, mysig)
   return(as.vector(output))
 }
 

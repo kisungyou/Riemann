@@ -74,6 +74,6 @@ par(opar)
 
 }
 \references{
-\insertRef{zelnik-manor_selftuning_2005a}{T4cluster}
+Zelnik-manor L, Perona P (2005). "Self-Tuning Spectral Clustering." In Saul LK, Weiss Y, Bottou L (eds.), \emph{Advances in Neural Information Processing Systems 17}, 1601–1608. MIT Press.
 }
 \concept{clustering}

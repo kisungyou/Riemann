@@ -65,9 +65,9 @@ dist1 = riem.wasserstein(myriem1, myriem2, p=1)
 dist2 = riem.wasserstein(myriem1, myriem2, p=2)
 dist5 = riem.wasserstein(myriem1, myriem2, p=5)
 
-pm1 = paste0("p=1: distance=",round(dist1$distance,5))
-pm2 = paste0("p=2: distance=",round(dist2$distance,5))
-pm5 = paste0("p=5: distance=",round(dist5$distance,5))
+pm1 = paste0("p=1: dist=",round(dist1$distance,3))
+pm2 = paste0("p=2: dist=",round(dist2$distance,3))
+pm5 = paste0("p=5: dist=",round(dist5$distance,3))
 
 ## VISUALIZE TRANSPORT PLAN AND DISTANCE
 opar <- par(no.readonly=TRUE)
