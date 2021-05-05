@@ -32,7 +32,7 @@
 #' @references 
 #' \insertRef{dryden_statistical_2016}{Riemann}
 #' 
-#' \insertRef{reno_sexual_2003}{Riemann}
+#' Reno PL, Meindl RS, McCollum MA, Lovejoy CO (2003). "Sexual dimorphism in Australopithecus afarensis was similar to that of modern humans." \emph{Proceedings of the National Academy of Sciences}, 100(16):9404–9409.
 #' 
 #' @seealso \code{\link{wrap.landmark}}
 #' @concept data

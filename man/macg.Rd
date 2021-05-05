@@ -70,7 +70,7 @@ par(opar)
 
 \insertRef{mardia_directional_1999}{Riemann}
 
-\insertRef{kent_new_2013}{Riemann}
+Kent JT, Ganeiber AM, Mardia KV (2013). "A new method to simulate the Bingham and related distributions in directional data analysis with applications." \emph{arXiv:1310.8110}.
 }
 \seealso{
 \code{\link{acg}}
