@@ -22,6 +22,7 @@ Given \eqn{M} observations \eqn{X_1, X_2, \ldots, X_M \in \mathcal{M}} and
 compute pairwise distances between two sets' elements.
 }
 \examples{
+\donttest{
 #-------------------------------------------------------------------
 #          Example on Sphere : a dataset with two types
 #
@@ -62,6 +63,7 @@ par(mfrow=c(1,2))
 image(dint[nrow(dint):1,], main="intrinsic", axes=FALSE)
 image(dext[nrow(dext):1,], main="extrinsic", axes=FALSE)
 par(opar)
+}
 
 }
 \concept{basic}

@@ -17,7 +17,7 @@
 #' @importFrom Rdimtools aux.shortestpath
 #' @importFrom RiemBase riemfactory
 #' @importFrom utils packageVersion getFromNamespace tail
-#' @importFrom stats cor rnorm pchisq cov cutree as.dist rnorm runif optimize integrate var kmeans
+#' @importFrom stats cor rnorm pchisq cov cutree as.dist rnorm runif optimize integrate var kmeans pnorm
 #' @importFrom Rcpp evalCpp
 #' @useDynLib Riemann
 NULL

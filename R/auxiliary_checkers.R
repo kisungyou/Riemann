@@ -5,7 +5,7 @@
 # check_spdmat      : check SPD matrix
 # check_num_nonneg  : check a nonnegative real number
 # check_unitvec     : check a unit-norm vector
-
+# check_tworiems    : check whether two input 'riemdata' class are identical
 
 # check_spdmat ------------------------------------------------------------
 #' @keywords internal
@@ -116,4 +116,27 @@ check_unitvec <- function(x, funcname){
   } else {
     stop(paste0("* ",funcname," : ",deparse(substitute(x))," is not a unit vector."))
   }
+}
+
+
+# check_tworiems : check whether two input 'riemdata' class are id --------
+#' @keywords internal
+#' @noRd
+check_tworiems <- function(riem1, riem2){
+  # both are 'riemdata' classes
+  if (!inherits(riem1,"riemdata")){
+    return(FALSE)
+  }
+  if (!inherits(riem2,"riemdata")){
+    return(FALSE)
+  }
+  # same manifold
+  if (!all(riem1$name==riem2$name)){
+    return(FALSE)
+  }
+  # same dimensionality
+  if (!all(riem1$size==riem2$size)){
+    return(FALSE)
+  }
+  return(TRUE)
 }

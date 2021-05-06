@@ -37,6 +37,9 @@
     <loc>https://kyoustat.com/Riemann/reference/passiflora.html</loc>
   </url>
   <url>
+    <loc>https://kyoustat.com/Riemann/reference/predict.m2skreg.html</loc>
+  </url>
+  <url>
     <loc>https://kyoustat.com/Riemann/reference/predict.mixspnorm.html</loc>
   </url>
   <url>
@@ -83,6 +86,12 @@
   </url>
   <url>
     <loc>https://kyoustat.com/Riemann/reference/riem.kpca.html</loc>
+  </url>
+  <url>
+    <loc>https://kyoustat.com/Riemann/reference/riem.m2skreg.html</loc>
+  </url>
+  <url>
+    <loc>https://kyoustat.com/Riemann/reference/riem.m2skregCV.html</loc>
   </url>
   <url>
     <loc>https://kyoustat.com/Riemann/reference/riem.mds.html</loc>

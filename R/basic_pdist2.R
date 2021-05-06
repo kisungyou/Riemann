@@ -11,6 +11,7 @@
 #' @return an \eqn{(M\times N)} matrix of distances.
 #' 
 #' @examples 
+#' \donttest{
 #' #-------------------------------------------------------------------
 #' #          Example on Sphere : a dataset with two types
 #' #
@@ -51,6 +52,7 @@
 #' image(dint[nrow(dint):1,], main="intrinsic", axes=FALSE)
 #' image(dext[nrow(dext):1,], main="extrinsic", axes=FALSE)
 #' par(opar)
+#' }
 #' 
 #' @concept basic
 #' @export
