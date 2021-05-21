@@ -1,3 +1,7 @@
+# Riemann 0.1.3
+
+* Modified `mle.spnorm()` for controls with user-defined stopping criteria.
+
 # Riemann 0.1.2
 
 * Added `riem.m2skreg()` for manifold-to-scalar kernel regression and `riem.m2skregCV()` for parameter selection using cross validation.

@@ -202,10 +202,10 @@ mle.spnorm <- function(data, method=c("Newton","Halley","Optimize","DE"), ...){
   
   ## STEP 2. OPTIMAL LAMBDA
   opt.lambda = switch(myway,
-                      "de"       = lambda_method_DE(x, opt.mean),
-                      "optimize" = lambda_method_opt(x, opt.mean),
-                      "newton"   = lambda_method_newton(x, opt.mean),
-                      "halley"   = lambda_method_halley(x, opt.mean))
+                      "de"       = lambda_method_DE(x, opt.mean, myiter, myeps),
+                      "optimize" = lambda_method_opt(x, opt.mean, myiter, myeps),
+                      "newton"   = lambda_method_newton(x, opt.mean, myiter, myeps),
+                      "halley"   = lambda_method_halley(x, opt.mean, myiter, myeps))
   
   ## RETURN
   output = list(mu=opt.mean, lambda=opt.lambda)
@@ -218,7 +218,7 @@ mle.spnorm <- function(data, method=c("Newton","Halley","Optimize","DE"), ...){
 # all others --------------------------------------------------------------
 #' @keywords internal
 #' @noRd
-lambda_method_halley <- function(data, mean){
+lambda_method_halley <- function(data, mean, myiter, myeps){
   # 1. parameters
   D = length(mean)
   n = nrow(data)
@@ -272,8 +272,8 @@ lambda_method_halley <- function(data, mean){
   xold = grid.lambda[which.min(grid.values)]
   
   # 4-2. run iterations
-  maxiter = 1000
-  sqrteps = (.Machine$double.eps)^(1/4)
+  maxiter = myiter
+  abstol  = myeps
   for (i in 1:maxiter){
     
     # h = min(abs(xold), sqrteps)/8
@@ -295,7 +295,7 @@ lambda_method_halley <- function(data, mean){
     xinc    = abs(xnew-xold)
     xold    = xnew
     
-    if (xinc < .Machine$double.eps^0.25){
+    if (xinc < abstol){
       break
     }
   }
@@ -305,7 +305,7 @@ lambda_method_halley <- function(data, mean){
 }
 #' @keywords internal
 #' @noRd
-lambda_method_newton <- function(data, mean){
+lambda_method_newton <- function(data, mean, myiter, myeps){
   # 1. parameters
   D = length(mean)
   n = nrow(data)
@@ -359,7 +359,7 @@ lambda_method_newton <- function(data, mean){
   xold = grid.lambda[which.min(grid.values)]
   
   # 4-2. run iterations
-  maxiter = 1000
+  maxiter = myiter
   for (i in 1:maxiter){
     # print(paste("iteration for Method 3 : ",i," initiated..", sep=""))
     h = min(abs(xold)/2, 1e-4)
@@ -370,7 +370,7 @@ lambda_method_newton <- function(data, mean){
     xinc    = abs(xnew-xold)
     xold    = xnew
     
-    if (xinc < .Machine$double.eps^0.25){
+    if (xinc < myeps){
       break
     }
   }
@@ -380,7 +380,7 @@ lambda_method_newton <- function(data, mean){
 }
 #' @keywords internal
 #' @noRd
-lambda_method_opt <- function(data, mean){
+lambda_method_opt <- function(data, mean, myiter, myeps){
   # 1. parameters
   D = length(mean)
   n = nrow(data)
@@ -409,12 +409,12 @@ lambda_method_opt <- function(data, mean){
   
   # 4. optimize a log-likelihood function with DEoptim
   myint  = c(0.01, 100)*stats::var(d1N)
-  output = stats::optimize(opt.fun, interval=myint, maximum=TRUE)$maximum
+  output = stats::optimize(opt.fun, interval=myint, maximum=TRUE, tol=myeps)$maximum
   return(output)
 }
 #' @keywords internal
 #' @noRd
-lambda_method_DE <- function(data, mean){
+lambda_method_DE <- function(data, mean, myiter, myeps){
   # 1. parameters
   D = length(mean)
   n = nrow(data)
@@ -445,7 +445,7 @@ lambda_method_DE <- function(data, mean){
   mymin  = stats::var(d1N)*0.01
   mymax  = stats::var(d1N)*100
   # output = as.double(tail(DEoptim(opt.fun, 10*.Machine$double.eps, 12345678, control=DEoptim.control(trace=FALSE))$member$bestmemit, n=1L))
-  output = as.double(utils::tail(DEoptim::DEoptim(opt.fun, mymin, mymax, control=DEoptim.control(trace=FALSE))$member$bestmemit, n=1L))
+  output = as.double(utils::tail(DEoptim::DEoptim(opt.fun, mymin, mymax, control=DEoptim.control(trace=FALSE, itermax=myiter, reltol=myeps))$member$bestmemit, n=1L))
   return(output)
 }
 
