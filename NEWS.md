@@ -1,6 +1,7 @@
 # Riemann 0.1.3
 
 * Modified `mle.spnorm()` for controls with user-defined stopping criteria.
+* Fixed log-likelihood evaluation for `mixspnorm()`.
 
 # Riemann 0.1.2
 
