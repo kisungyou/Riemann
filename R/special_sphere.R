@@ -329,6 +329,12 @@ mixspnorm <- function(data, k=2, same.lambda=FALSE, variants=c("soft","hard","st
       new.eta = spmix.stochastic(new.eta)
     }
     
+    # we need to stop if there is empty cluster
+    new.label = apply(new.eta, 1, which.max)
+    if (length(unique(new.label)) < myk){
+      break
+    }
+    
     # M-Step
     # M1. mu / centers & d2mat
     new.mu     = spmix.frechet(spobj, new.eta) # (k,p) matrix of row-stacked centroids
@@ -419,6 +425,14 @@ spmix.frechet <- function(spobj, membership){
   output = array(0,c(K,P))
   for (k in 1:K){
     partweight = as.vector(membership[,k])
+    
+    # sel_id = (partweight > sqrt(.Machine$double.eps))
+    # sel_data   = spobj$data[sel_id]
+    # sel_weight = partweight[sel_id]
+    # sel_weight = sel_weight/base::sum(sel_weight)
+    # output[k,] = as.vector(inference_mean_intrinsic("sphere", sel_data, sel_weight, 100, 1e-6)$mean)
+    # print(paste0("start at column ",k))
+    
     if (sum(partweight==1)==1){
       output[k,] = as.vector(spobj$data[[which(partweight==1)]])
     } else {
