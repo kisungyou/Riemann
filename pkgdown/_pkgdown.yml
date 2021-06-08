@@ -6,7 +6,7 @@
 #     api_key:
 #      indexname: Riemann
 
-url: https://kyoustat.com/Riemann
+url: https://kisungyou.com/Riemann
 
 destination: docs
 
@@ -35,18 +35,18 @@ navbar:
           href: https://CRAN.R-project.org/package=RiemBase
         - text : -----------------------------
         - text: "Rdimtools"
-          href: https://kyoustat.com/Rdimtools/
+          href: https://kisungyou.com/Rdimtools/
         - text: "T4cluster"
-          href: https://kyoustat.com/T4cluster/
+          href: https://kisungyou.com/T4cluster/
         - text: "T4transport"
-          href: https://kyoustat.com/T4transport/
+          href: https://kisungyou.com/T4transport/
   right:
     - icon: fa-twitter
-      href: https://twitter.com/kyoustat
+      href: https://twitter.com/kisung_you
     - icon: fa-github
-      href: https://github.com/kyoustat/Riemann
+      href: https://github.com/kisungyou/Riemann
     - icon: fa-envelope
-      href: mailto:kyoustat@gmail.com
+      href: mailto:kisungyou@outlook.com
 
 reference:
   - title: "Prepare Data on Manifolds"

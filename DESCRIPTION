@@ -2,7 +2,7 @@ Package: Riemann
 Type: Package
 Title: Learning with Data on Riemannian Manifolds
 Version: 0.1.3
-Authors@R: c(person("Kisung", "You", role = c("aut", "cre"), email = "kyoustat@gmail.com",comment=c(ORCID="0000-0002-8584-459X")))
+Authors@R: c(person("Kisung", "You", role = c("aut", "cre"), email = "kisungyou@outlook.com",comment=c(ORCID="0000-0002-8584-459X")))
 Description: We provide a variety of algorithms for manifold-valued data, including Fréchet summaries, hypothesis testing, clustering, visualization, and other learning tasks. See Bhattacharya and Bhattacharya (2012) <doi:10.1017/CBO9781139094764> for general exposition to statistics on manifolds.
 License: MIT + file LICENSE
 Imports: CVXR,
@@ -19,8 +19,8 @@ Imports: CVXR,
     utils,
     ggrepel
 Encoding: UTF-8
-URL: http://kyoustat.com/Riemann/
-BugReports: https://github.com/kyoustat/Riemann/issues
+URL: http://kisungyou.com/Riemann/
+BugReports: https://github.com/kisungyou/Riemann/issues
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 7.1.1
 RdMacros: Rdpack
