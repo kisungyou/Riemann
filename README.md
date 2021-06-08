@@ -17,8 +17,9 @@ appears in two realms; one is *dimensionality reduction* where we assume
 that low-dimensional data manifold is embedded in high-dimensional
 Euclidean space. The other is *statistics on manifolds* - data lie on
 some Riemannian manifolds that we are already well aware of. **Riemann**
-aims at the latter. If you are interested in dimension reduction, please
-check another R package [Rdimtools](https://kisungyou.com/Rdimtools/).
+aims to achieve the latter. If you are interested in dimension
+reduction, please check another R package
+[Rdimtools](https://kisungyou.com/Rdimtools/).
 
 ### Installation
 
