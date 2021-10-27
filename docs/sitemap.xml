@@ -115,6 +115,9 @@
     <loc>https://kisungyou.com/Riemann/reference/riem.pga.html</loc>
   </url>
   <url>
+    <loc>https://kisungyou.com/Riemann/reference/riem.phate.html</loc>
+  </url>
+  <url>
     <loc>https://kisungyou.com/Riemann/reference/riem.rmml.html</loc>
   </url>
   <url>
@@ -149,6 +152,12 @@
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/rmvnorm.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/spd.geometry.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/spd.pdist.html</loc>
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/sphere.convert.html</loc>

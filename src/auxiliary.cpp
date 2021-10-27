@@ -5,9 +5,7 @@ using namespace arma;
 using namespace std;
 
 // 1. cpp_ipot20 : inexact proximal by Xie (2020)
-
-
-
+// 2. cpp_pdist  : compute pairwise Euclidean distance
 
 
 // 1. cpp_ipot20 : inexact proximal by Xie (2020) ------------------------------
@@ -66,5 +64,19 @@ Rcpp::List cpp_ipot20(arma::vec a, arma::vec b, arma::mat dab, double lambda, do
   output["distance"] = mydist;
   output["iteration"] = it;
   output["plan"] = plan_old;
+  return(output);
+}
+
+// 2. cpp_pdist  : compute pairwise Euclidean distance -------------------------
+// [[Rcpp::export]]
+arma::mat cpp_pdist(arma::mat &X){
+  int N = X.n_rows;
+  arma::mat output(N,N,fill::zeros);
+  for (int i=0; i<(N-1); i++){
+    for (int j=(i+1); j<N; j++){
+      output(i,j) = arma::norm(X.row(i)-X.row(j), 2);
+      output(j,i) = output(i,j);
+    }
+  }
   return(output);
 }

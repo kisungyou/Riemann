@@ -32,7 +32,7 @@ or a development version is available from GitHub with `devtools` package.
 if (!require("devtools")) {
   install.packages("devtools")
 }
-devtools::install_github("kyoustat/Riemann")
+devtools::install_github("kisungyou/Riemann")
 ```
 
 Now we are ready to go by loading the library.

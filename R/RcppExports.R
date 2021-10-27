@@ -5,6 +5,10 @@ cpp_ipot20 <- function(a, b, dab, lambda, p, maxiter, abstol, L) {
     .Call('_Riemann_cpp_ipot20', PACKAGE = 'Riemann', a, b, dab, lambda, p, maxiter, abstol, L)
 }
 
+cpp_pdist <- function(X) {
+    .Call('_Riemann_cpp_pdist', PACKAGE = 'Riemann', X)
+}
+
 macg_mle <- function(data, maxiter, abstol) {
     .Call('_Riemann_macg_mle', PACKAGE = 'Riemann', data, maxiter, abstol)
 }
@@ -157,12 +161,8 @@ runif_stiefel <- function(p, k, N) {
     .Call('_Riemann_runif_stiefel', PACKAGE = 'Riemann', p, k, N)
 }
 
-spd_dist <- function(X, Y, geometry) {
-    .Call('_Riemann_spd_dist', PACKAGE = 'Riemann', X, Y, geometry)
-}
-
-spd_pdist <- function(data, geometry) {
-    .Call('_Riemann_spd_pdist', PACKAGE = 'Riemann', data, geometry)
+src_spd_pdist <- function(data, geometry) {
+    .Call('_Riemann_src_spd_pdist', PACKAGE = 'Riemann', data, geometry)
 }
 
 mat_rank <- function(A) {

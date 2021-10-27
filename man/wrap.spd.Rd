@@ -16,8 +16,8 @@ wrap.spd(input)
 \value{
 a named \code{riemdata} S3 object containing
 \describe{
-  \item{data}{a list of \eqn{(p\times p)} correlation matrices.}
-  \item{size}{size of each correlation matrix.}
+  \item{data}{a list of \eqn{(p\times p)} SPD matrices.}
+  \item{size}{size of each SPD matrix.}
   \item{name}{name of the manifold of interests, \emph{"spd"}}
 }
 }

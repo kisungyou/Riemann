@@ -81,6 +81,9 @@ reference:
   - subtitle: "3) Grassmann"
     contents:
       - starts_with("grassmann.")
+  - subtitle: "4) SPD"
+    contents:
+      - has_concept("spd")
   - title: "Probability Distributions"
     contents:
       - has_concept("distribution")

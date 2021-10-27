@@ -6,12 +6,11 @@
 #' @param maxiter maximum number of iterations to be run.
 #' @param eps tolerance level for stopping criterion.
 #' 
-
-#' 
 #' @return a named list containing\describe{
 #' \item{distance}{an \eqn{(N\times N)} distance between modes corresponding to each data point.}
 #' \item{cluster}{a length-\eqn{N} vector of class labels.}
 #' }
+#' 
 #' @keywords internal
 #' @noRd
 riem.rsup <- function(riemobj, weight=NULL, c=5, maxiter=50, eps=1e-5){
@@ -39,7 +38,7 @@ riem.rsup <- function(riemobj, weight=NULL, c=5, maxiter=50, eps=1e-5){
   }
   
   ## RUN THE ALGORITHM IN CPP
-  tmprun = clustering_sup_intrinsic(riemobj$name, riemobj$data, myweight, mymult, myiter, myeps)
+  tmprun  = clustering_sup_intrinsic(riemobj$name, riemobj$data, myweight, mymult, myiter, myeps)
   limit3d = tmprun$limits
   pdmat   = tmprun$distance
   objmat  = stats::as.dist(pdmat)

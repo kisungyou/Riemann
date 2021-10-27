@@ -47,8 +47,9 @@
 
 
 <meta property="og:title" content="Pairwise Distance on SPD Manifold — spd.pdist" />
-<meta property="og:description" content="Pairwise Distance on SPD Manifold" />
-<meta property="og:image" content="https://kyoustat.com/Riemann/logo.png" />
+<meta property="og:description" content="Given \(N\) observations \(X_1, X_2, \ldots, X_N\) in SPD manifold, compute 
+pairwise distances among observations." />
+<meta property="og:image" content="https://kisungyou.com/Riemann/logo.png" />
 
 
 
@@ -90,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Riemann</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -126,32 +127,32 @@
     </li>
     <li class="divider"></li>
     <li>
-      <a href="https://kyoustat.com/Rdimtools/">Rdimtools</a>
+      <a href="https://kisungyou.com/Rdimtools/">Rdimtools</a>
     </li>
     <li>
-      <a href="https://kyoustat.com/T4cluster/">T4cluster</a>
+      <a href="https://kisungyou.com/T4cluster/">T4cluster</a>
     </li>
     <li>
-      <a href="https://kyoustat.com/T4transport/">T4transport</a>
+      <a href="https://kisungyou.com/T4transport/">T4transport</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://twitter.com/kyoustat">
+  <a href="https://twitter.com/kisung_you">
     <span class="fa fa-twitter"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://github.com/kyoustat/Riemann">
+  <a href="https://github.com/kisungyou/Riemann">
     <span class="fa fa-github"></span>
      
   </a>
 </li>
 <li>
-  <a href="../mailto:kyoustat@gmail.com">
+  <a href="../mailto:kisungyou@outlook.com">
     <span class="fa fa-envelope"></span>
      
   </a>
@@ -170,21 +171,80 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Pairwise Distance on SPD Manifold</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kyoustat/Riemann/blob/master/R/future_special_spd_pdist.R'><code>R/future_special_spd_pdist.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/kisungyou/Riemann/blob/master/R/special_spd_pdist.R'><code>R/special_spd_pdist.R</code></a></small>
     <div class="hidden name"><code>spd.pdist.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Pairwise Distance on SPD Manifold</p>
+    <p>Given \(N\) observations \(X_1, X_2, \ldots, X_N\) in SPD manifold, compute 
+pairwise distances among observations.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>spd.pdist</span><span class='op'>(</span><span class='va'>riemobj</span>, <span class='va'>geometry</span>, as.dist <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>spd.pdist</span><span class='op'>(</span><span class='va'>spdobj</span>, <span class='va'>geometry</span>, as.dist <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>spdobj</th>
+      <td><p>a S3 <code>"riemdata"</code> class of SPD-valued data.</p></td>
+    </tr>
+    <tr>
+      <th>geometry</th>
+      <td><p>name of the geometry to be used. See <code><a href='spd.geometry.html'>spd.geometry</a></code> for supported geometries.</p></td>
+    </tr>
+    <tr>
+      <th>as.dist</th>
+      <td><p>logical; if <code>TRUE</code>, it returns a <code>dist</code> object. Else, it returns a symmetric matrix.</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a S3 <code>dist</code> object or \((N\times N)\) symmetric matrix of pairwise distances according to <code>as.dist</code> parameter.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='co'>#-------------------------------------------------------------------</span>
+<span class='co'>#                   Two Types of Covariances</span>
+<span class='co'>#</span>
+<span class='co'>#  group1 : perturbed from data by N(0,1) in R^3</span>
+<span class='co'>#  group2 : perturbed from data by [sin(x); cos(x); sin(x)*cos(x)]</span>
+<span class='co'>#-------------------------------------------------------------------</span>
+<span class='co'>## GENERATE DATA</span>
+<span class='va'>spd_mats</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/array.html'>array</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>spd_mats</span><span class='op'>[</span>,,<span class='va'>i</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cov</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>50</span><span class='op'>*</span><span class='fl'>3</span><span class='op'>)</span>, ncol<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='kw'>for</span> <span class='op'>(</span><span class='va'>j</span> <span class='kw'>in</span> <span class='fl'>11</span><span class='op'>:</span><span class='fl'>20</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>randvec</span> <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>50</span>, sd<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span>
+  <span class='va'>randmat</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>sin</a></span><span class='op'>(</span><span class='va'>randvec</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span><span class='op'>(</span><span class='va'>randvec</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>sin</a></span><span class='op'>(</span><span class='va'>randvec</span><span class='op'>)</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span><span class='op'>(</span><span class='va'>randvec</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>spd_mats</span><span class='op'>[</span>,,<span class='va'>j</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cov</a></span><span class='op'>(</span><span class='va'>randmat</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>50</span><span class='op'>*</span><span class='fl'>3</span>, sd<span class='op'>=</span><span class='fl'>0.1</span><span class='op'>)</span>, ncol<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+<span class='co'>## WRAP IT AS SPD OBJECT</span>
+<span class='va'>spd_obj</span> <span class='op'>=</span> <span class='fu'><a href='wrap.spd.html'>wrap.spd</a></span><span class='op'>(</span><span class='va'>spd_mats</span><span class='op'>)</span>
+
+<span class='co'>## COMPUTE PAIRWISE DISTANCES</span>
+<span class='co'>#  Geometries are case-insensitive.</span>
+<span class='va'>pdA</span> <span class='op'>=</span> <span class='fu'>spd.pdist</span><span class='op'>(</span><span class='va'>spd_obj</span>, <span class='st'>"airM"</span><span class='op'>)</span>
+<span class='va'>pdL</span> <span class='op'>=</span> <span class='fu'>spd.pdist</span><span class='op'>(</span><span class='va'>spd_obj</span>, <span class='st'>"lErm"</span><span class='op'>)</span>
+<span class='va'>pdJ</span> <span class='op'>=</span> <span class='fu'>spd.pdist</span><span class='op'>(</span><span class='va'>spd_obj</span>, <span class='st'>"Jeffrey"</span><span class='op'>)</span>
+<span class='va'>pdS</span> <span class='op'>=</span> <span class='fu'>spd.pdist</span><span class='op'>(</span><span class='va'>spd_obj</span>, <span class='st'>"stEin"</span><span class='op'>)</span>
+<span class='va'>pdW</span> <span class='op'>=</span> <span class='fu'>spd.pdist</span><span class='op'>(</span><span class='va'>spd_obj</span>, <span class='st'>"wasserstein"</span><span class='op'>)</span>
+
+<span class='co'>## VISUALIZE</span>
+<span class='va'>opar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>, pty<span class='op'>=</span><span class='st'>"s"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>pdA</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span>, main<span class='op'>=</span><span class='st'>"AIRM"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>pdL</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span>, main<span class='op'>=</span><span class='st'>"LERM"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>pdJ</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span>, main<span class='op'>=</span><span class='st'>"Jeffrey"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>pdS</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span>, main<span class='op'>=</span><span class='st'>"Stein"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>pdW</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span>, main<span class='op'>=</span><span class='st'>"Wasserstein"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span>
+</div><div class='img'><img src='spd.pdist-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

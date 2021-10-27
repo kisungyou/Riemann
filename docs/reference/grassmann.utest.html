@@ -141,19 +141,19 @@ data is distributed uniformly." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://twitter.com/kisung_you">
-    <span class="fas fa-twitter"></span>
+    <span class="fa fa-twitter"></span>
      
   </a>
 </li>
 <li>
   <a href="https://github.com/kisungyou/Riemann">
-    <span class="fas fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
 <li>
   <a href="../mailto:kisungyou@outlook.com">
-    <span class="fas fa-envelope"></span>
+    <span class="fa fa-envelope"></span>
      
   </a>
 </li>
@@ -171,7 +171,7 @@ data is distributed uniformly." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Test of Uniformity on Grassmann Manifold</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kisungyou/Riemann/blob/master/R/special_grassmann.R'><code>R/special_grassmann.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/kisungyou/Riemann/blob/master/R/special_grassmann_utest.R'><code>R/special_grassmann_utest.R</code></a></small>
     <div class="hidden name"><code>grassmann.utest.Rd</code></div>
     </div>
 
@@ -215,13 +215,11 @@ data is distributed uniformly.</p>
     <p>Chikuse Y (2003).
 <em>Statistics on Special Manifolds</em>, volume 174 of <em>Lecture Notes in Statistics</em>.
 Springer New York, New York, NY.
-ISBN 978-0-387-00160-9 978-0-387-21540-2, doi: <a href='https://doi.org/10.1007/978-0-387-21540-2'>10.1007/978-0-387-21540-2</a>
-.</p>
+ISBN 978-0-387-00160-9 978-0-387-21540-2.</p>
 <p>Mardia KV, Jupp PE (eds.) (1999).
 <em>Directional Statistics</em>,  Wiley Series in Probability and Statistics.
 John Wiley \&amp; Sons, Inc., Hoboken, NJ, USA.
-ISBN 978-0-470-31697-9 978-0-471-95333-3, doi: <a href='https://doi.org/10.1002/9780470316979'>10.1002/9780470316979</a>
-.</p>
+ISBN 978-0-470-31697-9 978-0-471-95333-3.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='wrap.grassmann.html'>wrap.grassmann</a></code></p></div>
@@ -253,14 +251,14 @@ ISBN 978-0-470-31697-9 978-0-471-95333-3, doi: <a href='https://doi.org/10.1002/
 #&gt; 	Bingham Test of Uniformity on Grassmann Manifold
 #&gt; 
 #&gt; data:  myobj1
-#&gt; statistic = 9.3679, p-value = 0.404
+#&gt; statistic = 4.7889, p-value = 0.8523
 #&gt; alternative hypothesis: data is not uniformly distributed on Gr(2,4).
 #&gt; </div><div class='input'><span class='fu'>grassmann.utest</span><span class='op'>(</span><span class='va'>myobj1</span>, method<span class='op'>=</span><span class='st'>"BingM"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt; 	Modified Bingham Test of Uniformity on Grassmann Manifold
 #&gt; 
 #&gt; data:  myobj1
-#&gt; statistic = 9.361, p-value = 0.4046
+#&gt; statistic = 4.7754, p-value = 0.8534
 #&gt; alternative hypothesis: data is not uniformly distributed on Gr(2,4).
 #&gt; </div><div class='input'>
 <span class='co'>## Tests : iris data</span>
@@ -269,14 +267,14 @@ ISBN 978-0-470-31697-9 978-0-471-95333-3, doi: <a href='https://doi.org/10.1002/
 #&gt; 	Bingham Test of Uniformity on Grassmann Manifold
 #&gt; 
 #&gt; data:  myobj2
-#&gt; statistic = 206.4, p-value &lt; 2.2e-16
+#&gt; statistic = 184, p-value &lt; 2.2e-16
 #&gt; alternative hypothesis: data is not uniformly distributed on Gr(2,4).
 #&gt; </div><div class='input'><span class='fu'>grassmann.utest</span><span class='op'>(</span><span class='va'>myobj2</span>, method<span class='op'>=</span><span class='st'>"BiNgM"</span><span class='op'>)</span>  <span class='co'># CASE - INSENSITIVE !</span>
 </div><div class='output co'>#&gt; 
 #&gt; 	Modified Bingham Test of Uniformity on Grassmann Manifold
 #&gt; 
 #&gt; data:  myobj2
-#&gt; statistic = 224.73, p-value &lt; 2.2e-16
+#&gt; statistic = 198.47, p-value &lt; 2.2e-16
 #&gt; alternative hypothesis: data is not uniformly distributed on Gr(2,4).
 #&gt; </div><div class='input'>
 </div></pre>
