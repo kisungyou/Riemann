@@ -1,3 +1,8 @@
+# Riemann 0.1.4
+
+* `riem.phate()` is added for visualization.
+* New data from EEG ERPs is available by `data(ERP)`.
+
 # Riemann 0.1.3
 
 * Modified `mle.spnorm()` for controls with user-defined stopping criteria.
