@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Prepare Data on Symmetric Positive-Definite (SPD) Manifold — wrap.spd • Riemann</title>
+<title>Data : EEG Covariances for Event-Related Potentials — ERP • Riemann</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,12 +46,12 @@
 
 
 
-<meta property="og:title" content="Prepare Data on Symmetric Positive-Definite (SPD) Manifold — wrap.spd" />
-<meta property="og:description" content="The collection of symmetric positive-definite matrices is a well-known example 
-of matrix manifold. It is defined as
-$$\mathcal{S}_{++}^p = \lbrace X \in \mathbf{R}^{p\times p} ~\vert~ X^\top = X,~ \textrm{rank}(X)=p \rbrace$$
-where the rank condition means it is strictly positive definite. Please note that 
-the geometry involving semi-definite matrices is considered in wrap.spdk." />
+<meta property="og:title" content="Data : EEG Covariances for Event-Related Potentials — ERP" />
+<meta property="og:description" content="This dataset delivers 216 covariance matrices from EEG ERPs with 4 different 
+known classes by types of sources. Among 60 channels, only 32 channels are 
+taken and sample covariance matrix is computed for each participant. The 
+data is taken from a Python library mne's 
+sample data." />
 <meta property="og:image" content="https://kisungyou.com/Riemann/logo.png" />
 
 
@@ -173,62 +173,40 @@ the geometry involving semi-definite matrices is considered in wrap.spdk." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Prepare Data on Symmetric Positive-Definite (SPD) Manifold</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kisungyou/Riemann/blob/master/R/wrap02spd.R'><code>R/wrap02spd.R</code></a></small>
-    <div class="hidden name"><code>wrap.spd.Rd</code></div>
+    <h1>Data : EEG Covariances for Event-Related Potentials</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kisungyou/Riemann/blob/master/R/data_ERP.R'><code>R/data_ERP.R</code></a></small>
+    <div class="hidden name"><code>ERP.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The collection of symmetric positive-definite matrices is a well-known example 
-of matrix manifold. It is defined as
-$$\mathcal{S}_{++}^p = \lbrace X \in \mathbf{R}^{p\times p} ~\vert~ X^\top = X,~ \textrm{rank}(X)=p \rbrace$$
-where the rank condition means it is strictly positive definite. Please note that 
-the geometry involving semi-definite matrices is considered in <code>wrap.spdk</code>.</p>
+    <p>This dataset delivers 216 covariance matrices from EEG ERPs with 4 different 
+known classes by types of sources. Among 60 channels, only 32 channels are 
+taken and sample covariance matrix is computed for each participant. The 
+data is taken from a Python library <a href='https://mne.tools/stable/generated/mne.datasets.sample.data_path.html#mne.datasets.sample.data_path'>mne</a>'s 
+sample data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>wrap.spd</span><span class='op'>(</span><span class='va'>input</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ERP</span><span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>input</th>
-      <td><p>SPD data matrices to be wrapped as <code>riemdata</code> class. Following inputs are considered,</p><dl>
-<dt>array</dt><dd><p>an \((p\times p\times n)\) array where each slice along 3rd dimension is a SPD matrix.</p></dd>
-<dt>list</dt><dd><p>a length-\(n\) list whose elements are \((p\times p)\) SPD matrices.</p></dd>
 
-</dl></td>
-    </tr>
-    </table>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>a named <code>riemdata</code> S3 object containing</p><dl>
-  <dt>data</dt><dd><p>a list of \((p\times p)\) SPD matrices.</p></dd>
-  <dt>size</dt><dd><p>size of each SPD matrix.</p></dd>
-  <dt>name</dt><dd><p>name of the manifold of interests, <em>"spd"</em></p></dd>
+    <p>a named list containing</p><dl>
+<dt>covariance</dt><dd><p>an \((32\times 32\times 216)\) array of covariance matrices.</p></dd>
+<dt>label</dt><dd><p>a length-\(216\) factor of 4 different classes.</p></dd>
 
 </dl>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='wrap.spd.html'>wrap.spd</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'>#-------------------------------------------------------------------</span></span>
-<span class='r-in'><span class='co'>#                 Checker for Two Types of Inputs</span></span>
-<span class='r-in'><span class='co'>#</span></span>
-<span class='r-in'><span class='co'>#  Generate 5 observations; empirical covariance of normal observations.</span></span>
-<span class='r-in'><span class='co'>#-------------------------------------------------------------------</span></span>
-<span class='r-in'><span class='co'>#  Data Generation</span></span>
-<span class='r-in'><span class='va'>d1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/array.html'>array</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>3</span>,<span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>d2</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-in'><span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>{</span></span>
-<span class='r-in'>  <span class='va'>dat</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>*</span><span class='fl'>3</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>3</span><span class='op'>)</span></span>
-<span class='r-in'>  <span class='va'>d1</span><span class='op'>[</span>,,<span class='va'>i</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cov</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span></span>
-<span class='r-in'>  <span class='va'>d2</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>d1</span><span class='op'>[</span>,,<span class='va'>i</span><span class='op'>]</span></span>
-<span class='r-in'><span class='op'>}</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'>#  Run</span></span>
-<span class='r-in'><span class='va'>test1</span> <span class='op'>=</span> <span class='fu'>wrap.spd</span><span class='op'>(</span><span class='va'>d1</span><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>test2</span> <span class='op'>=</span> <span class='fu'>wrap.spd</span><span class='op'>(</span><span class='va'>d2</span><span class='op'>)</span></span>
+    <pre class="examples"><span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='co'>## LOAD THE DATA AND WRAP AS RIEMOBJ</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ERP</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>myriem</span> <span class='op'>=</span> <span class='fu'><a href='wrap.spd.html'>wrap.spd</a></span><span class='op'>(</span><span class='va'>ERP</span><span class='op'>$</span><span class='va'>covariance</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># }</span></span>
 <span class='r-in'></span>
 </pre>
   </div>

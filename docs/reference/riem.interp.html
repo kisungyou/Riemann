@@ -92,7 +92,7 @@ assumes two endpoints \(\gamma(0)=X_1\) and \(\gamma(1)=X_2\)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Riemann</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -206,36 +206,37 @@ assumes two endpoints \(\gamma(0)=X_1\) and \(\gamma(1)=X_2\).</p>
     <p>an interpolated object in matrix representation on \(\mathcal{M}\).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>#-------------------------------------------------------------------</span>
-<span class='co'>#       Geodesic Interpolation between (1,0) and (0,1) in S^1</span>
-<span class='co'>#-------------------------------------------------------------------</span>
-<span class='co'>## PREPARE DATA</span>
-<span class='va'>sp.start</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>
-<span class='va'>sp.end</span>   <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>
-<span class='va'>sp.data</span>  <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='va'>sp.start</span>, <span class='va'>sp.end</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'>## FIND THE INTERPOLATED POINT AT "t=0.25"</span>
-<span class='va'>mid.int</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/vector.html'>as.vector</a></span><span class='op'>(</span><span class='fu'>riem.interp</span><span class='op'>(</span><span class='va'>sp.data</span>, t<span class='op'>=</span><span class='fl'>0.25</span>, geometry<span class='op'>=</span><span class='st'>"intrinsic"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>mid.ext</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/vector.html'>as.vector</a></span><span class='op'>(</span><span class='fu'>riem.interp</span><span class='op'>(</span><span class='va'>sp.data</span>, t<span class='op'>=</span><span class='fl'>0.25</span>, geometry<span class='op'>=</span><span class='st'>"extrinsic"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'>## VISUALIZE</span>
-<span class='co'>#  Prepare Lines and Points</span>
-<span class='va'>thetas</span>  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span>from<span class='op'>=</span><span class='fl'>0</span>, to<span class='op'>=</span><span class='va'>pi</span><span class='op'>/</span><span class='fl'>2</span>, length.out<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>
-<span class='va'>quarter</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span><span class='op'>(</span><span class='va'>thetas</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>sin</a></span><span class='op'>(</span><span class='va'>thetas</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>pic.pts</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='va'>sp.start</span>, <span class='va'>mid.int</span>, <span class='va'>mid.ext</span>, <span class='va'>sp.end</span><span class='op'>)</span>
-<span class='va'>pic.col</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"black"</span>,<span class='st'>"red"</span>,<span class='st'>"green"</span>,<span class='st'>"black"</span><span class='op'>)</span>
-
-<span class='co'># Draw</span>
-<span class='va'>opar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>pty<span class='op'>=</span><span class='st'>"s"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>quarter</span>, main<span class='op'>=</span><span class='st'>"two interpolated points at t=0.25"</span>,
-     xlab<span class='op'>=</span><span class='st'>"x"</span>, ylab<span class='op'>=</span><span class='st'>"y"</span>, type<span class='op'>=</span><span class='st'>"l"</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span><span class='op'>(</span><span class='va'>pic.pts</span>, col<span class='op'>=</span><span class='va'>pic.col</span>, pch<span class='op'>=</span><span class='fl'>19</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='va'>mid.int</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>-</span><span class='fl'>0.1</span>, <span class='va'>mid.int</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>, <span class='st'>"intrinsic"</span>, col<span class='op'>=</span><span class='st'>"red"</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='va'>mid.ext</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>-</span><span class='fl'>0.1</span>, <span class='va'>mid.ext</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>, <span class='st'>"extrinsic"</span>, col<span class='op'>=</span><span class='st'>"green"</span><span class='op'>)</span>
-</div><div class='img'><img src='riem.interp-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>#-------------------------------------------------------------------</span></span>
+<span class='r-in'><span class='co'>#       Geodesic Interpolation between (1,0) and (0,1) in S^1</span></span>
+<span class='r-in'><span class='co'>#-------------------------------------------------------------------</span></span>
+<span class='r-in'><span class='co'>## PREPARE DATA</span></span>
+<span class='r-in'><span class='va'>sp.start</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>sp.end</span>   <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>sp.data</span>  <span class='op'>=</span> <span class='fu'><a href='wrap.sphere.html'>wrap.sphere</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='va'>sp.start</span>, <span class='va'>sp.end</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## FIND THE INTERPOLATED POINT AT "t=0.25"</span></span>
+<span class='r-in'><span class='va'>mid.int</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/vector.html'>as.vector</a></span><span class='op'>(</span><span class='fu'>riem.interp</span><span class='op'>(</span><span class='va'>sp.data</span>, t<span class='op'>=</span><span class='fl'>0.25</span>, geometry<span class='op'>=</span><span class='st'>"intrinsic"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mid.ext</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/vector.html'>as.vector</a></span><span class='op'>(</span><span class='fu'>riem.interp</span><span class='op'>(</span><span class='va'>sp.data</span>, t<span class='op'>=</span><span class='fl'>0.25</span>, geometry<span class='op'>=</span><span class='st'>"extrinsic"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## VISUALIZE</span></span>
+<span class='r-in'><span class='co'>#  Prepare Lines and Points</span></span>
+<span class='r-in'><span class='va'>thetas</span>  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span>from<span class='op'>=</span><span class='fl'>0</span>, to<span class='op'>=</span><span class='va'>pi</span><span class='op'>/</span><span class='fl'>2</span>, length.out<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>quarter</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span><span class='op'>(</span><span class='va'>thetas</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>sin</a></span><span class='op'>(</span><span class='va'>thetas</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>pic.pts</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='va'>sp.start</span>, <span class='va'>mid.int</span>, <span class='va'>mid.ext</span>, <span class='va'>sp.end</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>pic.col</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"black"</span>,<span class='st'>"red"</span>,<span class='st'>"green"</span>,<span class='st'>"black"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Draw</span></span>
+<span class='r-in'><span class='va'>opar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>pty<span class='op'>=</span><span class='st'>"s"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>quarter</span>, main<span class='op'>=</span><span class='st'>"two interpolated points at t=0.25"</span>,</span>
+<span class='r-in'>     xlab<span class='op'>=</span><span class='st'>"x"</span>, ylab<span class='op'>=</span><span class='st'>"y"</span>, type<span class='op'>=</span><span class='st'>"l"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span><span class='op'>(</span><span class='va'>pic.pts</span>, col<span class='op'>=</span><span class='va'>pic.col</span>, pch<span class='op'>=</span><span class='fl'>19</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='va'>mid.int</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>-</span><span class='fl'>0.1</span>, <span class='va'>mid.int</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>, <span class='st'>"intrinsic"</span>, col<span class='op'>=</span><span class='st'>"red"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span><span class='va'>mid.ext</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>-</span><span class='fl'>0.1</span>, <span class='va'>mid.ext</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>, <span class='st'>"extrinsic"</span>, col<span class='op'>=</span><span class='st'>"green"</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='riem.interp-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -95,7 +95,7 @@ Similar to vector-variate ACG case, we follow a convention that \(tr(\Sigma)=p\)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Riemann</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -244,30 +244,31 @@ ISBN 978-0-470-31697-9 978-0-471-95333-3.</p>
     <div class='dont-index'><p><code><a href='acg.html'>acg</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># -------------------------------------------------------------------</span>
-<span class='co'>#          Example with Matrix Angular Central Gaussian Distribution</span>
-<span class='co'>#</span>
-<span class='co'># Given a fixed Sigma, generate samples and estimate Sigma via ML.</span>
-<span class='co'># -------------------------------------------------------------------</span>
-<span class='co'>## GENERATE AND MLE in St(2,5)/Gr(2,5)</span>
-<span class='co'>#  Generate data</span>
-<span class='va'>Strue</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>                  <span class='co'># true SPD matrix</span>
-<span class='va'>sam1</span>  <span class='op'>=</span> <span class='fu'>rmacg</span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>50</span>,  r<span class='op'>=</span><span class='fl'>2</span>, <span class='va'>Strue</span><span class='op'>)</span> <span class='co'># random samples</span>
-<span class='va'>sam2</span>  <span class='op'>=</span> <span class='fu'>rmacg</span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>100</span>, r<span class='op'>=</span><span class='fl'>2</span>, <span class='va'>Strue</span><span class='op'>)</span> <span class='co'># random samples</span>
-
-<span class='co'>#  MLE</span>
-<span class='va'>Smle1</span> <span class='op'>=</span> <span class='fu'>mle.macg</span><span class='op'>(</span><span class='va'>sam1</span><span class='op'>)</span>
-<span class='va'>Smle2</span> <span class='op'>=</span> <span class='fu'>mle.macg</span><span class='op'>(</span><span class='va'>sam2</span><span class='op'>)</span>
-
-<span class='co'>#  Visualize</span>
-<span class='va'>opar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>3</span><span class='op'>)</span>, pty<span class='op'>=</span><span class='st'>"s"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>Strue</span><span class='op'>[</span>,<span class='fl'>5</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>]</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span>, main<span class='op'>=</span><span class='st'>"true SPD"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>Smle1</span><span class='op'>[</span>,<span class='fl'>5</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>]</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span>, main<span class='op'>=</span><span class='st'>"MLE with n=50"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>Smle2</span><span class='op'>[</span>,<span class='fl'>5</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>]</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span>, main<span class='op'>=</span><span class='st'>"MLE with n=100"</span><span class='op'>)</span>
-</div><div class='img'><img src='macg-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># -------------------------------------------------------------------</span></span>
+<span class='r-in'><span class='co'>#          Example with Matrix Angular Central Gaussian Distribution</span></span>
+<span class='r-in'><span class='co'>#</span></span>
+<span class='r-in'><span class='co'># Given a fixed Sigma, generate samples and estimate Sigma via ML.</span></span>
+<span class='r-in'><span class='co'># -------------------------------------------------------------------</span></span>
+<span class='r-in'><span class='co'>## GENERATE AND MLE in St(2,5)/Gr(2,5)</span></span>
+<span class='r-in'><span class='co'>#  Generate data</span></span>
+<span class='r-in'><span class='va'>Strue</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>                  <span class='co'># true SPD matrix</span></span>
+<span class='r-in'><span class='va'>sam1</span>  <span class='op'>=</span> <span class='fu'>rmacg</span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>50</span>,  r<span class='op'>=</span><span class='fl'>2</span>, <span class='va'>Strue</span><span class='op'>)</span> <span class='co'># random samples</span></span>
+<span class='r-in'><span class='va'>sam2</span>  <span class='op'>=</span> <span class='fu'>rmacg</span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>100</span>, r<span class='op'>=</span><span class='fl'>2</span>, <span class='va'>Strue</span><span class='op'>)</span> <span class='co'># random samples</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>#  MLE</span></span>
+<span class='r-in'><span class='va'>Smle1</span> <span class='op'>=</span> <span class='fu'>mle.macg</span><span class='op'>(</span><span class='va'>sam1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>Smle2</span> <span class='op'>=</span> <span class='fu'>mle.macg</span><span class='op'>(</span><span class='va'>sam2</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>#  Visualize</span></span>
+<span class='r-in'><span class='va'>opar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>3</span><span class='op'>)</span>, pty<span class='op'>=</span><span class='st'>"s"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>Strue</span><span class='op'>[</span>,<span class='fl'>5</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>]</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span>, main<span class='op'>=</span><span class='st'>"true SPD"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>Smle1</span><span class='op'>[</span>,<span class='fl'>5</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>]</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span>, main<span class='op'>=</span><span class='st'>"MLE with n=50"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>Smle2</span><span class='op'>[</span>,<span class='fl'>5</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>]</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span>, main<span class='op'>=</span><span class='st'>"MLE with n=100"</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='macg-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -94,7 +94,7 @@ for location and concentration parameters \(\mu\) and \(\lambda\) respectively a
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Riemann</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -236,46 +236,47 @@ unit-norm vectors in \(\mathbf{R}^p\) wrapped in a list. <code>mle.spnorm</code>
 containing estimates of location (<code>mu</code>) and concentration (<code>lambda</code>) parameters.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='co'># -------------------------------------------------------------------</span>
-<span class='co'>#          Example with Spherical Normal Distribution</span>
-<span class='co'>#</span>
-<span class='co'># Given a fixed set of parameters, generate samples and acquire MLEs.</span>
-<span class='co'># Especially, we will see the evolution of estimation accuracy.</span>
-<span class='co'># -------------------------------------------------------------------</span>
-<span class='co'>## DEFAULT PARAMETERS</span>
-<span class='va'>true.mu</span>  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span>
-<span class='va'>true.lbd</span> <span class='op'>=</span> <span class='fl'>5</span>
-
-<span class='co'>## GENERATE DATA N=1000</span>
-<span class='va'>big.data</span> <span class='op'>=</span> <span class='fu'>rspnorm</span><span class='op'>(</span><span class='fl'>1000</span>, <span class='va'>true.mu</span>, <span class='va'>true.lbd</span><span class='op'>)</span>
-
-<span class='co'>## ITERATE FROM 50 TO 1000 by 10</span>
-<span class='va'>idseq</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span>from<span class='op'>=</span><span class='fl'>50</span>, to<span class='op'>=</span><span class='fl'>1000</span>, by<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span>
-<span class='va'>nseq</span>  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>idseq</span><span class='op'>)</span>
-
-<span class='va'>hist.mu</span>  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>nseq</span><span class='op'>)</span>
-<span class='va'>hist.lbd</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>nseq</span><span class='op'>)</span>
-
-<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>nseq</span><span class='op'>)</span><span class='op'>{</span>
-  <span class='va'>small.data</span> <span class='op'>=</span> <span class='va'>big.data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='va'>idseq</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span>          <span class='co'># data subsetting</span>
-  <span class='va'>small.MLE</span>  <span class='op'>=</span> <span class='fu'>mle.spnorm</span><span class='op'>(</span><span class='va'>small.data</span><span class='op'>)</span> <span class='co'># compute MLE</span>
-  
-  <span class='va'>hist.mu</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span>  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>acos</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>small.MLE</span><span class='op'>$</span><span class='va'>mu</span><span class='op'>*</span><span class='va'>true.mu</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># difference in mu</span>
-  <span class='va'>hist.lbd</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>small.MLE</span><span class='op'>$</span><span class='va'>lambda</span>
-<span class='op'>}</span>
-
-<span class='co'>## VISUALIZE</span>
-<span class='va'>opar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>idseq</span>, <span class='va'>hist.mu</span>,  <span class='st'>"b"</span>, pch<span class='op'>=</span><span class='fl'>19</span>, cex<span class='op'>=</span><span class='fl'>0.5</span>, main<span class='op'>=</span><span class='st'>"difference in location"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>idseq</span>, <span class='va'>hist.lbd</span>, <span class='st'>"b"</span>, pch<span class='op'>=</span><span class='fl'>19</span>, cex<span class='op'>=</span><span class='fl'>0.5</span>, main<span class='op'>=</span><span class='st'>"concentration param"</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span>h<span class='op'>=</span><span class='va'>true.lbd</span>, lwd<span class='op'>=</span><span class='fl'>2</span>, col<span class='op'>=</span><span class='st'>"red"</span><span class='op'>)</span>
-</div><div class='img'><img src='spnorm-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span>
-<span class='co'># }</span>
-
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='co'># -------------------------------------------------------------------</span></span>
+<span class='r-in'><span class='co'>#          Example with Spherical Normal Distribution</span></span>
+<span class='r-in'><span class='co'>#</span></span>
+<span class='r-in'><span class='co'># Given a fixed set of parameters, generate samples and acquire MLEs.</span></span>
+<span class='r-in'><span class='co'># Especially, we will see the evolution of estimation accuracy.</span></span>
+<span class='r-in'><span class='co'># -------------------------------------------------------------------</span></span>
+<span class='r-in'><span class='co'>## DEFAULT PARAMETERS</span></span>
+<span class='r-in'><span class='va'>true.mu</span>  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>true.lbd</span> <span class='op'>=</span> <span class='fl'>5</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## GENERATE DATA N=1000</span></span>
+<span class='r-in'><span class='va'>big.data</span> <span class='op'>=</span> <span class='fu'>rspnorm</span><span class='op'>(</span><span class='fl'>1000</span>, <span class='va'>true.mu</span>, <span class='va'>true.lbd</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## ITERATE FROM 50 TO 1000 by 10</span></span>
+<span class='r-in'><span class='va'>idseq</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span>from<span class='op'>=</span><span class='fl'>50</span>, to<span class='op'>=</span><span class='fl'>1000</span>, by<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>nseq</span>  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>idseq</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>hist.mu</span>  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>nseq</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>hist.lbd</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>nseq</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>nseq</span><span class='op'>)</span><span class='op'>{</span></span>
+<span class='r-in'>  <span class='va'>small.data</span> <span class='op'>=</span> <span class='va'>big.data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='va'>idseq</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span>          <span class='co'># data subsetting</span></span>
+<span class='r-in'>  <span class='va'>small.MLE</span>  <span class='op'>=</span> <span class='fu'>mle.spnorm</span><span class='op'>(</span><span class='va'>small.data</span><span class='op'>)</span> <span class='co'># compute MLE</span></span>
+<span class='r-in'>  </span>
+<span class='r-in'>  <span class='va'>hist.mu</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span>  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>acos</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>small.MLE</span><span class='op'>$</span><span class='va'>mu</span><span class='op'>*</span><span class='va'>true.mu</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># difference in mu</span></span>
+<span class='r-in'>  <span class='va'>hist.lbd</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>small.MLE</span><span class='op'>$</span><span class='va'>lambda</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## VISUALIZE</span></span>
+<span class='r-in'><span class='va'>opar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>idseq</span>, <span class='va'>hist.mu</span>,  <span class='st'>"b"</span>, pch<span class='op'>=</span><span class='fl'>19</span>, cex<span class='op'>=</span><span class='fl'>0.5</span>, main<span class='op'>=</span><span class='st'>"difference in location"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>idseq</span>, <span class='va'>hist.lbd</span>, <span class='st'>"b"</span>, pch<span class='op'>=</span><span class='fl'>19</span>, cex<span class='op'>=</span><span class='fl'>0.5</span>, main<span class='op'>=</span><span class='st'>"concentration param"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span>h<span class='op'>=</span><span class='va'>true.lbd</span>, lwd<span class='op'>=</span><span class='fl'>2</span>, col<span class='op'>=</span><span class='st'>"red"</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='spnorm-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># }</span></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

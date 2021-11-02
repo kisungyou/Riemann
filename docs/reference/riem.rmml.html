@@ -94,7 +94,7 @@ the small regularization parameter \(\lambda\) is recommended with default value
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Riemann</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -220,38 +220,39 @@ In <em>Proceedings of the Twenty-Seventh International Joint Conference on Artif
 ISBN 978-0-9992411-2-7.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>#-------------------------------------------------------------------</span>
-<span class='co'>#            Distance between Two Classes of SPD Matrices</span>
-<span class='co'>#</span>
-<span class='co'>#  Class 1 : Empirical Covariance from Standard Normal Distribution</span>
-<span class='co'>#  Class 2 : Empirical Covariance from Perturbed 'iris' dataset</span>
-<span class='co'>#-------------------------------------------------------------------</span>
-<span class='co'>## DATA GENERATION</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
-<span class='va'>ndata</span>  <span class='op'>=</span> <span class='fl'>10</span>
-<span class='va'>mydata</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>ndata</span><span class='op'>)</span><span class='op'>{</span>
-  <span class='va'>mydata</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cov</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>*</span><span class='fl'>4</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>}</span>
-<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='op'>(</span><span class='va'>ndata</span><span class='op'>+</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>:</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>*</span><span class='va'>ndata</span><span class='op'>)</span><span class='op'>)</span><span class='op'>{</span>
-  <span class='va'>tmpdata</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>150</span><span class='op'>*</span><span class='fl'>4</span>,sd<span class='op'>=</span><span class='fl'>0.5</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>4</span><span class='op'>)</span>
-  <span class='va'>mydata</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cov</a></span><span class='op'>(</span><span class='va'>tmpdata</span><span class='op'>)</span>
-<span class='op'>}</span>
-<span class='va'>myriem</span> <span class='op'>=</span> <span class='fu'><a href='wrap.spd.html'>wrap.spd</a></span><span class='op'>(</span><span class='va'>mydata</span><span class='op'>)</span>
-<span class='va'>mylabs</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span>, each<span class='op'>=</span><span class='va'>ndata</span><span class='op'>)</span>
-
-<span class='co'>## COMPUTE GEODESIC AND RMML PAIRWISE DISTANCE</span>
-<span class='va'>pdgeo</span> <span class='op'>=</span> <span class='fu'><a href='riem.pdist.html'>riem.pdist</a></span><span class='op'>(</span><span class='va'>myriem</span><span class='op'>)</span>
-<span class='va'>pdmdl</span> <span class='op'>=</span> <span class='fu'>riem.rmml</span><span class='op'>(</span><span class='va'>myriem</span>, label<span class='op'>=</span><span class='va'>mylabs</span><span class='op'>)</span>
-
-<span class='co'>## VISUALIZE</span>
-<span class='va'>opar</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span>, pty<span class='op'>=</span><span class='st'>"s"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>pdgeo</span><span class='op'>[</span>,<span class='op'>(</span><span class='fl'>2</span><span class='op'>*</span><span class='va'>ndata</span><span class='op'>)</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>]</span>, main<span class='op'>=</span><span class='st'>"geodesic distance"</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>pdmdl</span><span class='op'>[</span>,<span class='op'>(</span><span class='fl'>2</span><span class='op'>*</span><span class='va'>ndata</span><span class='op'>)</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>]</span>, main<span class='op'>=</span><span class='st'>"RMML distance"</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='img'><img src='riem.rmml-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>#-------------------------------------------------------------------</span></span>
+<span class='r-in'><span class='co'>#            Distance between Two Classes of SPD Matrices</span></span>
+<span class='r-in'><span class='co'>#</span></span>
+<span class='r-in'><span class='co'>#  Class 1 : Empirical Covariance from Standard Normal Distribution</span></span>
+<span class='r-in'><span class='co'>#  Class 2 : Empirical Covariance from Perturbed 'iris' dataset</span></span>
+<span class='r-in'><span class='co'>#-------------------------------------------------------------------</span></span>
+<span class='r-in'><span class='co'>## DATA GENERATION</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ndata</span>  <span class='op'>=</span> <span class='fl'>10</span></span>
+<span class='r-in'><span class='va'>mydata</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>ndata</span><span class='op'>)</span><span class='op'>{</span></span>
+<span class='r-in'>  <span class='va'>mydata</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cov</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>*</span><span class='fl'>4</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'><span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='op'>(</span><span class='va'>ndata</span><span class='op'>+</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>:</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>*</span><span class='va'>ndata</span><span class='op'>)</span><span class='op'>)</span><span class='op'>{</span></span>
+<span class='r-in'>  <span class='va'>tmpdata</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>150</span><span class='op'>*</span><span class='fl'>4</span>,sd<span class='op'>=</span><span class='fl'>0.5</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>4</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='va'>mydata</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cov</a></span><span class='op'>(</span><span class='va'>tmpdata</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'><span class='va'>myriem</span> <span class='op'>=</span> <span class='fu'><a href='wrap.spd.html'>wrap.spd</a></span><span class='op'>(</span><span class='va'>mydata</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mylabs</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span>, each<span class='op'>=</span><span class='va'>ndata</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## COMPUTE GEODESIC AND RMML PAIRWISE DISTANCE</span></span>
+<span class='r-in'><span class='va'>pdgeo</span> <span class='op'>=</span> <span class='fu'><a href='riem.pdist.html'>riem.pdist</a></span><span class='op'>(</span><span class='va'>myriem</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>pdmdl</span> <span class='op'>=</span> <span class='fu'>riem.rmml</span><span class='op'>(</span><span class='va'>myriem</span>, label<span class='op'>=</span><span class='va'>mylabs</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## VISUALIZE</span></span>
+<span class='r-in'><span class='va'>opar</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>no.readonly<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span>, pty<span class='op'>=</span><span class='st'>"s"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>pdgeo</span><span class='op'>[</span>,<span class='op'>(</span><span class='fl'>2</span><span class='op'>*</span><span class='va'>ndata</span><span class='op'>)</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>]</span>, main<span class='op'>=</span><span class='st'>"geodesic distance"</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>pdmdl</span><span class='op'>[</span>,<span class='op'>(</span><span class='fl'>2</span><span class='op'>*</span><span class='va'>ndata</span><span class='op'>)</span><span class='op'>:</span><span class='fl'>1</span><span class='op'>]</span>, main<span class='op'>=</span><span class='st'>"RMML distance"</span>, axes<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='riem.rmml-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opar</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
