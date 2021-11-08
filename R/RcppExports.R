@@ -161,6 +161,30 @@ runif_stiefel <- function(p, k, N) {
     .Call('_Riemann_runif_stiefel', PACKAGE = 'Riemann', p, k, N)
 }
 
+spdwass_sylvester <- function(A, X) {
+    .Call('_Riemann_spdwass_sylvester', PACKAGE = 'Riemann', A, X)
+}
+
+spdwass_log <- function(C, X) {
+    .Call('_Riemann_spdwass_log', PACKAGE = 'Riemann', C, X)
+}
+
+spdwass_exp <- function(C, V, t = 1.0) {
+    .Call('_Riemann_spdwass_exp', PACKAGE = 'Riemann', C, V, t)
+}
+
+spdwass_metric <- function(S, X, Y) {
+    .Call('_Riemann_spdwass_metric', PACKAGE = 'Riemann', S, X, Y)
+}
+
+spdwass_baryRU02 <- function(spdlist, weight, maxiter, abstol) {
+    .Call('_Riemann_spdwass_baryRU02', PACKAGE = 'Riemann', spdlist, weight, maxiter, abstol)
+}
+
+spdwass_baryAE16 <- function(spdlist, weight, maxiter, abstol) {
+    .Call('_Riemann_spdwass_baryAE16', PACKAGE = 'Riemann', spdlist, weight, maxiter, abstol)
+}
+
 src_spd_pdist <- function(data, geometry) {
     .Call('_Riemann_src_spd_pdist', PACKAGE = 'Riemann', data, geometry)
 }

@@ -2,6 +2,7 @@
 
 * `riem.phate()` is added for visualization.
 * New data from EEG ERPs is available by `data(ERP)`.
+* `spd.wassbary()` is added to compute Wasserstein barycenter of Gaussian distributions.
 
 # Riemann 0.1.3
 

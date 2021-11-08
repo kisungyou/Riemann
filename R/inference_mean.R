@@ -59,8 +59,11 @@ riem.mean <- function(riemobj, weight=NULL, geometry=c("intrinsic","extrinsic"),
   } else {
     myweight = check_weight(weight, N, "riem.mean")
   }
-  mygeom = ifelse(missing(geometry),"intrinsic",
-                  match.arg(tolower(geometry),c("intrinsic","extrinsic")))
+  if (missing(geometry)){
+    mygeom = "intrinsic"
+  } else {
+    mygeom = match.arg(tolower(geometry),c("intrinsic","extrinsic"))
+  }
   
   
   # IMPLICIT PARAMETERS 
