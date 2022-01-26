@@ -3,7 +3,7 @@
 #' We provide tools for an isotropic spherical normal (SN) distributions on 
 #' a \eqn{(p-1)}-sphere in \eqn{\mathbf{R}^p} for sampling, density evaluation, and maximum likelihood estimation 
 #' of the parameters where the density is defined as
-#' \deqn{f_SN(x; \mu, \lambda) = \frac{1}{Z(\lambda)} \exp \left( -\frac{\lambda}{2} d^2(x,\mu) \right)}
+#' \deqn{f_{SN}(x; \mu, \lambda) = \frac{1}{Z(\lambda)} \exp \left( -\frac{\lambda}{2} d^2(x,\mu) \right)}
 #' for location and concentration parameters \eqn{\mu} and \eqn{\lambda} respectively and the normalizing constant \eqn{Z(\lambda)}.
 #' 
 #' 
@@ -190,8 +190,17 @@ mle.spnorm <- function(data, method=c("Newton","Halley","Optimize","DE"), ...){
   x      = sp2mat(spobj)
   pars   = list(...)
   pnames = names(pars)
-  myiter = max(50, ifelse(("maxiter"%in%pnames), pars$maxiter, 50))
-  myeps  = min(1e-6, max(0, ifelse(("eps"%in%pnames), as.double(pars$eps), 1e-6)))
+  
+  if ("maxiter"%in%pnames){
+    myiter = max(10, round(pars$maxiter))
+  } else {
+    myiter = 50
+  }
+  if ("eps"%in%pnames){
+    myeps = min(1e-6, max(0, as.double(pars$eps)))
+  } else {
+    myeps = 1e-6
+  }
   alldip = c("newton","halley","optimize","de")
   myway  = match.arg(tolower(method), alldip)
   

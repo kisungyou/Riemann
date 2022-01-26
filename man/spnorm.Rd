@@ -40,7 +40,7 @@ containing estimates of location (\code{mu}) and concentration (\code{lambda}) p
 We provide tools for an isotropic spherical normal (SN) distributions on 
 a \eqn{(p-1)}-sphere in \eqn{\mathbf{R}^p} for sampling, density evaluation, and maximum likelihood estimation 
 of the parameters where the density is defined as
-\deqn{f_SN(x; \mu, \lambda) = \frac{1}{Z(\lambda)} \exp \left( -\frac{\lambda}{2} d^2(x,\mu) \right)}
+\deqn{f_{SN}(x; \mu, \lambda) = \frac{1}{Z(\lambda)} \exp \left( -\frac{\lambda}{2} d^2(x,\mu) \right)}
 for location and concentration parameters \eqn{\mu} and \eqn{\lambda} respectively and the normalizing constant \eqn{Z(\lambda)}.
 }
 \examples{
