@@ -14,6 +14,8 @@ rsplaplace(n, mu, sigma)
 mle.splaplace(data, method = c("DE", "Optimize", "Newton"), ...)
 }
 \arguments{
+\item{data}{data vectors in form of either an \eqn{(n\times p)} matrix or a length-\eqn{n} list.  See \code{\link{wrap.sphere}} for descriptions on supported input types.}
+
 \item{mu}{a length-\eqn{p} unit-norm vector of location.}
 
 \item{sigma}{a scale parameter that is positive.}
@@ -54,7 +56,7 @@ for location and scale parameters \eqn{\mu} and \eqn{\sigma} respectively.
 true.mu  = c(1,0,0,0,0)
 true.sig = 1
 
-## GENERATE DATA N=1000
+## GENERATE A RANDOM SAMPLE OF SIZE N=1000
 big.data = rsplaplace(1000, true.mu, true.sig)
 
 ## ITERATE FROM 50 TO 1000 by 10

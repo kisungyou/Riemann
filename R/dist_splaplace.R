@@ -7,6 +7,7 @@
 #' \deqn{f_{SL}(x; \mu, \sigma) = \frac{1}{C(\sigma)} \exp \left( -\frac{d(x,\mu)}{\sigma}  \right)}
 #' for location and scale parameters \eqn{\mu} and \eqn{\sigma} respectively.
 #' 
+#' @param data data vectors in form of either an \eqn{(n\times p)} matrix or a length-\eqn{n} list.  See \code{\link{wrap.sphere}} for descriptions on supported input types.
 #' @param mu a length-\eqn{p} unit-norm vector of location.
 #' @param sigma a scale parameter that is positive.
 #' @param n the number of samples to be generated.
@@ -34,7 +35,7 @@
 #' true.mu  = c(1,0,0,0,0)
 #' true.sig = 1
 #' 
-#' ## GENERATE DATA N=1000
+#' ## GENERATE A RANDOM SAMPLE OF SIZE N=1000
 #' big.data = rsplaplace(1000, true.mu, true.sig)
 #' 
 #' ## ITERATE FROM 50 TO 1000 by 10
