@@ -24,7 +24,7 @@ mle.spnorm(data, method = c("Newton", "Halley", "Optimize", "DE"), ...)
 
 \item{n}{the number of samples to be generated.}
 
-\item{method}{an algorithm name for concentration parameter estimation.i}
+\item{method}{an algorithm name for concentration parameter estimation. It should be one of \code{"Newton"},\code{"Halley"},\code{"Optimize"}, and \code{"DE"} (case sensitive).}
 
 \item{...}{extra parameters for computations, including\describe{
 \item{maxiter}{maximum number of iterations to be run (default:50).}

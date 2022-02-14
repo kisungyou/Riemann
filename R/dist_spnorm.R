@@ -12,7 +12,7 @@
 #' @param log a logical; \code{TRUE} to return log-density, \code{FALSE} for densities without logarithm applied.
 #' @param lambda a concentration parameter that is positive.
 #' @param n the number of samples to be generated.
-#' @param method an algorithm name for concentration parameter estimation.i
+#' @param method an algorithm name for concentration parameter estimation. It should be one of \code{"Newton"},\code{"Halley"},\code{"Optimize"}, and \code{"DE"} (case sensitive).
 #' @param ... extra parameters for computations, including\describe{
 #' \item{maxiter}{maximum number of iterations to be run (default:50).}
 #' \item{eps}{tolerance level for stopping criterion (default: 1e-5).}
@@ -201,8 +201,7 @@ mle.spnorm <- function(data, method=c("Newton","Halley","Optimize","DE"), ...){
   } else {
     myeps = 1e-6
   }
-  alldip = c("newton","halley","optimize","de")
-  myway  = match.arg(tolower(method), alldip)
+  myway = tolower(match.arg(method))
   
   ## STEP 1. INTRINSIC MEAN
   N = length(spobj$data)
@@ -243,7 +242,7 @@ lambda_method_halley <- function(data, mean, myiter, myeps){
         return(exp(-lbd*(r^2)/2)*((sin(r))^(D-2)))
       }
       t1 = 2*(pi^((D-1)/2))/gamma((D-1)/2) # one possible source of error
-      t2 = stats::integrate(myfunc, lower=0, upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
+      t2 = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
       return(t1*t2)
     }
     myfun <- function(r){
@@ -330,7 +329,7 @@ lambda_method_newton <- function(data, mean, myiter, myeps){
         return(exp(-lbd*(r^2)/2)*((sin(r))^(D-2)))
       }
       t1 = 2*(pi^((D-1)/2))/gamma((D-1)/2) # one possible source of error
-      t2 = stats::integrate(myfunc, lower=0, upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
+      t2 = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
       return(t1*t2)
     }
     myfun <- function(r){
@@ -347,7 +346,7 @@ lambda_method_newton <- function(data, mean, myiter, myeps){
       myfunc <- function(r){
         return(exp(-lbd*(r^2)/2)*((sin(r))^(D-2)))
       }
-      return(stats::integrate(myfunc, lower=0, upper=pi, rel.tol=sqrt(.Machine$double.eps))$value)
+      return(stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value)
     }
     myfun <- function(r){
       return(exp(-lambda*(r^2)/2)*((sin(r))^(D-2)))
@@ -405,7 +404,7 @@ lambda_method_opt <- function(data, mean, myiter, myeps){
         return(exp(-lbd*(r^2)/2)*((sin(r))^(D-2)))
       }
       t1 = 2*(pi^((D-1)/2))/gamma((D-1)/2) # one possible source of error
-      t2 = stats::integrate(myfunc, lower=0, upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
+      t2 = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
       return(t1*t2)
     }
     myfun <- function(r){
@@ -439,7 +438,7 @@ lambda_method_DE <- function(data, mean, myiter, myeps){
         return(exp(-lbd*(r^2)/2)*((sin(r))^(D-2)))
       }
       t1 = 2*(pi^((D-1)/2))/gamma((D-1)/2) # one possible source of error
-      t2 = stats::integrate(myfunc, lower=0, upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
+      t2 = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
       return(t1*t2)
     }
     myfun <- function(r){
@@ -541,7 +540,7 @@ dspnorm.constant <- function(lbd, D){ # lbd : lambda / D : dimension
     return(exp(-lbd*(r^2)/2)*((sin(r))^(D-2)))
   }
   t1 = 2*(pi^((D-1)/2))/gamma((D-1)/2) # one possible source of error
-  t2 = stats::integrate(myfunc, lower=0, upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
+  t2 = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
   return(t1*t2)
 }
 

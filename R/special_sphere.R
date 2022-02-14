@@ -4,7 +4,8 @@
 #  (03) sphere.convert
 #
 #
-#  (91) mixspnorm & predict method
+#  (91) mixspnorm    & predict method
+#  (92) mixsplaplace & predict method
 
 # (01) sphere.runif ============================================================
 #' Generate Uniform Samples on Sphere
@@ -291,9 +292,22 @@ mixspnorm <- function(data, k=2, same.lambda=FALSE, variants=c("soft","hard","st
   
   pars   = list(...)
   pnames = names(pars)
-  myiter = max(50, ifelse(("maxiter"%in%pnames), pars$maxiter, 100))
-  myeps  = min(1e-6, max(0, ifelse(("eps"%in%pnames), as.double(pars$eps), 1e-6)))
-  myprint = ifelse(("printer"%in%pnames), as.logical(pars$printer), FALSE)
+  
+  if ("maxiter"%in% pnames){
+    myiter = max(pars$maxiter, 50)
+  } else {
+    myiter = 100
+  }
+  if ("eps" %in% pnames){
+    myeps = max(.Machine$double.eps, as.double(pars$eps))
+  } else {
+    myeps = 1e-6
+  }
+  if ("printer" %in% pnames){
+    myprint = as.logical(pars$printer)
+  } else {
+    myprint = FALSE
+  }
   same.lambda = as.logical(same.lambda)
   
   myn = nrow(x)
