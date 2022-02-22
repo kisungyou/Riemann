@@ -16,6 +16,7 @@
 #' @param ... extra parameters for computations, including\describe{
 #' \item{maxiter}{maximum number of iterations to be run (default:50).}
 #' \item{eps}{tolerance level for stopping criterion (default: 1e-6).}
+#' \item{use.exact}{a logical to use exact (\code{TRUE}) or approximate (\code{FALSE}) updating rules (default: \code{FALSE}).}
 #' }
 #' 
 #' @return 
@@ -155,6 +156,11 @@ mle.splaplace <- function(data, method=c("DE","Optimize","Newton"), ...){
     myeps = 1e-6
   }
   myway = tolower(match.arg(method))
+  if ("use.exact" %in% pnames){
+    use_exact = as.logical(pars$use.exact)
+  } else {
+    use_exact = FALSE
+  }
   
   ## STEP 1. INTRINSIC MEDIAN
   N = length(spobj$data)
@@ -163,7 +169,7 @@ mle.splaplace <- function(data, method=c("DE","Optimize","Newton"), ...){
   
   ## STEP 2. OPTIMAL SIGMA
   opt.sigma = switch(myway,
-                     "newton"      = sigma_method_newton(x, opt.median, myiter, myeps),
+                     "newton"      = sigma_method_newton(x, opt.median, myiter, myeps, use_exact),
                      "optimize"    = sigma_method_opt(x, opt.median, myiter, myeps),
                      "de"          = sigma_method_DE(x, opt.median, myiter, myeps))
   
@@ -247,7 +253,96 @@ sigma_method_opt <- function(data, median, myiter, myeps){
 }
 #' @keywords internal
 #' @noRd
-sigma_method_newton <- function(data, median, myiter, myeps){
+sigma_method_newton <- function(data, median, myiter, myeps, myexact){
+  if (myexact){
+    return(sigma_method_newton_exact(data, median, myiter, myeps))
+  } else {
+    return(sigma_method_newton_approx(data, median, myiter, myeps))
+  }
+}
+#' @keywords internal
+#' @noRd
+sigma_method_newton_exact <- function(data, median, myiter, myeps){
+  # 1. parameters
+  p = length(median)-1
+  n = nrow(data)
+  
+  # 2. compute a constant
+  d1N  = as.vector(auxsphere_dist_1toN(median, data))
+  Chat = mean(d1N)
+  
+  # 3. integral evaluators
+  integral_I0 <- function(sigma){
+    # define an objective
+    tgt_funI0 <- function(r){
+      return(exp(-r/sigma)*(sin(r)^(p-1)))
+    }
+    # integrate
+    output = as.double(stats::integrate(tgt_funI0, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol = sqrt(.Machine$double.eps))$value)
+    return(output)
+  }
+  integral_I1 <- function(sigma){
+    # define an objective
+    tgt_funI1 <- function(r){
+      t1 = (r/(sigma^2))
+      t2 = exp(-r/sigma)*(sin(r)^(p-1))
+      return(t1*t2)
+    }
+    # integrate
+    output = as.double(stats::integrate(tgt_funI1, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol = sqrt(.Machine$double.eps))$value)
+    return(output)
+  }
+  integral_I2 <- function(sigma){
+    # define an objective
+    tgt_funI2 <- function(r){
+      t1 = ((r^2)/(sigma^4)) - ((2*r)/(sigma^3))
+      t2 = exp(-r/sigma)*(sin(r)^(p-1))
+      return(t1*t2)
+    }
+    # integrate
+    output = as.double(stats::integrate(tgt_funI2, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol = sqrt(.Machine$double.eps))$value)
+    return(output)
+  }
+  
+  # 4. initialize
+  ntest = 20
+  grid.sigma = base::exp(seq(from=-1,to=1,length.out=ntest))*sqrt(stats::var(d1N))
+  grid.value = rep(0,ntest)
+  for (i in 1:ntest){
+    sigma_now     = grid.sigma[i]
+    grid.value[i] = (Chat/sigma_now) + log(integral_I0(sigma_now))
+  }
+  sigma_old = grid.sigma[which.min(grid.value)]
+  sigma_new = 0
+  
+  # 5. Newton-Raphson update
+  for (it in 1:myiter){
+    # compute : quantities
+    valI0 = integral_I0(sigma_old)
+    valI1 = integral_I1(sigma_old)
+    valI2 = integral_I2(sigma_old)
+    
+    # compute : rationals
+    term_top = -(Chat/(sigma_old^2)) + (valI1/valI0)
+    term_bot = (2*Chat/(sigma_old^3)) + ((valI0*valI2 - (valI1^2))/(valI0^2))
+  
+    # update
+    sigma_new = sigma_old - term_top/term_bot
+    sigma_inc = abs(sigma_old - sigma_new)/abs(sigma_old)
+    sigma_old = sigma_new
+    if (sigma_inc < myeps){
+      break
+    }
+  }
+  
+  # return
+  return(sigma_old)
+}
+
+
+#' @keywords internal
+#' @noRd
+sigma_method_newton_approx <- function(data, median, myiter, myeps){
   # 1. parameters
   p = length(median)-1  # dimension S^p
   n = nrow(data)  # number of data 
@@ -376,11 +471,20 @@ rsplaplace.dist <- function(x, y){
   }
 }
 
+# ## IN-CODE TEST
 # true.mu  = c(1,0,0,0,0)
-# true.lbd = 0.1
+# true.lbd = 0.01
 # 
 # ## GENERATE DATA N=1000
 # small.data = rspnorm(1000, true.mu, true.lbd)
+# 
+# ## COMPARE FOUR METHODS
+# test1 = mle.splaplace(small.data, method="Optimize")
+# test2 = mle.splaplace(small.data, method="DE")
+# test3 = mle.splaplace(small.data, method="Newton", use.exact=FALSE)
+# test4 = mle.splaplace(small.data, method="Newton", use.exact=TRUE)
+
+
 # 
 # microbenchmark::microbenchmark(
 #   test1 = mle.splaplace(small.data, method="optimize"),

@@ -29,6 +29,7 @@ mle.splaplace(data, method = c("DE", "Optimize", "Newton"), ...)
 \item{...}{extra parameters for computations, including\describe{
 \item{maxiter}{maximum number of iterations to be run (default:50).}
 \item{eps}{tolerance level for stopping criterion (default: 1e-6).}
+\item{use.exact}{a logical to use exact (\code{TRUE}) or approximate (\code{FALSE}) updating rules (default: \code{FALSE}).}
 }}
 }
 \value{
