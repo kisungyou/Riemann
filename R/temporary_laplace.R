@@ -40,151 +40,142 @@ mixsplaplace <- function(data, k=2, same.sigma=FALSE, variants=c("soft","hard","
   old.mu     = moSL.median(spobj, old.eta)
   old.mobj   = wrap.sphere(old.mu)
   old.d2med  = moSL.d2medmat(spobj, old.mobj)
-  
-  
-  old.lambda = spmix.updatelbd(old.eta, old.d2mat, myp, homogeneous = same.lambda)
+  old.sigma  = moSL.updatesig(old.eta, old.d2med, myp, homogeneous = same.sigma)
   old.pi     = as.vector(base::colSums(old.eta)/myn)
-  old.loglkd = spmix.loglkd(old.d2mat, old.lambda, old.pi, myp)
-}
-
-
-mixspnorm <- function(data, k=2, same.lambda=FALSE, variants=c("soft","hard","stochastic"), ...){
-  ## PREPROCESSING
-  spobj  = wrap.sphere(data)
-  x      = sp2mat(spobj)
-  FNAME  = "mixspnorm"
+  old.loglkd = moSL.loglkd(old.d2med, old.sigma, old.pi, myp)
   
-  pars   = list(...)
-  pnames = names(pars)
-  
-  if ("maxiter"%in% pnames){
-    myiter = max(pars$maxiter, 50)
-  } else {
-    myiter = 100
-  }
-  if ("eps" %in% pnames){
-    myeps = max(.Machine$double.eps, as.double(pars$eps))
-  } else {
-    myeps = 1e-6
-  }
-  if ("printer" %in% pnames){
-    myprint = as.logical(pars$printer)
-  } else {
-    myprint = FALSE
-  }
-  same.lambda = as.logical(same.lambda)
-  
-  myn = nrow(x)
-  myp = ncol(x)
-  myk = max(round(k), 1)
-  myvers = match.arg(variants)
-  
-  ## INITIALIZATION
-  #  label
-  initlabel = as.vector(stats::kmeans(x, myk, nstart=round(5))$cluster)
-  #  membership
-  old.eta = array(0,c(myn,myk))
-  for (i in 1:myn){
-    old.eta[i,initlabel[i]] = 1 # {0,1} for the initial
-  }
-  old.mu     = spmix.frechet(spobj, old.eta)
-  old.mobj   = wrap.sphere(old.mu)
-  old.d2mat  = spmix.d2sqmat(spobj, old.mobj)
-  old.lambda = spmix.updatelbd(old.eta, old.d2mat, myp, homogeneous = same.lambda)
-  old.pi     = as.vector(base::colSums(old.eta)/myn)
-  old.loglkd = spmix.loglkd(old.d2mat, old.lambda, old.pi, myp)
-  
-  ## ITERATION
-  inc.params = rep(0,5)
+  ## ITERATION -----------------------------------------------------------------
+  inc.params = rep(0, 5)
   for (it in 1:myiter){
-    # E-Step
-    new.eta = spmix.eta(old.d2mat, old.lambda, old.pi, myp)
+    # E-step
+    new.eta = moSL.eta(old.d2med, old.sigma, old.pi, myp)
     
-    # # H/S-Step by Option
+    # H/S-step by option
     if (all(myvers=="hard")){
       new.eta = spmix.hard(new.eta)
     } else if (all(myvers=="stochastic")){
       new.eta = spmix.stochastic(new.eta)
     }
     
-    # we need to stop if there is empty cluster
-    new.label = apply(new.eta, 1, which.max)
+    # Stop if there is empty cluster
+    new.label = apply(new.eta, 1, whic.max)
     if (length(unique(new.label)) < myk){
       break
     }
     
-    # M-Step
-    # M1. mu / centers & d2mat
-    new.mu     = spmix.frechet(spobj, new.eta) # (k,p) matrix of row-stacked centroids
-    new.mobj   = wrap.sphere(new.mu)
-    new.d2mat  = spmix.d2sqmat(spobj, new.mobj)
-    # M2. lambda / concentration
-    new.lambda = spmix.updatelbd(new.eta, new.d2mat, myp, homogeneous = same.lambda)
-    # M3. proportion
-    new.pi     = as.vector(base::colSums(new.eta)/myn)
-    # update 
-    new.loglkd = spmix.loglkd(new.d2mat, new.lambda, new.pi, myp)
+    # M-step
+    # M1. mu / centers & d2med
+    new.mu    = moSL.median(spobj, new.eta)
+    new.mobj  = wrap.sphere(new.mu)
+    new.d2med = moSL.d2medmat(spobj, new.mobj)
+    # M2. sigma / scales
+    new.sigma = moSL.updatesig(new.eta, new.d2med, myp, homogeneous = same.sigma)
+    # M3. proportions
+    new.pi    = as.vector(base::colSums(new.eta)/myn)
+    # update
+    new.loglkd = moSL.loglkd(new.d2med, new.sigma, new.pi, myp)
     
+    # Incremental changes
     inc.params[1] = base::norm(old.mu-new.mu, type = "F")
-    inc.params[2] = base::sqrt(base::sum((old.lambda - new.lambda)^2))
+    inc.params[2] = base::sqrt(base::sum((old.sigma - new.sigma)^2))
     inc.params[3] = base::sqrt(base::sum((old.pi-new.pi)^2))
-    inc.params[4] = base::norm(old.d2mat-new.d2mat, type="F")
+    inc.params[4] = base::norm(old.d2med-new.d2med, type="F")
     inc.params[5] = base::norm(old.eta-new.eta, type="F")
     
-    if (new.loglkd < old.loglkd){ # rule : loglkd should increase
+    # rule : log-likelihood should increase
+    if (new.loglkd < old.loglkd){
       if (myprint){
-        print(paste0("* mixspnorm : terminated at iteration ", it," : log-likelihood is decreasing."))  
+        print(paste0("* mixsplaplace : terminated at iteration ", it, " : log-likelihood is decreasing."))
       }
       break
     } else {
       old.eta    = new.eta
       old.mu     = new.mu
       old.mobj   = new.mobj
-      old.d2mat  = new.d2mat
-      old.lambda = new.lambda
+      old.d2med  = new.d2med
+      old.sigma  = new.sigma
       old.pi     = new.pi
       old.loglkd = new.loglkd
     }
-    if (max(inc.params) < myeps){ # rule : all parameters converge -> stop
+    if (max(inc.params) < myeps){
       if (myprint){
-        print(paste0("* mixspnorm : terminated at iteration ", it," : all parameters converged."))  
+        print(paste0("* mixsplaplace : terminated at iteration ", it," : all parameters converged."))  
       }
       break
     }
     if (myprint){
-      print(paste0("* mixspnorm : iteration ",it,"/",myiter," complete with loglkd=",round(old.loglkd,5)))  
+      print(paste0("* mixsplaplace : iteration ",it,"/",myiter," complete with loglkd=",round(old.loglkd,5),"."))  
     }
   }
   
-  ## INFORMATION CRITERION
-  if (!same.lambda){
-    par.k = ((myp-1)*myk) + myk + (myk-1)  
+  ## INFORMATION CRITERION -----------------------------------------------------
+  if (!same.sigma){
+    par.k = myp*myk + myk + (myk-1)
   } else {
-    par.k = ((myp-1)*myk) + 1   + (myk-1)  
+    par.k = myp*myk + 1 + (myk-1)
   }
-  AIC = -2*old.loglkd + 2*par.k
-  BIC = -2*old.loglkd + par.k*log(myn)
-  HQIC = -2*old.loglkd + 2*par.k*log(log(myn))
-  AICc = AIC + (2*(par.k^2) + 2*par.k)/(myn-par.k-1)
   
-  infov = c(AIC, AICc, BIC, HQIC)
-  names(infov) = c("AIC","AICc","BIC","HQIC")
+  if (!same.lambda){
+    #     par.k = ((myp-1)*myk) + myk + (myk-1)  
+    #   } else {
+    #     par.k = ((myp-1)*myk) + 1   + (myk-1)  
+    #   }
+    #   AIC = -2*old.loglkd + 2*par.k
+    #   BIC = -2*old.loglkd + par.k*log(myn)
+    #   HQIC = -2*old.loglkd + 2*par.k*log(log(myn))
+    #   AICc = AIC + (2*(par.k^2) + 2*par.k)/(myn-par.k-1)
+    #   
+    #   infov = c(AIC, AICc, BIC, HQIC)
+    #   names(infov) = c("AIC","AICc","BIC","HQIC")
+    #   
+    #   ## RETURN
+    #   output = list()
+    #   output$cluster  = spmix.getcluster(old.eta)
+    #   output$loglkd   = old.loglkd  # max loglkd
+    #   output$criteria = infov       # min AIC/AICc/BIC/HQIC
+    #   output$parameters = list(proportion=old.pi, center=old.mu, concentration=old.lambda)
+    #   output$membership = old.eta
+    #   return(structure(output, class="mixspnorm"))  
   
-  ## RETURN
-  output = list()
-  output$cluster  = spmix.getcluster(old.eta)
-  output$loglkd   = old.loglkd  # max loglkd
-  output$criteria = infov       # min AIC/AICc/BIC/HQIC
-  output$parameters = list(proportion=old.pi, center=old.mu, concentration=old.lambda)
-  output$membership = old.eta
-  return(structure(output, class="mixspnorm"))
 }
 
 
 
+
+   
+#   ## INFORMATION CRITERION
+#   if (!same.lambda){
+#     par.k = ((myp-1)*myk) + myk + (myk-1)  
+#   } else {
+#     par.k = ((myp-1)*myk) + 1   + (myk-1)  
+#   }
+#   AIC = -2*old.loglkd + 2*par.k
+#   BIC = -2*old.loglkd + par.k*log(myn)
+#   HQIC = -2*old.loglkd + 2*par.k*log(log(myn))
+#   AICc = AIC + (2*(par.k^2) + 2*par.k)/(myn-par.k-1)
+#   
+#   infov = c(AIC, AICc, BIC, HQIC)
+#   names(infov) = c("AIC","AICc","BIC","HQIC")
+#   
+#   ## RETURN
+#   output = list()
+#   output$cluster  = spmix.getcluster(old.eta)
+#   output$loglkd   = old.loglkd  # max loglkd
+#   output$criteria = infov       # min AIC/AICc/BIC/HQIC
+#   output$parameters = list(proportion=old.pi, center=old.mu, concentration=old.lambda)
+#   output$membership = old.eta
+#   return(structure(output, class="mixspnorm"))
+# }
+
+
+
 # auxiliary functions -----------------------------------------------------
-# 1. moSL.median   : weighted Frechet medians
-# 2. moSL.d2medmat : compute data-median pairwise distance
+# 1. moSL.median    : weighted Frechet medians
+# 2. moSL.d2medmat  : compute data-median pairwise distance
+# 3. moSL.solvesig  : minimize C/sigma + log(C(sigma))
+# 4. moSL.updatesig : update sigma (scale) parameters
+# 5. moSL.loglkd    : log-likelihood
+# 6. moSL.eta       : compute soft membership
 
 # 1. compute weighted Frechet median : deals with Riemdata object
 #' @keywords internal
@@ -216,129 +207,121 @@ moSL.d2medmat <- function(obj.data, obj.medians){
   d2sqmat = as.matrix(basic_pdist2("sphere", obj.data$data, obj.medians$data, "intrinsic"))
   return(d2sqmat) 
 }
-
-
-# auxiliary renewed -------------------------------------------------------
-#  3. spmix.solvelbd   : solve min A*lbd + B*log(Z(lbd))
-#  4. spmix.updatelbd  : update lambda parameters
-#  5. spmix.loglkd     : compute log-likelihood
-#  6. spmix.eta        : compute eta (membership)
-#  7. spmix.getcluster : find the label of the data given the membership
-#  8. spmix.hard & spmix.stochastic
-
-
-
-
-#  3. spmix.solvelbd : solve min A*lbd + B*log(Z(lbd)) in R^P
+# 3. moSL.solvesig : minimize C/sigma + log(C(sigma))
 #' @keywords internal
 #' @noRd
-spmix.solvelbd <- function(A, B, P){ 
-  myfun <- function(par.lbd){
-    myintegral <- function(r){
-      return(exp(-par.lbd*(r^2)/2)*((sin(r))^(P-2)))
+moSL.solvesig <- function(C, p){
+  # cost function
+  fun_cost <- function(sigma){
+    # term : first
+    out1 = C/sigma
+    
+    # term : second
+    myfunc <- function(r){
+      return(exp(-r/sigma)*(sin(r)^(p-1)))
     }
-    t1 = 2*(pi^((P-1)/2))/gamma((P-1)/2) # one possible source of error
-    t2 = stats::integrate(myintegral, lower=0, upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
-    logZlbd = base::log(t1*t2)
-    output  = A*par.lbd + B*logZlbd
-    return(output)
+    t1   = 2*(pi^(p/2))/(gamma(p/2))
+    t2   = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
+    out2 = log(t1) + log(t2)
+    
+    # return the output
+    return(out1+out2)
   }
   
-  sol = stats::optimize(myfun, interval=c(1e-15, 1e+5), maximum = FALSE)$minimum
-  return(as.double(sol))
+  # minimization
+  myint  = c(0.01, 100)*C
+  output = as.double(stats::optimize(opt.fun, interval=myint, maximum=FALSE, tol=myeps)$minimum)
+  return(output)
 }
-#  4. spmix.updatelbd : update lambda parameters
+# 4. moSL.updatesig : update sigma (scale) parameters
 #' @keywords internal
 #' @noRd
-spmix.updatelbd <- function(membership, d2mat, P, homogeneous=TRUE){
+moSL.updatesig <- function(membership, d2mat, p, homogeneous=TRUE){
   N = base::nrow(membership)
   K = base::ncol(membership)
-  mylbds = rep(0,K)
+  mysigs = rep(0, K)
   
-  if (homogeneous){
-    A = base::sum(d2mat*membership)/2
+  if (homogeneous){ # homogeneous
+    A = base::sum(d2mat*membership)
     B = base::sum(membership)
-    lbd.single = spmix.solvelbd(A, B, P)
+    C = (A/B)
+    sig.single = moSL.solvesig(C, p)
     for (k in 1:K){
-      mylbds[k] = lbd.single
+      mysigs[k] = sig.single
     }
-  } else {
+  } else {          # heterogeneous
     for (k in 1:K){
-      A = base::sum(as.vector(d2mat[,k])*as.vector(membership[,k]))/2
-      B = base::sum(as.vector(membership[,k]))
-      mylbds[k] = spmix.solvelbd(A, B, P)
+      A = sum(as.vector(d2mat[,k])*as.vector(membership[,k]))
+      B = sum(as.vector(membership[,k]))
+      C = (A/B)
+      
+      mysigs[k] = moSL.solvesig(C, p)
     }
   }
-  return(mylbds)
+  return(mysigs)
 }
-#  5. spmix.loglkd    : compute log-likelihood
+# 5. moSL.loglkd    : log-likelihood
 #' @keywords internal
 #' @noRd
-spmix.loglkd <- function(d2mat, lambdas, props, P){
-  N = base::nrow(d2mat)
-  K = base::ncol(d2mat)
+moSL.loglkd <- function(d2med, sigmas, props, p){
+  N = base::nrow(d2med)
+  K = base::ncol(d2med)
   
-  evalZ <- function(par.lbd){
-    myintegral <- function(r){
-      return(exp(-par.lbd*(r^2)/2)*((sin(r))^(P-2)))
+  # function to evaluate normalizing constant
+  eval_constant <- function(sigma){
+    myfunc <- function(r){
+      return(exp(-r/sigma)*(sin(r)^(p-1)))
     }
-    lbdt1 = 2*(pi^((P-1)/2))/gamma((P-1)/2) # one possible source of error
-    lbdt2 = stats::integrate(myintegral, lower=0, upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
-    Zlbd  = lbdt1*lbdt2
-    return(Zlbd)
+    t1   = 2*(pi^(p/2))/(gamma(p/2))
+    t2   = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
+    return(t1*t2) 
   }
   
-  vecZlbd = rep(0,K)
+  # normalizing constants per class
+  vecCsig = rep(0, K)
   for (k in 1:K){
-    vecZlbd[k] = evalZ(lambdas[k])
+    vecCsig[k] = eval_constant(sigmas[k])
   }
-  # logprop = base::log(props)
-  # for (k in 1:K){
-  #   logZlbd[k] = base::log(evalZ(lambdas[k]))
-  # }
   
   # evaluate the density
   mixdensity = array(0,c(N,K))
   for (n in 1:N){
     for (k in 1:K){
-      mixdensity[n,k] = props[k]*exp(-(d2mat[n,k])*lambdas[k]/2)/vecZlbd[k]
+      mixdensity[n,k] = props[k]*exp(-(d2med[n,k])/sigmas[k])/vecCsig[k]
     }
   }
   
   # evaluate the output
-  output = base::sum(base::log(base::rowSums(mixdensity)))
-  return(output)
-  # term1 = base::sum(logprop)*N
-  # term2 = -base::sum(logZlbd)*N
-  # term3 = base::sum(d2mat%*%(-base::diag(lambdas)/2))
-  # return(term1+term2+term3)
+  return(base::sum(base::log(base::rowSums(mixdensity))))
 }
-# 6. spmix.eta : compute eta (membership)
+# 6. moSL.eta 
 #' @keywords internal
 #' @noRd
-spmix.eta <- function(d2mat, lambdas, props, P){
-  N = base::nrow(d2mat)
-  K = base::ncol(d2mat)
+moSL.eta <- function(d2med, sigmas, props, p){
+  N = base::nrow(d2med)
+  K = base::ncol(d2med)
   
-  evalZ <- function(par.lbd){
-    myintegral <- function(r){
-      return(exp(-par.lbd*(r^2)/2)*((sin(r))^(P-2)))
+  # function to evaluate normalizing constant
+  eval_constant <- function(sigma){
+    myfunc <- function(r){
+      return(exp(-r/sigma)*(sin(r)^(p-1)))
     }
-    lbdt1 = 2*(pi^((P-1)/2))/gamma((P-1)/2) # one possible source of error
-    lbdt2 = stats::integrate(myintegral, lower=0, upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
-    Zlbd  = lbdt1*lbdt2
-    return(Zlbd)
+    t1   = 2*(pi^(p/2))/(gamma(p/2))
+    t2   = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
+    return(t1*t2) 
   }
   
-  vecZlbd = rep(0,K)
+  # normalizing constants per class
+  vecCsig = rep(0, K)
   for (k in 1:K){
-    vecZlbd[k] = evalZ(lambdas[k])
+    vecCsig[k] = eval_constant(sigmas[k])
   }
   
+  # evaluate
   output = array(0,c(N,K))
   for (k in 1:K){
-    tgtd2vec   = as.vector(d2mat[,k])
-    output[,k] = exp((-lambdas[k]*tgtd2vec/2) - base::log(vecZlbd[k]) + base::log(props[k]))
+    tgtdvec    = as.vector(d2med[,k])
+    output[,k] = exp((-tgtdvec/sigmas[k]) - base::log(vecCsig[k]) + base::log(props[k]))
   }
   for (n in 1:N){
     tgtrow = as.vector(output[n,])
@@ -346,48 +329,14 @@ spmix.eta <- function(d2mat, lambdas, props, P){
   }
   return(output)
 }
+
+
+
+# auxiliary renewed -------------------------------------------------------
+
 #  7. spmix.getcluster : find the label of the data given the membership
-#' @keywords internal
-#' @noRd
-spmix.getcluster <- function(membership){
-  N = base::nrow(membership)
-  K = base::ncol(membership)
-  
-  output = rep(0,N)
-  for (n in 1:N){
-    tgtvec = as.vector(membership[n,])
-    output[n] = base::which.max(tgtvec)
-  }
-  return(output)
-}
 #  8. spmix.hard & spmix.stochastic
-#' @keywords internal
-#' @noRd
-spmix.hard <- function(membership){
-  N = base::nrow(membership)
-  K = base::ncol(membership)
-  
-  output = array(0,c(N,K))
-  for (n in 1:N){
-    tgt = as.vector(membership[n,])
-    output[n,which.max(tgt)] = 1
-  }
-  return(output)
-}
-#' @keywords internal
-#' @noRd
-spmix.stochastic <- function(membership){
-  N = base::nrow(membership)
-  K = base::ncol(membership)
-  
-  output = array(0,c(N,K))
-  vec1ks = (1:K)
-  for (n in 1:N){
-    probn = as.vector(membership[n,])
-    output[n,base::sample(vec1ks, 1, prob=probn)] = 1
-  }
-  return(output)
-}
+
 
 
 
