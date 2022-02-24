@@ -1,6 +1,7 @@
 # Riemann 0.1.4
 
-* `riem.phate()` is added for visualization.
+* Supports for spherical Laplace distribution added.
+* `riem.phate()` is added for sub-manifold learning/visualization.
 * New data from EEG ERPs is available by `data(ERP)`.
 * `spd.wassbary()` is added to compute Wasserstein barycenter of Gaussian distributions.
 
