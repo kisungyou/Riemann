@@ -1,10 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://kisungyou.com/Riemann/404.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/articles/RiemannBasic.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/authors.html</loc>
+  </url>
+  <url>
     <loc>https://kisungyou.com/Riemann/index.html</loc>
   </url>
   <url>
+    <loc>https://kisungyou.com/Riemann/news/index.html</loc>
+  </url>
+  <url>
     <loc>https://kisungyou.com/Riemann/reference/ERP.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/Package-Introduction.html</loc>
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/acg.html</loc>
@@ -28,10 +52,31 @@
     <loc>https://kisungyou.com/Riemann/reference/hands.html</loc>
   </url>
   <url>
+    <loc>https://kisungyou.com/Riemann/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/label.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/label.moSN.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/loglkd.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/loglkd.moSN.html</loc>
+  </url>
+  <url>
     <loc>https://kisungyou.com/Riemann/reference/macg.html</loc>
   </url>
   <url>
+    <loc>https://kisungyou.com/Riemann/reference/mixsplaplace.html</loc>
+  </url>
+  <url>
     <loc>https://kisungyou.com/Riemann/reference/mixspnorm.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/moSN.html</loc>
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/orbital.html</loc>
@@ -43,6 +88,9 @@
     <loc>https://kisungyou.com/Riemann/reference/predict.m2skreg.html</loc>
   </url>
   <url>
+    <loc>https://kisungyou.com/Riemann/reference/predict.mixsplaplace.html</loc>
+  </url>
+  <url>
     <loc>https://kisungyou.com/Riemann/reference/predict.mixspnorm.html</loc>
   </url>
   <url>
@@ -50,6 +98,9 @@
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/riem.coreset18B.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/riem.curvedist.html</loc>
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/riem.distlp.html</loc>
@@ -163,6 +214,9 @@
     <loc>https://kisungyou.com/Riemann/reference/spd.pdist.html</loc>
   </url>
   <url>
+    <loc>https://kisungyou.com/Riemann/reference/spd.wassbary.html</loc>
+  </url>
+  <url>
     <loc>https://kisungyou.com/Riemann/reference/sphere.convert.html</loc>
   </url>
   <url>
@@ -170,6 +224,9 @@
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/sphere.utest.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/splaplace.html</loc>
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/spnorm.html</loc>
@@ -212,8 +269,5 @@
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/wrap.stiefel.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/articles/RiemannBasic.html</loc>
   </url>
 </urlset>

@@ -1,5 +1,6 @@
 # Riemann 0.1.4
 
+* Two mixture models on the unit hypersphere added.
 * Supports for spherical Laplace distribution added.
 * `riem.phate()` is added for sub-manifold learning/visualization.
 * New data from EEG ERPs is available by `data(ERP)`.
