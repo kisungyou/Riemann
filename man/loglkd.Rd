@@ -4,10 +4,10 @@
 \alias{loglkd}
 \title{Compute the log-likelihood}
 \usage{
-loglkd(x, newdata)
+loglkd(object, newdata)
 }
 \arguments{
-\item{x}{a fitted mixture model of \code{riemmix} class.}
+\item{object}{a fitted mixture model of \code{riemmix} class.}
 
 \item{newdata}{data of \eqn{n} objects (vectors, matrices) that can be wrapped by one of \code{wrap.*} functions in the \pkg{Riemann} package.}
 }

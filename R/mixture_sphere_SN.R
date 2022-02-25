@@ -531,12 +531,12 @@ density.moSN <- function(object, newdata){
   old.d2mat  = spmix.d2sqmat(spobj, old.mobj) # (N x K)
   
   # COMPUTE AND RETURN
-  evaldensity = spmix.density(old.d2mat, old.lambda, old.pi, myp)
+  evaldensity = density_mixture_SN(old.d2mat, old.lambda, old.pi, myp)
   return(evaldensity)
 }
 #' @keywords internal
 #' @noRd
-spmix.density <- function(d2mat, lambdas, props, P){
+density_mixture_SN <- function(d2mat, lambdas, props, P){
   N = base::nrow(d2mat)
   K = base::ncol(d2mat)
   

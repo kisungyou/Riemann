@@ -4,10 +4,10 @@
 \alias{label}
 \title{Predict labels of given data for a fitted mixture model}
 \usage{
-label(x, newdata)
+label(object, newdata)
 }
 \arguments{
-\item{x}{a fitted mixture model of \code{riemmix} class.}
+\item{object}{a fitted mixture model of \code{riemmix} class.}
 
 \item{newdata}{data of \eqn{n} objects (vectors, matrices) that can be wrapped by one of \code{wrap.*} functions in the \pkg{Riemann} package.}
 }
