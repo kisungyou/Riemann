@@ -32,6 +32,7 @@ Suggests:
     rgdal,
     usmap,
     ggplot2,
-    maptools
+    maptools,
+    covr
 VignetteBuilder: knitr
 LazyData: true
