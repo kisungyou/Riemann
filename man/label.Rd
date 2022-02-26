@@ -2,7 +2,7 @@
 % Please edit documentation in R/mixture_methods.R
 \name{label}
 \alias{label}
-\title{Predict labels of given data for a fitted mixture model}
+\title{S3 method for mixture model : predict labels}
 \usage{
 label(object, newdata)
 }
@@ -18,3 +18,25 @@ a length-\eqn{n} vector of class labels.
 Given a fitted mixture model of \eqn{K} components, predict labels of 
 observations accordingly.
 }
+\examples{
+\donttest{
+# ---------------------------------------------------- #
+#            FIT A MODEL & APPLY THE METHOD
+# ---------------------------------------------------- #
+# Load the 'city' data and wrap as 'riemobj'
+data(cities)
+locations = cities$cartesian
+embed2    = array(0,c(60,2)) 
+for (i in 1:60){
+   embed2[i,] = sphere.xyz2geo(locations[i,])
+}
+
+# Fit a model
+k3 = moSN(locations, k=3)
+
+# Evaluate
+newlabel = label(k3, locations)
+}
+
+}
+\concept{utility}

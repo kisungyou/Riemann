@@ -114,4 +114,7 @@ newdensity = density(k3, locations)
 }
 
 }
+\references{
+\insertRef{you_2022_ParameterEstimationModelbased}{Riemann}
+}
 \concept{sphere}

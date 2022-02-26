@@ -62,6 +62,10 @@
 #' par(opar)
 #' }
 #' 
+#' @references 
+#' \insertRef{hauberg_2018_DirectionalStatisticsSpherical}{Riemann}
+#' 
+#' \insertRef{you_2022_ParameterEstimationModelbased}{Riemann}
 #' 
 #' @name spnorm
 #' @concept distribution

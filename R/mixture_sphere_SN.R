@@ -77,6 +77,9 @@
 #' (2) \code{label} returns a length-\eqn{m} vector of cluster assignments, and (3) \code{density} 
 #' evaluates densities of every observation according ot the model fit. 
 #' 
+#' @references 
+#' \insertRef{you_2022_ParameterEstimationModelbased}{Riemann}
+#' 
 #' @concept sphere
 #' @export
 moSN  <- function(data, k=2, same.lambda=FALSE, variants=c("soft","hard","stochastic"), ...){

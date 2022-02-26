@@ -103,8 +103,10 @@ par(opar)
 # ---------------------------------------------------- #
 # Use the same 'locations' data as new data 
 # (1) log-likelihood
-newloglkd = round(loglkd(k3, locations), 3)
-print(paste0("Log-likelihood for K=3 model fit : ", newloglkd))
+newloglkd = round(loglkd(k3, locations), 5)
+fitloglkd = round(k3$loglkd, 5)
+print(paste0("Log-likelihood for K=3 fitted    : ", fitloglkd))
+print(paste0("Log-likelihood for K=3 predicted : ", newloglkd))
 
 # (2) label
 newlabel = label(k3, locations)

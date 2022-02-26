@@ -82,6 +82,10 @@ abline(h=true.lbd, lwd=2, col="red")
 par(opar)
 }
 
+}
+\references{
+\insertRef{hauberg_2018_DirectionalStatisticsSpherical}{Riemann}
 
+\insertRef{you_2022_ParameterEstimationModelbased}{Riemann}
 }
 \concept{distribution}

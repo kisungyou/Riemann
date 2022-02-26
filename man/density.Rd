@@ -2,7 +2,7 @@
 % Please edit documentation in R/mixture_methods.R
 \name{density}
 \alias{density}
-\title{Evaluate density of given data for a fitted model}
+\title{S3 method for mixture model : evaluate density}
 \usage{
 density(object, newdata)
 }
@@ -17,3 +17,25 @@ a length-\eqn{n} vector of class labels.
 \description{
 Compute density for a fitted mixture model.
 }
+\examples{
+\donttest{
+# ---------------------------------------------------- #
+#            FIT A MODEL & APPLY THE METHOD
+# ---------------------------------------------------- #
+# Load the 'city' data and wrap as 'riemobj'
+data(cities)
+locations = cities$cartesian
+embed2    = array(0,c(60,2)) 
+for (i in 1:60){
+   embed2[i,] = sphere.xyz2geo(locations[i,])
+}
+
+# Fit a model
+k3 = moSN(locations, k=3)
+
+# Evaluate 
+newdensity = density(k3, locations)
+}
+
+}
+\concept{utility}

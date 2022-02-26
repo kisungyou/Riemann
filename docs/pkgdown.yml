@@ -3,7 +3,7 @@ pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   RiemannBasic: RiemannBasic.html
-last_built: 2022-02-24T20:30Z
+last_built: 2022-02-26T16:54Z
 urls:
   reference: https://kisungyou.com/Riemann/reference
   article: https://kisungyou.com/Riemann/articles
