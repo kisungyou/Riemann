@@ -1,14 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Learning on Riemannian Manifolds <a href='https://kyoustat.com/Riemann/'><img src='man/figures/logo.png' align="right" height="150" /></a>
+# Riemann <img src='man/figures/logo.png' alt="" align="right" height="150" /></a>
 
 <!-- badges: start -->
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/Riemann)](https://CRAN.R-project.org/package=Riemann)
-[![Travis build
-status](https://travis-ci.com/kisungyou/Riemann.svg?branch=master)](https://travis-ci.com/kisungyou/Riemann)
+[![R-CMD-check](https://github.com/kisungyou/Riemann/workflows/R-CMD-check/badge.svg)](https://github.com/kisungyou/Riemann/actions)
 <!-- badges: end -->
 
 **Riemann** is an R package for learning with data on **Riemannian

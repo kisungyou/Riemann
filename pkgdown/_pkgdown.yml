@@ -10,7 +10,15 @@ url: https://kisungyou.com/Riemann
 
 destination: docs
 
+authors:
+  Kisung You:
+    href: https://kisungyou.com
+
 template:
+  bootstrap: 5
+  bslib:
+    border-radius: 0.5rem
+    btn-border-radius: 0.25rem
   params:
     bootswatch: flatly
     ganalytics: UA-163713603-1
