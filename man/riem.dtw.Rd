@@ -68,7 +68,4 @@ par(opar)
 }
 
 }
-\seealso{
-\code{\link[dtw]{dtw}}
-}
 \concept{curve}

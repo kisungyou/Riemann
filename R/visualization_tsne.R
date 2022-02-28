@@ -7,7 +7,7 @@
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
 #' @param ndim an integer-valued target dimension.
 #' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
-#' @param ... extra parameters for \code{\link[Rtsne]{Rtsne}} algorithm, such as perplexity, momentum, and others.
+#' @param ... extra parameters for \code{Rtsne} algorithm from \pkg{Rtsne} package, such as perplexity, momentum, and others.
 #' 
 #' @return a named list containing \describe{
 #' \item{embed}{an \eqn{(N\times ndim)} matrix whose rows are embedded observations.}
@@ -50,8 +50,6 @@
 #' plot(embed2int$embed, main="intrinsic t-SNE", col=mylabs, pch=19)
 #' plot(embed2ext$embed, main="extrinsic t-SNE", col=mylabs, pch=19)
 #' par(opar)
-#' 
-#' @seealso \code{\link[Rtsne]{Rtsne}}
 #' 
 #' @concept visualization
 #' @export

@@ -11,8 +11,6 @@
 #' 
 #' @return the distance value.
 #' 
-#' @seealso \code{\link[dtw]{dtw}}
-#' 
 #' @examples 
 #' \donttest{
 #' #-------------------------------------------------------------------

@@ -16,8 +16,7 @@ Imports: CVXR,
     Matrix,
     maotai (>= 0.2.2),
     stats,
-    utils,
-    ggrepel
+    utils
 Encoding: UTF-8
 URL: https://kisungyou.com/Riemann/
 BugReports: https://github.com/kisungyou/Riemann/issues
@@ -33,6 +32,7 @@ Suggests:
     usmap,
     ggplot2,
     maptools,
-    covr
+    covr,
+    ggrepel
 VignetteBuilder: knitr
 LazyData: true

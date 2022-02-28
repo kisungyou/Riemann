@@ -46,7 +46,9 @@
 #' plot(hc.comp, main="complete linkage")
 #' par(opar)
 #' 
-#' @seealso  \code{\link[fastcluster]{hclust}}
+#' @references 
+#' \insertRef{mullner_fastcluster_2013}{Riemann}
+#' 
 #' @concept clustering
 #' @export
 riem.hclust <- function(riemobj, geometry=c("intrinsic","extrinsic"),
@@ -61,6 +63,11 @@ riem.hclust <- function(riemobj, geometry=c("intrinsic","extrinsic"),
                      match.arg(tolower(geometry),c("intrinsic","extrinsic")))
   mymethod  = match.arg(method)
   mymembers = members
+  
+  ## PSEUDO
+  AA = array(1, c(3,3))
+  diag(AA) = 0
+  AH = stats::hclust(stats::as.dist(AA))
   
   ## COMPUTE DISTANCE, HCLUST, AND RETURN
   pdmat   = stats::as.dist(basic_pdist(riemobj$name, riemobj$data, mygeom))

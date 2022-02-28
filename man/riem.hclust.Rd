@@ -65,7 +65,7 @@ plot(hc.comp, main="complete linkage")
 par(opar)
 
 }
-\seealso{
-\code{\link[fastcluster]{hclust}}
+\references{
+\insertRef{mullner_fastcluster_2013}{Riemann}
 }
 \concept{clustering}
