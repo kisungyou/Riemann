@@ -36,7 +36,7 @@ navbar:
     - text: "Articles"
       menu:
         - text: "Riemann 101 : A First Step"
-          href: articles/RiemannBasic.html
+          href: articles/RiemannStart.html
     - text: "Other Packages"
       menu:
         - text: "(CRAN) RiemBase"

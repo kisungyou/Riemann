@@ -1,9 +1,11 @@
 ---
 title: "Riemann 101 : A First Step"
-#output: rmarkdown::html_vignette
-output:
-  pdf_document:
+output: 
+  rmarkdown::html_vignette:
     fig_caption: true
+#output:
+  #pdf_document:
+    #fig_caption: true
 author: Kisung You
 vignette: >
   %\VignetteIndexEntry{Riemann 101 : A First Step}
