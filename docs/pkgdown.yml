@@ -1,9 +1,8 @@
 pandoc: 2.11.4
 pkgdown: 1.6.1
 pkgdown_sha: ~
-articles:
-  RiemannBasic: RiemannBasic.html
-last_built: 2022-02-28T05:43Z
+articles: {}
+last_built: 2022-02-28T18:55Z
 urls:
   reference: https://kisungyou.com/Riemann/reference
   article: https://kisungyou.com/Riemann/articles

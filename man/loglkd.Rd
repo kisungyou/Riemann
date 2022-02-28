@@ -15,7 +15,7 @@ loglkd(object, newdata)
 the log-likelihood.
 }
 \description{
-Given a fitted mixture model \eqn{f(x)} and observations \eqn{x_1, \ldots, x_n \in \calM}, compute the log-likelihood
+Given a fitted mixture model \eqn{f(x)} and observations \eqn{x_1, \ldots, x_n \in \mathcal{M}}, compute the log-likelihood
 \deqn{L = \log \prod_{i=1}^n f(x_i) = \sum_{i=1}^n \log f(x_i)}.
 }
 \examples{

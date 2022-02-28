@@ -26,13 +26,8 @@ RdMacros: Rdpack
 Depends: 
     R (>= 2.10)
 Suggests: 
-    knitr,
-    rmarkdown,
-    rgdal,
-    usmap,
-    ggplot2,
-    maptools,
-    covr,
-    ggrepel
-VignetteBuilder: knitr
+	R.rsp,
+	knitr,
+    rmarkdown
+VignetteBuilder: R.rsp, knitr
 LazyData: true
