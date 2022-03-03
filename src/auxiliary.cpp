@@ -80,3 +80,4 @@ arma::mat cpp_pdist(arma::mat &X){
   }
   return(output);
 }
+

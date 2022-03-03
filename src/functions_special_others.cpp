@@ -35,3 +35,4 @@ arma::cube runif_stiefel(int p, int k, int N){
   }
   return(output);
 }
+

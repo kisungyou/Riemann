@@ -736,14 +736,5 @@ arma::mat landmark_invequiv(arma::vec x, int m, int n){
   return(out);
 }
 
-
-
-
-
-
-
-
-
-
-
 #endif
+

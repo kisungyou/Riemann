@@ -84,3 +84,4 @@ arma::vec acg_density(Rcpp::List& data, arma::mat A){
   }
   return(output);
 }
+

@@ -45,3 +45,4 @@ arma::mat cpp_rmvnorm(int n, arma::vec mu, arma::mat sigma){
   arma::mat output = (Y*arma::chol(sigma)) + arma::repmat(mu, 1, n).t();
   return(output);
 }
+

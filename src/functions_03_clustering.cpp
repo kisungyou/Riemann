@@ -667,3 +667,4 @@ Rcpp::List clustering_kmeans18B(std::string mfdname, std::string geotype, Rcpp::
   output["wcss"]    = wcss;
   return(output);
 }
+

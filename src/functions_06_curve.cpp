@@ -88,3 +88,4 @@ double curvedist_dtwbasic(std::string mfd, std::string geo, Rcpp::List& data1, R
   double output = DTW(N, M);
   return(output);
 }
+

@@ -1,3 +1,7 @@
+# Riemann 0.1.5
+
+* Code covarage and unit testing start to be integrated.
+
 # Riemann 0.1.4
 
 * Two mixture models on the unit hypersphere added.

@@ -262,3 +262,4 @@ Rcpp::List inference_median_extrinsic(std::string mfdname, Rcpp::List& data, arm
   result["distvec"]   = distvec;
   return(result);
 }
+

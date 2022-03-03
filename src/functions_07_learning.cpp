@@ -215,3 +215,4 @@ Rcpp::List learning_coreset18B(std::string mfdname, std::string geoname, Rcpp::L
   output["id"] = coreid;
   return(output);
 }
+
