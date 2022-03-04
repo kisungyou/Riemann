@@ -441,6 +441,18 @@ dsplaplace.constant <- function(sigma, p){
 #' @keywords internal
 #' @noRd
 rsplaplace.single <- function(mu, sigma){
+  # Try the rejection first
+  tmp_reject = rsplaplace.single.rejection(mu, sigma)
+  if (!tmp_reject$status){
+    return(as.vector(tmp_reject$y))
+  } else {
+    return(rsplaplace.single.metropolis(mu, sigma))
+  }
+}
+
+#' @keywords internal
+#' @noRd
+rsplaplace.single.rejection <- function(mu, sigma){
   status  = TRUE
   counter = 0
   while (status){
@@ -449,18 +461,45 @@ rsplaplace.single <- function(mu, sigma){
     r = rsplaplace.dist(y, as.vector(mu))
     thr = exp(((r^2)/(2*sigma)) - (r/sigma) - (pi*(pi-2)/(2*sigma)))
     
-    #counter = counter + 1
+    counter = counter + 1
     if (stats::runif(1) < thr){
-      #print(paste0("sampling done with sigma=", round(sigma, 5), " at iteration=",counter))
       status=FALSE
     }
-    if (counter == 1e+4){
-      #print(paste0("sampling stops with sigma=", round(sigma, 5), " at iteration=",counter))
-      status=FALSE
+    if (counter >= 50){
+      break
     }
   }
-  return(y)
+  
+  output = list()
+  output$y = y
+  output$status = status 
+  return(output)
 }
+#' @keywords internal
+#' @noRd
+rsplaplace.single.metropolis <- function(mu, sigma){
+  myp  = length(mu)
+  yold = mu + stats::rnorm(myp, mean=0, sd=sigma)
+  yold = yold/sqrt(sum(yold^2))
+  
+  for (i in 1:50){
+    # perturbation
+    ytmp = yold + stats::rnorm(myp, mean=0, sd=sigma)
+    ytmp = ytmp/sqrt(sum(ytmp^2))
+    
+    # compute a ratio
+    threshold = exp((rsplaplace.dist(yold, mu)-rsplaplace.dist(ytmp, mu))/sigma)
+    if (stats::runif(1) < threshold){
+      ynew = ytmp
+    } else {
+      ynew = yold
+    }
+    yold = ynew
+  }
+  return(yold)
+}
+
+
 #' @keywords internal
 #' @noRd
 rsplaplace.dist <- function(x, y){
