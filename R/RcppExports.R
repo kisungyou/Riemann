@@ -189,6 +189,10 @@ src_spd_pdist <- function(data, geometry) {
     .Call('_Riemann_src_spd_pdist', PACKAGE = 'Riemann', data, geometry)
 }
 
+src_spd_variation <- function(data3d, fmean) {
+    .Call('_Riemann_src_spd_variation', PACKAGE = 'Riemann', data3d, fmean)
+}
+
 mat_rank <- function(A) {
     .Call('_Riemann_mat_rank', PACKAGE = 'Riemann', A)
 }

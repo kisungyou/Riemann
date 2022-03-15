@@ -669,6 +669,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// src_spd_variation
+double src_spd_variation(arma::cube& data3d, arma::mat& fmean);
+RcppExport SEXP _Riemann_src_spd_variation(SEXP data3dSEXP, SEXP fmeanSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube& >::type data3d(data3dSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type fmean(fmeanSEXP);
+    rcpp_result_gen = Rcpp::wrap(src_spd_variation(data3d, fmean));
+    return rcpp_result_gen;
+END_RCPP
+}
 // mat_rank
 arma::uword mat_rank(arma::mat A);
 RcppExport SEXP _Riemann_mat_rank(SEXP ASEXP) {
@@ -787,6 +799,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_spdwass_baryRU02", (DL_FUNC) &_Riemann_spdwass_baryRU02, 4},
     {"_Riemann_spdwass_baryAE16", (DL_FUNC) &_Riemann_spdwass_baryAE16, 4},
     {"_Riemann_src_spd_pdist", (DL_FUNC) &_Riemann_src_spd_pdist, 2},
+    {"_Riemann_src_spd_variation", (DL_FUNC) &_Riemann_src_spd_variation, 2},
     {"_Riemann_mat_rank", (DL_FUNC) &_Riemann_mat_rank, 1},
     {"_Riemann_mat_symm", (DL_FUNC) &_Riemann_mat_symm, 2},
     {"_Riemann_mat_diaghalf", (DL_FUNC) &_Riemann_mat_diaghalf, 1},

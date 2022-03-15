@@ -7,6 +7,12 @@ using namespace arma;
 using namespace std;
 
 // =============================================================================
+// SPECIAL FUNCTIONS ON SPD MANIFOLD : ADD ON HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// =============================================================================
+// (01) src_spd_dist    : compute distance of two SPD matrices : ADD ON HERE!
+//      src_spd_pdist   : pairwise distances
+
+// =============================================================================
 // WASSERSTEIN GEOMETRY
 // =============================================================================
 // (01) spdwass_sylvester : solve the sylvester equation L_A[X]; A-SPD, X-Symm
@@ -17,11 +23,9 @@ using namespace std;
 // (06) spdwass_baryAE16  :                        by Alvarez-Esteban
 
 // =============================================================================
-// SPECIAL FUNCTIONS ON SPD MANIFOLD
+// OTHERS
 // =============================================================================
-// (01) src_spd_dist    : compute distance of two SPD matrices : ADD ON HERE!
-//      src_spd_pdist   : pairwise distances
-
+// (01) src_spd_variation : given a 3d array and a frechet mean, compute var
 
 
 // =============================================================================
@@ -197,4 +201,23 @@ arma::mat src_spd_pdist(arma::cube &data, std::string geometry){
   
   // RETURN
   return(distance);
+}
+
+
+
+
+// =============================================================================
+// OTHERS
+// =============================================================================
+// (01) src_spd_variation : given a 3d array and a frechet mean, compute var
+// [[Rcpp::export]]
+double src_spd_variation(arma::cube &data3d, arma::mat &fmean){
+  int n = data3d.n_slices;
+  double output = 0.0;
+  double tmpval = 0.0;
+  for (int i=0; i<n; i++){
+    tmpval = riem_dist("spd",data3d.slice(i),fmean);
+    output += (tmpval*tmpval);
+  }
+  return(output);
 }
