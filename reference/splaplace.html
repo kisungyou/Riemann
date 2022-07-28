@@ -4,7 +4,7 @@ on a \((p-1)\)-dimensional sphere in \(\mathbf{R}^p\) including sampling, densit
 maximum likelihood estimation of the parameters. The SL distribution is characterized by the following 
 density function,
 $$f_{SL}(x; \mu, \sigma) = \frac{1}{C(\sigma)} \exp \left( -\frac{d(x,\mu)}{\sigma}  \right)$$
-for location and scale parameters \(\mu\) and \(\sigma\) respectively."><title>Spherical Laplace Distribution — splaplace • Riemann</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Spherical Laplace Distribution — splaplace"><meta property="og:description" content="This is a collection of tools for learning with spherical Laplace (SL) distribution 
+for location and scale parameters \(\mu\) and \(\sigma\) respectively."><title>Spherical Laplace Distribution — splaplace • Riemann</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Spherical Laplace Distribution — splaplace"><meta property="og:description" content="This is a collection of tools for learning with spherical Laplace (SL) distribution 
 on a \((p-1)\)-dimensional sphere in \(\mathbf{R}^p\) including sampling, density evaluation, and 
 maximum likelihood estimation of the parameters. The SL distribution is characterized by the following 
 density function,
@@ -43,7 +43,7 @@ for location and scale parameters \(\mu\) and \(\sigma\) respectively."><meta pr
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/RiemannStart.html">Riemann 101 : A First Step</a>
+    <a class="dropdown-item" href="../articles/vignette_1_basic.html">Riemann 101 : A First Step</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -100,27 +100,39 @@ for location and scale parameters \(\mu\) and \(\sigma\) respectively.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dsplaplace</span><span class="op">(</span><span class="va">data</span>, <span class="va">mu</span>, <span class="va">sigma</span>, log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">rsplaplace</span><span class="op">(</span><span class="va">n</span>, <span class="va">mu</span>, <span class="va">sigma</span><span class="op">)</span>
-
-<span class="fu">mle.splaplace</span><span class="op">(</span><span class="va">data</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DE"</span>, <span class="st">"Optimize"</span>, <span class="st">"Newton"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dsplaplace</span><span class="op">(</span><span class="va">data</span>, <span class="va">mu</span>, <span class="va">sigma</span>, log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">rsplaplace</span><span class="op">(</span><span class="va">n</span>, <span class="va">mu</span>, <span class="va">sigma</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mle.splaplace</span><span class="op">(</span><span class="va">data</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DE"</span>, <span class="st">"Optimize"</span>, <span class="st">"Newton"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
 <dd><p>data vectors in form of either an \((n\times p)\) matrix or a length-\(n\) list.  See <code><a href="wrap.sphere.html">wrap.sphere</a></code> for descriptions on supported input types.</p></dd>
+
+
 <dt>mu</dt>
 <dd><p>a length-\(p\) unit-norm vector of location.</p></dd>
+
+
 <dt>sigma</dt>
 <dd><p>a scale parameter that is positive.</p></dd>
+
+
 <dt>log</dt>
 <dd><p>a logical; <code>TRUE</code> to return log-density, <code>FALSE</code> for densities without logarithm applied.</p></dd>
+
+
 <dt>n</dt>
 <dd><p>the number of samples to be generated.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>an algorithm name for concentration parameter estimation. It should be one of <code>"Newton"</code>, <code>"Optimize"</code>, and <code>"DE"</code> (case-sensitive).</p></dd>
+
+
 <dt>...</dt>
 <dd><p>extra parameters for computations, including</p><dl><dt>maxiter</dt>
 <dd><p>maximum number of iterations to be run (default:50).</p></dd>
@@ -133,57 +145,60 @@ for location and scale parameters \(\mu\) and \(\sigma\) respectively.</p>
 
 
 </dl></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>dsplaplace</code> gives a vector of evaluated densities given samples. <code>rsplaplace</code> generates 
+    
+
+<p><code>dsplaplace</code> gives a vector of evaluated densities given samples. <code>rsplaplace</code> generates 
 unit-norm vectors in \(\mathbf{R}^p\) wrapped in a list. <code>mle.splaplace</code> computes MLEs and returns a list 
 containing estimates of location (<code>mu</code>) and scale (<code>sigma</code>) parameters.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in"><span class="co"># -------------------------------------------------------------------</span></span>
-<span class="r-in"><span class="co">#          Example with Spherical Laplace Distribution</span></span>
-<span class="r-in"><span class="co">#</span></span>
-<span class="r-in"><span class="co"># Given a fixed set of parameters, generate samples and acquire MLEs.</span></span>
-<span class="r-in"><span class="co"># Especially, we will see the evolution of estimation accuracy.</span></span>
-<span class="r-in"><span class="co"># -------------------------------------------------------------------</span></span>
-<span class="r-in"><span class="co">## DEFAULT PARAMETERS</span></span>
-<span class="r-in"><span class="va">true.mu</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">true.sig</span> <span class="op">=</span> <span class="fl">1</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## GENERATE A RANDOM SAMPLE OF SIZE N=1000</span></span>
-<span class="r-in"><span class="va">big.data</span> <span class="op">=</span> <span class="fu">rsplaplace</span><span class="op">(</span><span class="fl">1000</span>, <span class="va">true.mu</span>, <span class="va">true.sig</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## ITERATE FROM 50 TO 1000 by 10</span></span>
-<span class="r-in"><span class="va">idseq</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">50</span>, to<span class="op">=</span><span class="fl">1000</span>, by<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">nseq</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">idseq</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">hist.mu</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">nseq</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">hist.sig</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">nseq</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nseq</span><span class="op">)</span><span class="op">{</span></span>
-<span class="r-in">  <span class="va">small.data</span> <span class="op">=</span> <span class="va">big.data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">idseq</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>             <span class="co"># data subsetting</span></span>
-<span class="r-in">  <span class="va">small.MLE</span>  <span class="op">=</span> <span class="fu">mle.splaplace</span><span class="op">(</span><span class="va">small.data</span><span class="op">)</span>        <span class="co"># compute MLE</span></span>
-<span class="r-in">  </span>
-<span class="r-in">  <span class="va">hist.mu</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">acos</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">small.MLE</span><span class="op">$</span><span class="va">mu</span><span class="op">*</span><span class="va">true.mu</span><span class="op">)</span><span class="op">)</span> <span class="co"># difference in mu</span></span>
-<span class="r-in">  <span class="va">hist.sig</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">=</span> <span class="va">small.MLE</span><span class="op">$</span><span class="va">sigma</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## VISUALIZE</span></span>
-<span class="r-in"><span class="va">opar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">idseq</span>, <span class="va">hist.mu</span>,  <span class="st">"b"</span>, pch<span class="op">=</span><span class="fl">19</span>, cex<span class="op">=</span><span class="fl">0.5</span>, </span>
-<span class="r-in">     main<span class="op">=</span><span class="st">"difference in location"</span>, xlab<span class="op">=</span><span class="st">"sample size"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">idseq</span>, <span class="va">hist.sig</span>, <span class="st">"b"</span>, pch<span class="op">=</span><span class="fl">19</span>, cex<span class="op">=</span><span class="fl">0.5</span>, </span>
-<span class="r-in">     main<span class="op">=</span><span class="st">"scale parameter"</span>, xlab<span class="op">=</span><span class="st">"sample size"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="va">true.sig</span>, lwd<span class="op">=</span><span class="fl">2</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="co"># -------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">#          Example with Spherical Laplace Distribution</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co"># Given a fixed set of parameters, generate samples and acquire MLEs.</span></span></span>
+<span class="r-in"><span><span class="co"># Especially, we will see the evolution of estimation accuracy.</span></span></span>
+<span class="r-in"><span><span class="co"># -------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## DEFAULT PARAMETERS</span></span></span>
+<span class="r-in"><span><span class="va">true.mu</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">true.sig</span> <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## GENERATE A RANDOM SAMPLE OF SIZE N=1000</span></span></span>
+<span class="r-in"><span><span class="va">big.data</span> <span class="op">=</span> <span class="fu">rsplaplace</span><span class="op">(</span><span class="fl">1000</span>, <span class="va">true.mu</span>, <span class="va">true.sig</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ITERATE FROM 50 TO 1000 by 10</span></span></span>
+<span class="r-in"><span><span class="va">idseq</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">50</span>, to<span class="op">=</span><span class="fl">1000</span>, by<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">nseq</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">idseq</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">hist.mu</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">nseq</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">hist.sig</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">nseq</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nseq</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">small.data</span> <span class="op">=</span> <span class="va">big.data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">idseq</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>             <span class="co"># data subsetting</span></span></span>
+<span class="r-in"><span>  <span class="va">small.MLE</span>  <span class="op">=</span> <span class="fu">mle.splaplace</span><span class="op">(</span><span class="va">small.data</span><span class="op">)</span>        <span class="co"># compute MLE</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="va">hist.mu</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">acos</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">small.MLE</span><span class="op">$</span><span class="va">mu</span><span class="op">*</span><span class="va">true.mu</span><span class="op">)</span><span class="op">)</span> <span class="co"># difference in mu</span></span></span>
+<span class="r-in"><span>  <span class="va">hist.sig</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">=</span> <span class="va">small.MLE</span><span class="op">$</span><span class="va">sigma</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## VISUALIZE</span></span></span>
+<span class="r-in"><span><span class="va">opar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">idseq</span>, <span class="va">hist.mu</span>,  <span class="st">"b"</span>, pch<span class="op">=</span><span class="fl">19</span>, cex<span class="op">=</span><span class="fl">0.5</span>, </span></span>
+<span class="r-in"><span>     main<span class="op">=</span><span class="st">"difference in location"</span>, xlab<span class="op">=</span><span class="st">"sample size"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">idseq</span>, <span class="va">hist.sig</span>, <span class="st">"b"</span>, pch<span class="op">=</span><span class="fl">19</span>, cex<span class="op">=</span><span class="fl">0.5</span>, </span></span>
+<span class="r-in"><span>     main<span class="op">=</span><span class="st">"scale parameter"</span>, xlab<span class="op">=</span><span class="st">"sample size"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="va">true.sig</span>, lwd<span class="op">=</span><span class="fl">2</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="splaplace-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">opar</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">opar</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -195,7 +210,7 @@ containing estimates of location (<code>mu</code>) and scale (<code>sigma</code>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer></div>

@@ -7,7 +7,7 @@ a symmetric positive-definite matrix. Since \(f(x\vert A) = f(-x\vert A)\),
 it can also be used as an axial distribution on real projective space, which is
 unit sphere modulo \(\lbrace{+1,-1\rbrace}\). One constraint we follow is that 
 \(f(x\vert A) = f(x\vert cA)\) for \(c &amp;gt; 0\) in that we use a normalized 
-version for numerical stability by restricting \(tr(A)=p\)."><title>Angular Central Gaussian Distribution — acg • Riemann</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Angular Central Gaussian Distribution — acg"><meta property="og:description" content="For a hypersphere \(\mathcal{S}^{p-1}\) in \(\mathbf{R}^p\), Angular 
+version for numerical stability by restricting \(tr(A)=p\)."><title>Angular Central Gaussian Distribution — acg • Riemann</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Angular Central Gaussian Distribution — acg"><meta property="og:description" content="For a hypersphere \(\mathcal{S}^{p-1}\) in \(\mathbf{R}^p\), Angular 
 Central Gaussian (ACG) distribution \(ACG_p (A)\) is defined via a density
 $$f(x\vert A) = |A|^{-1/2} (x^\top A^{-1} x)^{-p/2}$$ 
 with respect to the uniform measure on \(\mathcal{S}^{p-1}\) and \(A\) is 
@@ -49,7 +49,7 @@ version for numerical stability by restricting \(tr(A)=p\)."><meta property="og:
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/RiemannStart.html">Riemann 101 : A First Step</a>
+    <a class="dropdown-item" href="../articles/vignette_1_basic.html">Riemann 101 : A First Step</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -109,21 +109,27 @@ version for numerical stability by restricting \(tr(A)=p\).</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dacg</span><span class="op">(</span><span class="va">datalist</span>, <span class="va">A</span><span class="op">)</span>
-
-<span class="fu">racg</span><span class="op">(</span><span class="va">n</span>, <span class="va">A</span><span class="op">)</span>
-
-<span class="fu">mle.acg</span><span class="op">(</span><span class="va">datalist</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dacg</span><span class="op">(</span><span class="va">datalist</span>, <span class="va">A</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">racg</span><span class="op">(</span><span class="va">n</span>, <span class="va">A</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mle.acg</span><span class="op">(</span><span class="va">datalist</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>datalist</dt>
 <dd><p>a list of length-\(p\) unit-norm vectors.</p></dd>
+
+
 <dt>A</dt>
 <dd><p>a \((p\times p)\) symmetric positive-definite matrix.</p></dd>
+
+
 <dt>n</dt>
 <dd><p>the number of samples to be generated.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>extra parameters for computations, including</p><dl><dt>maxiter</dt>
 <dd><p>maximum number of iterations to be run (default:50).</p></dd>
@@ -133,10 +139,13 @@ version for numerical stability by restricting \(tr(A)=p\).</p>
 
 
 </dl></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>dacg</code> gives a vector of evaluated densities given samples. <code>racg</code> generates 
+    
+
+<p><code>dacg</code> gives a vector of evaluated densities given samples. <code>racg</code> generates 
 unit-norm vectors in \(\mathbf{R}^p\) wrapped in a list. <code>mle.acg</code> estimates 
 the SPD matrix \(A\).</p>
     </div>
@@ -154,30 +163,30 @@ ISBN 978-0-470-31697-9 978-0-471-95333-3.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># -------------------------------------------------------------------</span></span>
-<span class="r-in"><span class="co">#          Example with Angular Central Gaussian Distribution</span></span>
-<span class="r-in"><span class="co">#</span></span>
-<span class="r-in"><span class="co"># Given a fixed A, generate samples and estimate A via ML.</span></span>
-<span class="r-in"><span class="co"># -------------------------------------------------------------------</span></span>
-<span class="r-in"><span class="co">## GENERATE AND MLE in R^5</span></span>
-<span class="r-in"><span class="co">#  Generate data</span></span>
-<span class="r-in"><span class="va">Atrue</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>          <span class="co"># true SPD matrix</span></span>
-<span class="r-in"><span class="va">sam1</span>  <span class="op">=</span> <span class="fu">racg</span><span class="op">(</span><span class="fl">50</span>,  <span class="va">Atrue</span><span class="op">)</span> <span class="co"># random samples</span></span>
-<span class="r-in"><span class="va">sam2</span>  <span class="op">=</span> <span class="fu">racg</span><span class="op">(</span><span class="fl">100</span>, <span class="va">Atrue</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#  MLE</span></span>
-<span class="r-in"><span class="va">Amle1</span> <span class="op">=</span> <span class="fu">mle.acg</span><span class="op">(</span><span class="va">sam1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">Amle2</span> <span class="op">=</span> <span class="fu">mle.acg</span><span class="op">(</span><span class="va">sam2</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#  Visualize</span></span>
-<span class="r-in"><span class="va">opar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, pty<span class="op">=</span><span class="st">"s"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">Atrue</span><span class="op">[</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">1</span><span class="op">]</span>, axes<span class="op">=</span><span class="cn">FALSE</span>, main<span class="op">=</span><span class="st">"true SPD"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">Amle1</span><span class="op">[</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">1</span><span class="op">]</span>, axes<span class="op">=</span><span class="cn">FALSE</span>, main<span class="op">=</span><span class="st">"MLE with n=50"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">Amle2</span><span class="op">[</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">1</span><span class="op">]</span>, axes<span class="op">=</span><span class="cn">FALSE</span>, main<span class="op">=</span><span class="st">"MLE with n=100"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># -------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">#          Example with Angular Central Gaussian Distribution</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co"># Given a fixed A, generate samples and estimate A via ML.</span></span></span>
+<span class="r-in"><span><span class="co"># -------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## GENERATE AND MLE in R^5</span></span></span>
+<span class="r-in"><span><span class="co">#  Generate data</span></span></span>
+<span class="r-in"><span><span class="va">Atrue</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>          <span class="co"># true SPD matrix</span></span></span>
+<span class="r-in"><span><span class="va">sam1</span>  <span class="op">=</span> <span class="fu">racg</span><span class="op">(</span><span class="fl">50</span>,  <span class="va">Atrue</span><span class="op">)</span> <span class="co"># random samples</span></span></span>
+<span class="r-in"><span><span class="va">sam2</span>  <span class="op">=</span> <span class="fu">racg</span><span class="op">(</span><span class="fl">100</span>, <span class="va">Atrue</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#  MLE</span></span></span>
+<span class="r-in"><span><span class="va">Amle1</span> <span class="op">=</span> <span class="fu">mle.acg</span><span class="op">(</span><span class="va">sam1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Amle2</span> <span class="op">=</span> <span class="fu">mle.acg</span><span class="op">(</span><span class="va">sam2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#  Visualize</span></span></span>
+<span class="r-in"><span><span class="va">opar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, pty<span class="op">=</span><span class="st">"s"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">Atrue</span><span class="op">[</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">1</span><span class="op">]</span>, axes<span class="op">=</span><span class="cn">FALSE</span>, main<span class="op">=</span><span class="st">"true SPD"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">Amle1</span><span class="op">[</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">1</span><span class="op">]</span>, axes<span class="op">=</span><span class="cn">FALSE</span>, main<span class="op">=</span><span class="st">"MLE with n=50"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">Amle2</span><span class="op">[</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">1</span><span class="op">]</span>, axes<span class="op">=</span><span class="cn">FALSE</span>, main<span class="op">=</span><span class="st">"MLE with n=100"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="acg-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">opar</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">opar</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -189,7 +198,7 @@ ISBN 978-0-470-31697-9 978-0-471-95333-3.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer></div>
