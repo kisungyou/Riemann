@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://kisungyou.com/Riemann/404.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/articles/RiemannStart.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/authors.html</loc>
+  </url>
+  <url>
     <loc>https://kisungyou.com/Riemann/index.html</loc>
   </url>
   <url>
+    <loc>https://kisungyou.com/Riemann/news/index.html</loc>
+  </url>
+  <url>
     <loc>https://kisungyou.com/Riemann/reference/ERP.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/Package-Introduction.html</loc>
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/acg.html</loc>
@@ -31,13 +52,28 @@
     <loc>https://kisungyou.com/Riemann/reference/hands.html</loc>
   </url>
   <url>
+    <loc>https://kisungyou.com/Riemann/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://kisungyou.com/Riemann/reference/label.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/label.moSN.html</loc>
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/loglkd.html</loc>
   </url>
   <url>
+    <loc>https://kisungyou.com/Riemann/reference/loglkd.moSN.html</loc>
+  </url>
+  <url>
     <loc>https://kisungyou.com/Riemann/reference/macg.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/mixsplaplace.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/mixspnorm.html</loc>
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/moSL.html</loc>
@@ -55,10 +91,19 @@
     <loc>https://kisungyou.com/Riemann/reference/predict.m2skreg.html</loc>
   </url>
   <url>
+    <loc>https://kisungyou.com/Riemann/reference/predict.mixsplaplace.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/predict.mixspnorm.html</loc>
+  </url>
+  <url>
     <loc>https://kisungyou.com/Riemann/reference/riem.clrq.html</loc>
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/riem.coreset18B.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/riem.curvedist.html</loc>
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/riem.distlp.html</loc>
