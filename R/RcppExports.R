@@ -141,6 +141,18 @@ curvedist_dtwbasic <- function(mfd, geo, data1, data2) {
     .Call('_Riemann_curvedist_dtwbasic', PACKAGE = 'Riemann', mfd, geo, data1, data2)
 }
 
+spatial_moran_global <- function(mfdname, geometry, mydata, W, ntest) {
+    .Call('_Riemann_spatial_moran_global', PACKAGE = 'Riemann', mfdname, geometry, mydata, W, ntest)
+}
+
+spatial_geary_global <- function(mfdname, geometry, mydata, W, ntest) {
+    .Call('_Riemann_spatial_geary_global', PACKAGE = 'Riemann', mfdname, geometry, mydata, W, ntest)
+}
+
+spatial_moran_local <- function(mfdname, geometry, mydata, W, ntest) {
+    .Call('_Riemann_spatial_moran_local', PACKAGE = 'Riemann', mfdname, geometry, mydata, W, ntest)
+}
+
 learning_seb <- function(mfdname, data, myiter, myeps, method) {
     .Call('_Riemann_learning_seb', PACKAGE = 'Riemann', mfdname, data, myiter, myeps, method)
 }

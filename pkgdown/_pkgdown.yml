@@ -76,7 +76,10 @@ reference:
   - subtitle: "[6] Curves"
     contents:
       - has_concept("curve")
-  - subtitle: "[7] Other Methods"
+  - subtitle: "[7] Spatial Analysis"
+    contents:
+      - has_concept("spatial")
+  - subtitle: "[8] Other Methods"
     contents:
       - has_concept("learning")
   - title: "Functions on Specific Manifolds"

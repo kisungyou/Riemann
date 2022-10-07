@@ -298,6 +298,7 @@ arma::mat internal_mean(std::string mfd, std::string dtype, arma::cube data, int
   }
   return(Sold);
 }
+
 arma::mat internal_mean_init(std::string mfd, std::string dtype, arma::cube data, int iter, double eps, arma::mat Sinit){
   // PREPARE
   int N = data.n_slices;

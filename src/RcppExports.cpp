@@ -509,6 +509,51 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// spatial_moran_global
+Rcpp::List spatial_moran_global(std::string mfdname, std::string geometry, arma::field<arma::mat>& mydata, arma::mat& W, int ntest);
+RcppExport SEXP _Riemann_spatial_moran_global(SEXP mfdnameSEXP, SEXP geometrySEXP, SEXP mydataSEXP, SEXP WSEXP, SEXP ntestSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfdname(mfdnameSEXP);
+    Rcpp::traits::input_parameter< std::string >::type geometry(geometrySEXP);
+    Rcpp::traits::input_parameter< arma::field<arma::mat>& >::type mydata(mydataSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type W(WSEXP);
+    Rcpp::traits::input_parameter< int >::type ntest(ntestSEXP);
+    rcpp_result_gen = Rcpp::wrap(spatial_moran_global(mfdname, geometry, mydata, W, ntest));
+    return rcpp_result_gen;
+END_RCPP
+}
+// spatial_geary_global
+Rcpp::List spatial_geary_global(std::string mfdname, std::string geometry, arma::field<arma::mat>& mydata, arma::mat& W, int ntest);
+RcppExport SEXP _Riemann_spatial_geary_global(SEXP mfdnameSEXP, SEXP geometrySEXP, SEXP mydataSEXP, SEXP WSEXP, SEXP ntestSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfdname(mfdnameSEXP);
+    Rcpp::traits::input_parameter< std::string >::type geometry(geometrySEXP);
+    Rcpp::traits::input_parameter< arma::field<arma::mat>& >::type mydata(mydataSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type W(WSEXP);
+    Rcpp::traits::input_parameter< int >::type ntest(ntestSEXP);
+    rcpp_result_gen = Rcpp::wrap(spatial_geary_global(mfdname, geometry, mydata, W, ntest));
+    return rcpp_result_gen;
+END_RCPP
+}
+// spatial_moran_local
+Rcpp::List spatial_moran_local(std::string mfdname, std::string geometry, arma::field<arma::mat>& mydata, arma::mat& W, int ntest);
+RcppExport SEXP _Riemann_spatial_moran_local(SEXP mfdnameSEXP, SEXP geometrySEXP, SEXP mydataSEXP, SEXP WSEXP, SEXP ntestSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfdname(mfdnameSEXP);
+    Rcpp::traits::input_parameter< std::string >::type geometry(geometrySEXP);
+    Rcpp::traits::input_parameter< arma::field<arma::mat>& >::type mydata(mydataSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type W(WSEXP);
+    Rcpp::traits::input_parameter< int >::type ntest(ntestSEXP);
+    rcpp_result_gen = Rcpp::wrap(spatial_moran_local(mfdname, geometry, mydata, W, ntest));
+    return rcpp_result_gen;
+END_RCPP
+}
 // learning_seb
 Rcpp::List learning_seb(std::string mfdname, Rcpp::List& data, int myiter, double myeps, std::string method);
 RcppExport SEXP _Riemann_learning_seb(SEXP mfdnameSEXP, SEXP dataSEXP, SEXP myiterSEXP, SEXP myepsSEXP, SEXP methodSEXP) {
@@ -787,6 +832,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_visualize_sammon", (DL_FUNC) &_Riemann_visualize_sammon, 6},
     {"_Riemann_curvedist_lp", (DL_FUNC) &_Riemann_curvedist_lp, 6},
     {"_Riemann_curvedist_dtwbasic", (DL_FUNC) &_Riemann_curvedist_dtwbasic, 4},
+    {"_Riemann_spatial_moran_global", (DL_FUNC) &_Riemann_spatial_moran_global, 5},
+    {"_Riemann_spatial_geary_global", (DL_FUNC) &_Riemann_spatial_geary_global, 5},
+    {"_Riemann_spatial_moran_local", (DL_FUNC) &_Riemann_spatial_moran_local, 5},
     {"_Riemann_learning_seb", (DL_FUNC) &_Riemann_learning_seb, 5},
     {"_Riemann_learning_rmml", (DL_FUNC) &_Riemann_learning_rmml, 4},
     {"_Riemann_learning_coreset18B", (DL_FUNC) &_Riemann_learning_coreset18B, 6},

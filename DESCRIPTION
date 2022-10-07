@@ -21,7 +21,7 @@ Encoding: UTF-8
 URL: https://kisungyou.com/Riemann/
 BugReports: https://github.com/kisungyou/Riemann/issues
 LinkingTo: Rcpp, RcppArmadillo
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 RdMacros: Rdpack
 Depends: 
     R (>= 2.10)
