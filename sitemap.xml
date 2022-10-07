@@ -88,6 +88,9 @@
     <loc>https://kisungyou.com/Riemann/reference/riem.fanova.html</loc>
   </url>
   <url>
+    <loc>https://kisungyou.com/Riemann/reference/riem.geary.html</loc>
+  </url>
+  <url>
     <loc>https://kisungyou.com/Riemann/reference/riem.hclust.html</loc>
   </url>
   <url>
@@ -131,6 +134,9 @@
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/riem.median.html</loc>
+  </url>
+  <url>
+    <loc>https://kisungyou.com/Riemann/reference/riem.moran.html</loc>
   </url>
   <url>
     <loc>https://kisungyou.com/Riemann/reference/riem.nmshift.html</loc>
