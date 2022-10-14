@@ -30,7 +30,7 @@ check_weight <- function(weight, N, fname){
   if ((!is.vector(weight))||(length(weight)!=N)){
     stop(paste0("* ",fname," : a weight parameter should be a vector of length corresponding to the provided data."))
   }
-  if (any(weight)<= 0){
+  if (any(weight <= 0)){
     stop(paste0("* ",fname," : we recommend to provide a weight vector of nonnegative weights."))
   }
   return(weight/base::sum(weight))

@@ -20,7 +20,6 @@ riem.moran <- function(riemobj, W, alternative=c("two.sided","greater","less"), 
   
   # hypothesis testing arguments
   par_H0    = match.arg(alternative)
-  
 
   # INPUTS : IMPLICIT
   params = list(...)
