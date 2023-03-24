@@ -24,15 +24,14 @@ reduction, please check another R package
 
 ### Installation
 
--   Option 1 : **released** version from
-    [CRAN](https://CRAN.R-project.org).
+- Option 1 : **released** version from
+  [CRAN](https://CRAN.R-project.org).
 
 ``` r
 install.packages("Riemann")
 ```
 
--   Option 2 : **development** version from
-    [GitHub](https://github.com/).
+- Option 2 : **development** version from [GitHub](https://github.com/).
 
 ``` r
 if (!require("devtools")) {
