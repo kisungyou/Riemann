@@ -3,9 +3,8 @@
 #' We provide a variety of algorithms for manifold-valued data, including Frechet summaries, 
 #' hypothesis testing, clustering, visualization, and other learning tasks. 
 #' 
-#' @docType package
-#' @name Package Introduction
 #' @noRd
+#' @name Package Introduction
 #' @aliases Riemann-package
 #' @import Rdpack
 #' @import maotai

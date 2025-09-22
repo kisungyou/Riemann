@@ -1,276 +1,94 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://kisungyou.com/Riemann/404.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/articles/RiemannStart.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/index.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/ERP.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/Package-Introduction.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/acg.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/cities.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/density.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/gorilla.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/grassmann.optmacg.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/grassmann.runif.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/grassmann.utest.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/hands.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/label.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/label.moSN.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/loglkd.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/loglkd.moSN.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/macg.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/mixsplaplace.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/mixspnorm.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/moSL.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/moSN.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/orbital.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/passiflora.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/predict.m2skreg.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/predict.mixsplaplace.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/predict.mixspnorm.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.clrq.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.coreset18B.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.curvedist.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.distlp.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.dtw.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.fanova.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.hclust.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.interp.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.interps.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.isomap.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.kmeans.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.kmeans18B.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.kmeanspp.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.kmedoids.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.knn.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.kpca.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.m2skreg.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.m2skregCV.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.mds.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.mean.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.median.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.nmshift.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.pdist.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.pdist2.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.pga.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.phate.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.rmml.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.sammon.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.sc05Z.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.scNJW.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.scSM.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.scUL.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.seb.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.test2bg14.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.test2wass.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.tsne.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/riem.wasserstein.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/rmvnorm.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/spd.geometry.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/spd.pdist.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/spd.wassbary.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/sphere.convert.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/sphere.runif.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/sphere.utest.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/splaplace.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/spnorm.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/stiefel.optSA.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/stiefel.runif.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/stiefel.utest.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/wrap.correlation.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/wrap.euclidean.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/wrap.grassmann.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/wrap.landmark.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/wrap.multinomial.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/wrap.rotation.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/wrap.spd.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/wrap.spdk.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/wrap.sphere.html</loc>
-  </url>
-  <url>
-    <loc>https://kisungyou.com/Riemann/reference/wrap.stiefel.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://kisungyou.com/Riemann/404.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/LICENSE-text.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/LICENSE.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/articles/vignette_1_basic.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/authors.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/index.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/news/index.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/ERP.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/Package-Introduction.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/acg.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/cities.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/density.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/gorilla.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/grassmann.optmacg.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/grassmann.runif.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/grassmann.utest.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/hands.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/index.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/label.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/loglkd.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/macg.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/mixsplaplace.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/mixspnorm.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/moSL.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/moSN.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/orbital.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/passiflora.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/predict.m2skreg.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/predict.mixsplaplace.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/predict.mixspnorm.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.clrq.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.coreset18B.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.curvedist.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.distlp.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.dtw.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.fanova.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.geary.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.hclust.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.interp.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.interps.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.isomap.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.kmeans.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.kmeans18B.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.kmeanspp.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.kmedoids.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.knn.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.kpca.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.m2skreg.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.m2skregCV.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.mds.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.mean.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.median.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.moran.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.nmshift.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.pdist.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.pdist2.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.pga.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.phate.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.rmml.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.sammon.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.sc05Z.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.scNJW.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.scSM.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.scUL.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.seb.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.test2bg14.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.test2wass.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.tsne.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/riem.wasserstein.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/rmvnorm.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/spd.geometry.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/spd.pdist.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/spd.wassbary.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/sphere.convert.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/sphere.runif.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/sphere.utest.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/splaplace.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/spnorm.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/stiefel.optSA.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/stiefel.runif.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/stiefel.utest.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/wrap.correlation.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/wrap.euclidean.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/wrap.grassmann.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/wrap.landmark.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/wrap.multinomial.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/wrap.rotation.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/wrap.spd.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/wrap.spdk.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/wrap.sphere.html</loc></url>
+<url><loc>https://kisungyou.com/Riemann/reference/wrap.stiefel.html</loc></url>
 </urlset>
+

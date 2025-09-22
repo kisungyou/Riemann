@@ -1,8 +1,8 @@
 Package: Riemann
 Type: Package
 Title: Learning with Data on Riemannian Manifolds
-Version: 0.1.5
-Authors@R: c(person("Kisung", "You", role = c("aut", "cre"), email = "kisungyou@outlook.com",comment=c(ORCID="0000-0002-8584-459X")))
+Version: 0.1.6
+Authors@R: c(person("Kisung", "You", role = c("aut", "cre"), email = "kisung.you@outlook.com",comment=c(ORCID="0000-0002-8584-459X")))
 Description: We provide a variety of algorithms for manifold-valued data, including Fréchet summaries, hypothesis testing, clustering, visualization, and other learning tasks. See Bhattacharya and Bhattacharya (2012) <doi:10.1017/CBO9781139094764> for general exposition to statistics on manifolds.
 License: MIT + file LICENSE
 Imports: CVXR,
@@ -21,7 +21,7 @@ Encoding: UTF-8
 URL: https://kisungyou.com/Riemann/
 BugReports: https://github.com/kisungyou/Riemann/issues
 LinkingTo: Rcpp, RcppArmadillo
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 RdMacros: Rdpack
 Depends: 
     R (>= 2.10)
