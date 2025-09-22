@@ -18,7 +18,7 @@ Imports: CVXR,
     stats,
     utils
 Encoding: UTF-8
-URL: https://kisungyou.com/Riemann/
+URL: https://www.kisungyou.com/Riemann/
 BugReports: https://github.com/kisungyou/Riemann/issues
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 7.3.2
@@ -26,8 +26,6 @@ RdMacros: Rdpack
 Depends: 
     R (>= 2.10)
 Suggests: 
-    R.rsp,
     testthat (>= 3.0.0)
-VignetteBuilder: R.rsp
 LazyData: true
 Config/testthat/edition: 3

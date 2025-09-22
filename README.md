@@ -10,6 +10,8 @@ status](https://www.r-pkg.org/badges/version/Riemann)](https://CRAN.R-project.or
 [![R-CMD-check](https://github.com/kisungyou/Riemann/workflows/R-CMD-check/badge.svg)](https://github.com/kisungyou/Riemann/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/kisungyou/Riemann/branch/master/graph/badge.svg)](https://app.codecov.io/gh/kisungyou/Riemann?branch=master)
+[![CRAN
+Downloads](https://cranlogs.r-pkg.org/badges/Riemann)](https://CRAN.R-project.org/package=Riemann)
 <!-- badges: end -->
 
 **Riemann** is an R package for learning with data on **Riemannian
@@ -20,7 +22,7 @@ Euclidean space. The other is *statistics on manifolds* - data lie on
 some Riemannian manifolds that we are already well aware of. **Riemann**
 aims to achieve the latter. If you are interested in dimension
 reduction, please check another R package
-[Rdimtools](https://kisungyou.com/Rdimtools/).
+[Rdimtools](https://www.kisungyou.com/Rdimtools/).
 
 ### Installation
 

@@ -2,8 +2,8 @@
 #' 
 #' 
 #' 
-#' @concept spatial
-#' @export
+#' @keywords internal
+#' @noRd
 riem.moran <- function(riemobj, W, alternative=c("two.sided","greater","less"), ...){
   # ----------------------------------------------------------------------------
   # INPUTS : EXPLICIT

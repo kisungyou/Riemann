@@ -33,10 +33,6 @@ navbar:
       href: reference/index.html
     - text: "News"
       href: news/index.html
-    - text: "Articles"
-      menu:
-        - text: "Riemann 101 : A First Step"
-          href: articles/vignette_1_basic.html
     - text: "Other Packages"
       menu:
         - text: "(CRAN) RiemBase"
