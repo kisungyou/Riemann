@@ -7,7 +7,6 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/Riemann)](https://CRAN.R-project.org/package=Riemann)
-[![R-CMD-check](https://github.com/kisungyou/Riemann/workflows/R-CMD-check/badge.svg)](https://github.com/kisungyou/Riemann/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/kisungyou/Riemann/branch/master/graph/badge.svg)](https://app.codecov.io/gh/kisungyou/Riemann?branch=master)
 [![CRAN
