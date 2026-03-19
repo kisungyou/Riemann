@@ -1,3 +1,7 @@
+# Riemann 0.1.7
+
+* Removed dependence on `CVXR` per recent API changes.
+
 # Riemann 0.1.5
 
 * Code covarage and unit testing start to be integrated.
