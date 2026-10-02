@@ -1,0 +1,255 @@
+# Package index
+
+## Geometry, Fitted Models, and Validation
+
+- [`Riemann`](https://www.kisungyou.com/Riemann/reference/Riemann-package.md)
+  [`Riemann-package`](https://www.kisungyou.com/Riemann/reference/Riemann-package.md)
+  : Riemann package
+- [`riem.geometry()`](https://www.kisungyou.com/Riemann/reference/riem.geometry.md)
+  [`riem.capabilities()`](https://www.kisungyou.com/Riemann/reference/riem.geometry.md)
+  : Inspect and Resolve a Statistical Geometry
+- [`riem.reconstruct()`](https://www.kisungyou.com/Riemann/reference/riem.reconstruct.md)
+  : Reconstruct Manifold Observations from Fitted Coordinates
+- [`print(`*`<riemdata>`*`)`](https://www.kisungyou.com/Riemann/reference/riem-inspect.md)
+  [`summary(`*`<riemdata>`*`)`](https://www.kisungyou.com/Riemann/reference/riem-inspect.md)
+  [`print(`*`<riem_summary>`*`)`](https://www.kisungyou.com/Riemann/reference/riem-inspect.md)
+  [`summary(`*`<riem_summary>`*`)`](https://www.kisungyou.com/Riemann/reference/riem-inspect.md)
+  [`plot(`*`<riem_summary>`*`)`](https://www.kisungyou.com/Riemann/reference/riem-inspect.md)
+  : Inspect Wrapped Observations and Geometric Summaries
+- [`fitted(`*`<m2skreg>`*`)`](https://www.kisungyou.com/Riemann/reference/m2skreg-methods.md)
+  [`residuals(`*`<m2skreg>`*`)`](https://www.kisungyou.com/Riemann/reference/m2skreg-methods.md)
+  [`summary(`*`<m2skreg>`*`)`](https://www.kisungyou.com/Riemann/reference/m2skreg-methods.md)
+  [`print(`*`<m2skreg>`*`)`](https://www.kisungyou.com/Riemann/reference/m2skreg-methods.md)
+  [`print(`*`<summary.m2skreg>`*`)`](https://www.kisungyou.com/Riemann/reference/m2skreg-methods.md)
+  : Methods for Scalar-Response Kernel Regression Fits
+- [`riem-method-contracts`](https://www.kisungyou.com/Riemann/reference/riem-method-contracts.md)
+  : Method Contracts and Validation Status
+
+## Prepare Data on Manifolds
+
+- [`wrap.correlation()`](https://www.kisungyou.com/Riemann/reference/wrap.correlation.md)
+  : Prepare Data on Correlation Manifold
+- [`wrap.euclidean()`](https://www.kisungyou.com/Riemann/reference/wrap.euclidean.md)
+  : Prepare Data on Euclidean Space
+- [`wrap.grassmann()`](https://www.kisungyou.com/Riemann/reference/wrap.grassmann.md)
+  : Prepare Data on Grassmann Manifold
+- [`wrap.landmark()`](https://www.kisungyou.com/Riemann/reference/wrap.landmark.md)
+  : Wrap Landmark Data on Shape Space
+- [`wrap.multinomial()`](https://www.kisungyou.com/Riemann/reference/wrap.multinomial.md)
+  : Prepare Data on Multinomial Manifold
+- [`wrap.rotation()`](https://www.kisungyou.com/Riemann/reference/wrap.rotation.md)
+  : Prepare Data on Rotation Group
+- [`wrap.spd()`](https://www.kisungyou.com/Riemann/reference/wrap.spd.md)
+  : Prepare Data on Symmetric Positive-Definite (SPD) Manifold
+- [`wrap.spdk()`](https://www.kisungyou.com/Riemann/reference/wrap.spdk.md)
+  : Prepare Data on Positive Semidefinite Manifold of Fixed Rank
+- [`wrap.sphere()`](https://www.kisungyou.com/Riemann/reference/wrap.sphere.md)
+  : Prepare Data on Sphere
+- [`wrap.stiefel()`](https://www.kisungyou.com/Riemann/reference/wrap.stiefel.md)
+  : Prepare Data on (Compact) Stiefel Manifold
+
+## Shared Workflows (Consult Geometry and Method Contracts)
+
+### \[1\] Basic Operations
+
+- [`riem.interp()`](https://www.kisungyou.com/Riemann/reference/riem.interp.md)
+  : Geodesic Interpolation
+- [`riem.interps()`](https://www.kisungyou.com/Riemann/reference/riem.interps.md)
+  : Geodesic Interpolation of Multiple Points
+- [`riem.pdist()`](https://www.kisungyou.com/Riemann/reference/riem.pdist.md)
+  : Compute Pairwise Distances for Data
+- [`riem.pdist2()`](https://www.kisungyou.com/Riemann/reference/riem.pdist2.md)
+  : Compute Pairwise Distances for Two Sets of Data
+- [`riem.wasserstein()`](https://www.kisungyou.com/Riemann/reference/riem.wasserstein.md)
+  : Wasserstein Distance between Empirical Measures
+
+### \[2\] Statistical Inference
+
+- [`predict(`*`<m2skreg>`*`)`](https://www.kisungyou.com/Riemann/reference/predict.m2skreg.md)
+  : Prediction for Manifold-to-Scalar Kernel Regression
+- [`riem.fanova()`](https://www.kisungyou.com/Riemann/reference/riem.fanova.md)
+  [`riem.fanovaP()`](https://www.kisungyou.com/Riemann/reference/riem.fanova.md)
+  : Frechet Analysis of Variance
+- [`riem.m2skreg()`](https://www.kisungyou.com/Riemann/reference/riem.m2skreg.md)
+  : Manifold-to-Scalar Kernel Regression
+- [`riem.m2skregCV()`](https://www.kisungyou.com/Riemann/reference/riem.m2skregCV.md)
+  : Manifold-to-Scalar Kernel Regression with K-Fold Cross Validation
+- [`riem.mean()`](https://www.kisungyou.com/Riemann/reference/riem.mean.md)
+  : Fréchet Mean and Variation
+- [`riem.median()`](https://www.kisungyou.com/Riemann/reference/riem.median.md)
+  : Fréchet Median and Variation
+- [`riem.test2bg14()`](https://www.kisungyou.com/Riemann/reference/riem.test2bg14.md)
+  : Two-Sample Test modified from Biswas and Ghosh (2014)
+- [`riem.test2wass()`](https://www.kisungyou.com/Riemann/reference/riem.test2wass.md)
+  : Two-Sample Test with Wasserstein Metric
+
+### \[3\] Clustering
+
+- [`riem.clrq()`](https://www.kisungyou.com/Riemann/reference/riem.clrq.md)
+  : Competitive Learning Riemannian Quantization
+- [`riem.hclust()`](https://www.kisungyou.com/Riemann/reference/riem.hclust.md)
+  : Hierarchical Agglomerative Clustering
+- [`riem.kmeans()`](https://www.kisungyou.com/Riemann/reference/riem.kmeans.md)
+  [`predict(`*`<riem_kmeans>`*`)`](https://www.kisungyou.com/Riemann/reference/riem.kmeans.md)
+  [`print(`*`<riem_kmeans>`*`)`](https://www.kisungyou.com/Riemann/reference/riem.kmeans.md)
+  [`summary(`*`<riem_kmeans>`*`)`](https://www.kisungyou.com/Riemann/reference/riem.kmeans.md)
+  : K-Means Clustering
+- [`riem.kmeans18B()`](https://www.kisungyou.com/Riemann/reference/riem.kmeans18B.md)
+  : K-Means Clustering with Lightweight Coreset
+- [`riem.kmeanspp()`](https://www.kisungyou.com/Riemann/reference/riem.kmeanspp.md)
+  : K-Means++ Clustering
+- [`riem.kmedoids()`](https://www.kisungyou.com/Riemann/reference/riem.kmedoids.md)
+  : K-Medoids Clustering
+- [`riem.nmshift()`](https://www.kisungyou.com/Riemann/reference/riem.nmshift.md)
+  : Nonlinear Mean Shift
+- [`riem.sc05Z()`](https://www.kisungyou.com/Riemann/reference/riem.sc05Z.md)
+  : Spectral Clustering by Zelnik-Manor and Perona (2005)
+- [`riem.scNJW()`](https://www.kisungyou.com/Riemann/reference/riem.scNJW.md)
+  : Spectral Clustering by Ng, Jordan, and Weiss (2002)
+- [`riem.scSM()`](https://www.kisungyou.com/Riemann/reference/riem.scSM.md)
+  : Spectral Clustering by Shi and Malik (2000)
+- [`riem.scUL()`](https://www.kisungyou.com/Riemann/reference/riem.scUL.md)
+  : Spectral Clustering with Unnormalized Laplacian
+
+### \[4\] Visualization and Dimension Reduction
+
+- [`riem.isomap()`](https://www.kisungyou.com/Riemann/reference/riem.isomap.md)
+  : Isometric Feature Mapping
+- [`riem.kpca()`](https://www.kisungyou.com/Riemann/reference/riem.kpca.md)
+  : Kernel Principal Component Analysis
+- [`riem.mds()`](https://www.kisungyou.com/Riemann/reference/riem.mds.md)
+  : Multidimensional Scaling
+- [`riem.pga()`](https://www.kisungyou.com/Riemann/reference/riem.pga.md)
+  [`predict(`*`<riem_pga>`*`)`](https://www.kisungyou.com/Riemann/reference/riem.pga.md)
+  [`riem.reconstruct(`*`<riem_pga>`*`)`](https://www.kisungyou.com/Riemann/reference/riem.pga.md)
+  [`print(`*`<riem_pga>`*`)`](https://www.kisungyou.com/Riemann/reference/riem.pga.md)
+  [`summary(`*`<riem_pga>`*`)`](https://www.kisungyou.com/Riemann/reference/riem.pga.md)
+  [`print(`*`<summary.riem_pga>`*`)`](https://www.kisungyou.com/Riemann/reference/riem.pga.md)
+  [`plot(`*`<riem_pga>`*`)`](https://www.kisungyou.com/Riemann/reference/riem.pga.md)
+  : Tangent Principal Component Analysis
+- [`riem.phate()`](https://www.kisungyou.com/Riemann/reference/riem.phate.md)
+  : PHATE
+- [`riem.sammon()`](https://www.kisungyou.com/Riemann/reference/riem.sammon.md)
+  : Sammon Mapping
+- [`riem.tsne()`](https://www.kisungyou.com/Riemann/reference/riem.tsne.md)
+  : t-distributed Stochastic Neighbor Embedding
+
+### \[5\] Curves
+
+- [`riem.distlp()`](https://www.kisungyou.com/Riemann/reference/riem.distlp.md)
+  : Distance between Two Curves on Manifolds
+- [`riem.dtw()`](https://www.kisungyou.com/Riemann/reference/riem.dtw.md)
+  : Dynamic Time Warping Distance
+
+### \[6\] Other Methods
+
+- [`riem.coreset18B()`](https://www.kisungyou.com/Riemann/reference/riem.coreset18B.md)
+  : Build Lightweight Coreset
+- [`riem.knn()`](https://www.kisungyou.com/Riemann/reference/riem.knn.md)
+  : Find K-Nearest Neighbors
+- [`riem.rmml()`](https://www.kisungyou.com/Riemann/reference/riem.rmml.md)
+  : Riemannian Manifold Metric Learning
+- [`riem.seb()`](https://www.kisungyou.com/Riemann/reference/riem.seb.md)
+  : Find the Smallest Enclosing Ball
+
+## Functions on Specific Manifolds
+
+### 
+
+Sphere
+
+- [`moSL()`](https://www.kisungyou.com/Riemann/reference/moSL.md)
+  [`loglkd(`*`<moSL>`*`)`](https://www.kisungyou.com/Riemann/reference/moSL.md)
+  [`label(`*`<moSL>`*`)`](https://www.kisungyou.com/Riemann/reference/moSL.md)
+  [`density(`*`<moSL>`*`)`](https://www.kisungyou.com/Riemann/reference/moSL.md)
+  : Finite Mixture of Spherical Laplace Distributions
+- [`moSN()`](https://www.kisungyou.com/Riemann/reference/moSN.md)
+  [`loglkd(`*`<moSN>`*`)`](https://www.kisungyou.com/Riemann/reference/moSN.md)
+  [`label(`*`<moSN>`*`)`](https://www.kisungyou.com/Riemann/reference/moSN.md)
+  [`density(`*`<moSN>`*`)`](https://www.kisungyou.com/Riemann/reference/moSN.md)
+  : Finite Mixture of Spherical Normal Distributions
+- [`sphere.geo2xyz()`](https://www.kisungyou.com/Riemann/reference/sphere.convert.md)
+  [`sphere.xyz2geo()`](https://www.kisungyou.com/Riemann/reference/sphere.convert.md)
+  : Convert between Cartesian Coordinates and Geographic Coordinates
+- [`sphere.runif()`](https://www.kisungyou.com/Riemann/reference/sphere.runif.md)
+  : Generate Uniform Samples on Sphere
+- [`sphere.utest()`](https://www.kisungyou.com/Riemann/reference/sphere.utest.md)
+  : Test of Uniformity on Sphere
+
+### 
+
+Stiefel
+
+- [`stiefel.optSA()`](https://www.kisungyou.com/Riemann/reference/stiefel.optSA.md)
+  : Simulated Annealing on Stiefel Manifold
+- [`stiefel.runif()`](https://www.kisungyou.com/Riemann/reference/stiefel.runif.md)
+  : Generate Uniform Samples on Stiefel Manifold
+- [`stiefel.utest()`](https://www.kisungyou.com/Riemann/reference/stiefel.utest.md)
+  : Test of Uniformity on Stiefel Manifold
+
+### 
+
+Grassmann
+
+- [`grassmann.optmacg()`](https://www.kisungyou.com/Riemann/reference/grassmann.optmacg.md)
+  : Estimation of Distribution Algorithm with MACG Distribution
+- [`grassmann.runif()`](https://www.kisungyou.com/Riemann/reference/grassmann.runif.md)
+  : Generate Uniform Samples on Grassmann Manifold
+- [`grassmann.utest()`](https://www.kisungyou.com/Riemann/reference/grassmann.utest.md)
+  : Test of Uniformity on Grassmann Manifold
+
+### 
+
+SPD
+
+- [`spd.geometry()`](https://www.kisungyou.com/Riemann/reference/spd.geometry.md)
+  : Supported Geometries on SPD Manifold
+- [`spd.pdist()`](https://www.kisungyou.com/Riemann/reference/spd.pdist.md)
+  : Pairwise Distance on SPD Manifold
+- [`spd.wassbary()`](https://www.kisungyou.com/Riemann/reference/spd.wassbary.md)
+  : Wasserstein Barycenter of SPD Matrices
+
+## Probability Distributions
+
+- [`dacg()`](https://www.kisungyou.com/Riemann/reference/acg.md)
+  [`racg()`](https://www.kisungyou.com/Riemann/reference/acg.md)
+  [`mle.acg()`](https://www.kisungyou.com/Riemann/reference/acg.md) :
+  Angular Central Gaussian Distribution
+- [`dmacg()`](https://www.kisungyou.com/Riemann/reference/macg.md)
+  [`rmacg()`](https://www.kisungyou.com/Riemann/reference/macg.md)
+  [`mle.macg()`](https://www.kisungyou.com/Riemann/reference/macg.md) :
+  Matrix Angular Central Gaussian Distribution
+- [`dsplaplace()`](https://www.kisungyou.com/Riemann/reference/splaplace.md)
+  [`rsplaplace()`](https://www.kisungyou.com/Riemann/reference/splaplace.md)
+  [`mle.splaplace()`](https://www.kisungyou.com/Riemann/reference/splaplace.md)
+  : Spherical Laplace Distribution
+- [`dspnorm()`](https://www.kisungyou.com/Riemann/reference/spnorm.md)
+  [`rspnorm()`](https://www.kisungyou.com/Riemann/reference/spnorm.md)
+  [`mle.spnorm()`](https://www.kisungyou.com/Riemann/reference/spnorm.md)
+  : Spherical Normal Distribution
+
+## Data
+
+- [`ERP`](https://www.kisungyou.com/Riemann/reference/ERP.md) : Data:
+  xDAWN Covariances of MNE Sample MEG Epochs
+- [`cities`](https://www.kisungyou.com/Riemann/reference/cities.md) :
+  Data : Populated Cities in the U.S.
+- [`gorilla`](https://www.kisungyou.com/Riemann/reference/gorilla.md) :
+  Data : Gorilla Skull
+- [`hands`](https://www.kisungyou.com/Riemann/reference/hands.md) : Data
+  : Left Hands
+- [`orbital`](https://www.kisungyou.com/Riemann/reference/orbital.md) :
+  Data : Normal Vectors to the Orbital Planes of the 9 Planets
+- [`passiflora`](https://www.kisungyou.com/Riemann/reference/passiflora.md)
+  : Data : Passiflora Leaves
+
+## Others
+
+- [`density()`](https://www.kisungyou.com/Riemann/reference/density.md)
+  : S3 method for mixture model : evaluate density
+- [`label()`](https://www.kisungyou.com/Riemann/reference/label.md) : S3
+  method for mixture model : predict labels
+- [`loglkd()`](https://www.kisungyou.com/Riemann/reference/loglkd.md) :
+  S3 method for mixture model : log-likelihood
+- [`rmvnorm()`](https://www.kisungyou.com/Riemann/reference/rmvnorm.md)
+  : Generate Random Samples from Multivariate Normal Distribution

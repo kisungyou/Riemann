@@ -1,0 +1,14 @@
+{
+  "name": "Riemann",
+  "short_name": "Riemann",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "display": "browser",
+  "start_url": "./",
+  "scope": "./"
+}

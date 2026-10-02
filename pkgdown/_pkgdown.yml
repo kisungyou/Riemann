@@ -6,7 +6,7 @@
 #     api_key:
 #      indexname: Riemann
 
-url: https://kisungyou.com/Riemann
+url: https://www.kisungyou.com/Riemann/
 
 destination: docs
 
@@ -16,6 +16,8 @@ authors:
 
 template:
   bootstrap: 5
+  # Legacy Rd equations contain TeX delimiters that require client rendering.
+  math-rendering: mathjax
   bslib:
     border-radius: 0.5rem
     btn-border-radius: 0.25rem
@@ -26,9 +28,14 @@ template:
 home:
   strip_header: false
 
+news:
+  cran_dates: false
+
 navbar:
   title: "Riemann"
   left:
+    - text: "Tutorials"
+      href: articles/index.html
     - text: "Functions"
       href: reference/index.html
     - text: "News"
@@ -47,16 +54,27 @@ navbar:
   right:
     - icon: fa-twitter
       href: https://twitter.com/kisung_you
+      aria-label: "Kisung You on Twitter"
     - icon: fa-github
       href: https://github.com/kisungyou/Riemann
+      aria-label: "Riemann on GitHub"
     - icon: fa-envelope
-      href: mailto:kisungyou@outlook.com
+      href: https://www.kisungyou.com/Riemann/#contact
+      aria-label: "Contact the maintainer"
 
 reference:
+  - title: "Geometry, Fitted Models, and Validation"
+    contents:
+      - Riemann-package
+      - riem.geometry
+      - riem.reconstruct
+      - riem-inspect
+      - m2skreg-methods
+      - riem-method-contracts
   - title: "Prepare Data on Manifolds"
     contents:
       - starts_with("wrap.")
-  - title: "Common Functions on All Supported Manifolds"
+  - title: "Shared Workflows (Consult Geometry and Method Contracts)"
   - subtitle: "[1] Basic Operations"
     contents:
       - has_concept("basic")
@@ -66,16 +84,13 @@ reference:
   - subtitle: "[3] Clustering"
     contents:
       - has_concept("clustering")
-  - subtitle: "[5] Visualization and Dimension Reduction"
+  - subtitle: "[4] Visualization and Dimension Reduction"
     contents:
       - has_concept("visualization")
-  - subtitle: "[6] Curves"
+  - subtitle: "[5] Curves"
     contents:
       - has_concept("curve")
-  - subtitle: "[7] Spatial Analysis"
-    contents:
-      - has_concept("spatial")
-  - subtitle: "[8] Other Methods"
+  - subtitle: "[6] Other Methods"
     contents:
       - has_concept("learning")
   - title: "Functions on Specific Manifolds"
