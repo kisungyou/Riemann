@@ -4,13 +4,7 @@
 \alias{riem.wasserstein}
 \title{Wasserstein Distance between Empirical Measures}
 \usage{
-riem.wasserstein(
-  riemobj1,
-  riemobj2,
-  p = 2,
-  geometry = c("intrinsic", "extrinsic"),
-  ...
-)
+riem.wasserstein(riemobj1, riemobj2, p = 2, geometry = NULL, ...)
 }
 \arguments{
 \item{riemobj1}{a S3 \code{"riemdata"} class for \eqn{M} manifold-valued data, which are atoms of \eqn{\mu}.}
@@ -38,6 +32,14 @@ is defined as
 \deqn{\mathcal{W}_p (\mu, \nu) = \left( \inf_{\gamma \in \Gamma(\mu, \nu)} \int_{\mathcal{M}\times \mathcal{M}} d(x,y)^p d \gamma(x,y) \right)^{1/p}}
 where \eqn{\Gamma(\mu, \nu)} denotes the collection of all measures/couplings on \eqn{\mathcal{M}\times \mathcal{M}} 
 whose marginals are \eqn{\mu} and \eqn{\nu} on the first and second factors, respectively.
+}
+\details{
+Weights must be finite and nonnegative with positive total mass;
+  they are normalized to probability vectors. The ground distance follows the
+  saved geometry. The linear-program transport solver receives jointly scaled
+  distances to reduce overflow, and the returned plan is checked for finite
+  entries and correct marginals. A numerical solution is not an independent
+  optimality certificate.
 }
 \examples{
 #-------------------------------------------------------------------

@@ -169,6 +169,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// inference_summary
+Rcpp::List inference_summary(std::string mfdname, Rcpp::List data, arma::vec myweight, std::string statistic, std::string geometry, int myiter, double myeps, Rcpp::Nullable<Rcpp::NumericMatrix> initial, int max_backtrack, bool keep_trace);
+RcppExport SEXP _Riemann_inference_summary(SEXP mfdnameSEXP, SEXP dataSEXP, SEXP myweightSEXP, SEXP statisticSEXP, SEXP geometrySEXP, SEXP myiterSEXP, SEXP myepsSEXP, SEXP initialSEXP, SEXP max_backtrackSEXP, SEXP keep_traceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type mfdname(mfdnameSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type myweight(myweightSEXP);
+    Rcpp::traits::input_parameter< std::string >::type statistic(statisticSEXP);
+    Rcpp::traits::input_parameter< std::string >::type geometry(geometrySEXP);
+    Rcpp::traits::input_parameter< int >::type myiter(myiterSEXP);
+    Rcpp::traits::input_parameter< double >::type myeps(myepsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericMatrix> >::type initial(initialSEXP);
+    Rcpp::traits::input_parameter< int >::type max_backtrack(max_backtrackSEXP);
+    Rcpp::traits::input_parameter< bool >::type keep_trace(keep_traceSEXP);
+    rcpp_result_gen = Rcpp::wrap(inference_summary(mfdname, data, myweight, statistic, geometry, myiter, myeps, initial, max_backtrack, keep_trace));
+    return rcpp_result_gen;
+END_RCPP
+}
 // inference_mean_intrinsic
 Rcpp::List inference_mean_intrinsic(std::string mfdname, Rcpp::List& data, arma::vec myweight, int myiter, double myeps);
 RcppExport SEXP _Riemann_inference_mean_intrinsic(SEXP mfdnameSEXP, SEXP dataSEXP, SEXP myweightSEXP, SEXP myiterSEXP, SEXP myepsSEXP) {
@@ -726,6 +746,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// geometry_operations
+Rcpp::List geometry_operations(std::string manifold, arma::mat x, arma::mat y, arma::mat u, arma::mat v);
+RcppExport SEXP _Riemann_geometry_operations(SEXP manifoldSEXP, SEXP xSEXP, SEXP ySEXP, SEXP uSEXP, SEXP vSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type manifold(manifoldSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type y(ySEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type u(uSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type v(vSEXP);
+    rcpp_result_gen = Rcpp::wrap(geometry_operations(manifold, x, y, u, v));
+    return rcpp_result_gen;
+END_RCPP
+}
 // mat_rank
 arma::uword mat_rank(arma::mat A);
 RcppExport SEXP _Riemann_mat_rank(SEXP ASEXP) {
@@ -809,6 +844,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_basic_pdist", (DL_FUNC) &_Riemann_basic_pdist, 3},
     {"_Riemann_basic_pdist2", (DL_FUNC) &_Riemann_basic_pdist2, 4},
     {"_Riemann_basic_interpolate", (DL_FUNC) &_Riemann_basic_interpolate, 5},
+    {"_Riemann_inference_summary", (DL_FUNC) &_Riemann_inference_summary, 10},
     {"_Riemann_inference_mean_intrinsic", (DL_FUNC) &_Riemann_inference_mean_intrinsic, 5},
     {"_Riemann_inference_mean_extrinsic", (DL_FUNC) &_Riemann_inference_mean_extrinsic, 5},
     {"_Riemann_inference_median_intrinsic", (DL_FUNC) &_Riemann_inference_median_intrinsic, 5},
@@ -848,6 +884,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_Riemann_spdwass_baryAE16", (DL_FUNC) &_Riemann_spdwass_baryAE16, 4},
     {"_Riemann_src_spd_pdist", (DL_FUNC) &_Riemann_src_spd_pdist, 2},
     {"_Riemann_src_spd_variation", (DL_FUNC) &_Riemann_src_spd_variation, 2},
+    {"_Riemann_geometry_operations", (DL_FUNC) &_Riemann_geometry_operations, 5},
     {"_Riemann_mat_rank", (DL_FUNC) &_Riemann_mat_rank, 1},
     {"_Riemann_mat_symm", (DL_FUNC) &_Riemann_mat_symm, 2},
     {"_Riemann_mat_diaghalf", (DL_FUNC) &_Riemann_mat_diaghalf, 1},

@@ -7,7 +7,7 @@
 \alias{mle.acg}
 \title{Angular Central Gaussian Distribution}
 \usage{
-dacg(datalist, A)
+dacg(datalist, A, log = FALSE)
 
 racg(n, A)
 
@@ -18,7 +18,9 @@ mle.acg(datalist, ...)
 
 \item{A}{a \eqn{(p\times p)} symmetric positive-definite matrix.}
 
-\item{n}{the number of samples to be generated.}
+\item{log}{logical; return log densities when \code{TRUE}.}
+
+\item{n}{a positive integer number of samples.}
 
 \item{...}{extra parameters for computations, including\describe{
 \item{maxiter}{maximum number of iterations to be run (default:50).}
@@ -40,6 +42,19 @@ it can also be used as an axial distribution on real projective space, which is
 unit sphere modulo \eqn{\lbrace{+1,-1\rbrace}}. One constraint we follow is that 
 \eqn{f(x\vert A) = f(x\vert cA)} for \eqn{c > 0} in that we use a normalized 
 version for numerical stability by restricting \eqn{tr(A)=p}.
+}
+\details{
+The reference measure is the uniform probability measure (total mass
+  one), so the density equals one for the identity parameter. Density evaluation
+  uses Cholesky factors and log determinants; \code{log=TRUE} avoids ordinary
+  density overflow. The shape is normalized to trace \eqn{p}.
+
+  The fixed-point estimate carries convergence, iteration, step, and negative
+  mean-log-likelihood attributes. Failed convergence warns. Existence and
+  uniqueness require sufficient dispersion across all proper linear subspaces;
+  full observed span alone does not establish these statistical conditions.
+  Degenerate updates error, and the implementation does not claim a global
+  existence or uniqueness certificate.
 }
 \examples{
 # -------------------------------------------------------------------

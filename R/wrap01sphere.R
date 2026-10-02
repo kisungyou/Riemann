@@ -40,35 +40,8 @@
 #' 
 #' @concept wrapper
 #' @export
-wrap.sphere <- function(input){
-  ## TAKE EITHER 2D ARRAY {n x p} OR A LIST
-  #  1. data format
-  if (is.matrix(input)){
-    N = nrow(input)
-    tmpdata = list()
-    for (i in 1:N){
-      tmpdata[[i]] = as.vector(input[i,])
-    }
-  } else if (is.list(input)){
-    tmpdata = input
-  } else {
-    stop("* wrap.sphere : input should be either a 2d matrix or a list.")
-  }
-  #  2. check all same size
-  if (!check_list_eqsize(tmpdata, check.square=FALSE)){
-    stop("* wrap.sphere : elements are not vectors of same size.")
-  }
-  #  3. check each element
-  N = length(tmpdata)
-  for (n in 1:N){
-    tgtvec = tmpdata[[n]]
-    tmpdata[[n]] = matrix(tgtvec/sqrt(sum(tgtvec^2)), ncol = 1)
-  }
-  
-  ## WRAP AND RETURN THE S3 CLASS
-  output = list()
-  output$data = tmpdata
-  output$size = dim(tmpdata[[1]])
-  output$name = "sphere"
-  return(structure(output, class="riemdata"))
+wrap.sphere <- function(input) {
+  tmpdata <- riem_vector_input(input, "sphere")
+  structure(list(data = tmpdata, size = dim(tmpdata[[1L]]), name = "sphere",
+                 dimnames = dimnames(tmpdata[[1L]])), class = "riemdata")
 }

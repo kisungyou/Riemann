@@ -1,169 +1,148 @@
-#' Manifold-to-Scalar Kernel Regression with K-Fold Cross Validation 
-#' 
-#' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data corresponding to \eqn{X_1,\ldots,X_N}.
-#' @param y a length-\eqn{N} vector of dependent variable values.
-#' @param bandwidths a vector of nonnegative numbers that control smoothness.
-#' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
-#' @param kfold the number of folds for cross validation.
-#' 
-#' @return a named list of S3 class \code{m2skreg} containing
-#' \describe{
-#' \item{ypred}{a length-\eqn{N} vector of optimal smoothed responses.}
-#' \item{bandwidth}{the optimal bandwidth value.}
-#' \item{inputs}{a list containing both \code{riemobj} and \code{y} for future use.}
-#' \item{errors}{a matrix whose columns are \code{bandwidths} values and corresponding errors measure in SSE.}
-#' }
-#' 
-#' @examples 
-#' \donttest{
-#' #-------------------------------------------------------------------
-#' #                    Example on Sphere S^2
-#' #
-#' #  X : equi-spaced points from (0,0,1) to (0,1,0)
-#' #  y : sin(x) with perturbation
-#' #-------------------------------------------------------------------
-#' # GENERATE DATA
-#' set.seed(496) 
-#' npts = 100
-#' nlev = 0.25
-#' thetas = seq(from=0, to=pi/2, length.out=npts)
-#' Xstack = cbind(rep(0,npts), sin(thetas), cos(thetas))
-#' 
-#' Xriem  = wrap.sphere(Xstack)
-#' ytrue  = sin(seq(from=0, to=2*pi, length.out=npts))
-#' ynoise = ytrue + rnorm(npts, sd=nlev)
-#' 
-#' # FIT WITH 5-FOLD CV
-#' cv_band = (10^seq(from=-4, to=-1, length.out=200))
-#' cv_fit  = riem.m2skregCV(Xriem, ynoise, bandwidths=cv_band)
-#' cv_err  = cv_fit$errors
-#' 
-#' # VISUALIZE
-#' opar <- par(no.readonly=TRUE)
-#' par(mfrow=c(1,2))
-#' plot(1:npts, cv_fit$ypred, pch=19, cex=0.5, "b", xlab="", main="optimal prediction")
-#' lines(1:npts, ytrue, col="red", lwd=1.5)
-#' plot(cv_err[,1], cv_err[,2], "b", pch=19, cex=0.5, main="5-fold CV errors",
-#'      xlab="bandwidth", ylab="SSE")
-#' abline(v=cv_fit$bandwidth, col="blue", lwd=1.5)
-#' par(opar)
-#' }
-#' 
+#' Manifold-to-Scalar Kernel Regression with K-Fold Cross Validation
+#'
+#' Selects a Gaussian kernel bandwidth by the sum of squared held-out prediction
+#' errors over all folds, then fits the selected smoother to all observations.
+#' A candidate is eligible only if every fold has a finite loss. Failed candidates
+#' remain in the returned tables with infinite total loss and a recorded reason.
+#' If no candidate succeeds, fitting stops with an error. Equal losses are resolved
+#' by choosing the first candidate in the supplied order.
+#'
+#' @inheritParams riem.m2skreg
+#' @param bandwidths A nonempty vector of finite, strictly positive bandwidths.
+#' @param kfold Integer number of folds between two and the sample size. Random
+#'   balanced folds use R's current random-number state. When \code{foldid} is
+#'   supplied, an explicitly supplied \code{kfold} must agree with its number
+#'   of distinct folds.
+#' @param foldid Optional vector of fold identifiers, one per observation, with
+#'   at least two distinct nonmissing identifiers. Numeric identifiers must be
+#'   finite; character and factor identifiers must be nonempty. Observations with
+#'   the same identifier are held out together. Use this to encode grouped or
+#'   otherwise scientifically appropriate validation splits.
+#'
+#' @details Distances are computed once under the resolved geometry. This is
+#'   appropriate only when preprocessing defining that geometry was fixed
+#'   independently of the held-out observations. This function does not fit
+#'   data-dependent alignment, scaling, or other preprocessing inside each fold;
+#'   such pipelines require an external resampling loop. The selected CV loss is
+#'   a tuning criterion, not an unbiased estimate of final predictive performance.
+#'
+#' @return An \code{m2skreg} fit retaining \code{ypred}, \code{bandwidth}, and
+#'   \code{inputs}, with the geometry metadata of \code{riem.m2skreg}.
+#'   \code{ypred} contains full-training fitted values. \code{errors} is a
+#'   two-column matrix of all candidate bandwidths and total CV SSE;
+#'   \code{fold_errors} and \code{fold_failure} have candidates in rows and folds
+#'   in columns. \code{candidate_status} records success or failure,
+#'   \code{foldid} stores the supplied/generated fold identifiers, and
+#'   \code{cv_prediction} contains held-out predictions for the selected candidate.
+#'
+#' @examples
+#' X <- wrap.euclidean(matrix(0:5, ncol = 1))
+#' fit <- riem.m2skregCV(X, c(0, 3, 0, 0, 0, 0),
+#'   bandwidths = c(0.1, 0.5, 1, 2, 10), foldid = rep(1:3, each = 2))
+#' fit$errors
+#' fit$cv_prediction
+#'
 #' @concept inference
 #' @export
-riem.m2skregCV <- function(riemobj, y, bandwidths=seq(from=0.01, to=1, length.out=10), geometry=c("intrinsic","extrinsic"), kfold=5){
-  # CHECK INPUTS
-  DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
-  if (!inherits(riemobj,"riemdata")){
-    stop(paste0("* riem.m2skregCV : input ",DNAME," should be an object of 'riemdata' class."))
-  }
-  N = length(riemobj$data)
-  y = as.vector(y)
-  if (length(y)!=N){
-    stop(paste0("* riem.m2skregCV : length of 'y' should equal to ",N,"."))
-  }
-  mybandvecs = base::pmax(sqrt(.Machine$double.eps), as.double(bandwidths))
-  mygeometry = ifelse(missing(geometry),"intrinsic",
-                       match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  mynfolds  = max(2, round(kfold))
-  mydistmat = basic_pdist(riemobj$name, riemobj$data, mygeometry)
-
-  # CV
-  splitgp  <- get_splits(N, mynfolds)
-  myerrors <- rep(0, length(mybandvecs))
-  for (i in 1:length(mybandvecs)){
-    # current bandwidth parameter
-    now_bandwidth = mybandvecs[i]
-    # variable for saving the errors
-    now_error = 0
-    for (j in 1:length(mynfolds)){
-      # separate data
-      id_j  = splitgp[[j]]
-      # use the auxiliary function to compute SSE
-      # sse_j = riem.m2skregCV.single(riemobj$name, riemobj$data, y, id_j, now_bandwidth, mygeometry)
-      sse_j = riem.m2skregCV.each(mydistmat, y, id_j, now_bandwidth)
-      # update the error term
-      now_error = now_error + sse_j
+riem.m2skregCV <- function(riemobj, y,
+                          bandwidths = seq(0.01, 1, length.out = 10),
+                          geometry = NULL, kfold = 5, foldid = NULL) {
+  riem_validate_data(riemobj)
+  n <- length(riemobj$data)
+  if (n < 2L) stop("Cross-validation requires at least two observations.", call. = FALSE)
+  y <- riem_regression_response(y, n)
+  bandwidths <- riem_regression_bandwidth(bandwidths, multiple = TRUE)
+  geometry <- riem_resolve_geometry(riemobj, geometry, capability = "distance")
+  if (is.null(foldid)) {
+    kfold <- riem_regression_integer(kfold, "kfold", 2L, n)
+    foldid <- sample(rep(seq_len(kfold), length.out = n))
+  } else {
+    if (length(foldid) != n || !is.null(dim(foldid)) || anyNA(foldid) ||
+        !(is.numeric(foldid) || is.character(foldid) || is.factor(foldid)) ||
+        is.complex(foldid) ||
+        (is.numeric(foldid) && any(!is.finite(foldid))) ||
+        ((is.character(foldid) || is.factor(foldid)) &&
+         any(!nzchar(trimws(as.character(foldid)))))) {
+      stop("'foldid' must give one finite, nonmissing, nonempty identifier per observation.",
+           call. = FALSE)
     }
-    myerrors[i] = now_error
+    nfold <- length(unique(foldid))
+    if (nfold < 2L) stop("'foldid' must contain at least two distinct folds.", call. = FALSE)
+    if (!missing(kfold) && riem_regression_integer(kfold, "kfold", 2L, n) != nfold) {
+      stop("'kfold' does not match the number of distinct 'foldid' values.", call. = FALSE)
+    }
+    kfold <- nfold
   }
-  
-  # What is the Optimal Bandwidth
-  opt.bandwidth = as.vector(mybandvecs[which.min(myerrors)])[1]
-  opt.ypred     = riem.m2skreg(riemobj, y, bandwidth=opt.bandwidth, geometry=mygeometry)$ypred
-  
-  # record the errors & remove any
-  errormat = cbind(mybandvecs, myerrors)
-  colnames(errormat) = c("bandwidth","SSE")
-  
-  idremove = which(is.na(myerrors))
-  errormat = errormat[-idremove,]
-  
-  ## RETURN THE OUTPUT
-  output = list()
-  output$ypred = opt.ypred
-  output$bandwidth = opt.bandwidth
-  output$inputs = list(riemobj, y)
-  output$errors = errormat
-  return(structure(output, class="m2skreg"))
-}
-
-
-#' @keywords internal
-#' @noRd
-get_splits <- function(N, K){
-  return(suppressWarnings(split(sample(1:N, N), as.factor(1:K))))
-}
-#' @keywords internal
-#' @noRd
-riem.m2skregCV.each <- function(pdistmat, y, id.now, bandwidth){
-  # parameters
-  M = length(id.now)
-  N = length(y)-M
-  
-  # separate Y's
-  train_y = as.vector(y[-id.now])
-  test_y  = as.vector(y[id.now])
-  
-  # compute
-  distmat = pdistmat[-id.now, id.now]
-  pred_y  = rep(0,M)
-  for (m in 1:M){
-    tgtvec = as.vector(distmat[,m])
-    tgtscd = base::exp(-(tgtvec^2)/(2*(bandwidth^2)))
-    pred_y[m] = base::sum(tgtscd*train_y)/base::sum(tgtscd)
+  fold_labels <- unique(foldid)
+  splitgp <- split(seq_len(n), factor(match(foldid, fold_labels), levels = seq_len(kfold)))
+  distances <- basic_pdist(riemobj$name, riemobj$data, geometry$backend)
+  ncandidate <- length(bandwidths)
+  fold_errors <- matrix(Inf, ncandidate, kfold,
+                        dimnames = list(NULL, as.character(fold_labels)))
+  fold_failure <- matrix(NA_character_, ncandidate, kfold,
+                         dimnames = dimnames(fold_errors))
+  best_sse <- Inf
+  best_index <- NA_integer_
+  best_prediction <- NULL
+  for (i in seq_along(bandwidths)) {
+    heldout_prediction <- rep(NA_real_, n)
+    for (j in seq_along(splitgp)) {
+      ids <- splitgp[[j]]
+      trial <- tryCatch({
+        result <- riem_kernel_predict_distances(distances[-ids, ids, drop = FALSE],
+                                                y[-ids], bandwidths[i])
+        loss <- sum((result$prediction - y[ids])^2)
+        if (!is.finite(loss)) stop("The held-out squared-error loss is nonfinite.")
+        list(prediction = result$prediction, loss = loss)
+      }, error = function(e) e)
+      if (inherits(trial, "error")) {
+        fold_failure[i, j] <- conditionMessage(trial)
+      } else {
+        fold_errors[i, j] <- trial$loss
+        heldout_prediction[ids] <- trial$prediction
+      }
+    }
+    total <- sum(fold_errors[i, ])
+    if (is.finite(total) && total < best_sse) {
+      best_sse <- total
+      best_index <- i
+      best_prediction <- heldout_prediction
+    }
   }
-  
-  # Return SSE
-  return(base::sum((pred_y - test_y)^2))
+  totals <- rowSums(fold_errors)
+  if (is.na(best_index)) {
+    reason <- unique(stats::na.omit(as.vector(fold_failure)))
+    if (!length(reason)) reason <- "The summed squared-error loss is nonfinite."
+    stop(paste0("No bandwidth has finite errors in all folds. ", reason[1L]), call. = FALSE)
+  }
+  selected_bandwidth <- bandwidths[best_index]
+  result <- riem_kernel_predict_distances(distances, y, selected_bandwidth)
+  output <- riem_regression_object(riemobj, y, selected_bandwidth, geometry,
+                                   result, match.call())
+  output$errors <- cbind(bandwidth = bandwidths, SSE = totals)
+  output$fold_errors <- fold_errors
+  output$fold_failure <- fold_failure
+  output$candidate_status <- ifelse(is.finite(totals), "ok", "failed")
+  output$foldid <- foldid
+  output$cv_prediction <- best_prediction
+  output$cv <- list(loss = "SSE", selected_index = best_index,
+                    selected_sse = best_sse, fold_labels = fold_labels,
+                    tie_break = "first_candidate", preprocessing = "fixed")
+  output
 }
-#' #' @keywords internal
-#' #' @noRd
-#' riem.m2skregCV.single <- function(X.name, X.data, y.data, id.now, bandwidth, geometry){
-#'   # separate the data
-#'   train_X = X.data[-id.now]
-#'   train_y = as.vector(y.data[-id.now])
-#'   
-#'   test_X = X.data[id.now]
-#'   test_y = y.data[id.now]
-#'   
-#'   # information
-#'   N = length(train_y)
-#'   M = length(test_y)
-#'   
-#'   # Pairwise Distance matrix of size (N x M) 
-#'   distmat = basic_pdist2(X.name, train_X, test_X, geometry)
-#'   
-#'   # Do the prediction
-#'   pred_y = rep(0,M)
-#'   for (m in 1:M){
-#'     tgtvec = as.vector(distmat[,m])
-#'     tgtscd = base::exp(-(tgtvec^2)/(2*(bandwidth^2)))
-#'     pred_y[m] = base::sum(tgtscd*train_y)/base::sum(tgtscd)
-#'   }
-#'   
-#'   # Return SSE
-#'   return(base::sum((pred_y - test_y)^2))
-#' }
 
-
+# Internal compatibility helper, also useful for direct SSE reference checks.
+riem.m2skregCV.each <- function(pdistmat, y, id.now, bandwidth) {
+  y <- riem_regression_response(y, nrow(pdistmat))
+  bandwidth <- riem_regression_bandwidth(bandwidth)
+  if (!is.numeric(id.now) || !length(id.now) || any(!is.finite(id.now)) ||
+      any(id.now != floor(id.now)) || any(id.now < 1 | id.now > length(y)) ||
+      anyDuplicated(id.now) || length(id.now) >= length(y)) {
+    stop("Held-out indices must be a nonempty proper subset of the observations.", call. = FALSE)
+  }
+  result <- riem_kernel_predict_distances(pdistmat[-id.now, id.now, drop = FALSE],
+                                          y[-id.now], bandwidth)
+  loss <- sum((result$prediction - y[id.now])^2)
+  if (!is.finite(loss)) stop("The held-out squared-error loss is nonfinite.", call. = FALSE)
+  loss
+}

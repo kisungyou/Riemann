@@ -2,6 +2,10 @@
 #' 
 #' Given \eqn{N} observations \eqn{X_1, X_2, \ldots, X_N} in SPD manifold, compute 
 #' pairwise distances among observations.
+#' Stein distances use a scaled relative spectrum, and Wasserstein distances
+#' use an aligned Cholesky-factor residual, avoiding determinant overflow and
+#' cancellation of nearly equal traces. Numerically singular inputs can still
+#' prevent these factorizations and are reported as errors.
 #'
 #' @param spdobj a S3 \code{"riemdata"} class of SPD-valued data.
 #' @param geometry name of the geometry to be used. See \code{\link{spd.geometry}} for supported geometries.
@@ -52,18 +56,33 @@
 #'
 #' @concept spd
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 spd.pdist <- function(spdobj, geometry, as.dist=FALSE){
     # PREPARE
     DNAME = paste0("'",deparse(substitute(spdobj)),"'")
     if ((!inherits(spdobj,"riemdata"))||(!all(spdobj$name=="spd"))){
       stop(paste0("* spd.pdist : input ",DNAME," should be an object of 'riemdata' class on 'spd' manifold.."))
     }
+    riem_validate_data(spdobj)
+    if (!is.logical(as.dist) || length(as.dist) != 1L || is.na(as.dist)) {
+      stop("as.dist must be TRUE or FALSE.", call. = FALSE)
+    }
     mygeom = spd.geometry(geometry)
+    if (mygeom %in% c("airm", "lerm")) {
+      return(riem.pdist(spdobj, if (mygeom == "airm") "affine_invariant" else "log_euclidean", as.dist))
+    }
     mydist = as.logical(as.dist)
     
     # COMPUTE
     array3d = spd.wrap3d(spdobj$data)
     output  = src_spd_pdist(array3d, mygeom)
+    if (any(!is.finite(output)) || any(output < 0)) {
+      stop("The selected SPD geometry returned unrepresentable or invalid distances.", call. = FALSE)
+    }
     
     # RETURN
     if (mydist){

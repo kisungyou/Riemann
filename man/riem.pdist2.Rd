@@ -4,14 +4,14 @@
 \alias{riem.pdist2}
 \title{Compute Pairwise Distances for Two Sets of Data}
 \usage{
-riem.pdist2(riemobj1, riemobj2, geometry = c("intrinsic", "extrinsic"))
+riem.pdist2(riemobj1, riemobj2, geometry = NULL)
 }
 \arguments{
 \item{riemobj1}{a S3 \code{"riemdata"} class for \eqn{M} manifold-valued data.}
 
 \item{riemobj2}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
 
-\item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
+\item{geometry}{A name or saved specification accepted by \code{\link{riem.geometry}}.}
 }
 \value{
 an \eqn{(M\times N)} matrix of distances.

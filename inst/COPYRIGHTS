@@ -1,0 +1,103 @@
+Riemann software license and retained notices
+============================================
+
+Author-owned software: Copyright (c) 2020-2026 Kisung You.
+The September 21, 2026 revision of version 0.2.0 is distributed under the GNU
+General Public License, version 3 only. See COPYING in the source distribution
+or https://www.gnu.org/licenses/gpl-3.0.html.
+
+Earlier releases and preserved source archives retain their original MIT
+license. This revision does not revoke permissions granted by those releases.
+
+Source attribution retained
+---------------------------
+
+* src/functions_05_visualization.cpp identifies Sammon mapping as adapted
+  from Rdimtools. The Rdimtools MIT notice is retained below. The installed
+  Rdimtools 1.1.5 license identifies "2022, Rdimtools authors".
+* src/distribution_spnorm.cpp retains its legacy RiemSphere attribution.
+  That file was included in the earlier MIT-licensed Riemann source. Its
+  existing provenance comment is not removed by the present license change.
+* R/special_grassmann_utest.R, R/special_stiefel.R and R/special_sphere.R
+  retain their attribution of the data-name expression to HDtest. HDtest 2.1
+  names Meng Cao, Tong He and Wen Zhou as authors and declares Apache-2.0.
+  The expression was adapted to each local argument name; the attribution
+  remains adjacent to it. Apache-2.0 text is supplied in LICENSES/Apache-2.0.txt.
+* src/functions_06_curve.cpp retains its dynamic-time-warping algorithm
+  attribution. References to algorithms do not relicense an external work.
+
+Build and runtime dependencies
+------------------------------
+
+Rcpp and RcppArmadillo headers are supplied by the separately installed
+packages, not vendored here. Their copyright and license notices continue to
+apply, including Armadillo's Apache-2.0 notices and RcppArmadillo's GPL-2-or-later
+integration license. Other dependencies likewise retain their own notices;
+their source is neither copied into nor relicensed by this package.
+
+Data and separate writing materials
+----------------------------------
+
+The GPL-3 designation above applies to author-owned software. It does not
+assert ownership of third-party datasets or replace their upstream terms.
+
+ERP derives from the MNE sample audiovisual recording. Its public OpenNeuro
+record ds000248, version 1.2.4, declares CC0 and credits Alexandre Gramfort
+and Matti S. Hämäläinen. The dataset records preparation for BIDS by Alexandre Gramfort,
+Mainak Jas, and Stefan Appelhoff. Source and declaration:
+https://doi.org/10.18112/openneuro.ds000248.v1.2.4
+https://raw.githubusercontent.com/OpenNeuroDatasets/ds000248/0a357f1276dbf7fcc3c3fc35f74cb24ffe4a68a8/dataset_description.json
+CC0 terms: https://creativecommons.org/publicdomain/zero/1.0/
+MNE references: https://doi.org/10.3389/fnins.2013.00267 and
+https://doi.org/10.1016/j.neuroimage.2013.10.027
+
+The September 21, 2026 reconstruction of the pyRiemann 0.2.7 recipe matched
+all 216 packaged ERP matrices to numerical precision, with exact label order.
+The maximum relative Frobenius error was 5.56e-12; this is not a claim of
+byte identity or reproduction of the original 2021 runtime. The matrices are
+xDAWN prototype-augmented covariances of MEG test epochs from one participant.
+The historical example credits Pedro Rodrigues and declares BSD 3-clause;
+it is referenced rather than copied into this package:
+https://github.com/pyRiemann/pyRiemann/blob/176e766f540bd4c7846f38573165fc3d27fc69ca/examples/ERP/plot_embedding_EEG.py
+
+The gorilla configurations are redistributed under the upstream shapes 1.2.8
+GPL-2 terms, retained separately from the author-owned GPL-3 software.
+The GPL-2 text is supplied in LICENSES/GPL-2.0.txt. The upstream archive
+includes these coordinates and contains no observed data-specific exception.
+Preserved attribution: Paul O'Higgins; O'Higgins and Dryden (1993),
+Journal of Human Evolution 24, 183-205; Dryden and Mardia (2016), Chapter 1.
+Riemann reorders landmarks by c(1, 5, 4, 3, 2, 8, 7, 6); coordinates and
+individual ordering are otherwise identical to shapes::gorm.dat and
+shapes::gorf.dat. This historical rearrangement was verified September 12,
+2026; the present revision does not modify either dataset.
+https://cran.r-project.org/package=shapes
+
+Consult the dataset help and separate provenance reports for construction
+details. The public upstream license declarations are documented evidence;
+this notice does not assert independent verification of original ownership.
+The manuscript and replication workspace is distributed separately and has
+its own notices.
+
+Retained MIT notices
+--------------------
+
+Copyright (c) 2020 Kisung You (earlier Riemann source).
+Copyright (c) 2022 Rdimtools authors (Rdimtools-derived source).
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

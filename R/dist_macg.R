@@ -9,13 +9,26 @@
 #' 
 #' @param datalist a list of \eqn{(p\times r)} orthonormal matrices.
 #' @param Sigma a \eqn{(p\times p)} symmetric positive-definite matrix.
-#' @param n the number of samples to be generated.
+#' @param n a positive integer number of samples.
+#' @param log logical; return log densities when \code{TRUE}.
 #' @param r the number of basis.
 #' @param ... extra parameters for computations, including\describe{
 #' \item{maxiter}{maximum number of iterations to be run (default:50).}
 #' \item{eps}{tolerance level for stopping criterion (default: 1e-5).}
 #' }
 #' 
+#' @details The density is relative to the invariant uniform probability measure
+#'   on the Stiefel manifold, or its push-forward on the Grassmann quotient, and
+#'   equals one at \eqn{\Sigma=I}. Cholesky/log-determinant evaluation avoids
+#'   determinant products that overflow at extreme parameter scales.
+#'
+#'   Sampling uses the polar factor of a Gaussian matrix. The fixed-point estimate
+#'   is trace normalized and carries convergence, iteration, step, and negative
+#'   mean-log-likelihood attributes. Failed convergence warns; degenerate updates
+#'   error. Full observed span does not certify the subspace-dispersion conditions
+#'   needed for an identifiable, unique interior estimate. When \eqn{r=p>1}, the
+#'   density is uniform regardless of \eqn{\Sigma}, so estimation errors.
+#'
 #' @return 
 #' \code{dmacg} gives a vector of evaluated densities given samples. \code{rmacg} generates  
 #' \eqn{(p\times r)} orthonormal matrices wrapped in a list. \code{mle.macg} estimates 
@@ -61,59 +74,32 @@ NULL
 
 #' @rdname macg
 #' @export
-dmacg <- function(datalist, Sigma){
-  ## CHECK INPUT
-  FNAME = "dmacg"
-  myobj = wrap.stiefel(datalist)
-  mysig = as.matrix(Sigma)
-  if (!check_spdmat(mysig)){
-    stop(paste0("* ",FNAME," : 'Sigma' should be a symmetric positive-definite matrix."))
-  }
-  
-  ## COMPUTE
-  output = macg_density(myobj$data, mysig)
-  return(as.vector(output))
+dmacg <- function(datalist, Sigma, log = FALSE) {
+  data <- wrap.stiefel(datalist)$data
+  parameter <- riem_angular_parameter(Sigma, "Sigma")
+  riem_angular_density(data, parameter, log)
 }
 
 #' @rdname macg
 #' @export
-rmacg <- function(n, r, Sigma){
-  ## INITIALIZATION
-  FNAME = "rmacg"
-  mysig = as.matrix(Sigma)
-  if (!check_spdmat(mysig)){
-    stop(paste0("* ",FNAME," : 'Sigma' should be a symmetric positive-definite matrix."))
-  }
-  myp   = base::nrow(mysig)
-  myn   = max(1, round(n))
-  mysig = (mysig/sum(diag(mysig)))*myp
-  myr   = max(round(r), 1)
-  if (myr > myp){
-    stop(paste0("* ",FNAME," : we require 'r<=nrow(Sigma)'."))
-  }
-
-  ## COMPUTE
-  outcube = macg_sample(myn, myr, mysig)
-  output  = list()
-  for (i in 1:n){
-    output[[i]] = as.matrix(outcube[,,i])
-  }
-  return(output)
+rmacg <- function(n, r, Sigma) {
+  n <- riem_regression_integer(n, "n", 1L)
+  parameter <- riem_angular_parameter(Sigma, "Sigma")
+  p <- nrow(parameter)
+  r <- riem_regression_integer(r, "r", 1L, p)
+  root <- t(chol(parameter))
+  lapply(seq_len(n), function(i) {
+    raw <- root %*% matrix(stats::rnorm(p * r), p, r)
+    polar <- svd(raw, nu = r, nv = r)
+    if (min(polar$d) <= 0) stop("The Gaussian draw has deficient column rank.", call. = FALSE)
+    polar$u %*% t(polar$v)
+  })
 }
 
 #' @rdname macg
 #' @export
-mle.macg <- function(datalist, ...){
-  ## CHECK INPUT
-  myobj = wrap.stiefel(datalist)
-  pars   = list(...)
-  pnames = names(pars)
-  myiter = max(50, ifelse(("maxiter"%in%pnames), pars$maxiter, 50))
-  myeps  = min(1e-5, max(0, ifelse(("eps"%in%pnames), as.double(pars$eps), 1e-5)))
-  
-  ## COMPUTE AND RETURN
-  output = macg_mle(myobj$data, myiter, myeps)
-  return(output)
+mle.macg <- function(datalist, ...) {
+  riem_angular_mle(wrap.stiefel(datalist)$data, list(...), matrix_variant = TRUE)
 }
 
 # A = matrix(runif(100*5),ncol=5)

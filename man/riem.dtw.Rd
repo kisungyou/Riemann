@@ -22,6 +22,14 @@ Given two time series - a query \eqn{X = (X_1,X_2,\ldots,X_N)} and a reference \
 no window constraints and others at all. Although the scope of DTW in Euclidean space-valued objects is rich, it is scarce for manifold-valued curves. 
 If you are interested in the topic, we refer to \pkg{dtw} package.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 \donttest{
 #-------------------------------------------------------------------

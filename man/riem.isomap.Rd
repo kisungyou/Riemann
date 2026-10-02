@@ -4,13 +4,7 @@
 \alias{riem.isomap}
 \title{Isometric Feature Mapping}
 \usage{
-riem.isomap(
-  riemobj,
-  ndim = 2,
-  nnbd = 5,
-  geometry = c("intrinsic", "extrinsic"),
-  ...
-)
+riem.isomap(riemobj, ndim = 2, nnbd = 5, geometry = NULL, ...)
 }
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
@@ -19,10 +13,11 @@ riem.isomap(
 
 \item{nnbd}{the size of nearest neighborhood (default: 5).}
 
-\item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
+\item{geometry}{A geometry name or saved specification.}
 
 \item{...}{extra parameters including\describe{
-\item{padding}{a logical; if \code{TRUE}, \code{Inf}-valued geodesic distances are replaced by 2 times the maximal geodesic distance in the data.}
+\item{padding}{a logical, default \code{FALSE}; if \code{TRUE}, disconnected
+distances are replaced by twice the largest finite graph distance, with a warning.}
 }}
 }
 \value{
@@ -38,8 +33,16 @@ is defined by \eqn{k}-NN where two observations are said to be connected when
 they are mutually included in each other's nearest neighbor. Note that 
 it is possible for geodesic distances to be \code{Inf} when nearest neighbor 
 graph construction incurs separate connected components. When an extra 
-parameter \code{padding=TRUE}, infinite distances are replaced by 2 times 
+parameter \code{padding=TRUE}, infinite distances are explicitly replaced by 2 times
 the maximal finite geodesic distance.
+}
+\details{
+Self-neighbors are excluded and distance ties use observation order.
+  An edge is retained only when each endpoint selects the other among its
+  nearest neighbors. Zero-length edges between duplicate observations are
+  retained. The result records components, adjacency, and whether padding
+  changed disconnected distances. Padding produces an artificial dissimilarity
+  and is not an estimate of the original disconnected graph distance.
 }
 \examples{
 #-------------------------------------------------------------------
@@ -68,8 +71,8 @@ mylabs = rep(c(1,2,3), each=10)
 
 ## MDS AND ISOMAP WITH DIFFERENT NEIGHBORHOOD SIZE
 mdss = riem.mds(myriem)$embed
-iso1 = riem.isomap(myriem, nnbd=5)$embed
-iso2 = riem.isomap(myriem, nnbd=10)$embed
+iso1 = riem.isomap(myriem, nnbd=5, padding=TRUE)$embed
+iso2 = riem.isomap(myriem, nnbd=10, padding=TRUE)$embed
 
 ## VISUALIZE
 opar = par(no.readonly=TRUE)
@@ -81,6 +84,8 @@ par(opar)
 
 }
 \references{
-\insertRef{silva_global_2003}{Rdimtools}
+Silva VD and Tenenbaum JB (2003). "Global Versus Local Methods in Nonlinear
+Dimensionality Reduction." Advances in Neural Information Processing Systems
+15, 721--728. MIT Press.
 }
 \concept{visualization}

@@ -9,9 +9,10 @@ riem.knn(riemobj, k = 2, geometry = c("intrinsic", "extrinsic"))
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
 
-\item{k}{the number of neighbors to find.}
+\item{k}{an integer between one and \eqn{N-1}, the number of neighbors to find.}
 
-\item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
+\item{geometry}{a supported geometry name or saved specification; see
+\code{\link{riem.geometry}}. The default is \code{"intrinsic"}.}
 }
 \value{
 a named list containing\describe{
@@ -22,7 +23,17 @@ a named list containing\describe{
 \description{
 Given \eqn{N} observations  \eqn{X_1, X_2, \ldots, X_N \in \mathcal{M}}, 
 \code{riem.knn} constructs \eqn{k}-nearest neighbors.
+Each observation is excluded from its own neighbor set. Distinct observations
+at zero distance remain eligible; distance ties are resolved by input index.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #          Example on Sphere : a dataset with three types

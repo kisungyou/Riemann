@@ -258,87 +258,55 @@ double riem_metric(std::string mfd, arma::mat x, arma::mat d1, arma::mat d2){
 
 
 // OTHER FUNCTIONS TO BE USED IN OTHER CPP MODULES =============================
-arma::mat internal_mean(std::string mfd, std::string dtype, arma::cube data, int iter, double eps){
-  // PREPARE
-  int N = data.n_slices;
-  double NN = static_cast<double>(N);
-  int nrow  = data.n_rows;
-  int ncol  = data.n_cols;
-  arma::vec myweight(N,fill::ones);
-  myweight /= NN;
-  
-  // INITIALIZE
-  arma::mat Sold(nrow,ncol,fill::zeros);
-  if (dtype=="intrinsic"){        // INTRINSIC MEAN
-    Sold = riem_initialize_cube(mfd, data, myweight);
-    arma::mat Stmp(nrow,ncol,fill::zeros);
-    arma::mat Snew(nrow,ncol,fill::zeros);
-    double    Sinc = 0.0;
-    for (int it=0; it<iter; it++){
-      Stmp.fill(0.0);
-      for (int n=0; n<N; n++){
-        Stmp += 2.0*myweight(n)*riem_log(mfd, Sold, data.slice(n));
-      }
-      Snew = riem_exp(mfd, Sold, Stmp, 1.0);
-      Sinc = arma::norm(Sold-Snew,"fro");
-      Sold = Snew;
-      if (Sinc < eps){
-        break;
-      }
-    }
-  } else if (dtype=="extrinsic"){ // EXTRINSIC MEAN
-    arma::vec exemplar = riem_equiv(mfd, data.slice(0), nrow, ncol);
-    int eqdim = exemplar.n_elem;
-    arma::vec Soldvec(eqdim, fill::zeros);
-    
-    for (int n=0; n<N; n++){
-      Soldvec += myweight(n)*riem_equiv(mfd, data.slice(n), nrow, ncol);
-    }
-    Sold = riem_invequiv(mfd, Soldvec, nrow, ncol);
+arma::mat riem_project_tangent(const std::string& mfd, const arma::mat& x,
+                              const arma::mat& direction) {
+  if (mfd == "sphere") return sphere_proj(x, direction);
+  if (mfd == "spd") return direction / 2.0 + direction.t() / 2.0;
+  if (mfd == "grassmann") return grassmann_proj(x, direction);
+  if (mfd == "rotation") return direction / 2.0 - direction.t() / 2.0;
+  if (mfd == "multinomial") return direction - arma::accu(direction) * x;
+  if (mfd == "spdk") return legacy_horizontal_projection(x, direction);
+  if (mfd == "landmark") {
+    arma::mat out = direction;
+    out.each_row() -= arma::mean(out, 0);
+    out -= arma::accu(x % out) * x;
+    return legacy_horizontal_projection(x, out);
   }
-  return(Sold);
+  return direction;
 }
 
-arma::mat internal_mean_init(std::string mfd, std::string dtype, arma::cube data, int iter, double eps, arma::mat Sinit){
-  // PREPARE
-  int N = data.n_slices;
-  double NN = static_cast<double>(N);
-  int nrow  = data.n_rows;
-  int ncol  = data.n_cols;
-  arma::vec myweight(N,fill::ones);
-  myweight /= NN;
-  
-  // INITIALIZE
-  arma::mat Sold(nrow,ncol,fill::zeros);
-  if (dtype=="intrinsic"){        // INTRINSIC MEAN
-    Sold = Sinit;
-    arma::mat Stmp(nrow,ncol,fill::zeros);
-    arma::mat Snew(nrow,ncol,fill::zeros);
-    double    Sinc = 0.0;
-    for (int it=0; it<iter; it++){
-      Stmp.fill(0.0);
-      for (int n=0; n<N; n++){
-        Stmp += 2.0*myweight(n)*riem_log(mfd, Sold, data.slice(n));
-      }
-      Snew = riem_exp(mfd, Sold, Stmp, 1.0);
-      Sinc = arma::norm(Sold-Snew,"fro");
-      Sold = Snew;
-      if (Sinc < eps){
-        break;
-      }
-    }
-  } else if (dtype=="extrinsic"){ // EXTRINSIC MEAN
-    arma::vec exemplar = riem_equiv(mfd, data.slice(0), nrow, ncol);
-    int eqdim = exemplar.n_elem;
-    arma::vec Soldvec(eqdim, fill::zeros);
-    
-    for (int n=0; n<N; n++){
-      Soldvec += myweight(n)*riem_equiv(mfd, data.slice(n), nrow, ncol);
-    }
-    Sold = riem_invequiv(mfd, Soldvec, nrow, ncol);
+namespace {
+arma::mat checked_internal_mean(std::string mfd, std::string dtype,
+                                const arma::cube& data, int iter, double eps,
+                                const arma::mat* initial) {
+  if (data.n_slices == 0) Rcpp::stop("An internal mean requires at least one observation.");
+  arma::field<arma::mat> observations(data.n_slices);
+  for (arma::uword i = 0; i < data.n_slices; ++i) observations(i) = data.slice(i);
+  arma::vec weights(data.n_slices, arma::fill::ones);
+  RiemannSummaryControl control(iter, eps);
+  RiemannSummaryResult fit;
+  if (dtype == "intrinsic") {
+    fit = riem_summary_mean(mfd, observations, weights, control, initial);
+  } else if (dtype == "extrinsic") {
+    fit = riem_summary_extrinsic(mfd, observations, weights, control, false, initial);
+  } else {
+    Rcpp::stop("Unknown internal mean geometry backend.");
   }
-  return(Sold);
+  if (!fit.converged)
+    Rcpp::stop("An internal mean did not converge (%s).", fit.termination.c_str());
+  return fit.estimate;
 }
+} // namespace
+
+arma::mat internal_mean(std::string mfd, std::string dtype, arma::cube data, int iter, double eps) {
+  return checked_internal_mean(mfd, dtype, data, iter, eps, NULL);
+}
+
+arma::mat internal_mean_init(std::string mfd, std::string dtype, arma::cube data,
+                             int iter, double eps, arma::mat Sinit) {
+  return checked_internal_mean(mfd, dtype, data, iter, eps, &Sinit);
+}
+
 arma::mat internal_logvectors(std::string mfd, arma::cube data){
   // PARAMETERS
   int nrow = data.n_rows;
@@ -375,4 +343,3 @@ arma::uvec helper_setdiff(arma::uvec& x, arma::uvec& y){
   
   return arma::conv_to<arma::uvec>::from(out);
 }
-

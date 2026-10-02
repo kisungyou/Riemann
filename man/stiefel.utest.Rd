@@ -27,6 +27,14 @@ a (list) object of \code{S3} class \code{htest} containing: \describe{
 Given the data on Stiefel manifold \eqn{St(k,p)}, it tests whether the 
 data is distributed uniformly.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #   Compare Rayleigh's original and modified versions of the test

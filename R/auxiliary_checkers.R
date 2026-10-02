@@ -10,76 +10,48 @@
 # check_spdmat ------------------------------------------------------------
 #' @keywords internal
 #' @noRd
-check_spdmat <- function(x){
-  p = nrow(x)
-  cond1 = (nrow(x)==ncol(x))
-  cond2 = (round(mat_rank(x))==p) # full-rank
-  cond3 = isSymmetric(x)
-  if (cond1&&cond2&&cond3){
-    return(TRUE)
-  } else {
-    return(FALSE)
-  }
+check_spdmat <- function(x) {
+  if (!is.matrix(x) || !is.numeric(x) || is.complex(x) ||
+      nrow(x) < 1L || nrow(x) != ncol(x) || any(!is.finite(x))) return(FALSE)
+  scale <- max(abs(x))
+  if (scale == 0 || max(abs(x - t(x))) > 64 * .Machine$double.eps * scale) return(FALSE)
+  !inherits(tryCatch(chol(x / 2 + t(x) / 2), error = identity), "error")
 }
-
 
 # check_weight      : nonnegative numbers that sum to 1 of given length ========
 #' @keywords internal
 #' @noRd
-check_weight <- function(weight, N, fname){
-  if ((!is.vector(weight))||(length(weight)!=N)){
-    stop(paste0("* ",fname," : a weight parameter should be a vector of length corresponding to the provided data."))
+check_weight <- function(weight, N, fname) {
+  if (!is.numeric(weight) || is.complex(weight) || !is.null(dim(weight)) ||
+      length(weight) != N || any(!is.finite(weight)) ||
+      any(weight < 0) || !any(weight > 0)) {
+    stop("* ", fname, " : weights must be finite nonnegative numbers of length ",
+         N, " with positive sum.", call. = FALSE)
   }
-  if (any(weight <= 0)){
-    stop(paste0("* ",fname," : we recommend to provide a weight vector of nonnegative weights."))
-  }
-  return(weight/base::sum(weight))
+  scaled <- weight / max(weight)
+  scaled / sum(scaled)
 }
 
 # check_3darray     : check if 3d array of (p,p,N) type ========================
 #' @keywords internal
 #' @noRd
-check_3darray <- function(x, symmcheck=TRUE){
-  cond1 = is.array(x)
-  cond2 = (length(dim(x))==3)
-  if (symmcheck){
-    cond3 = (dim(x)[1] == dim(x)[2])  
-  } else {
-    cond3 = TRUE
-  }
-  if (cond1&&cond2&&cond3){
-    return(TRUE)
-  } else {
-    return(FALSE)
-  }
+check_3darray <- function(x, symmcheck = TRUE) {
+  is.array(x) && length(dim(x)) == 3L && all(dim(x) > 0L) &&
+    (!symmcheck || dim(x)[1L] == dim(x)[2L])
 }
-# check_list_eqsize : for a list, all elements are of same size ================
+
 #' @keywords internal
 #' @noRd
-check_list_eqsize <- function(dlist, check.square=FALSE){
-  if (is.vector(dlist[[1]])){
-    cond0 = all(unlist(lapply(dlist, is.vector))==TRUE)        # all vectors
-    cond1 = (length(unique(unlist(lapply(dlist, length))))==1) # same length
-    if (cond0&&cond1){
-      return(TRUE)
-    } else {
-      return(FALSE)
-    }
-  } else {
-    cond0 = all(unlist(lapply(dlist, is.matrix))==TRUE)      # all matrices
-    cond1 = (length(unique(unlist(lapply(dlist, nrow))))==1) # same row size
-    cond2 = (length(unique(unlist(lapply(dlist, ncol))))==1) # same col size
-    if (check.square){
-      cond3 = (nrow(dlist[[1]])==ncol(dlist[[1]]))
-    } else {
-      cond3 = TRUE
-    }
-    if (cond0&&cond1&&cond2&&cond3){
-      return(TRUE)
-    } else {
-      return(FALSE)
-    }
+check_list_eqsize <- function(dlist, check.square = FALSE) {
+  if (!is.list(dlist) || !length(dlist)) return(FALSE)
+  first <- dlist[[1L]]
+  if (is.null(dim(first))) {
+    return(!check.square && length(first) > 0L &&
+      all(vapply(dlist, function(x) is.null(dim(x)) && length(x) == length(first), logical(1))))
   }
+  is.matrix(first) && all(dim(first) > 0L) &&
+    (!check.square || nrow(first) == ncol(first)) &&
+    all(vapply(dlist, function(x) is.matrix(x) && identical(dim(x), dim(first)), logical(1)))
 }
 
 # check_inputmfd    : check the object to abide by the structure ===============

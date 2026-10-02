@@ -10,7 +10,16 @@
 #' 
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
 #' @param ndim an integer-valued target dimension (default: 2).
-#' @param sigma the bandwidth parameter (default: 1).
+#' @param sigma A finite, strictly positive Gaussian bandwidth.
+#' @param negative Treatment of an empirically indefinite kernel: \code{"truncate"}
+#'   warns and returns a positive-spectrum embedding; \code{"error"} stops.
+#' @details Scores are eigenvectors multiplied by square roots of the centered
+#'   Gram eigenvalues. They are ordered by decreasing eigenvalue. A Gaussian of
+#'   an arbitrary manifold dissimilarity is not automatically a positive-definite
+#'   kernel. For an indefinite Gram matrix, truncated coordinates are an
+#'   approximation, not exact kernel principal component scores. The full
+#'   spectrum, negative eigenvalues, and empirical kernel status are returned.
+#'   This function remains a training-data embedding, without a predict method.
 #' 
 #' @return a named list containing \describe{
 #' \item{embed}{an \eqn{(N\times ndim)} matrix whose rows are embedded observations.}
@@ -54,17 +63,27 @@
 #' 
 #' @concept visualization
 #' @export
-riem.kpca <- function(riemobj, ndim=2, sigma=1.0){
-  ## PREPARE
-  DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
-  if (!inherits(riemobj,"riemdata")){
-    stop(paste0("* riem.kpca : input ",DNAME," should be an object of 'riemdata' class."))
+riem.kpca <- function(riemobj, ndim = 2, sigma = 1,
+                      negative = c("truncate", "error")) {
+  result <- riem_legacy_distances(riemobj, "extrinsic")
+  ndim <- riem_legacy_dimensions(ndim, length(riemobj$data))
+  sigma <- riem_legacy_positive(sigma, "sigma")
+  negative <- match.arg(negative)
+  distance <- result$distances
+  kernel <- exp(-0.5 * (distance / sigma)^2)
+  centered <- sweep(sweep(kernel, 1L, rowMeans(kernel), "-"),
+                    2L, colMeans(kernel), "-") + mean(kernel)
+  out <- riem_legacy_eigen(centered, ndim, negative, absolute_scale = 1)
+  if (length(out$negative_eigenvalues)) {
+    warning("The Gaussian dissimilarity kernel is indefinite; returning an explicitly truncated positive-spectrum embedding.",
+            call. = FALSE)
   }
-  myndim  = max(2, round(ndim))
-  mysigma = max(sqrt(.Machine$double.eps), as.double(sigma))
-  
-  ## COMPUTE VIA RCPP AND RETURN
-  output = visualize_kpca(riemobj$name, riemobj$data, mysigma, myndim)
-  output$vars = as.vector(output$vars)
-  return(output)
+  out$vars <- out$eigenvalues
+  out$geometry <- result$geometry
+  out$sigma <- sigma
+  out$kernel_status <- if (length(out$negative_eigenvalues)) "empirically_indefinite" else
+    "empirically_positive_semidefinite"
+  out$requested_dimension <- ndim
+  out$method <- if (length(out$negative_eigenvalues)) "positive_spectrum_kernel_approximation" else "kernel_pca"
+  out
 }

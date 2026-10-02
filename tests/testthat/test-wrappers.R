@@ -76,7 +76,7 @@ test_that("wrappers work", {
   data_spdk = array(0,c(5,5,3))
   list_spdk = list()
   for (i in 1:3){
-    dat = stats::cov(matrix(rnorm(10*5), ncol=5))
+    dat = tcrossprod(matrix(rnorm(5*3), nrow=5))
     data_spdk[,,i] = dat
     list_spdk[[i]] = dat 
   }

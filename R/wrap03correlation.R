@@ -2,8 +2,8 @@
 #' 
 #' The collection of correlation matrices is considered as a subset (and quotient) of 
 #' the well-known SPD manifold. In our package, it is defined as
-#' \deqn{\mathcal{C}_{++}^p = \lbrace X \in \mathbf{R}^{p\times p} ~\vert~ X^\top = X,~ \textrm{rank}(X)=p,~ \textrm{diag}(X) = 1 \rbrace}
-#' where the rank condition means it is strictly positive definite. Please note that 
+#' \deqn{\mathcal{C}_{++}^p = \lbrace X \in \mathbf{R}^{p\times p} ~\vert~ X^\top = X,~ X \succ 0,~ \textrm{diag}(X) = 1 \rbrace}
+#' where \eqn{X \succ 0} means strictly positive definite. Please note that
 #' the geometry involving semi-definite correlation matrices is not the objective here. 
 #' 
 #' @param input correlation data matrices to be wrapped as \code{riemdata} class. Following inputs are considered,
@@ -40,60 +40,15 @@
 #' 
 #' @concept wrapper
 #' @export
-wrap.correlation <- function(input){
-  ## TAKE EITHER 3D ARRAY OR A LIST
-  #  1. data format
-  if (is.array(input)){
-    if (!check_3darray(input, symmcheck=TRUE)){
-      stop("* wrap.correlation : input does not follow the size requirement as described.")
-    }
-    N = dim(input)[3]
-    tmpdata = list()
-    for (n in 1:N){
-      tmpdata[[n]] = input[,,n]
-    }
-  } else if (is.list(input)){
-    tmpdata = input
-  } else {
-    stop("* wrap.correlation : input should be either a 3d array or a list.")
-  }
-  #  2. check all same size
-  if (!check_list_eqsize(tmpdata, check.square=TRUE)){
-    stop("* wrap.correlation : elements are not of same size.")
-  }
-  #  3. check
-  N = length(tmpdata)
-  for (n in 1:N){
-    tmpdata[[n]] = check_corr(tmpdata[[n]], n)
-  }  
-  
-  # WRAP AND RETURN THE S3 CLASS
-  output = list()
-  output$data = tmpdata
-  output$size = dim(tmpdata[[1]])
-  output$name = "correlation"
-  return(structure(output, class="riemdata"))
+wrap.correlation <- function(input) {
+  data <- riem_matrix_input(input, square = TRUE)
+  data <- lapply(data, function(x) check_corr(x, 0L))
+  riem_wrap_matrices(data, "correlation")
 }
-#' @keywords internal
-#' @noRd
-check_corr <- function(x, id){
-  p = nrow(x)
-  cond1 = (nrow(x)==ncol(x))
-  cond2 = (round(mat_rank(x))==p)
-  cond3 = isSymmetric(x)
-  cond4 = all(diag(x)==1)  
-  if (cond1&&cond2&&cond3){
-    return(x)
-  } else {
-    remainder = (id%%10)
-    if (remainder==1){
-      stop(paste0("* wrap.correlation : ",id,"st object is not a valid correlation object."))
-    } else if (remainder==2){
-      stop(paste0("* wrap.correlation : ",id,"nd object is not a valid correlation object."))
-    } else if (remainder==3){
-      stop(paste0("* wrap.correlation : ",id,"rd object is not a valid correlation object."))
-    } else {
-      stop(paste0("* wrap.correlation : ",id,"th object is not a valid correlation object."))
-    }
+
+check_corr <- function(x, id) {
+  if (!check_spdmat(x) || any(abs(diag(x) - 1) > 64 * .Machine$double.eps)) {
+    stop("Observation ", id, " must be symmetric positive definite with unit diagonal.", call. = FALSE)
   }
+  x / 2 + t(x) / 2
 }

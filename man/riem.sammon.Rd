@@ -9,19 +9,23 @@ riem.sammon(riemobj, ndim = 2, geometry = c("intrinsic", "extrinsic"), ...)
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
 
-\item{ndim}{an integer-valued target dimension (default: 2).}
+\item{ndim}{a positive integer target dimension smaller than the number of
+observations (default: 2).}
 
 \item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
 
-\item{...}{extra parameters including\describe{
-\item{maxiter}{maximum number of iterations to be run (default:50).}
-\item{eps}{tolerance level for stopping criterion (default: 1e-5).}
-}}
+\item{...}{named controls including\describe{
+\item{maxiter}{positive maximum number of iterations (default: 50).}
+\item{eps}{nonnegative tolerance for the root mean squared coordinate step,
+after distances are divided by their maximum (default: 1e-5).}
+} Unknown controls are errors.}
 }
 \value{
 a named list containing \describe{
 \item{embed}{an \eqn{(N\times ndim)} matrix whose rows are embedded observations.}
-\item{stress}{discrepancy between embedded and original distances as a measure of error.}
+\item{stress}{normalized distance stress,
+\eqn{\sqrt{\sum_{i<j}(D_{ij}-d_{ij})^2/\sum_{i<j}D_{ij}^2}}.
+This legacy diagnostic differs from the optimized Sammon loss.}
 }
 }
 \description{
@@ -30,6 +34,30 @@ apply Sammon mapping, a non-linear dimensionality reduction method. Since
 the method depends only on the pairwise distances of the data, it can be 
 adapted to the manifold-valued data.
 }
+\details{
+The optimized Sammon loss is
+  \eqn{\sum_{i<j}(D_{ij}-d_{ij})^2/D_{ij}\,/\,\sum_{i<j}D_{ij}},
+  where \eqn{D} and \eqn{d} are the original and embedded distances.
+  Every off-diagonal original distance must be strictly positive and finite;
+  coincident observations (including different representations of the same
+  point) must be removed before fitting because this loss divides by
+  \eqn{D_{ij}}. Distances are normalized internally, making the stopping
+  tolerance independent of a common change of measurement units.
+  Classical scaling initializes the coordinates, with negative eigenvalues
+  truncated to zero and coincident projected points separated by a small
+  deterministic perturbation. Diagonal-Hessian updates use backtracking to
+  decrease the Sammon loss. If no finite decreasing step can be found, the
+  last accepted coordinates are returned. This local procedure does not
+  establish a global minimum.
+}
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #          Example on Sphere : a dataset with three types

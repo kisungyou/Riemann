@@ -29,6 +29,14 @@ PHATE is a nonlinear manifold learning method that is specifically targeted at
 improving diffusion maps by incorporating data-adaptive kernel construction, 
 detection of optimal time scale, and information-theoretic metric measures.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 \donttest{
 #-------------------------------------------------------------------

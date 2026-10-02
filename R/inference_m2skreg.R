@@ -1,181 +1,176 @@
-#' Manifold-to-Scalar Kernel Regression 
-#' 
-#' Given \eqn{N} observations \eqn{X_1, X_2, \ldots, X_N \in \mathcal{M}} and 
-#' scalars \eqn{y_1, y_2, \ldots, y_N \in \mathbf{R}}, perform the Nadaraya-Watson kernel 
-#' regression by 
-#' \deqn{\hat{m}_h (X) = \frac{\sum_{i=1}^n K \left( \frac{d(X,X_i)}{h}  \right) y_i}{\sum_{i=1}^n K \left( \frac{d(X,X_i)}{h}  \right)}}
-#' where the Gaussian kernel is defined as
-#' \deqn{K(x) := \frac{1}{\sqrt{2\pi}} \exp \left( - \frac{x^2}{2}\right)} 
-#' with the bandwidth parameter \eqn{h > 0} that controls the degree of smoothness. 
-#' 
-#' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data corresponding to \eqn{X_1,\ldots,X_N}.
-#' @param y a length-\eqn{N} vector of dependent variable values.
-#' @param bandwidth a nonnegative number that controls smoothness.
-#' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
-#' 
-#' @return a named list of S3 class \code{m2skreg} containing
-#' \describe{
-#' \item{ypred}{a length-\eqn{N} vector of smoothed responses.}
-#' \item{bandwidth}{the bandwidth value that was originally provided, which is saved for future use.}
-#' \item{inputs}{a list containing both \code{riemobj} and \code{y} for future use.}
-#' }
-#' 
-#' @examples 
-#' \donttest{
-#' #-------------------------------------------------------------------
-#' #                    Example on Sphere S^2
-#' #
-#' #  X : equi-spaced points from (0,0,1) to (0,1,0)
-#' #  y : sin(x) with perturbation
-#' #-------------------------------------------------------------------
-#' # GENERATE DATA
-#' npts = 100
-#' nlev = 0.25
-#' thetas = seq(from=0, to=pi/2, length.out=npts)
-#' Xstack = cbind(rep(0,npts), sin(thetas), cos(thetas))
-#' 
-#' Xriem  = wrap.sphere(Xstack)
-#' ytrue  = sin(seq(from=0, to=2*pi, length.out=npts))
-#' ynoise = ytrue + rnorm(npts, sd=nlev)
-#' 
-#' # FIT WITH DIFFERENT BANDWIDTHS
-#' fit1 = riem.m2skreg(Xriem, ynoise, bandwidth=0.001)
-#' fit2 = riem.m2skreg(Xriem, ynoise, bandwidth=0.01)
-#' fit3 = riem.m2skreg(Xriem, ynoise, bandwidth=0.1)
-#' 
-#' # VISUALIZE
-#' xgrd <- 1:npts
-#' opar <- par(no.readonly=TRUE)
-#' par(mfrow=c(1,3))
-#' plot(xgrd, fit1$ypred, pch=19, cex=0.5, "b", xlab="", ylim=c(-2,2), main="h=1e-3")
-#' lines(xgrd, ytrue, col="red", lwd=1.5)
-#' plot(xgrd, fit2$ypred, pch=19, cex=0.5, "b", xlab="", ylim=c(-2,2), main="h=1e-2")
-#' lines(xgrd, ytrue, col="red", lwd=1.5)
-#' plot(xgrd, fit3$ypred, pch=19, cex=0.5, "b", xlab="", ylim=c(-2,2), main="h=1e-1")
-#' lines(xgrd, ytrue, col="red", lwd=1.5)
-#' par(opar)
-#' }
-#' 
+#' Manifold-to-Scalar Kernel Regression
+#'
+#' Fits the Nadaraya--Watson smoother for manifold-valued predictors and finite
+#' real scalar responses. For bandwidth \eqn{h>0}, weights at \eqn{x} are
+#' proportional to \eqn{\exp\{-d(x,X_i)^2/(2h^2)\}}. The selected distance and
+#' training observations are retained for prediction. Training fitted values
+#' include the observation's own weight; they are not cross-validated predictions.
+#'
+#' @param riemobj A \code{riemdata} object containing the training predictors.
+#' @param y A finite numeric response vector with one entry per predictor.
+#' @param bandwidth One finite, strictly positive bandwidth.
+#' @param geometry Geometry name or specification. \code{NULL} resolves the
+#'   input's geometry, defaulting to its intrinsic geometry when unspecified.
+#'   Legacy \code{"intrinsic"} and \code{"extrinsic"} aliases are accepted.
+#'
+#' @details Weights are normalized after subtracting the smallest squared
+#'   distance in the exponent. The difference is evaluated without first
+#'   squaring the distances, avoiding all-zero weights for small bandwidths or
+#'   distant predictions. Numerically negligible relative weights can still
+#'   underflow to zero. This is floating-point evaluation of the Gaussian
+#'   smoother, not a change to a nearest-neighbor model.
+#'
+#'   The effective weight count and nearest training distance divided by the
+#'   bandwidth describe the weights and distance scale. They are not confidence
+#'   intervals or assurances of adequate statistical support.
+#'
+#' @return An object of class \code{m2skreg}. Legacy fields \code{ypred},
+#'   \code{bandwidth}, and \code{inputs} are retained. Additional fields include
+#'   resolved \code{geometry}, \code{call}, input dimensions, schema and package
+#'   versions, and \code{training_diagnostics}. No distance matrix is retained.
+#'
+#' @examples
+#' theta <- seq(0, pi / 2, length.out = 8)
+#' X <- wrap.sphere(cbind(cos(theta), sin(theta)))
+#' fit <- riem.m2skreg(X, sin(2 * theta), bandwidth = 0.3)
+#' predict(fit, X)
+#' summary(fit)
+#'
 #' @concept inference
 #' @export
-riem.m2skreg <- function(riemobj, y, bandwidth=0.5, geometry=c("intrinsic","extrinsic")){
-  ## PREPARE
-  DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
-  if (!inherits(riemobj,"riemdata")){
-    stop(paste0("* riem.m2skreg : input ",DNAME," should be an object of 'riemdata' class."))
-  }
-  N = length(riemobj$data)
-  y = as.vector(y)
-  if (length(y)!=N){
-    stop(paste0("* riem.m2skreg : length of 'y' should equal to ",N,"."))
-  }
-  mybandwidth = max(sqrt(.Machine$double.eps), as.double(bandwidth))
-  mygeometry  = ifelse(missing(geometry),"intrinsic",
-                      match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  
-  ## COMPUTE PAIRWISE DISTANCE
-  distmat  = basic_pdist(riemobj$name, riemobj$data, mygeometry)
-  
-  ## FILL IN THE DIFFERENCES
-  ypred = rep(0,N)
-  for (n in 1:N){
-    tgtvec = as.vector(distmat[n,])
-    tgtscd = exp(-(tgtvec^2)/(2*(mybandwidth^2)))
-    ypred[n] = base::sum(tgtscd*y)/base::sum(tgtscd)
-  }
-  
-  ## RETURN THE OUTPUT
-  output = list()
-  output$ypred = ypred
-  output$bandwidth = mybandwidth
-  output$inputs = list(riemobj, y)
-  return(structure(output, class="m2skreg"))
+riem.m2skreg <- function(riemobj, y, bandwidth = 0.5, geometry = NULL) {
+  riem_validate_data(riemobj)
+  y <- riem_regression_response(y, length(riemobj$data))
+  bandwidth <- riem_regression_bandwidth(bandwidth)
+  geometry <- riem_resolve_geometry(riemobj, geometry, capability = "distance")
+  distances <- basic_pdist(riemobj$name, riemobj$data, geometry$backend)
+  result <- riem_kernel_predict_distances(distances, y, bandwidth)
+  riem_regression_object(riemobj, y, bandwidth, geometry, result, match.call())
 }
 
-
-
-#' Prediction for Manifold-to-Scalar Kernel Regression 
-#' 
-#' Given new observations \eqn{X_1, X_2, \ldots, X_M \in \mathcal{M}}, plug in 
-#' the data with respect to the fitted model for prediction. 
-#' 
-#' @param object an object of \code{m2skreg} class. See \code{\link{riem.m2skreg}} for more details.
-#' @param newdata a S3 \code{"riemdata"} class for manifold-valued data corresponding to \eqn{X_1,\ldots,X_M}.
-#' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
-#' @param ... further arguments passed to or from other methods.
-#' 
-#' @return a length-\eqn{M} vector of predictted values.
-#' 
-#' @examples 
-#' \donttest{
-#' #-------------------------------------------------------------------
-#' #                    Example on Sphere S^2
-#' #
-#' #  X : equi-spaced points from (0,0,1) to (0,1,0)
-#' #  y : sin(x) with perturbation
-#' #
-#' #  Our goal is to check whether the predict function works well
-#' #  by comparing the originally predicted values vs. those of the same data.
-#' #-------------------------------------------------------------------
-#' # GENERATE DATA
-#' npts = 100
-#' nlev = 0.25
-#' thetas = seq(from=0, to=pi/2, length.out=npts)
-#' Xstack = cbind(rep(0,npts), sin(thetas), cos(thetas))
-#' 
-#' Xriem  = wrap.sphere(Xstack)
-#' ytrue  = sin(seq(from=0, to=2*pi, length.out=npts))
-#' ynoise = ytrue + rnorm(npts, sd=nlev)
-#' 
-#' # FIT & PREDICT
-#' obj_fit   = riem.m2skreg(Xriem, ynoise, bandwidth=0.01)
-#' yval_fits = obj_fit$ypred
-#' yval_pred = predict(obj_fit, Xriem)
-#' 
-#' # VISUALIZE
-#' xgrd <- 1:npts
-#' opar <- par(no.readonly=TRUE)
-#' par(mfrow=c(1,2))
-#' plot(xgrd, yval_fits, pch=19, cex=0.5, "b", xlab="", ylim=c(-2,2), main="original fit")
-#' lines(xgrd, ytrue, col="red", lwd=1.5)
-#' plot(xgrd, yval_pred, pch=19, cex=0.5, "b", xlab="", ylim=c(-2,2), main="from 'predict'")
-#' lines(xgrd, ytrue, col="red", lwd=1.5)
-#' par(opar)
-#' }
-#' 
+#' Prediction for Manifold-to-Scalar Kernel Regression
+#'
+#' Predicts under the fitted geometry and bandwidth without refitting or using
+#' prediction-batch statistics. Training predictors and responses are required.
+#'
+#' @param object A fitted \code{m2skreg} object.
+#' @param newdata A compatible \code{riemdata} object containing new predictors.
+#' @param geometry Usually \code{NULL}, which uses the fitted geometry. An
+#'   explicit value must resolve to the same geometry. An old serialized object
+#'   without geometry metadata requires an explicit value and produces a
+#'   warning, because its original geometry cannot be inferred reliably.
+#' @param diagnostics Whether to return support diagnostics with predictions.
+#' @param block_size Positive integer limiting the number of new observations
+#'   in each cross-distance calculation. It does not change the fitted model.
+#' @param ... Reserved for future arguments; unknown arguments are rejected.
+#'
+#' @return By default, a numeric vector with one prediction per observation.
+#'   With \code{diagnostics=TRUE}, a list containing \code{prediction} and a data
+#'   frame \code{diagnostics} with \code{effective_n}, \code{nearest_distance},
+#'   and \code{nearest_over_bandwidth}. The last quantity may be infinite when
+#'   the ratio is not representable even though the prediction remains finite.
 #' @seealso \code{\link{riem.m2skreg}}
 #' @concept inference
+#' @method predict m2skreg
 #' @export
-predict.m2skreg <- function(object, newdata, geometry=c("intrinsic","extrinsic"), ...){
-  # Check Inputs
-  if (!inherits(object,"m2skreg")){
-    stop("* predict : input is not an object of 'm2skreg' class.")
+predict.m2skreg <- function(object, newdata, geometry = NULL,
+                           diagnostics = FALSE, block_size = 256L, ...) {
+  if (length(list(...))) stop("Unknown prediction arguments.", call. = FALSE)
+  riem_regression_validate_object(object)
+  training <- object$inputs[[1L]]
+  riem_check_newdata(training, newdata)
+  y <- riem_regression_response(object$inputs[[2L]], length(training$data))
+  bandwidth <- riem_regression_bandwidth(object$bandwidth)
+  resolved <- riem_regression_prediction_geometry(object, geometry)
+  if (!is.logical(diagnostics) || length(diagnostics) != 1L || is.na(diagnostics)) {
+    stop("'diagnostics' must be TRUE or FALSE.", call. = FALSE)
   }
-  mygeometry  = ifelse(missing(geometry),"intrinsic",
-                       match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  
-  my_old  = object$inputs[[1]] # original X's
-  my_yvec = object$inputs[[2]] # original y's
-  my_bdh  = as.double(object$bandwidth)
-  
-  my_new  = newdata
-  if (!check_tworiems(my_old, my_new)){
-    stop("* predict : input 'newdata' is a not valid object due to one of many possible reasons.")
+  block_size <- riem_regression_integer(block_size, "block_size", 1L)
+  nnew <- length(newdata$data)
+  prediction <- numeric(nnew)
+  support <- matrix(NA_real_, nnew, 3L,
+                    dimnames = list(NULL, c("effective_n", "nearest_distance",
+                                            "nearest_over_bandwidth")))
+  for (first in seq.int(1L, nnew, by = block_size)) {
+    ids <- seq.int(first, min(nnew, as.double(first) + block_size - 1))
+    distances <- basic_pdist2(training$name, training$data, newdata$data[ids],
+                             resolved$backend)
+    result <- riem_kernel_predict_distances(distances, y, bandwidth)
+    prediction[ids] <- result$prediction
+    support[ids, ] <- as.matrix(result$diagnostics)
   }
-  N = length(my_old$data) # reference points
-  M = length(my_new$data) # provided data length
-  
-  # Pairwise Distance matrix of size (N x M) 
-  distmat = basic_pdist2(my_old$name, my_old$data, my_new$data, mygeometry)
-  
-  # Do the prediction
-  ypred = rep(0,M)
-  for (m in 1:M){
-    tgtvec = as.vector(distmat[,m])
-    tgtscd = base::exp(-(tgtvec^2)/(2*(my_bdh^2)))
-    ypred[m] = base::sum(tgtscd*my_yvec)/base::sum(tgtscd)
+  if (diagnostics) {
+    return(list(prediction = prediction, diagnostics = as.data.frame(support)))
   }
-  
-  # Return
-  return(ypred)
+  prediction
+}
+
+#' Methods for Scalar-Response Kernel Regression Fits
+#'
+#' @param object,x A fitted \code{m2skreg} object, or its summary for the summary
+#'   printing method.
+#' @param ... Additional arguments; currently unused.
+#' @return \code{fitted} and \code{residuals} return numeric vectors; residuals
+#'   are observed responses minus training fitted values. \code{summary}
+#'   returns a \code{summary.m2skreg} list. Printing returns its input invisibly.
+#' @name m2skreg-methods
+#' @method fitted m2skreg
+#' @export
+fitted.m2skreg <- function(object, ...) {
+  riem_regression_validate_object(object)
+  object$ypred
+}
+
+#' @rdname m2skreg-methods
+#' @method residuals m2skreg
+#' @export
+residuals.m2skreg <- function(object, ...) {
+  riem_regression_validate_object(object)
+  object$inputs[[2L]] - object$ypred
+}
+
+#' @rdname m2skreg-methods
+#' @method summary m2skreg
+#' @export
+summary.m2skreg <- function(object, ...) {
+  riem_regression_validate_object(object)
+  residual <- stats::residuals(object)
+  scale <- max(abs(residual))
+  rmse <- if (scale == 0) 0 else if (!is.finite(scale)) Inf else
+    sqrt(mean((residual / scale)^2)) * scale
+  output <- list(call = object$call, nobs = length(object$inputs[[2L]]),
+                 bandwidth = object$bandwidth, geometry = object$geometry,
+                 training_rmse = rmse,
+                 training_diagnostics = object$training_diagnostics,
+                 errors = object$errors, fold_errors = object$fold_errors,
+                 candidate_status = object$candidate_status,
+                 cv_sse = if (!is.null(object$cv)) object$cv$selected_sse else NULL)
+  structure(output, class = "summary.m2skreg")
+}
+
+#' @rdname m2skreg-methods
+#' @method print m2skreg
+#' @export
+print.m2skreg <- function(x, ...) {
+  riem_regression_validate_object(x)
+  cat("Manifold-to-scalar Gaussian kernel regression\n")
+  cat("Observations:", length(x$inputs[[2L]]), "  Bandwidth:", x$bandwidth, "\n")
+  cat("Geometry:", if (is.null(x$geometry)) "unknown (legacy object)" else
+    x$geometry$geometry_id, "\n")
+  if (!is.null(x$cv)) cat("Cross-validation:", length(unique(x$foldid)),
+                         "folds; selected SSE:", x$cv$selected_sse, "\n")
+  invisible(x)
+}
+
+#' @rdname m2skreg-methods
+#' @method print summary.m2skreg
+#' @export
+print.summary.m2skreg <- function(x, ...) {
+  cat("Manifold-to-scalar Gaussian kernel regression\n")
+  cat("Observations:", x$nobs, "  Bandwidth:", x$bandwidth, "\n")
+  cat("Geometry:", if (is.null(x$geometry)) "unknown (legacy object)" else
+    x$geometry$geometry_id, "\n")
+  cat("Training RMSE (includes self-weights):", x$training_rmse, "\n")
+  if (!is.null(x$cv_sse)) cat("Selected cross-validation SSE:", x$cv_sse, "\n")
+  invisible(x)
 }

@@ -3,71 +3,69 @@
 \name{riem.fanova}
 \alias{riem.fanova}
 \alias{riem.fanovaP}
-\title{Fréchet Analysis of Variance}
+\title{Frechet Analysis of Variance}
 \usage{
-riem.fanova(..., maxiter = 50, eps = 1e-05)
+riem.fanova(..., maxiter = 50, eps = 1e-05, geometry = NULL)
 
-riem.fanovaP(..., maxiter = 50, eps = 1e-05, nperm = 99)
+riem.fanovaP(..., maxiter = 50, eps = 1e-05, nperm = 99, geometry = NULL)
 }
 \arguments{
-\item{...}{S3 objects of \code{riemdata} class for manifold-valued data.}
+\item{...}{At least two compatible \code{riemdata} objects, each containing
+at least three observations. Observations must be independent within and
+across groups for the documented calibration; paired, repeated or clustered
+observations require a separate restricted resampling procedure.}
 
-\item{maxiter}{maximum number of iterations to be run.}
+\item{maxiter}{Positive integer iteration budget for each Frechet mean.}
 
-\item{eps}{tolerance level for stopping criterion.}
+\item{eps}{Finite positive tolerance for the shared mean solver.}
 
-\item{nperm}{the number of permutations for resampling-based test.}
+\item{geometry}{A geometry name or saved specification with a compatible
+mean and distance implementation. By default all groups must resolve to
+the same geometry.}
+
+\item{nperm}{Positive integer number of random label permutations.}
 }
 \value{
-a (list) object of \code{S3} class \code{htest} containing: \describe{
-\item{statistic}{a test statistic.}
-\item{p.value}{\eqn{p}-value under \eqn{H_0}.}
-\item{alternative}{alternative hypothesis.}
-\item{method}{name of the test.}
-\item{data.name}{name(s) of provided sample data.}
-}
+An \code{htest} object with statistic, p-value, null/alternative,
+  resolved geometry, calibration, group sizes and mean diagnostics.
+  The permutation version additionally retains permuted statistics,
+  \code{nperm}, and \code{mc_se}.
 }
 \description{
-Given sets of manifold-valued data \eqn{X^{(1)}_{1:{n_1}}, X^{(2)}_{1:{n_2}}, \ldots, X^{(m)}_{1:{n_m}}}, 
-performs analysis of variance to test equality of distributions. This means, small \eqn{p}-value implies that 
-at least one of the equalities does not hold.
+Compares population Frechet means and variances using the statistic of Dubey
+and Muller (2019), equation (14). The asymptotic chi-squared calibration
+targets equality of those summaries, not arbitrary equality of distributions.
+The permutation version requires exchangeable observations under the stronger
+null of identical group distributions, and targets alternatives detected by
+the same mean-and-variance statistic.
+}
+\details{
+The asymptotic result requires unique population/sample means,
+  positive variances of the squared distances to each group mean, suitable
+  moment/metric-entropy conditions, and group proportions bounded away from
+  zero. The cited paper gives sufficient bounded-space conditions; accepting
+  an input manifold does not establish them for every population distribution.
+  The function rejects failed mean fits and a degenerate empirical denominator.
+
+  For group proportions \eqn{\lambda_j=n_j/n}, the two denominators are
+  \eqn{\sum_j\lambda_j/\widehat\sigma_j^2} and
+  \eqn{\sum_j\lambda_j^2\widehat\sigma_j^2}. Distances are jointly rescaled
+  before forming the statistic; this leaves it unchanged and avoids unit-scale
+  overflow. Numerical rescaling does not transform the underlying geometry.
+
+  \code{riem.fanovaP} refits all group means for every sampled label assignment.
+  It uses \eqn{(1+\#\{T_b\geq T_{obs}\})/(nperm+1)}, including ties. The pooled
+  fit is unchanged by label permutation and is reused. Permutations follow R's
+  current random-number state. The returned Monte Carlo standard error is a
+  plug-in diagnostic for simulation variability, not inferential uncertainty
+  in the scientific effect.
 }
 \examples{
-#-------------------------------------------------------------------
-#            Example on Sphere : Uniform Samples
-#
-#  Each of 4 classes consists of 20 uniform samples from uniform 
-#  density on 2-dimensional sphere S^2 in R^3.
-#-------------------------------------------------------------------
-## PREPARE DATA OF 4 CLASSES
-ndata  = 200
-class1 = list()
-class2 = list()
-class3 = list()
-class4 = list()
-for (i in 1:ndata){
-  tmpxy = matrix(rnorm(4*2, sd=0.1), ncol=2)
-  tmpz  = rep(1,4)
-  tmp3d = cbind(tmpxy, tmpz)
-  tmp  = tmp3d/sqrt(rowSums(tmp3d^2))
-  
-  class1[[i]] = tmp[1,]
-  class2[[i]] = tmp[2,]
-  class3[[i]] = tmp[3,]
-  class4[[i]] = tmp[4,]
-}
-obj1 = wrap.sphere(class1)
-obj2 = wrap.sphere(class2)
-obj3 = wrap.sphere(class3)
-obj4 = wrap.sphere(class4)
-
-## RUN THE ASYMPTOTIC TEST
-riem.fanova(obj1, obj2, obj3, obj4)
-
-\donttest{
-## RUN THE PERMUTATION TEST WITH MANY PERMUTATIONS
-riem.fanovaP(obj1, obj2, obj3, obj4, nperm=999)
-}
+X <- wrap.euclidean(matrix(c(-1, 0, 2, 3), ncol = 1))
+Y <- wrap.euclidean(matrix(c(0, 1, 4, 8), ncol = 1))
+riem.fanova(X, Y)
+set.seed(17)
+riem.fanovaP(X, Y, nperm = 19)
 
 }
 \references{

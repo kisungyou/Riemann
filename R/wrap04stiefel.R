@@ -41,49 +41,20 @@
 #' 
 #' @concept wrapper
 #' @export
-wrap.stiefel <- function(input){
-  ## TAKE EITHER 3D ARRAY OR A LIST
-  #  1. data format
-  if (is.array(input)){
-    if (!check_3darray(input, symmcheck=FALSE)){
-      stop("* wrap.stiefel : input does not follow the size requirement as described.")
-    }
-    N = dim(input)[3]
-    tmpdata = list()
-    for (n in 1:N){
-      tmpdata[[n]] = input[,,n]
-    }
-  } else if (is.list(input)){
-    tmpdata = input
-  } else {
-    stop("* wrap.stiefel : input should be either a 3d array or a list.")
-  }
-  #  2. check all same size
-  if (!check_list_eqsize(tmpdata, check.square=FALSE)){
-    stop("* wrap.stiefel : elements are not of same size.")
-  }
-  #  3. check and transform to Stiefel
-  N = length(tmpdata)
-  for (n in 1:N){
-    tmpdata[[n]] = check_stiefel(tmpdata[[n]])
-  }
-  
-  ## WRAP AND RETURN THE S3 CLASS
-  output = list()
-  output$data = tmpdata
-  output$size = dim(tmpdata[[1]])
-  output$name = "stiefel"
-  return(structure(output, class="riemdata"))
+wrap.stiefel <- function(input) {
+  data <- riem_matrix_input(input, square = FALSE)
+  data <- lapply(data, function(x) check_stiefel(x))
+  riem_wrap_matrices(data, "stiefel")
 }
-#' @keywords internal
-#' @noRd
-check_stiefel <- function(mat){
-  k   = ncol(mat)
-  tgt = t(mat)%*%mat
-  eps = (base::norm(tgt-diag(k),"F")/sqrt(k))
-  if (eps > 1e-10){
-    return(base::qr.Q(base::qr(mat)))
-  } else {
-    return(mat)
+
+check_stiefel <- function(mat) {
+  if (!is.matrix(mat) || !is.numeric(mat) || is.complex(mat) ||
+      any(!is.finite(mat)) || !riem_full_column_rank(mat)) {
+    stop("A frame must be a finite real full-column-rank matrix with rows >= columns.", call. = FALSE)
   }
+  if (norm(crossprod(mat) - diag(ncol(mat)), "F") <= 1e-10 * sqrt(ncol(mat))) return(mat)
+  labels <- dimnames(mat)
+  result <- qr.Q(qr(mat / max(abs(mat))))
+  dimnames(result) <- labels
+  result
 }

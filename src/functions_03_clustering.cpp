@@ -522,149 +522,141 @@ Rcpp::List clustering_sup_intrinsic(std::string mfdname, Rcpp::List& data, arma:
   return(output);
 }
 
-// 6. clustering_kmeans18B     : lightweight coreset ===========================
-arma::cube clustering_kmeans18B_macqueen(std::string mfdname, std::string geotype, arma::cube mydata, int iter, double eps, arma::uvec initlabel){
-  // PREPARE
-  int nrow = mydata.n_rows;
-  int ncol = mydata.n_cols;
-  int N    = mydata.n_slices;
-  
-  // labels 
-  arma::uvec oldlabel = initlabel - initlabel.min(); 
-  arma::cube oldmeans = helper_centers(mfdname, geotype, mydata, oldlabel);
-  if (oldmeans.has_nan()){
-    Rcpp::stop("MacQueen's Algorithm Terminated at Initialization.");
-  }
-  int K     = oldmeans.n_slices;
-  double KK = static_cast<double>(K);
-  
-  arma::uvec newlabel(N,fill::zeros);
-  arma::cube newmeans(nrow,ncol,K,fill::zeros);
-  double     meanincs = 0.0;
-  
-  // MAIN ITERATION
-  arma::uword idnow;
-  arma::uvec update_order;
-  arma::vec  distctd(K,fill::zeros);
-  arma::uword newclass;
-  arma::uword oldclass;
-  for (int it=0; it<iter; it++){
-    // Random Permutation
-    update_order = arma::randperm(N);
-    newlabel = oldlabel;
-    newmeans = oldmeans;
-    for (int n=0; n<N; n++){
-      // 1. compute distance to the centroids
-      idnow = update_order(n);
-      for (int k=0; k<K; k++){
-        if (geotype=="intrinsic"){
-          distctd(k) = riem_dist(mfdname, mydata.slice(idnow), newmeans.slice(k));  
-        } else {
-          distctd(k) = riem_distext(mfdname, mydata.slice(idnow), newmeans.slice(k));
-        }
-      }
-      // 2. re-assign to the nearest and re-compute
-      newclass = distctd.index_min();
-      oldclass = newlabel(idnow);
-      if (oldclass!=newclass){
-        newlabel(idnow) = newclass;
-        newmeans.slice(oldclass) = internal_mean_init(mfdname, geotype, mydata.slices(arma::find(newlabel==oldclass)), 50, 1e-5, newmeans.slice(oldclass));
-        newmeans.slice(newclass) = internal_mean_init(mfdname, geotype, mydata.slices(arma::find(newlabel==newclass)), 50, 1e-5, newmeans.slice(newclass));
-      }
-    }
-    if (helper_nunique(newlabel) < K){ // if there is any empty cluster, stop.
-      break;
-    }
-    
-    // Update & Termination
-    meanincs = 0.0;
-    for (int k=0; k<K; k++){
-      meanincs += arma::norm(oldmeans.slice(k)-newmeans.slice(k),"fro")/KK;
-    }
-    oldlabel = newlabel;
-    oldmeans = newmeans;
-    if (meanincs < eps){
-      break;
-    }
-  }
-  // RETURN
-  return(oldmeans);
+// 6. clustering_kmeans18B     : weighted lightweight coreset =================
+// Shared construction keeps the sampling design identical in both public APIs.
+Rcpp::List learning_coreset18B(std::string mfdname, std::string geoname,
+  Rcpp::List& data, int M, int myiter, double myeps);
+
+namespace {
+double coreset_distance(const std::string& mfd, const std::string& geometry,
+                        const arma::mat& x, const arma::mat& y) {
+  if (arma::approx_equal(x, y, "absdiff", 0.0)) return 0.0;
+  const double value = geometry == "intrinsic" ? riem_dist(mfd, x, y) : riem_distext(mfd, x, y);
+  if (!std::isfinite(value) || value < 0.0)
+    Rcpp::stop("Coreset clustering encountered invalid distances.");
+  return value;
 }
-//    given the subset of the data, run k-means / MacQueen algorithm
-arma::cube clustering_kmeans18B_kcenters(std::string mfdname, std::string geotype, arma::cube data, int K){
-  // get parameter
-  int M = data.n_slices;
-  int nrow = data.n_rows;
-  int ncol = data.n_cols;
-  
-  // compute initlabel
-  arma::uvec initlabel = helper_kmeans_initlabel(mfdname, data, K);
-  arma::cube centroids = clustering_kmeans18B_macqueen(mfdname, geotype, data, 50, 1e-7, initlabel);
-  return(centroids);
+
+arma::mat coreset_distances(const std::string& mfd, const std::string& geometry,
+                           const arma::cube& data, const arma::cube& centers) {
+  arma::mat result(data.n_slices, centers.n_slices);
+  for (arma::uword i = 0; i < data.n_slices; ++i)
+    for (arma::uword j = 0; j < centers.n_slices; ++j)
+      result(i,j) = coreset_distance(mfd, geometry, data.slice(i), centers.slice(j));
+  return result;
 }
+
+arma::uvec coreset_assign(const arma::mat& distances) {
+  arma::uvec labels(distances.n_rows);
+  for (arma::uword i = 0; i < distances.n_rows; ++i) labels(i) = distances.row(i).index_min();
+  return labels;
+}
+
+double coreset_cost(const arma::mat& distances, const arma::uvec& labels,
+                    const arma::vec& weights) {
+  double value = 0.0;
+  for (arma::uword i = 0; i < labels.n_elem; ++i) {
+    const double d = distances(i, labels(i));
+    value += weights(i) * d * d;
+  }
+  if (!std::isfinite(value)) Rcpp::stop("Coreset clustering objective overflowed.");
+  return value;
+}
+
+arma::cube coreset_initialize(const std::string& mfd, const std::string& geometry,
+                             const arma::cube& data, const arma::vec& weights, int K) {
+  const int M = data.n_slices;
+  arma::cube centers(data.n_rows, data.n_cols, K);
+  arma::uvec draw = helper_sample(M, 1, weights / arma::accu(weights), true);
+  centers.slice(0) = data.slice(draw(0));
+  arma::vec nearest(M);
+  for (int i = 0; i < M; ++i)
+    nearest(i) = coreset_distance(mfd, geometry, data.slice(i), centers.slice(0));
+  for (int k = 1; k < K; ++k) {
+    const double scale = nearest.max();
+    if (scale == 0.0) {
+      // Preserve the original iid draw even if its support is smaller than K.
+      centers.slice(k) = centers.slice(0);
+    } else {
+      arma::vec probability = weights % arma::square(nearest / scale);
+      draw = helper_sample(M, 1, probability / arma::accu(probability), true);
+      centers.slice(k) = data.slice(draw(0));
+      for (int i = 0; i < M; ++i)
+        nearest(i) = std::min(nearest(i), coreset_distance(mfd, geometry,
+          data.slice(i), centers.slice(k)));
+    }
+  }
+  return centers;
+}
+
+arma::mat coreset_weighted_mean(const std::string& mfd, const std::string& geometry,
+                               const arma::cube& data, const arma::vec& weights,
+                               const arma::uvec& members, const arma::mat& initial) {
+  arma::field<arma::mat> subset(members.n_elem);
+  for (arma::uword i = 0; i < members.n_elem; ++i) subset(i) = data.slice(members(i));
+  RiemannSummaryControl control(200, 1e-8);
+  RiemannSummaryResult fit = geometry == "intrinsic" ?
+    riem_summary_mean(mfd, subset, weights.elem(members), control, &initial) :
+    riem_summary_extrinsic(mfd, subset, weights.elem(members), control, false, &initial);
+  if (!fit.converged) Rcpp::stop("A weighted coreset mean did not converge (%s).", fit.termination.c_str());
+  return fit.estimate;
+}
+} // namespace
 
 // [[Rcpp::export]]
 Rcpp::List clustering_kmeans18B(std::string mfdname, std::string geotype, Rcpp::List& data, int K, int M, int maxiter){
-  // PARAMETER AND DATA PREP
-  int N = data.size(); double NN = static_cast<double>(N);
-  arma::mat exemplar = Rcpp::as<arma::mat>(data[0]);
-  int nrow = exemplar.n_rows;
-  int ncol = exemplar.n_cols;  
-  arma::cube mydata(nrow,ncol,N,fill::zeros);
-  for (int n=0; n<N; n++){
-    mydata.slice(n) = Rcpp::as<arma::mat>(data[n]);
-  }
-  
-  // STEP 1. COMPUTE MEAN AND DISTANCE
-  arma::mat Xmean = internal_mean(mfdname, geotype, mydata, 50, 1e-6);
-  arma::vec distsq(N,fill::zeros);
-  double    dval = 0.0;
-  for (int n=0; n<N; n++){
-    if (geotype=="intrinsic"){
-      dval = riem_dist(mfdname, Xmean, mydata.slice(n));
-    } else {
-      dval = riem_distext(mfdname, Xmean, mydata.slice(n));
+  const int N = data.size();
+  if (N < 1 || K < 1 || K > N || M < K || maxiter < 1)
+    Rcpp::stop("Coreset clustering requires 1 <= k <= min(N, M) and positive maxiter.");
+  Rcpp::List coreset = learning_coreset18B(mfdname, geotype, data, M, 200, 1e-8);
+  const arma::uvec indices = Rcpp::as<arma::uvec>(coreset["id"]);
+  const arma::vec probabilities = Rcpp::as<arma::vec>(coreset["qx"]);
+  const arma::vec weights = 1.0 / (static_cast<double>(M) * probabilities.elem(indices));
+  const arma::mat exemplar = Rcpp::as<arma::mat>(data[0]);
+  arma::cube full(exemplar.n_rows, exemplar.n_cols, N);
+  for (int i = 0; i < N; ++i) full.slice(i) = Rcpp::as<arma::mat>(data[i]);
+  const arma::cube sampled = full.slices(indices);
+  arma::cube centers = coreset_initialize(mfdname, geotype, sampled, weights, K);
+  arma::mat distances = coreset_distances(mfdname, geotype, sampled, centers);
+  arma::uvec labels = coreset_assign(distances);
+  double objective = coreset_cost(distances, labels, weights);
+  std::vector<double> history(1, objective);
+  bool converged = false;
+  int iterations = 0;
+  std::string termination = "iteration_limit";
+  for (int iteration = 0; iteration < maxiter; ++iteration) {
+    ++iterations;
+    arma::cube updated = centers;
+    for (int k = 0; k < K; ++k) {
+      const arma::uvec members = arma::find(labels == static_cast<arma::uword>(k));
+      if (members.n_elem > 0) updated.slice(k) = coreset_weighted_mean(mfdname,
+        geotype, sampled, weights, members, centers.slice(k));
     }
-    distsq(n) = dval*dval;
-  }
-  double distsqsum = arma::accu(distsq);
-  
-  // STEP 2. COMPUTE PROBABILITY
-  arma::vec probability(N,fill::zeros);
-  for (int n=0; n<N; n++){
-    probability(n) = (0.5/NN) + (0.5*distsq(n)/distsqsum);
-  }
-  
-  // STEP 3. DRAW INDEX FOR CORESET
-  arma::uvec coreid = helper_sample(N, M, probability, false);
-  
-  // RUN K-MEANS CLUSTERING
-  arma::cube sub_data = mydata.slices(coreid);
-  arma::cube kcenters = clustering_kmeans18B_kcenters(mfdname, geotype, sub_data, K);
-
-  arma::mat  distmat(N,K,fill::zeros);
-  for (int n=0; n<N; n++){
-    for (int k=0; k<K; k++){
-      if (geotype=="intrinsic"){
-        distmat(n,k) = riem_dist(mfdname, mydata.slice(n), kcenters.slice(k));
-      } else {
-        distmat(n,k) = riem_distext(mfdname, mydata.slice(n), kcenters.slice(k));
-      }
+    arma::mat next_distances = coreset_distances(mfdname, geotype, sampled, updated);
+    arma::uvec next_labels = coreset_assign(next_distances);
+    const double next_objective = coreset_cost(next_distances, next_labels, weights);
+    if (next_objective > objective + 1e-10 * std::abs(objective)) {
+      termination = "objective_increase_rejected";
+      break;
+    }
+    const bool stable = arma::all(next_labels == labels);
+    centers = updated;
+    distances = next_distances;
+    labels = next_labels;
+    objective = next_objective;
+    history.push_back(objective);
+    if (stable) {
+      converged = true;
+      termination = "stable_assignment";
+      break;
     }
   }
-  arma::uvec cluster(N,fill::zeros);
-  for (int n=0; n<N; n++){
-    cluster(n) = arma::index_min(distmat.row(n));
-  }
-  
-  // COMPUTE SSE
-  double wcss = helper_kmeans_cost(mfdname, geotype, mydata, kcenters, cluster);
-  
-  // RETURN OUTPUT
-  Rcpp::List output;
-  output["means"]   = kcenters;
-  output["cluster"] = cluster;
-  output["wcss"]    = wcss;
-  return(output);
+  const arma::mat full_distances = coreset_distances(mfdname, geotype, full, centers);
+  const arma::uvec full_labels = coreset_assign(full_distances);
+  const double wcss = coreset_cost(full_distances, full_labels, arma::ones<arma::vec>(N));
+  return Rcpp::List::create(Rcpp::Named("means") = centers,
+    Rcpp::Named("cluster") = full_labels, Rcpp::Named("wcss") = wcss,
+    Rcpp::Named("coreid") = indices, Rcpp::Named("weight") = weights,
+    Rcpp::Named("iterations") = iterations, Rcpp::Named("converged") = converged,
+    Rcpp::Named("termination") = termination, Rcpp::Named("objective_history") = history);
 }
-

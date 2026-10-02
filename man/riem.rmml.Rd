@@ -16,7 +16,9 @@ riem.rmml(riemobj, label, lambda = 0.1, as.dist = FALSE)
 \item{as.dist}{logical; if \code{TRUE}, it returns \code{dist} object, else it returns a symmetric matrix.}
 }
 \value{
-a S3 \code{dist} object or \eqn{(N\times N)} symmetric matrix of pairwise distances according to \code{as.dist} parameter.
+a S3 \code{dist} object or symmetric matrix of pairwise distances for
+the observations with nonmissing labels, in their original order, according
+to \code{as.dist}. At least two labeled observations are required.
 }
 \description{
 Given \eqn{N} observations \eqn{X_1, X_2, \ldots, X_N \in \mathcal{M}} and 
@@ -25,6 +27,20 @@ corresponding label information, \code{riem.rmml} computes pairwise distance of 
 is not sufficient, an inverse of scatter matrix does not exist analytically so 
 the small regularization parameter \eqn{\lambda} is recommended with default value of \eqn{\lambda=0.1}.
 }
+\details{
+Embedding dimensions are determined from the manifold's actual
+equivariant embedding. In particular, a Grassmann frame is represented by its
+full orthogonal projector, so the result is unchanged by a change of basis
+within each represented subspace.
+}
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #            Distance between Two Classes of SPD Matrices
@@ -41,7 +57,8 @@ for (i in 1:ndata){
 }
 for (i in (ndata+1):(2*ndata)){
   tmpdata = as.matrix(iris[,1:4]) + matrix(rnorm(150*4,sd=0.5),ncol=4)
-  mydata[[i]] = stats::cov(tmpdata)
+  # This matrix-entry demonstration uses positional coordinates in both groups.
+  mydata[[i]] = unname(stats::cov(tmpdata))
 }
 myriem = wrap.spd(mydata)
 mylabs = rep(c(1,2), each=ndata)

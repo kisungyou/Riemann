@@ -25,6 +25,14 @@ proposed on the space. For special functions on under SPD category, this
 function finds whether there exists a matching name that is currently 
 supported in \pkg{Riemann}. If there is none, it will return an error message.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 # it just returns a small-letter string.
 mygeom = spd.geometry("stein")

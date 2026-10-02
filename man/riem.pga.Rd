@@ -2,25 +2,113 @@
 % Please edit documentation in R/visualization_pga.R
 \name{riem.pga}
 \alias{riem.pga}
-\title{Principal Geodesic Analysis}
+\alias{predict.riem_pga}
+\alias{riem.reconstruct.riem_pga}
+\alias{print.riem_pga}
+\alias{summary.riem_pga}
+\alias{print.summary.riem_pga}
+\alias{plot.riem_pga}
+\title{Tangent Principal Component Analysis}
 \usage{
-riem.pga(riemobj, ndim = 2)
+riem.pga(
+  riemobj,
+  ndim = 2,
+  geometry = NULL,
+  weight = NULL,
+  maxiter = 200,
+  eps = 1e-08,
+  rank.tol = sqrt(.Machine$double.eps),
+  center.tangent = TRUE
+)
+
+\method{predict}{riem_pga}(object, newdata, ...)
+
+\method{riem.reconstruct}{riem_pga}(object, scores = object$embed, ...)
+
+\method{print}{riem_pga}(x, ...)
+
+\method{summary}{riem_pga}(object, ...)
+
+\method{print}{summary.riem_pga}(x, ...)
+
+\method{plot}{riem_pga}(x, components = c(1L, 2L), ...)
 }
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
 
-\item{ndim}{an integer-valued target dimension.}
+\item{ndim}{positive integer requested number of components. Requests above
+numerical rank are truncated with a warning.}
+
+\item{geometry}{a supported geometry name or saved geometry specification.
+Defaults to the geometry of the data. Supports affine-invariant and
+log-Euclidean SPD, round spheres, Euclidean observations, and regular
+orthogonal-quotient landmark shapes.}
+
+\item{weight}{nonnegative observation weights, normalized to sum to one.}
+
+\item{maxiter}{maximum iterations for the reference mean.}
+
+\item{eps}{convergence tolerance for the reference mean.}
+
+\item{rank.tol}{relative singular-value tolerance for numerical rank.}
+
+\item{center.tangent}{whether to subtract the weighted tangent-coordinate
+mean before decomposition. The fitted offset is retained for reuse.}
+
+\item{object}{a fitted tangent PCA object.}
+
+\item{newdata}{a compatible \code{riemdata} object.}
+
+\item{...}{additional arguments; currently unused.}
+
+\item{scores}{numeric matrix with one column per retained component; by
+default, the fitted training scores are reconstructed.}
+
+\item{x}{a fitted tangent PCA object.}
+
+\item{components}{two retained component indices to display.}
 }
 \value{
 a named list containing \describe{
 \item{center}{an intrinsic mean in a matrix representation form.}
-\item{embed}{an \eqn{(N\times ndim)} matrix whose rows are embedded observations.}
+\item{embed}{an \eqn{N}-by-effective-rank matrix of component scores.}
+\item{loadings}{orthonormal directions in the stored tangent coordinates.}
+\item{geometry}{the persistent geometry specification.}
+\item{offset}{the fitted tangent-coordinate offset.}
+\item{rank}{numerical rank of the weighted coordinate matrix.}
+\item{variance}{component variances in decreasing order.}
+\item{diagnostics}{reference-mean convergence and approximation information.}
 }
 }
 \description{
 Given \eqn{N} observations \eqn{X_1, X_2, \ldots, X_N \in \mathcal{M}}, 
 Principal Geodesic Analysis (PGA) finds a low-dimensional embedding by decomposing 
 2nd-order information in tangent space at an intrinsic mean of the data.
+}
+\details{
+This is tangent PCA, a local linear approximation, rather than an
+  optimization over principal geodesic submanifolds. SPD coordinates preserve
+  the selected metric using symmetric vectorization with square-root-of-two
+  off-diagonal weights. Affine-invariant coordinates are whitened at the mean;
+  log-Euclidean coordinates use the matrix-log chart. Sphere coordinates use
+  an orthonormal tangent basis. Landmark coordinates use horizontal log
+  vectors after alignment to the trained reference under the full orthogonal
+  group (reflections included); singular alignments are rejected.
+
+  Component variances use normalized weights divided by
+  \code{1 - sum(weight^2)}, agreeing with sample PCA for equal weights.
+  This denominator is evaluated as twice the sum of positive pair products
+  to avoid cancellation with highly unequal weights. Positive weights that
+  underflow to zero during normalization are rejected. With only one
+  positive weight, the centered fit has zero rank and zero variance by
+  convention; this is not an estimate of a sample covariance. An uncentered
+  fit requires at least two positive weights.
+  Explained variance describes the tangent representation, not exact global
+  manifold variation. A nonconverged reference mean causes an error.
+  Prediction retains the trained mean, coordinate convention, offset and
+  loadings. Reconstruction returns wrapped observations in this same frame.
+  Sphere reconstruction is restricted to tangent norms below pi; landmark
+  reconstruction is restricted below pi/2 and to regular shapes.
 }
 \examples{
 #-------------------------------------------------------------------

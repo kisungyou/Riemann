@@ -7,7 +7,7 @@
 grassmann.optmacg(func, p, k, ...)
 }
 \arguments{
-\item{func}{a function to be \emph{minimized}.}
+\item{func}{a function to be \emph{minimized}, returning one finite numeric value.}
 
 \item{p}{dimension parameter as in \eqn{Gr(k,p)}.}
 
@@ -23,7 +23,7 @@ grassmann.optmacg(func, p, k, ...)
 }
 \value{
 a named list containing: \describe{
-\item{cost}{minimized function value.}
+\item{cost}{smallest function value attained during the iterative search runs; a global minimum is not guaranteed.}
 \item{solution}{a \eqn{(p\times k)} matrix that attains the \code{cost}.}
 }
 }
@@ -32,6 +32,14 @@ For a function \eqn{f : Gr(k,p) \rightarrow \mathbf{R}}, find the minimizer
 and the attained minimum value with estimation of distribution algorithm 
 using MACG distribution.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #               Optimization for Eigen-Decomposition

@@ -21,6 +21,14 @@ Given 2 observations \eqn{X_1, X_2 \in \mathcal{M}}, find the interpolated
 point of a geodesic \eqn{\gamma(t)} for \eqn{t \in (0,1)} which 
 assumes two endpoints \eqn{\gamma(0)=X_1} and \eqn{\gamma(1)=X_2}.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #       Geodesic Interpolation between (1,0) and (0,1) in S^1

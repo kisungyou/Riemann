@@ -39,53 +39,18 @@
 #' 
 #' @concept wrapper
 #' @export
-wrap.rotation <- function(input){
-  ## TAKE EITHER 3D ARRAY OR A LIST
-  #  1. data format
-  if (is.array(input)){
-    if (!check_3darray(input, symmcheck=FALSE)){
-      stop("* wrap.rotation : input does not follow the size requirement as described.")
-    }
-    N = dim(input)[3]
-    tmpdata = list()
-    for (n in 1:N){
-      tmpdata[[n]] = input[,,n]
-    }
-  } else if (is.list(input)){
-    tmpdata = input
-  } else {
-    stop("* wrap.rotation : input should be either a 3d array or a list.")
-  }
-  #  2. check all same size
-  if (!check_list_eqsize(tmpdata, check.square=TRUE)){
-    stop("* wrap.rotation : elements are not of same size.")
-  }
-  #  3. check and transform to Stiefel
-  N = length(tmpdata)
-  for (n in 1:N){
-    tmpcheck     = single_rotcheck(tmpdata[[n]], n)
-    tmpdata[[n]] = tmpdata[[n]]
-  }
-  
-  ## WRAP AND RETURN THE S3 CLASS
-  output = list()
-  output$data = tmpdata
-  output$size = dim(tmpdata[[1]])
-  output$name = "rotation"
-  return(structure(output, class="riemdata")) 
+wrap.rotation <- function(input) {
+  data <- riem_matrix_input(input, square = TRUE)
+  data <- lapply(data, function(x) { single_rotcheck(x); x })
+  riem_wrap_matrices(data, "rotation")
 }
-#' @keywords internal
-#' @noRd
-single_rotcheck <- function(x, id=0){
-  p = nrow(x)
-  if (nrow(x)!=ncol(x)){
-    stop(paste0("* wrap.rotation : ",id,"-th element is not a square matrix."))
+
+single_rotcheck <- function(x, id = 0L) {
+  if (!is.matrix(x) || !is.numeric(x) || is.complex(x) || any(!is.finite(x)) ||
+      !nrow(x) || nrow(x) != ncol(x) ||
+      norm(crossprod(x) - diag(nrow(x)), "F") > 1e-10 * sqrt(nrow(x)) ||
+      abs(det(x) - 1) > 1e-10) {
+    stop("Observation ", id, " must be an orthogonal rotation matrix with determinant +1.", call. = FALSE)
   }
-  if ((norm((t(x)%*%x)-diag(p),"F")/sqrt(p) >= 1e-10)){
-    stop(paste0("* wrap.rotation : ",id,"-th element does not satisfy X'*X = I."))
-  }
-  if (abs(base::det(x)-1) >= 1e-10){
-    stop(paste0("* wrap.rotation : ",id,"-th element's determinant is not close to 1."))
-  }
-  return(TRUE)
+  invisible(TRUE)
 }

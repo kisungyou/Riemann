@@ -61,10 +61,15 @@
 #' par(opar)
 #' 
 #' @references 
-#' Zelnik-manor L, Perona P (2005). "Self-Tuning Spectral Clustering." In Saul LK, Weiss Y, Bottou L (eds.), \emph{Advances in Neural Information Processing Systems 17}, 1601–1608. MIT Press.
+#' Zelnik-manor L, Perona P (2005). "Self-Tuning Spectral Clustering." In Saul LK, Weiss Y, Bottou L (eds.), \emph{Advances in Neural Information Processing Systems 17}, 1601-1608. MIT Press.
 #' 
 #' @concept clustering
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 riem.sc05Z <- function(riemobj, k=2, nnbd=7, geometry=c("intrinsic","extrinsic")){
   ## PREPARE
   DNAME = paste0("'",deparse(substitute(riemobj)),"'") 

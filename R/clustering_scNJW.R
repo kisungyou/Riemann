@@ -61,10 +61,15 @@
 #' par(opar)
 #' 
 #' @references 
-#' Ng AY, Jordan MI, Weiss Y (2002). "On Spectral Clustering: Analysis and an Algorithm." In Dietterich TG, Becker S, Ghahramani Z (eds.), \emph{Advances in Neural Information Processing Systems 14}, 849–856. MIT Press.
+#' Ng AY, Jordan MI, Weiss Y (2002). "On Spectral Clustering: Analysis and an Algorithm." In Dietterich TG, Becker S, Ghahramani Z (eds.), \emph{Advances in Neural Information Processing Systems 14}, 849-856. MIT Press.
 #' 
 #' @concept clustering
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 riem.scNJW <- function(riemobj, k=2, sigma=1, geometry=c("intrinsic","extrinsic")){
   ## PREPARE
   DNAME = paste0("'",deparse(substitute(riemobj)),"'") 

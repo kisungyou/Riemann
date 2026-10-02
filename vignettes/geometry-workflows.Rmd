@@ -1,0 +1,176 @@
+---
+title: "Geometry-consistent statistical workflows"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Geometry-consistent statistical workflows}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", error = FALSE,
+                     fig.width = 5, fig.height = 4)
+library(Riemann)
+set.seed(1701)
+```
+
+A geometry specifies the distances and operations used by an analysis. Select it
+before fitting, inspect the numerical result, and reuse the fitted object for new
+observations. The examples below use small synthetic observations. They illustrate
+software behavior, without making scientific claims about an application dataset.
+
+## Validate observations and select a geometry
+
+Construct positive-definite matrices by exponentiating real symmetric matrices.
+The off-diagonal chart entries give noncommuting observations.
+
+```{r spd-data}
+matrix_exp <- function(a) {
+  e <- eigen(a, symmetric = TRUE)
+  e$vectors %*% diag(exp(e$values)) %*% t(e$vectors)
+}
+t <- seq(-0.6, 0.6, length.out = 12)
+matrices <- lapply(t, function(a) {
+  matrix_exp(matrix(c(a, 0.2 * sin(3 * a), 0.2 * sin(3 * a), -0.5 * a), 2))
+})
+x <- wrap.spd(matrices)
+airm <- riem.geometry(x, "affine_invariant")
+log_euclidean <- riem.geometry(x, "log_euclidean")
+airm
+log_euclidean
+```
+
+Affine-invariant and log-Euclidean distances describe different problems. The
+legacy SPD names `"intrinsic"` and `"extrinsic"` resolve to these two choices,
+respectively. The capability table records which operation routes are available;
+its validation status also identifies families still awaiting a broader audit.
+
+```{r capabilities}
+capability <- riem.capabilities()
+capability[capability$manifold_id %in% c("spd", "sphere", "landmark"), ]
+```
+
+Positive definiteness is checked independently of full rank. This deliberately
+invalid example must produce an error; the vignette verifies that the error occurs.
+
+```{r invalid-spd}
+invalid <- tryCatch(wrap.spd(list(diag(c(-1, 1)))), error = identity)
+stopifnot(inherits(invalid, "error"))
+conditionMessage(invalid)
+```
+
+## Inspect a numerical summary
+
+The shared solver records its objective and termination state. A finite matrix by
+itself is not a convergence certificate.
+
+```{r summaries}
+m <- riem.mean(x, geometry = airm, maxiter = 200, eps = 1e-8, trace = TRUE)
+m
+stopifnot(m$converged)
+c(objective = m$objective, iterations = m$iterations)
+mlog <- riem.mean(x, geometry = log_euclidean)
+stopifnot(mlog$converged)
+riem.median(x, geometry = log_euclidean, maxiter = 200)
+```
+
+## Fit, predict, and reconstruct tangent components
+
+Tangent PCA approximates variation near a trained reference. It retains a
+metric-preserving coordinate convention and any coordinate offset. Its explained
+variance is a property of this tangent representation, rather than exact global
+variance on the manifold.
+
+```{r spd-pca}
+pca <- riem.pga(x, ndim = 2, geometry = log_euclidean)
+pca
+summary(pca)
+stopifnot(isTRUE(all.equal(unname(predict(pca, x)), unname(pca$embed))))
+new_x <- wrap.spd(list(matrix_exp(matrix(c(0.15, 0.08, 0.08, -0.1), 2))))
+new_scores <- predict(pca, new_x)
+new_scores
+approximation <- riem.reconstruct(pca, new_scores)
+approximation$data[[1]]
+stopifnot(min(eigen(approximation$data[[1]], symmetric = TRUE)$values) > 0)
+```
+
+Prediction and reconstruction use the saved reference. With fewer components than
+the data's rank, reconstruction is an approximation. Requests above numerical rank
+are truncated with a warning and the effective dimension is recorded.
+
+The sphere uses an orthonormal tangent basis. The following observations lie in a
+small neighborhood where the reference and logarithms are well defined.
+
+```{r sphere-pca}
+sphere <- wrap.sphere(cbind(rep(1, 10), matrix(rnorm(20, sd = 0.08), 10, 2)))
+sphere_pca <- riem.pga(sphere, ndim = 2, geometry = "round")
+reconstructed <- riem.reconstruct(sphere_pca)
+stopifnot(all(vapply(reconstructed$data, function(a) abs(sum(a^2) - 1) < 1e-10,
+                    logical(1))))
+plot(sphere_pca)
+```
+
+Antipodal logarithms are nonunique. Unsupported geometry-operation combinations
+also produce explicit errors rather than silently switching metrics.
+
+```{r unsupported-tangent}
+unsupported <- tryCatch(riem.pga(sphere, geometry = "chordal"), error = identity)
+stopifnot(inherits(unsupported, "error"))
+conditionMessage(unsupported)
+```
+
+## Reuse a clustering model
+
+The default Lloyd driver uses the shared mean solver and records each start. Labels
+returned by prediction refer to the final trained centers.
+
+```{r clustering}
+set.seed(1702)
+clusters <- riem.kmeans(x, k = 2, geometry = log_euclidean, nstart = 2)
+clusters
+clusters$starts
+stopifnot(identical(predict(clusters, x), clusters$cluster))
+predict(clusters, new_x)
+```
+
+## Tune scalar-response regression using every held-out fold
+
+Here the predictor is a matrix and the response is numeric. Geometry is fixed
+before tuning. The fold assignments are stored and every observation contributes
+once to the held-out sum of squared errors. For grouped or temporal data, supply
+splits appropriate to the sampling design. If preprocessing is learned from data,
+it must be repeated within the corresponding training folds.
+
+```{r regression}
+y <- sin(2 * t) + rnorm(length(t), sd = 0.03)
+regression <- riem.m2skregCV(
+  x, y, geometry = log_euclidean, bandwidths = c(0.1, 0.25, 0.5),
+  foldid = rep(1:3, length.out = length(t))
+)
+regression$errors
+regression$fold_errors
+prediction <- predict(regression, new_x, diagnostics = TRUE)
+prediction
+stopifnot(identical(regression$geometry$geometry_id, "log_euclidean"))
+```
+
+A finite prediction can still have weak local support. Effective neighborhood size
+and distance relative to bandwidth help assess that limitation; numerical
+stability does not establish statistical support.
+
+## Preserve the fitted state
+
+```{r persistence}
+path <- tempfile(fileext = ".rds")
+saveRDS(pca, path)
+restored <- readRDS(path)
+unlink(path)
+stopifnot(isTRUE(all.equal(predict(restored, new_x), new_scores)))
+sessionInfo()
+```
+
+Regular landmark tangent workflows use equivalence under the full orthogonal
+group, including reflections, and align new observations to the trained reference.
+Singular alignments and reconstructions outside the supported local chart are
+rejected. This convention must agree with the scientific meaning of the landmarks;
+it is not an orientation-preserving shape convention.

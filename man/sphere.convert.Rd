@@ -27,6 +27,14 @@ applicable for spherical data analysis. We provide two functions - \code{sphere.
 that convert geographic coordinates in longitude/latitude into a unit-norm vector on \eqn{\mathcal{S}^2}, and vice versa. 
 As a convention, latitude and longitude are represented as \emph{decimal degrees}.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 ## EXAMPLE DATA WITH POPULATED US CITIES
 data(cities)

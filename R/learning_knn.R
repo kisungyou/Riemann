@@ -2,10 +2,13 @@
 #' 
 #' Given \eqn{N} observations  \eqn{X_1, X_2, \ldots, X_N \in \mathcal{M}}, 
 #' \code{riem.knn} constructs \eqn{k}-nearest neighbors.
+#' Each observation is excluded from its own neighbor set. Distinct observations
+#' at zero distance remain eligible; distance ties are resolved by input index.
 #' 
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
-#' @param k the number of neighbors to find.
-#' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
+#' @param k an integer between one and \eqn{N-1}, the number of neighbors to find.
+#' @param geometry a supported geometry name or saved specification; see
+#'   \code{\link{riem.geometry}}. The default is \code{"intrinsic"}.
 #' 
 #' @return a named list containing\describe{
 #' \item{nn.idx}{an \eqn{(N \times k)} neighborhood index matrix.}
@@ -63,18 +66,20 @@
 #' 
 #' @concept learning
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 riem.knn <- function(riemobj, k=2, geometry=c("intrinsic","extrinsic")){
   ## PREPARE
-  DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
-  if (!inherits(riemobj,"riemdata")){
-    stop(paste0("* riem.knn : input ",DNAME," should be an object of 'riemdata' class."))
-  }
-  myk    = max(0, round(k))
-  mygeom = ifelse(missing(geometry),"intrinsic",
-                  match.arg(tolower(geometry),c("intrinsic","extrinsic")))
+  riem_validate_data(riemobj)
+  n <- length(riemobj$data)
+  if (n < 2L) stop("Nearest neighbors require at least two observations.", call. = FALSE)
+  myk <- riem_regression_integer(k, "k", 1L, n - 1L)
   
   ## COMPUTE PAIRWISE DISTANCE
-  distobj = as.matrix(basic_pdist(riemobj$name, riemobj$data, mygeom))
+  distobj <- riem_legacy_distances(riemobj, if (missing(geometry)) NULL else geometry)$distances
   
   ## COMPUTE AND RETURN
   return(nearest_neighbor(distobj, myk))
@@ -86,12 +91,13 @@ riem.knn <- function(riemobj, k=2, geometry=c("intrinsic","extrinsic")){
 nearest_neighbor <- function(dmat, k){
   n = base::nrow(dmat)
   
-  nn.idx   = array(0,c(n,k))
+  nn.idx   = array(0L,c(n,k))
   nn.dists = array(0,c(n,k))
   
-  for (i in 1:n){
+  for (i in seq_len(n)){
     tgt  = as.vector(dmat[i,])
-    i_id = order(tgt)[2:(k+1)]
+    candidates <- setdiff(seq_len(n), i)
+    i_id <- candidates[order(tgt[candidates], candidates)][seq_len(k)]
 
     nn.idx[i,]   = i_id
     nn.dists[i,] = tgt[i_id]

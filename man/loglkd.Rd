@@ -18,6 +18,14 @@ the log-likelihood.
 Given a fitted mixture model \eqn{f(x)} and observations \eqn{x_1, \ldots, x_n \in \mathcal{M}}, compute the log-likelihood
 \deqn{L = \log \prod_{i=1}^n f(x_i) = \sum_{i=1}^n \log f(x_i)}.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 \donttest{
 # ---------------------------------------------------- #

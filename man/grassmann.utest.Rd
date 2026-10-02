@@ -27,6 +27,23 @@ a (list) object of \code{S3} class \code{htest} containing: \describe{
 Given the data on Grassmann manifold \eqn{Gr(k,p)}, it tests whether the 
 data is distributed uniformly.
 }
+\details{
+This is an asymptotic moment-based test, requiring independent
+  identically distributed observations. It need not detect every nonuniform
+  distribution. The modified expansion is unavailable for ambient dimension
+  two, where its displayed coefficients are singular; full-dimensional
+  subspaces are also excluded. Small-sample calibration and the modified
+  expansion remain experimental; a nominal chi-squared p-value does not
+  certify finite-sample size control.
+}
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #   Compare Bingham's original and modified versions of the test

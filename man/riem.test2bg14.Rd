@@ -4,14 +4,14 @@
 \alias{riem.test2bg14}
 \title{Two-Sample Test modified from Biswas and Ghosh (2014)}
 \usage{
-riem.test2bg14(riemobj1, riemobj2, geometry = c("intrinsic", "extrinsic"), ...)
+riem.test2bg14(riemobj1, riemobj2, geometry = NULL, ...)
 }
 \arguments{
 \item{riemobj1}{a S3 \code{"riemdata"} class for \eqn{M} manifold-valued data.}
 
 \item{riemobj2}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
 
-\item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
+\item{geometry}{A geometry name or saved specification.}
 
 \item{...}{extra parameters including\describe{
 \item{nperm}{the number of permutations (default: 999).}
@@ -33,6 +33,15 @@ Given \eqn{M} observations \eqn{X_1, X_2, \ldots, X_M \in \mathcal{M}} and
 by the method from Biswas and Ghosh (2014). The method, originally proposed 
 for Euclidean-valued data, is adapted to the general Riemannian manifold 
 with intrinsic/extrinsic distance.
+}
+\details{
+The statistic compares within-group and cross-group mean distances.
+  Random-label calibration requires exchangeability under the equal-distribution
+  null, with independent observations; it is not valid for unaccounted paired
+  or repeated observations. Generalizing the distance to a manifold does not
+  establish consistency against every alternative. Monte Carlo p-values include
+  the observed assignment and all ties, and cannot be zero. Each group must
+  contain at least two observations.
 }
 \examples{
 #-------------------------------------------------------------------

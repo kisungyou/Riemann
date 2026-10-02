@@ -7,68 +7,66 @@
 riem.m2skregCV(
   riemobj,
   y,
-  bandwidths = seq(from = 0.01, to = 1, length.out = 10),
-  geometry = c("intrinsic", "extrinsic"),
-  kfold = 5
+  bandwidths = seq(0.01, 1, length.out = 10),
+  geometry = NULL,
+  kfold = 5,
+  foldid = NULL
 )
 }
 \arguments{
-\item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data corresponding to \eqn{X_1,\ldots,X_N}.}
+\item{riemobj}{A \code{riemdata} object containing the training predictors.}
 
-\item{y}{a length-\eqn{N} vector of dependent variable values.}
+\item{y}{A finite numeric response vector with one entry per predictor.}
 
-\item{bandwidths}{a vector of nonnegative numbers that control smoothness.}
+\item{bandwidths}{A nonempty vector of finite, strictly positive bandwidths.}
 
-\item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
+\item{geometry}{Geometry name or specification. \code{NULL} resolves the
+input's geometry, defaulting to its intrinsic geometry when unspecified.
+Legacy \code{"intrinsic"} and \code{"extrinsic"} aliases are accepted.}
 
-\item{kfold}{the number of folds for cross validation.}
+\item{kfold}{Integer number of folds between two and the sample size. Random
+balanced folds use R's current random-number state. When \code{foldid} is
+supplied, an explicitly supplied \code{kfold} must agree with its number
+of distinct folds.}
+
+\item{foldid}{Optional vector of fold identifiers, one per observation, with
+at least two distinct nonmissing identifiers. Numeric identifiers must be
+finite; character and factor identifiers must be nonempty. Observations with
+the same identifier are held out together. Use this to encode grouped or
+otherwise scientifically appropriate validation splits.}
 }
 \value{
-a named list of S3 class \code{m2skreg} containing
-\describe{
-\item{ypred}{a length-\eqn{N} vector of optimal smoothed responses.}
-\item{bandwidth}{the optimal bandwidth value.}
-\item{inputs}{a list containing both \code{riemobj} and \code{y} for future use.}
-\item{errors}{a matrix whose columns are \code{bandwidths} values and corresponding errors measure in SSE.}
-}
+An \code{m2skreg} fit retaining \code{ypred}, \code{bandwidth}, and
+  \code{inputs}, with the geometry metadata of \code{riem.m2skreg}.
+  \code{ypred} contains full-training fitted values. \code{errors} is a
+  two-column matrix of all candidate bandwidths and total CV SSE;
+  \code{fold_errors} and \code{fold_failure} have candidates in rows and folds
+  in columns. \code{candidate_status} records success or failure,
+  \code{foldid} stores the supplied/generated fold identifiers, and
+  \code{cv_prediction} contains held-out predictions for the selected candidate.
 }
 \description{
-Manifold-to-Scalar Kernel Regression with K-Fold Cross Validation
+Selects a Gaussian kernel bandwidth by the sum of squared held-out prediction
+errors over all folds, then fits the selected smoother to all observations.
+A candidate is eligible only if every fold has a finite loss. Failed candidates
+remain in the returned tables with infinite total loss and a recorded reason.
+If no candidate succeeds, fitting stops with an error. Equal losses are resolved
+by choosing the first candidate in the supplied order.
+}
+\details{
+Distances are computed once under the resolved geometry. This is
+  appropriate only when preprocessing defining that geometry was fixed
+  independently of the held-out observations. This function does not fit
+  data-dependent alignment, scaling, or other preprocessing inside each fold;
+  such pipelines require an external resampling loop. The selected CV loss is
+  a tuning criterion, not an unbiased estimate of final predictive performance.
 }
 \examples{
-\donttest{
-#-------------------------------------------------------------------
-#                    Example on Sphere S^2
-#
-#  X : equi-spaced points from (0,0,1) to (0,1,0)
-#  y : sin(x) with perturbation
-#-------------------------------------------------------------------
-# GENERATE DATA
-set.seed(496) 
-npts = 100
-nlev = 0.25
-thetas = seq(from=0, to=pi/2, length.out=npts)
-Xstack = cbind(rep(0,npts), sin(thetas), cos(thetas))
-
-Xriem  = wrap.sphere(Xstack)
-ytrue  = sin(seq(from=0, to=2*pi, length.out=npts))
-ynoise = ytrue + rnorm(npts, sd=nlev)
-
-# FIT WITH 5-FOLD CV
-cv_band = (10^seq(from=-4, to=-1, length.out=200))
-cv_fit  = riem.m2skregCV(Xriem, ynoise, bandwidths=cv_band)
-cv_err  = cv_fit$errors
-
-# VISUALIZE
-opar <- par(no.readonly=TRUE)
-par(mfrow=c(1,2))
-plot(1:npts, cv_fit$ypred, pch=19, cex=0.5, "b", xlab="", main="optimal prediction")
-lines(1:npts, ytrue, col="red", lwd=1.5)
-plot(cv_err[,1], cv_err[,2], "b", pch=19, cex=0.5, main="5-fold CV errors",
-     xlab="bandwidth", ylab="SSE")
-abline(v=cv_fit$bandwidth, col="blue", lwd=1.5)
-par(opar)
-}
+X <- wrap.euclidean(matrix(0:5, ncol = 1))
+fit <- riem.m2skregCV(X, c(0, 3, 0, 0, 0, 0),
+  bandwidths = c(0.1, 0.5, 1, 2, 10), foldid = rep(1:3, each = 2))
+fit$errors
+fit$cv_prediction
 
 }
 \concept{inference}

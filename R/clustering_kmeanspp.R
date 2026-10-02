@@ -7,7 +7,7 @@
 #' 
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
 #' @param k the number of clusters.
-#' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
+#' @param geometry a name or saved specification accepted by \code{\link{riem.geometry}}.
 #' 
 #' @return a named list containing\describe{
 #' \item{centers}{a length-\eqn{k} vector of sampled centers' indices.}
@@ -61,27 +61,10 @@
 #' 
 #' @concept clustering
 #' @export
-riem.kmeanspp <- function(riemobj, k=2, geometry=c("intrinsic","extrinsic")){
-  ## PREPARE
-  DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
-  if (!inherits(riemobj,"riemdata")){
-    stop(paste0("* riem.kmeanspp : input ",DNAME," should be an object of 'riemdata' class."))
-  }
-  myk    = max(0, round(k))
-  mygeom = ifelse(missing(geometry),"intrinsic",
-                  match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  
-  ## COMPUTE PAIRWISE DISTANCE
-  distobj = stats::as.dist(basic_pdist(riemobj$name, riemobj$data, mygeom))
-  
-  ## RUN K-MEDOIDS
-  func.import = utils::getFromNamespace("hidden_kmeanspp", "maotai")
-  obj.plus    = func.import(distobj, k=myk) 
-  
-  ## WRAP AND RETURN
-  output = list()
-  output$centers = obj.plus$center
-  output$cluster = as.vector(as.integer(obj.plus$cluster))
-  return(output)
-  
+riem.kmeanspp <- function(riemobj, k = 2, geometry = NULL) {
+  spec <- riem_resolve_geometry(riemobj, geometry, capability = "distance")
+  k <- riem_kmeans_integer(k, "k", maximum = length(riemobj$data))
+  centers <- riem_kmeans_initialize(riemobj$data, k, "plus", spec)
+  distances <- riem_kmeans_distances(riemobj$data, riemobj$data[centers], spec)
+  list(centers = centers, cluster = riem_kmeans_assign(distances), geometry = spec)
 }

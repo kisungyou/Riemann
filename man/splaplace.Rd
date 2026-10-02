@@ -18,18 +18,18 @@ mle.splaplace(data, method = c("DE", "Optimize", "Newton"), ...)
 
 \item{mu}{a length-\eqn{p} unit-norm vector of location.}
 
-\item{sigma}{a scale parameter that is positive.}
+\item{sigma}{a positive scale parameter; \code{Inf} gives the uniform limit.}
 
 \item{log}{a logical; \code{TRUE} to return log-density, \code{FALSE} for densities without logarithm applied.}
 
 \item{n}{the number of samples to be generated.}
 
-\item{method}{an algorithm name for concentration parameter estimation. It should be one of \code{"Newton"}, \code{"Optimize"}, and \code{"DE"} (case-sensitive).}
+\item{method}{an algorithm name for scale parameter estimation. It should be one of \code{"Newton"}, \code{"Optimize"}, and \code{"DE"} (case-sensitive).}
 
 \item{...}{extra parameters for computations, including\describe{
-\item{maxiter}{maximum number of iterations to be run (default:50).}
-\item{eps}{tolerance level for stopping criterion (default: 1e-6).}
-\item{use.exact}{a logical to use exact (\code{TRUE}) or approximate (\code{FALSE}) updating rules (default: \code{FALSE}).}
+\item{maxiter}{iteration budget for each location, likelihood-search, or polishing stage; rounded and raised to at least 10 (default: 50).}
+\item{eps}{positive tolerance, capped at 1e-6; the relative likelihood-score tolerance is additionally floored at 1e-10 (default: 1e-6).}
+\item{use.exact}{for Newton, use moment-based derivatives (\code{TRUE}) or finite differences of the score (\code{FALSE}, default). Both use adaptive radial quadrature.}
 }}
 }
 \value{
@@ -45,6 +45,29 @@ density function,
 \deqn{f_{SL}(x; \mu, \sigma) = \frac{1}{C(\sigma)} \exp \left( -\frac{d(x,\mu)}{\sigma}  \right)}
 for location and scale parameters \eqn{\mu} and \eqn{\sigma} respectively.
 }
+\details{
+Scale estimation uses an adaptively bracketed likelihood in the reciprocal
+scale. Newton updates are safeguarded by that bracket; Optimize and DE search
+the log reciprocal scale and use safeguarded Newton polishing if their score
+has not reached the requested tolerance. The uniform boundary is returned as
+\code{sigma = Inf}. For coincident observations the likelihood is unbounded
+and \code{sigma = 0} is returned with a warning; this point-mass limit has no
+surface-area density and is not accepted by \code{dsplaplace} or
+\code{rsplaplace}. The location is obtained by local intrinsic-median
+optimization and need not be globally optimal for data spread across the
+sphere. Failure of the location iteration to converge produces a warning;
+the returned scale then optimizes the likelihood conditional on that last
+location estimate. Log densities use the log kernel and logarithmic
+normalizer directly.
+}
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 \donttest{
 # -------------------------------------------------------------------

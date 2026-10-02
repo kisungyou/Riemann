@@ -34,6 +34,14 @@ not exact. For such purpose, we require \code{maxk} parameter to search the
 optimal number of clusters based on \eqn{k}-medoids clustering algorithm 
 in conjunction with silhouette criterion.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #          Example on Sphere : a dataset with three types

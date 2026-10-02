@@ -36,6 +36,11 @@
 #' 
 #' @concept stiefel
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 stiefel.runif <- function(n, k, p, type=c("list","array","riemdata")){
   ## PREPROCESSING
   N = round(n)
@@ -122,6 +127,11 @@ stiefel.runif <- function(n, k, p, type=c("list","array","riemdata")){
 #' 
 #' @concept stiefel
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 stiefel.utest <- function(stobj, method=c("Rayleigh","RayleighM")){
   ## CHECK INPUT
   FNAME      = "stiefel.utest"
@@ -239,8 +249,20 @@ st.utest.Rayleigh <- function(x, dname, is.modified=FALSE){
 #'        lty=rep(1,2), pch=19)
 #' par(opar)
 #' 
+#' @details
+#' Random starts and proposals use QR orthonormalization with a positive
+#' diagonal in the triangular factor, preserving column signs of the input
+#' frame. Thus the search is not restricted to a hemisphere or, for square
+#' frames, to one component of the orthogonal group. Stochastic search does
+#' not guarantee a global minimum. The objective must return one finite number.
+#'
 #' @concept stiefel
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 stiefel.optSA <- function(func, p, k, ...){
   # Preprocessing
   # 1. function
@@ -283,6 +305,14 @@ stiefel.optSA <- function(func, p, k, ...){
     p = ncol(init.val)
     initflag = TRUE 
   }
+  if (length(n) != 1L || length(p) != 1L || !is.finite(n) ||
+      !is.finite(p) || p < 1 || n < p) {
+    stop("* stiefel.optSA : dimensions must satisfy 1 <= k <= p.", call. = FALSE)
+  }
+  if (initflag && (!is.matrix(init.val) || !is.numeric(init.val) ||
+      any(!is.finite(init.val)) || max(abs(crossprod(init.val)-diag(p))) > 1e-8)) {
+    stop("* stiefel.optSA : 'init.val' must have orthonormal columns.", call. = FALSE)
+  }
   # 3. other parameters
   my.nstart      = round(n.start)
   my.stepsize    = as.double(stepsize)
@@ -296,7 +326,7 @@ stiefel.optSA <- function(func, p, k, ...){
       print(paste0("* stiefel.optSA : iteration 1/",n.start," complete.."))
     }
   } else {
-    init.val = base::qr.Q(base::qr(matrix(stats::rnorm(n*p),nrow=n)))
+    init.val = stiefel_qr_retract(matrix(stats::rnorm(n*p),nrow=n))
     out.now  = sa_engine_Stiefel(func, init.val, my.temperature, my.stepsize)
     if (print.progress){
       print(paste0("* stiefel.optSA : iteration 1/",n.start," complete.."))
@@ -307,7 +337,7 @@ stiefel.optSA <- function(func, p, k, ...){
       if (isTRUE(initflag)){
         out.tmp = sa_engine_Stiefel(func, init.val, my.temperature, my.stepsize)
       } else {
-        init.val = base::qr.Q(base::qr(matrix(stats::rnorm(n*p),nrow=n)))
+        init.val = stiefel_qr_retract(matrix(stats::rnorm(n*p),nrow=n))
         out.tmp  = sa_engine_Stiefel(func, init.val, my.temperature, my.stepsize)
       }
       if (out.tmp$cost <= out.now$cost){ # update with a better one
@@ -374,7 +404,7 @@ sa_engine_Stiefel <- function(func, init.mat, temparature, stepsize){
   # initialization
   n = nrow(init.mat)
   p = ncol(init.mat)
-  Eold    = func(init.mat)
+  Eold    = stiefel_sa_value(func, init.mat)
   maxiter = length(temparature)
   
   # iteration
@@ -383,9 +413,9 @@ sa_engine_Stiefel <- function(func, init.mat, temparature, stepsize){
   for (k in 1:maxiter){
     # 1. generation unique to Stiefel 
     sol.tmp = sol.old + matrix(stats::rnorm(n*p, sd=stepsize), nrow=n)
-    sol.tmp = base::qr.Q(base::qr(sol.tmp))
+    sol.tmp = stiefel_qr_retract(sol.tmp)
     # 2. energy evaluation & current temperature
-    Etmp = func(sol.tmp)
+    Etmp = stiefel_sa_value(func, sol.tmp)
     # 3. decision branching
     if (Etmp <= Eold){ # unconditional accept
       Enew    = Etmp
@@ -414,4 +444,23 @@ sa_engine_Stiefel <- function(func, init.mat, temparature, stepsize){
   output$solution = sol.old
   output$accfreq  = (count/maxiter)
   return(output)
+}
+
+# QR with positive R diagonal is continuous near a full-rank frame and does
+# not impose the sign convention of qr.Q on the manifold point itself.
+#' @keywords internal
+#' @noRd
+stiefel_qr_retract <- function(x) {
+  decomposition <- base::qr(x)
+  signs <- sign(diag(base::qr.R(decomposition)))
+  signs[signs == 0] <- 1
+  sweep(base::qr.Q(decomposition), 2L, signs, `*`)
+}
+#' @keywords internal
+#' @noRd
+stiefel_sa_value <- function(func, x) {
+  value <- func(x)
+  if (!is.numeric(value) || length(value) != 1L || !is.finite(value))
+    stop("* stiefel.optSA : 'func' must return a finite numeric scalar.", call. = FALSE)
+  as.double(value)
 }

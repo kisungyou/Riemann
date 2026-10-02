@@ -36,6 +36,21 @@ that iterates via stochastic search in the neighborhood of current position.
 \deqn{\min_X f(X),\quad X \in St(p,k)}
 without any other auxiliary information such as gradient or hessian involved.
 }
+\details{
+Random starts and proposals use QR orthonormalization with a positive
+diagonal in the triangular factor, preserving column signs of the input
+frame. Thus the search is not restricted to a hemisphere or, for square
+frames, to one component of the orthogonal group. Stochastic search does
+not guarantee a global minimum. The objective must return one finite number.
+}
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #               Optimization for Eigen-Decomposition

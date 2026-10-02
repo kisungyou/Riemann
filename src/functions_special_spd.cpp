@@ -160,8 +160,65 @@ arma::mat spdwass_baryAE16(arma::field<arma::mat> spdlist, arma::vec weight, int
 // =============================================================================
 // SPECIAL FUNCTIONS ON SPD MANIFOLD
 // =============================================================================
+// Normalize before factorization so a change of physical units cannot overflow
+// a determinant or a matrix product. No regularization is applied here.
+static arma::mat spd_scaled_cholesky(const arma::mat& X, double& scale) {
+  scale = arma::abs(X).max();
+  arma::mat L;
+  if (!(scale > 0.0) || !std::isfinite(scale) ||
+      !arma::chol(L, X / scale, "lower")) {
+    Rcpp::stop("SPD distance requires a numerically positive-definite matrix.");
+  }
+  return L;
+}
+
+static double spd_stein_stable(const arma::mat& X, const arma::mat& Y) {
+  double sx, sy;
+  arma::mat L = spd_scaled_cholesky(X, sx);
+  sy = arma::abs(Y).max();
+  arma::mat left = arma::solve(arma::trimatl(L), Y / sy);
+  arma::mat relative = arma::solve(arma::trimatl(L), left.t()).t();
+  relative = 0.5 * (relative + relative.t());
+  arma::vec values;
+  if (!arma::eig_sym(values, relative) || !values.is_finite() ||
+      arma::any(values <= 0.0)) {
+    Rcpp::stop("The relative SPD spectrum is not numerically positive definite.");
+  }
+  double ratio = sy / sx;
+  double logscale = (ratio > 0.0 && std::isfinite(ratio)) ?
+    std::log(ratio) : std::log(sy) - std::log(sx);
+  double squared = 0.0;
+  for (arma::uword i = 0; i < values.n_elem; ++i) {
+    // log cosh(log(lambda)/2) is the scalar Stein divergence.
+    // log1p preserves its quadratic behavior near lambda = 1.
+    double t = 0.5 * std::abs(std::log(values(i)) + logscale);
+    double sh = (t < 20.0) ? std::sinh(t / 2.0) : 0.0;
+    squared += (t < 20.0) ? std::log1p(2.0 * sh * sh) :
+      t + std::log1p(std::exp(-2.0 * t)) - std::log(2.0);
+  }
+  return std::sqrt(squared);
+}
+
+static double spd_wasserstein_stable(const arma::mat& X, const arma::mat& Y) {
+  double sx, sy;
+  arma::mat A = spd_scaled_cholesky(X, sx);
+  arma::mat B = spd_scaled_cholesky(Y, sy);
+  double root_scale = std::sqrt(std::max(sx, sy));
+  A *= std::sqrt(sx) / root_scale;
+  B *= std::sqrt(sy) / root_scale;
+  arma::mat U, V;
+  arma::vec singular;
+  if (!arma::svd(U, singular, V, B.t() * A)) {
+    Rcpp::stop("The Wasserstein orthogonal alignment failed.");
+  }
+  // The Procrustes residual equals the Bures/Wasserstein distance, without
+  // subtracting nearly equal traces for identical or neighboring matrices.
+  return root_scale * arma::norm(A - B * U * V.t(), "fro");
+}
+
 // (01) spd_dist  : compute distance of two SPD matrices -----------------------
 double src_spd_dist(arma::mat X, arma::mat Y, std::string geometry){
+  if (arma::all(arma::vectorise(X) == arma::vectorise(Y))) return 0.0;
   double output = 0.0;
   if (geometry=="airm"){                                              // 1. AIRM
     output = riem_dist("spd",X,Y);
@@ -173,10 +230,9 @@ double src_spd_dist(arma::mat X, arma::mat Y, std::string geometry){
     double term3 = static_cast<double>(X.n_rows);
     output = term1 + term2 - term3;
   } else if (geometry=="stein"){                                      // 4. Stein
-    output = std::sqrt(std::log(arma::det((X+Y)/2.0)) - 0.5*std::log(arma::det(X*Y)));
+    output = spd_stein_stable(X, Y);
   } else if (geometry=="wasserstein"){                                // 5. Wasserstein
-    arma::mat Xsqrt = arma::sqrtmat_sympd(X);
-    output = std::sqrt(arma::trace(X+Y-2.0*arma::sqrtmat_sympd((Xsqrt*Y*Xsqrt))));
+    output = spd_wasserstein_stable(X, Y);
   }
   return(output);
 }

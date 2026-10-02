@@ -58,6 +58,11 @@
 #' 
 #' @concept basic
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 riem.interps <- function(riemobj, vect=c(0.25, 0.5, 0.75), geometry=c("intrinsic","extrinsic")){
   ## PREPARE
   DNAME = paste0("'",deparse(substitute(riemobj)),"'") 

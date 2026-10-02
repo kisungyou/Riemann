@@ -6,16 +6,35 @@
 #' adapted to the manifold-valued data.
 #' 
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
-#' @param ndim an integer-valued target dimension (default: 2).
+#' @param ndim a positive integer target dimension smaller than the number of
+#'   observations (default: 2).
 #' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
-#' @param ... extra parameters including\describe{
-#' \item{maxiter}{maximum number of iterations to be run (default:50).}
-#' \item{eps}{tolerance level for stopping criterion (default: 1e-5).}
-#' }
+#' @param ... named controls including\describe{
+#' \item{maxiter}{positive maximum number of iterations (default: 50).}
+#' \item{eps}{nonnegative tolerance for the root mean squared coordinate step,
+#'   after distances are divided by their maximum (default: 1e-5).}
+#' } Unknown controls are errors.
+#'
+#' @details The optimized Sammon loss is
+#'   \eqn{\sum_{i<j}(D_{ij}-d_{ij})^2/D_{ij}\,/\,\sum_{i<j}D_{ij}},
+#'   where \eqn{D} and \eqn{d} are the original and embedded distances.
+#'   Every off-diagonal original distance must be strictly positive and finite;
+#'   coincident observations (including different representations of the same
+#'   point) must be removed before fitting because this loss divides by
+#'   \eqn{D_{ij}}. Distances are normalized internally, making the stopping
+#'   tolerance independent of a common change of measurement units.
+#'   Classical scaling initializes the coordinates, with negative eigenvalues
+#'   truncated to zero and coincident projected points separated by a small
+#'   deterministic perturbation. Diagonal-Hessian updates use backtracking to
+#'   decrease the Sammon loss. If no finite decreasing step can be found, the
+#'   last accepted coordinates are returned. This local procedure does not
+#'   establish a global minimum.
 #' 
 #' @return a named list containing \describe{
 #' \item{embed}{an \eqn{(N\times ndim)} matrix whose rows are embedded observations.}
-#' \item{stress}{discrepancy between embedded and original distances as a measure of error.}
+#' \item{stress}{normalized distance stress,
+#'   \eqn{\sqrt{\sum_{i<j}(D_{ij}-d_{ij})^2/\sum_{i<j}D_{ij}^2}}.
+#'   This legacy diagnostic differs from the optimized Sammon loss.}
 #' }
 #' 
 #' @examples 
@@ -59,21 +78,28 @@
 #' 
 #' @concept visualization
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 riem.sammon <- function(riemobj, ndim=2, geometry=c("intrinsic","extrinsic"), ...){
-  ## PREPARE
-  DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
-  if (!inherits(riemobj,"riemdata")){
-    stop(paste0("* riem.sammon : input ",DNAME," should be an object of 'riemdata' class."))
+  riem_validate_data(riemobj)
+  myndim <- riem_regression_integer(ndim, "ndim", 1L)
+  if (myndim >= length(riemobj$data)) {
+    stop("ndim must be smaller than the number of observations.", call. = FALSE)
   }
-  myndim = max(1, round(ndim))
   mygeom = ifelse(missing(geometry),"intrinsic",
                   match.arg(tolower(geometry),c("intrinsic","extrinsic")))
   
-  # IMPLICIT PARAMETERS 
-  pars   = list(...)
-  pnames = names(pars)
-  myiter = max(50, ifelse(("maxiter"%in%pnames), pars$maxiter, 50))
-  myeps  = min(1e-5, max(0, ifelse(("eps"%in%pnames), as.double(pars$eps), 1e-5)))
+  pars <- riem_legacy_parameters(list(...), c("maxiter", "eps"))
+  myiter <- if (is.null(pars$maxiter)) 50L else
+    riem_regression_integer(pars$maxiter, "maxiter", 1L)
+  myeps <- if (is.null(pars$eps)) 1e-5 else pars$eps
+  if (!is.numeric(myeps) || is.complex(myeps) || length(myeps) != 1L ||
+      !is.finite(myeps) || myeps < 0) {
+    stop("eps must be a finite nonnegative number.", call. = FALSE)
+  }
   
   ## RUN FROM RCPP
   return(visualize_sammon(riemobj$name, mygeom, riemobj$data, myndim, myiter, myeps))

@@ -72,6 +72,11 @@
 #' 
 #' @concept clustering
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 riem.nmshift <- function(riemobj, h=1, maxk=5, maxiter=50, eps=1e-5){
   ## PREPARE
   DNAME = paste0("'",deparse(substitute(riemobj)),"'") 

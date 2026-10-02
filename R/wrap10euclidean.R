@@ -39,34 +39,8 @@
 #' 
 #' @concept wrapper
 #' @export
-wrap.euclidean <- function(input){
-  ## TAKE EITHER 2D ARRAY {n x p} OR A LIST
-  #  1. data format
-  if (is.matrix(input)){
-    N = nrow(input)
-    tmpdata = list()
-    for (i in 1:N){
-      tmpdata[[i]] = as.vector(input[i,])
-    }
-  } else if (is.list(input)){
-    tmpdata = input
-  } else {
-    stop("* wrap.euclidean : input should be either a 2d matrix or a list.")
-  }
-  #  2. check all same size
-  if (!check_list_eqsize(tmpdata, check.square=FALSE)){
-    stop("* wrap.euclidean : elements are not vectors of same size.")
-  }
-  #  3. check each element
-  N = length(tmpdata)
-  for (n in 1:N){
-    tmpdata[[n]] = matrix(tmpdata[[n]], ncol=1)
-  }
-  
-  ## WRAP AND RETURN THE S3 CLASS
-  output = list()
-  output$data = tmpdata
-  output$size = dim(tmpdata[[1]])
-  output$name = "euclidean"
-  return(structure(output, class="riemdata"))
+wrap.euclidean <- function(input) {
+  tmpdata <- riem_vector_input(input, "euclidean")
+  structure(list(data = tmpdata, size = dim(tmpdata[[1L]]), name = "euclidean",
+                 dimnames = dimnames(tmpdata[[1L]])), class = "riemdata")
 }

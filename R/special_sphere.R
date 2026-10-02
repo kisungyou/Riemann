@@ -35,6 +35,11 @@
 #' @seealso \code{\link{wrap.sphere}}
 #' @concept sphere
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 sphere.runif <- function(n, p, type=c("list","matrix","riemdata")){
   # PREPROCESSING
   # parameters
@@ -104,6 +109,11 @@ sphere.runif <- function(n, p, type=c("list","matrix","riemdata")){
 #' @seealso \code{\link{wrap.sphere}}
 #' @concept sphere
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 sphere.utest <- function(spobj, method=c("Rayleigh","RayleighM")){
   ## CHECK INPUT
   check_inputmfd(spobj, "sphere.utest")
@@ -190,6 +200,11 @@ NULL
 
 #' @rdname sphere.convert
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 sphere.geo2xyz <- function(lat, lon){
   xlat = as.double(lat)*pi/180
   xlon = as.double(lon)*pi/180

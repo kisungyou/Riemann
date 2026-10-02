@@ -2,10 +2,15 @@
 #' 
 #' Given \eqn{N} observations \eqn{X_1, X_2, \ldots, X_M \in \mathcal{M}}, 
 #' perform hierarchical agglomerative clustering with 
-#' \pkg{fastcluster} package's implementation.
+#' \code{stats::hclust}. The supplied manifold distances are treated as dissimilarities.
 #' 
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
-#' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
+#' @param geometry A geometry name or saved specification.
+#' @details Ward, centroid and median linkage require care when interpreted as
+#'   Euclidean sums of squares. In particular, Ward linkage of geodesic distances
+#'   is not manifold k-means. \code{ward.D} is the historical R update and does
+#'   not implement the Ward criterion implemented by \code{ward.D2}. See the
+#'   \code{stats::hclust} documentation for distance powers and member weights.
 #' @param method agglomeration method to be used. This must be one of \code{"single"}, \code{"complete"}, \code{"average"}, \code{"mcquitty"}, \code{"ward.D"}, \code{"ward.D2"}, \code{"centroid"} or \code{"median"}.
 #' @param members \code{NULL} or a vector whose length equals the number of observations. See \code{\link[stats]{hclust}} for details.
 #' 
@@ -51,27 +56,19 @@
 #' 
 #' @concept clustering
 #' @export
-riem.hclust <- function(riemobj, geometry=c("intrinsic","extrinsic"),
+riem.hclust <- function(riemobj, geometry = NULL,
                         method = c("single", "complete", "average", "mcquitty", "ward.D", "ward.D2",
-                                   "centroid", "median"), members=NULL){
-  ## PREPARE
-  DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
-  if (!inherits(riemobj,"riemdata")){
-    stop(paste0("* riem.hclust : input ",DNAME," should be an object of 'riemdata' class."))
+                                   "centroid", "median"), members = NULL) {
+  result <- riem_legacy_distances(riemobj, geometry)
+  if (length(riemobj$data) < 2L) stop("Hierarchical clustering requires at least two observations.", call. = FALSE)
+  method <- match.arg(method)
+  if (!is.null(members) && (!is.numeric(members) || is.complex(members) ||
+      length(members) != length(riemobj$data) || any(!is.finite(members)) || any(members <= 0))) {
+    stop("members must be finite positive cluster sizes, one per input.", call. = FALSE)
   }
-  mygeom    = ifelse(missing(geometry),"intrinsic",
-                     match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  mymethod  = match.arg(method)
-  mymembers = members
-  
-  ## PSEUDO
-  AA = array(1, c(3,3))
-  diag(AA) = 0
-  AH = stats::hclust(stats::as.dist(AA))
-  
-  ## COMPUTE DISTANCE, HCLUST, AND RETURN
-  pdmat   = stats::as.dist(basic_pdist(riemobj$name, riemobj$data, mygeom))
-  fimport = utils::getFromNamespace("hidden_hclust", "maotai")
-  hcout   = fimport(pdmat, mymethod, mymembers)
-  return(hcout)
+  out <- stats::hclust(stats::as.dist(result$distances), method = method, members = members)
+  out$geometry <- result$geometry
+  out$distance_interpretation <- "supplied dissimilarity; no manifold variance-minimization claim"
+  out$call <- match.call()
+  out
 }

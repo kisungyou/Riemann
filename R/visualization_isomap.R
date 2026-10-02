@@ -7,15 +7,22 @@
 #' they are mutually included in each other's nearest neighbor. Note that 
 #' it is possible for geodesic distances to be \code{Inf} when nearest neighbor 
 #' graph construction incurs separate connected components. When an extra 
-#' parameter \code{padding=TRUE}, infinite distances are replaced by 2 times 
+#' parameter \code{padding=TRUE}, infinite distances are explicitly replaced by 2 times
 #' the maximal finite geodesic distance.
 #' 
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
 #' @param ndim an integer-valued target dimension (default: 2).
 #' @param nnbd the size of nearest neighborhood (default: 5).
-#' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
+#' @param geometry A geometry name or saved specification.
+#' @details Self-neighbors are excluded and distance ties use observation order.
+#'   An edge is retained only when each endpoint selects the other among its
+#'   nearest neighbors. Zero-length edges between duplicate observations are
+#'   retained. The result records components, adjacency, and whether padding
+#'   changed disconnected distances. Padding produces an artificial dissimilarity
+#'   and is not an estimate of the original disconnected graph distance.
 #' @param ... extra parameters including\describe{
-#' \item{padding}{a logical; if \code{TRUE}, \code{Inf}-valued geodesic distances are replaced by 2 times the maximal geodesic distance in the data.}
+#' \item{padding}{a logical, default \code{FALSE}; if \code{TRUE}, disconnected
+#' distances are replaced by twice the largest finite graph distance, with a warning.}
 #' }
 #' 
 #' @return a named list containing \describe{
@@ -49,8 +56,8 @@
 #' 
 #' ## MDS AND ISOMAP WITH DIFFERENT NEIGHBORHOOD SIZE
 #' mdss = riem.mds(myriem)$embed
-#' iso1 = riem.isomap(myriem, nnbd=5)$embed
-#' iso2 = riem.isomap(myriem, nnbd=10)$embed
+#' iso1 = riem.isomap(myriem, nnbd=5, padding=TRUE)$embed
+#' iso2 = riem.isomap(myriem, nnbd=10, padding=TRUE)$embed
 #' 
 #' ## VISUALIZE
 #' opar = par(no.readonly=TRUE)
@@ -61,43 +68,42 @@
 #' par(opar)
 #' 
 #' @references
-#' \insertRef{silva_global_2003}{Rdimtools}
+#' Silva VD and Tenenbaum JB (2003). "Global Versus Local Methods in Nonlinear
+#' Dimensionality Reduction." Advances in Neural Information Processing Systems
+#' 15, 721--728. MIT Press.
 #' 
 #' @concept visualization
 #' @export
-riem.isomap <- function(riemobj, ndim=2, nnbd=5, geometry=c("intrinsic","extrinsic"), ...){
-  ## PREPARE
-  DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
-  if (!inherits(riemobj,"riemdata")){
-    stop(paste0("* riem.mds : input ",DNAME," should be an object of 'riemdata' class."))
+riem.isomap <- function(riemobj, ndim = 2, nnbd = 5, geometry = NULL, ...) {
+  result <- riem_legacy_distances(riemobj, geometry)
+  n <- length(riemobj$data)
+  ndim <- riem_legacy_dimensions(ndim, n)
+  nnbd <- riem_regression_integer(nnbd, "nnbd", 1L, n - 1L)
+  options <- list(...)
+  if (length(options) && (is.null(names(options)) || any(!names(options) %in% "padding") ||
+                          anyDuplicated(names(options)))) {
+    stop("Only the named 'padding' option is supported.", call. = FALSE)
   }
-  myndim = max(2, round(ndim))
-  mygeom = ifelse(missing(geometry),"intrinsic",
-                  match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  mynnbd = max(2, round(nnbd))
-  
-  ## IMPLICIT PARAMETERS
-  params = list(...)
-  pnames = names(params)
-  use.padding = ifelse(("padding"%in%pnames), as.logical(params$padding), TRUE)
-  
-  ## COMPUTE WEIGHTED PAIRWISE DISTANCE
-  distobj = stats::as.dist(visualize_isomap(riemobj$name, riemobj$data, mygeom, mynnbd))
-  # distgeo = maotai::shortestpath(distobj)
-  distgeo = Rdimtools::aux.shortestpath(distobj)
-  if (any(is.infinite(distgeo))){
-    if (use.padding){
-      print("* riem.isomap : some of the geodesic distances are Inf, so 'padding' is applied.")  
-      distgeo[is.infinite(distgeo)] = max(distgeo[!is.infinite(distgeo)])*2
-    } else {
-      stop("* riem.isomap : some of the points are isolated. Use larger 'nnbd' value.")
-    }
+  padding <- if (is.null(options$padding)) FALSE else options$padding
+  if (!is.logical(padding) || length(padding) != 1L || is.na(padding)) {
+    stop("padding must be TRUE or FALSE.", call. = FALSE)
   }
-  
-  
-  ## COMPUTE MDS AND RETURN
-  func.import     = utils::getFromNamespace("hidden_cmds", "maotai")
-  out.cmds        = func.import(stats::as.dist(distgeo), ndim=myndim)
-  out.cmds$stress = NULL
-  return(out.cmds)
+  graph <- riem_mutual_knn_graph(result$distances, nnbd)
+  disconnected <- any(!is.finite(graph$distance))
+  if (disconnected) {
+    if (!padding) stop("The mutual-neighbor graph is disconnected; increase nnbd or explicitly request padding=TRUE.",
+                       call. = FALSE)
+    fill <- 2 * max(graph$distance[is.finite(graph$distance)])
+    if (!is.finite(fill)) stop("The requested padding distance is not finite.", call. = FALSE)
+    graph$distance[!is.finite(graph$distance)] <- fill
+    warning("Disconnected graph distances were padded; the embedding uses an artificial dissimilarity.", call. = FALSE)
+  }
+  out <- riem_legacy_cmds(graph$distance, ndim)
+  out$geometry <- result$geometry
+  out$adjacency <- graph$adjacency
+  out$component <- graph$component
+  out$padded <- disconnected
+  out$nnbd <- nnbd
+  out$method <- "mutual_knn_isomap"
+  out
 }

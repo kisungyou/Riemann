@@ -6,7 +6,7 @@
 #' 
 #' @param riemobj1 a S3 \code{"riemdata"} class for \eqn{M} manifold-valued data.
 #' @param riemobj2 a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
-#' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
+#' @param geometry A name or saved specification accepted by \code{\link{riem.geometry}}.
 #' 
 #' @return an \eqn{(M\times N)} matrix of distances.
 #' 
@@ -56,26 +56,10 @@
 #' 
 #' @concept basic
 #' @export
-riem.pdist2 <- function(riemobj1, riemobj2, geometry=c("intrinsic","extrinsic")){
-  ## PREPARE
-  DNAME1 = paste0("'",deparse(substitute(riemobj1)),"'")
-  DNAME2 = paste0("'",deparse(substitute(riemobj2)),"'")
-  if (!inherits(riemobj1,"riemdata")){
-    stop(paste0("* riem.pdist2 : input ",DNAME1," should be an object of 'riemdata' class."))
-  }
-  if (!inherits(riemobj2,"riemdata")){
-    stop(paste0("* riem.pdist2 : input ",DNAME2," should be an object of 'riemdata' class."))
-  }
-  if (!all(riemobj1$name==riemobj2$name)){
-    stop("* riem.pdist2 : two inputs are from different manifolds.")
-  }
-  if (!all(riemobj1$size==riemobj2$size)){
-    stop("* riem.pdist2 : two inputs are of different size.")
-  }
-  mygeometry = ifelse(missing(geometry),"intrinsic",
-                      match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-
-  ## COMPUTE & RETURN
-  distmat = basic_pdist2(riemobj1$name, riemobj1$data, riemobj2$data, mygeometry)
-  return(distmat)
+riem.pdist2 <- function(riemobj1, riemobj2, geometry = NULL) {
+  riem_check_newdata(riemobj1, riemobj2)
+  spec <- riem_resolve_geometry(riemobj1, geometry, "distance")
+  out <- basic_pdist2(riemobj1$name, riemobj1$data, riemobj2$data, spec$backend)
+  if (any(!is.finite(out)) || any(out < 0)) stop("Distance computation returned invalid values.", call. = FALSE)
+  out
 }

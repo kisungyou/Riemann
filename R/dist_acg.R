@@ -12,12 +12,25 @@
 #' 
 #' @param datalist a list of length-\eqn{p} unit-norm vectors. 
 #' @param A a \eqn{(p\times p)} symmetric positive-definite matrix.
-#' @param n the number of samples to be generated.
+#' @param n a positive integer number of samples.
+#' @param log logical; return log densities when \code{TRUE}.
 #' @param ... extra parameters for computations, including\describe{
 #' \item{maxiter}{maximum number of iterations to be run (default:50).}
 #' \item{eps}{tolerance level for stopping criterion (default: 1e-5).}
 #' }
 #' 
+#' @details The reference measure is the uniform probability measure (total mass
+#'   one), so the density equals one for the identity parameter. Density evaluation
+#'   uses Cholesky factors and log determinants; \code{log=TRUE} avoids ordinary
+#'   density overflow. The shape is normalized to trace \eqn{p}.
+#'
+#'   The fixed-point estimate carries convergence, iteration, step, and negative
+#'   mean-log-likelihood attributes. Failed convergence warns. Existence and
+#'   uniqueness require sufficient dispersion across all proper linear subspaces;
+#'   full observed span alone does not establish these statistical conditions.
+#'   Degenerate updates error, and the implementation does not claim a global
+#'   existence or uniqueness certificate.
+#'
 #' @return 
 #' \code{dacg} gives a vector of evaluated densities given samples. \code{racg} generates 
 #' unit-norm vectors in \eqn{\mathbf{R}^p} wrapped in a list. \code{mle.acg} estimates 
@@ -59,28 +72,10 @@ NULL
 
 #' @rdname acg
 #' @export
-dacg <- function(datalist, A){
-  ## INITIALIZATION
-  FNAME = "dacg"
-  myobj = wrap.sphere(datalist)
-  myA   = as.matrix(A)
-  if (!check_spdmat(myA)){
-    stop(paste0("* ",FNAME," : 'A' should be a symmetric positive-definite matrix."))
-  }
-  if (base::nrow(myA)!=length(as.vector(myobj$data[[1]]))){
-    stop(paste0("* ",FNAME," : 'A' should have ",length(as.vector(myobj$data[[1]]))," columns and rows."))
-  }
-  
-  ## COMPUTATION
-  output = acg_density(myobj$data, myA)
-  # output = dacg_internal(myobj$data, myA)
-  
-  # if (TRUE){ # adjust with surface measure
-  #   p = base::nrow(myA)
-  #   Cp = (2*(pi^(p/2)))/base::gamma(p/2)
-  #   output = as.vector(output)/Cp
-  # }
-  return(as.vector(output))
+dacg <- function(datalist, A, log = FALSE) {
+  data <- wrap.sphere(datalist)$data
+  parameter <- riem_angular_parameter(A, "A")
+  riem_angular_density(data, parameter, log)
 }
 #' @keywords internal
 #' @noRd
@@ -100,38 +95,22 @@ dacg_internal <- function(data, A){
 
 #' @rdname acg
 #' @export
-racg <- function(n, A){
-  ## INITIALIZATION
-  FNAME = "racg"
-  myA   = as.matrix(A)
-  if (!check_spdmat(myA)){
-    stop(paste0("* ",FNAME," : 'A' should be a symmetric positive-definite matrix."))
-  }
-  myp = base::nrow(myA)
-  myn = max(1, round(n))
-  myA = (myA/sum(diag(myA)))*myp # normalize to "tr(A)=p"
-  
-  ## COMPUTE
-  cppsam = cpp_rmvnorm(myn, rep(0,myp), myA)
-  output = list()
-  for (i in 1:myn){
-    tgt         = as.vector(cppsam[i,])
-    output[[i]] = tgt/sqrt(sum(tgt^2))
-  }
-  return(output)
+racg <- function(n, A) {
+  n <- riem_regression_integer(n, "n", 1L)
+  parameter <- riem_angular_parameter(A, "A")
+  p <- nrow(parameter)
+  samples <- matrix(stats::rnorm(n * p), nrow = n) %*% chol(parameter)
+  lapply(seq_len(n), function(i) {
+    x <- samples[i, ]
+    scale <- max(abs(x))
+    if (!is.finite(scale) || scale == 0) stop("The Gaussian draw cannot be normalized.", call. = FALSE)
+    x <- x / scale
+    x / sqrt(sum(x^2))
+  })
 }
 
 #' @rdname acg
 #' @export
-mle.acg <- function(datalist, ...){
-  ## INITIALIZATION
-  myobj  = wrap.sphere(datalist)
-  pars   = list(...)
-  pnames = names(pars)
-  myiter = max(50, ifelse(("maxiter"%in%pnames), pars$maxiter, 50))
-  myeps  = min(1e-5, max(0, ifelse(("eps"%in%pnames), as.double(pars$eps), 1e-5)))
-  
-  ## COMPUTE AND RETURN
-  output = acg_mle(myobj$data, myiter, myeps)
-  return(output)
+mle.acg <- function(datalist, ...) {
+  riem_angular_mle(wrap.sphere(datalist)$data, list(...), matrix_variant = FALSE)
 }

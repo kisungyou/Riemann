@@ -1,6 +1,6 @@
 #' Prepare Data on Multinomial Manifold
 #' 
-#' Multinomial manifold is referred to the data that is nonnegative and sums to 1. 
+#' Multinomial manifold is referred to the strictly positive data that sums to 1.
 #' Also known as probability simplex or positive orthant, we denote \eqn{(p-1)} simplex 
 #' in \eqn{\mathbf{R}^p} by 
 #' \deqn{\Delta^{p-1} = \lbrace
@@ -8,7 +8,8 @@
 #' \rbrace}
 #' in that data are positive \eqn{L_1} unit-norm vectors. 
 #' In \code{wrap.multinomial}, normalization is applied when each data point is not on the simplex, 
-#' but if vectors contain values not in \eqn{(0,1)}, it returns errors.
+#' accepting positive counts or masses. Zero, negative, and nonfinite inputs are
+#' rejected before normalization; no pseudocount is added.
 #' 
 #' @param input data vectors to be wrapped as \code{riemdata} class. Following inputs are considered,
 #' \describe{
@@ -42,44 +43,25 @@
 #' 
 #' @concept wrapper
 #' @export
-wrap.multinomial <- function(input){
-  ## TAKE EITHER 2D ARRAY {n x p} OR A LIST
-  #  1. data format
-  if (is.matrix(input)){
-    N = nrow(input)
-    tmpdata = list()
-    for (i in 1:N){
-      tmpdata[[i]] = as.vector(input[i,])
-    }
-  } else if (is.list(input)){
-    tmpdata = input
-  } else {
-    stop("* wrap.multinomial : input should be either a 2d matrix or a list.")
-  }
-  #  2. check all same size
-  if (!check_list_eqsize(tmpdata, check.square=FALSE)){
-    stop("* wrap.multinomial : elements are not vectors of same size.")
-  }
-  #  3. check each element
-  N = length(tmpdata)
-  for (n in 1:N){
-    tgtvec = single_multinomial(as.vector(tmpdata[[n]]), n)
-    tmpdata[[n]] = matrix(tgtvec, ncol = 1)
-  }
-  
-  ## WRAP AND RETURN THE S3 CLASS
-  output = list()
-  output$data = tmpdata
-  output$size = dim(tmpdata[[1]])
-  output$name = "multinomial"
-  return(structure(output, class="riemdata"))
+wrap.multinomial <- function(input) {
+  data <- riem_vector_input(input, "multinomial")
+  data <- lapply(seq_along(data), function(i) {
+    x <- data[[i]]
+    x[] <- single_multinomial(as.numeric(x), i)
+    x
+  })
+  riem_wrap_matrices(data, "multinomial")
 }
-#' @keywords internal
-#' @noRd
-single_multinomial <- function(vec, id){
-  output = vec/base::sum(vec)
-  if (any(output <= 0)||any(output >= 1)){
-    stop(paste0("* wrap.multinomial : ",id,"-th vector is not a suitable object. See the description."))
+
+single_multinomial <- function(vec, id) {
+  if (!is.numeric(vec) || is.complex(vec) || length(vec) < 2L ||
+      any(!is.finite(vec)) || any(vec <= 0)) {
+    stop("Observation ", id, " must have at least two finite strictly positive entries.", call. = FALSE)
   }
-  return(output)
+  output <- vec / max(vec)
+  output <- output / sum(output)
+  if (any(output <= 0) || any(output >= 1)) {
+    stop("Observation ", id, " is too close to the simplex boundary for finite precision.", call. = FALSE)
+  }
+  output
 }

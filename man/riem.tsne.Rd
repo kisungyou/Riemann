@@ -26,6 +26,14 @@ Given \eqn{N} observations \eqn{X_1, X_2, \ldots, X_N \in \mathcal{M}},
 t-SNE mimicks the pattern of probability distributions over pairs of manifold-valued 
 objects on low-dimensional target embedding space by minimizing Kullback-Leibler divergence.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #          Example on Sphere : a dataset with three types

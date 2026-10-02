@@ -49,6 +49,10 @@ basic_interpolate <- function(mfdname, dtype, mat1, mat2, vect) {
     .Call('_Riemann_basic_interpolate', PACKAGE = 'Riemann', mfdname, dtype, mat1, mat2, vect)
 }
 
+inference_summary <- function(mfdname, data, myweight, statistic, geometry, myiter, myeps, initial = NULL, max_backtrack = 50L, keep_trace = FALSE) {
+    .Call('_Riemann_inference_summary', PACKAGE = 'Riemann', mfdname, data, myweight, statistic, geometry, myiter, myeps, initial, max_backtrack, keep_trace)
+}
+
 inference_mean_intrinsic <- function(mfdname, data, myweight, myiter, myeps) {
     .Call('_Riemann_inference_mean_intrinsic', PACKAGE = 'Riemann', mfdname, data, myweight, myiter, myeps)
 }
@@ -203,6 +207,10 @@ src_spd_pdist <- function(data, geometry) {
 
 src_spd_variation <- function(data3d, fmean) {
     .Call('_Riemann_src_spd_variation', PACKAGE = 'Riemann', data3d, fmean)
+}
+
+geometry_operations <- function(manifold, x, y, u, v) {
+    .Call('_Riemann_geometry_operations', PACKAGE = 'Riemann', manifold, x, y, u, v)
 }
 
 mat_rank <- function(A) {

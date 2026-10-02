@@ -4,61 +4,42 @@
 \alias{predict.m2skreg}
 \title{Prediction for Manifold-to-Scalar Kernel Regression}
 \usage{
-\method{predict}{m2skreg}(object, newdata, geometry = c("intrinsic", "extrinsic"), ...)
+\method{predict}{m2skreg}(
+  object,
+  newdata,
+  geometry = NULL,
+  diagnostics = FALSE,
+  block_size = 256L,
+  ...
+)
 }
 \arguments{
-\item{object}{an object of \code{m2skreg} class. See \code{\link{riem.m2skreg}} for more details.}
+\item{object}{A fitted \code{m2skreg} object.}
 
-\item{newdata}{a S3 \code{"riemdata"} class for manifold-valued data corresponding to \eqn{X_1,\ldots,X_M}.}
+\item{newdata}{A compatible \code{riemdata} object containing new predictors.}
 
-\item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
+\item{geometry}{Usually \code{NULL}, which uses the fitted geometry. An
+explicit value must resolve to the same geometry. An old serialized object
+without geometry metadata requires an explicit value and produces a
+warning, because its original geometry cannot be inferred reliably.}
 
-\item{...}{further arguments passed to or from other methods.}
+\item{diagnostics}{Whether to return support diagnostics with predictions.}
+
+\item{block_size}{Positive integer limiting the number of new observations
+in each cross-distance calculation. It does not change the fitted model.}
+
+\item{...}{Reserved for future arguments; unknown arguments are rejected.}
 }
 \value{
-a length-\eqn{M} vector of predictted values.
+By default, a numeric vector with one prediction per observation.
+  With \code{diagnostics=TRUE}, a list containing \code{prediction} and a data
+  frame \code{diagnostics} with \code{effective_n}, \code{nearest_distance},
+  and \code{nearest_over_bandwidth}. The last quantity may be infinite when
+  the ratio is not representable even though the prediction remains finite.
 }
 \description{
-Given new observations \eqn{X_1, X_2, \ldots, X_M \in \mathcal{M}}, plug in 
-the data with respect to the fitted model for prediction.
-}
-\examples{
-\donttest{
-#-------------------------------------------------------------------
-#                    Example on Sphere S^2
-#
-#  X : equi-spaced points from (0,0,1) to (0,1,0)
-#  y : sin(x) with perturbation
-#
-#  Our goal is to check whether the predict function works well
-#  by comparing the originally predicted values vs. those of the same data.
-#-------------------------------------------------------------------
-# GENERATE DATA
-npts = 100
-nlev = 0.25
-thetas = seq(from=0, to=pi/2, length.out=npts)
-Xstack = cbind(rep(0,npts), sin(thetas), cos(thetas))
-
-Xriem  = wrap.sphere(Xstack)
-ytrue  = sin(seq(from=0, to=2*pi, length.out=npts))
-ynoise = ytrue + rnorm(npts, sd=nlev)
-
-# FIT & PREDICT
-obj_fit   = riem.m2skreg(Xriem, ynoise, bandwidth=0.01)
-yval_fits = obj_fit$ypred
-yval_pred = predict(obj_fit, Xriem)
-
-# VISUALIZE
-xgrd <- 1:npts
-opar <- par(no.readonly=TRUE)
-par(mfrow=c(1,2))
-plot(xgrd, yval_fits, pch=19, cex=0.5, "b", xlab="", ylim=c(-2,2), main="original fit")
-lines(xgrd, ytrue, col="red", lwd=1.5)
-plot(xgrd, yval_pred, pch=19, cex=0.5, "b", xlab="", ylim=c(-2,2), main="from 'predict'")
-lines(xgrd, ytrue, col="red", lwd=1.5)
-par(opar)
-}
-
+Predicts under the fitted geometry and bandwidth without refitting or using
+prediction-batch statistics. Training predictors and responses are required.
 }
 \seealso{
 \code{\link{riem.m2skreg}}

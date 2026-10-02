@@ -6,7 +6,7 @@
 \usage{
 riem.coreset18B(
   riemobj,
-  M = length(riemobj$data)/2,
+  M = max(1L, ceiling(length(riemobj$data)/2)),
   geometry = c("intrinsic", "extrinsic"),
   ...
 )
@@ -14,9 +14,9 @@ riem.coreset18B(
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
 
-\item{M}{the size of coreset (default: \eqn{N/2}).}
+\item{M}{positive integer number of independent draws (default: \eqn{\lceil N/2 \rceil}). Values greater than \eqn{N} are permitted.}
 
-\item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
+\item{geometry}{(case-insensitive) name or saved specification of a geometry supporting means. Legacy aliases \code{"intrinsic"} and \code{"extrinsic"} are accepted; see \code{\link{riem.geometry}}.}
 
 \item{...}{extra parameters including\describe{
 \item{maxiter}{maximum number of iterations to be run (default:50).}
@@ -25,15 +25,34 @@ riem.coreset18B(
 }
 \value{
 a named list containing\describe{
-\item{coreid}{a length-\eqn{M} index vector of the coreset.}
-\item{weight}{a length-\eqn{M} vector of weights for each element.}
+\item{coreid}{a length-\eqn{M} index vector; repeated indices are retained.}
+\item{weight}{a length-\eqn{M} vector of importance weights, \eqn{1/(M q_i)} for each drawn index \eqn{i}.}
 }
 }
 \description{
 Given manifold-valued data \eqn{X_1,X_2,\ldots,X_N \in \mathcal{M}}, this algorithm 
-finds the coreset of size \eqn{M} that can be considered as a compressed representation 
-according to the lightweight coreset construction scheme proposed by the reference below.
+draws a weighted coreset using the lightweight importance-sampling scheme
+proposed by the reference below. The Euclidean approximation theorem is not
+asserted for arbitrary manifold geometries.
 }
+\details{
+Each index is drawn independently with replacement, with probability
+\eqn{q_i = 1/(2N) + d(X_i,\mu)^2/(2\sum_j d(X_j,\mu)^2)}, where
+\eqn{\mu} is the computed mean in the selected geometry. When all distances
+are zero the probabilities are uniform. Thus, for any fixed centers, the
+importance-weighted coreset cost is an unbiased estimate of the full-data
+squared-distance cost. This identity does not require the computed mean to
+be globally optimal. Duplicate draws count separately and must not be
+discarded without summing their weights. Use \code{set.seed()} for reproducibility.
+}
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #          Example on Sphere : a dataset with three types

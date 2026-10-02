@@ -9,6 +9,14 @@
 #' \item{\code{"BingM"}}{modified Bingham statistic with better order of error.}
 #' }
 #' 
+#' @details This is an asymptotic moment-based test, requiring independent
+#'   identically distributed observations. It need not detect every nonuniform
+#'   distribution. The modified expansion is unavailable for ambient dimension
+#'   two, where its displayed coefficients are singular; full-dimensional
+#'   subspaces are also excluded. Small-sample calibration and the modified
+#'   expansion remain experimental; a nominal chi-squared p-value does not
+#'   certify finite-sample size control.
+#'
 #' @return a (list) object of \code{S3} class \code{htest} containing: \describe{
 #' \item{statistic}{a test statistic.}
 #' \item{p.value}{\eqn{p}-value under \eqn{H_0}.}
@@ -54,6 +62,11 @@
 #' 
 #' @concept grassmann
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 grassmann.utest <- function(grobj, method=c("Bing","BingM")){
   #  CHECK INPUT
   DNAME    = deparse(substitute(grobj)) # borrowed from HDtest
@@ -61,11 +74,19 @@ grassmann.utest <- function(grobj, method=c("Bing","BingM")){
   check_inputmfd(grobj, FNAME)
   mymethod = ifelse(missing(method),"bing",
                     match.arg(tolower(method),c("bing","bingm")))
+  if (grobj$size[2L] >= grobj$size[1L]) {
+    stop("The Bingham statistic requires a proper subspace (k < p).", call. = FALSE)
+  }
+  if (mymethod == "bingm" && grobj$size[1L] <= 2L) {
+    stop("The modified Bingham expansion requires p > 2; use method='Bing' for p=2.", call. = FALSE)
+  }
   
   #  COMPUTE AND RETURN
   output <- switch(mymethod,
                    bing  = gr.utest.bing(grobj, DNAME, is.modified = FALSE),
                    bingm = gr.utest.bing(grobj, DNAME, is.modified = TRUE))
+  output$calibration <- "asymptotic_chisquared"
+  output$validation_status <- "experimental_moment_test"
   return(output)
 }
 #' @keywords internal
@@ -84,7 +105,11 @@ gr.utest.bing <- function(grobj, dname, is.modified=TRUE){
   }
   
   # COMPUTE THE STATISTIC
-  S = (((p-1)*p*(p+2))/(2*r*(p-r)))*n*(sum(diag(Ybar%*%Ybar)) - ((r^2)/p))
+  discrepancy <- sum(diag(Ybar %*% Ybar)) - (r^2 / p)
+  if (discrepancy < -100 * .Machine$double.eps * r) {
+    stop("The projector moment statistic is numerically inconsistent.", call. = FALSE)
+  }
+  S = (((p-1)*p*(p+2))/(2*r*(p-r)))*n*max(0, discrepancy)
   
   # BRANCHING
   if (is.modified){

@@ -4,7 +4,7 @@
 \alias{wrap.landmark}
 \title{Wrap Landmark Data on Shape Space}
 \usage{
-wrap.landmark(input)
+wrap.landmark(input, reference = NULL)
 }
 \arguments{
 \item{input}{data matrices to be wrapped as \code{riemdata} class. Following inputs are considered,
@@ -12,6 +12,9 @@ wrap.landmark(input)
 \item{array}{a \eqn{(k\times p\times n)} array where each slice along 3rd dimension is a \eqn{k}-ad in \eqn{\mathbf{R}^p}.}
 \item{list}{a length-\eqn{n} list whose elements are \eqn{k}-ads.}
 }}
+
+\item{reference}{optional reference configuration for alignment. If NULL,
+the first observation is used.}
 }
 \value{
 a named \code{riemdata} S3 object containing
@@ -29,7 +32,10 @@ Note that when \eqn{p > 2}, it is stratified space but we assume singularities d
 are omitted. The wrapper takes translation and scaling out from the data to make it 
 \emph{preshape} (centered, unit-norm). Also, for convenience, orthogonal 
 Procrustes analysis is applied with the first observation being the reference so 
-that all the other data are rotated to match the shape of the first.
+that all the other data are aligned to that reference. The full orthogonal
+group O(p), including reflections, is used. This is not an SO(p)-only
+orientation-preserving analysis. Singular configurations are rejected.
+Fitted tangent models retain and apply their own training reference.
 }
 \examples{
 ## USE 'GORILLA' DATA

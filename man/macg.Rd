@@ -7,7 +7,7 @@
 \alias{mle.macg}
 \title{Matrix Angular Central Gaussian Distribution}
 \usage{
-dmacg(datalist, Sigma)
+dmacg(datalist, Sigma, log = FALSE)
 
 rmacg(n, r, Sigma)
 
@@ -18,7 +18,9 @@ mle.macg(datalist, ...)
 
 \item{Sigma}{a \eqn{(p\times p)} symmetric positive-definite matrix.}
 
-\item{n}{the number of samples to be generated.}
+\item{log}{logical; return log densities when \code{TRUE}.}
+
+\item{n}{a positive integer number of samples.}
 
 \item{r}{the number of basis.}
 
@@ -39,6 +41,19 @@ distribution \eqn{MACG_{p,r}(\Sigma)} with density
 \deqn{f(X\vert \Sigma) = |\Sigma|^{-r/2} |X^\top \Sigma^{-1} X|^{-p/2}}
 where \eqn{\Sigma} is a \eqn{(p\times p)} symmetric positive-definite matrix. 
 Similar to vector-variate ACG case, we follow a convention that \eqn{tr(\Sigma)=p}.
+}
+\details{
+The density is relative to the invariant uniform probability measure
+  on the Stiefel manifold, or its push-forward on the Grassmann quotient, and
+  equals one at \eqn{\Sigma=I}. Cholesky/log-determinant evaluation avoids
+  determinant products that overflow at extreme parameter scales.
+
+  Sampling uses the polar factor of a Gaussian matrix. The fixed-point estimate
+  is trace normalized and carries convergence, iteration, step, and negative
+  mean-log-likelihood attributes. Failed convergence warns; degenerate updates
+  error. Full observed span does not certify the subspace-dispersion conditions
+  needed for an identifiable, unique interior estimate. When \eqn{r=p>1}, the
+  density is uniform regardless of \eqn{\Sigma}, so estimation errors.
 }
 \examples{
 # -------------------------------------------------------------------

@@ -1,24 +1,53 @@
-#' Fréchet Median and Variation
+#' Fr\ifelse{html}{\out{&eacute;}}{\ifelse{latex}{\out{\'e}}{e}}chet Median and Variation
 #' 
 #' Given \eqn{N} observations \eqn{X_1, X_2, \ldots, X_N \in \mathcal{M}}, 
-#' compute Fréchet median and variation with respect to the geometry by minimizing
+#' compute Fr\ifelse{html}{\out{&eacute;}}{\ifelse{latex}{\out{\'e}}{e}}chet median and variation with respect to the geometry by minimizing
 #' \deqn{\textrm{min}_x \sum_{n=1}^N w_n \rho (x, x_n),\quad x\in\mathcal{M}} where
 #' \eqn{\rho (x, y)} is a distance for two points \eqn{x,y\in\mathcal{M}}. 
-#' If non-uniform weights are given, normalized version of the mean is computed 
+#' If non-uniform weights are given, normalized version of the median is computed
 #' and if \code{weight=NULL}, it automatically sets equal weights for all observations.
 #' 
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
-#' @param weight weight of observations; if \code{NULL} it assumes equal weights, or a nonnegative length-\eqn{N} vector that sums to 1 should be given.
-#' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
-#' @param ... extra parameters including\describe{
-#' \item{maxiter}{maximum number of iterations to be run (default:50).}
-#' \item{eps}{tolerance level for stopping criterion (default: 1e-5).}
-#' }
+#' @param weight Finite nonnegative observation weights with positive sum. They
+#'   are normalized internally. \code{NULL} uses equal weights. Zero-weight
+#'   observations are validated but do not enter the calculation.
+#' @param geometry Geometry name or specification. \code{NULL} selects the
+#'   default geometry. Legacy \code{"intrinsic"} and \code{"extrinsic"}
+#'   aliases remain available for supported combinations. SPD names include
+#'   \code{"affine_invariant"} and \code{"log_euclidean"}.
+#' @param ... Named controls: \describe{
+#'   \item{maxiter}{Positive maximum number of accepted iterations (default 50).}
+#'   \item{eps}{Positive absolute tolerance for the compatible subgradient residual
+#'     (default \code{1e-5}).}
+#'   \item{max_backtrack}{Positive maximum number of trial steps per iteration,
+#'     at most 1024 (default 50).}
+#'   \item{trace}{Whether to retain the iteration history (default \code{FALSE}).}
+#'   \item{init}{Optional initial matrix with the observation dimensions.
+#'     Closed-form calculations do not use an initializer.}
+#' } Unknown controls are errors.
 #' 
-#' @return a named list containing\describe{
-#' \item{median}{a median matrix on \eqn{\mathcal{M}}.}
-#' \item{variation}{sum of (weighted) distances.}
-#' }
+#' @details Intrinsic medians use a modified Weiszfeld direction with
+#'   backtracking. Coincident observations retain their subgradient mass, and
+#'   an observation is accepted as a nonsmooth solution only after the relevant
+#'   certificate is checked. On nonconvex manifolds, stationarity is local.
+#'
+#'   For the log-Euclidean SPD chart, the extrinsic route computes the geometric
+#'   median of matrix logarithms and exponentiates it. For a curved embedding
+#'   such as the sphere or Grassmann manifold, the returned estimator is the
+#'   projection of an ambient geometric median. It need not minimize the sum
+#'   of chordal distances constrained to the manifold. The \code{estimand} and
+#'   \code{diagnostic_scope} fields identify this distinction; convergence and
+#'   trace describe the ambient optimization. \code{ambient_objective} records
+#'   its cost before projection. An ambiguous inverse projection is an error.
+#'
+#' @return A \code{riem_summary} object retaining \code{median} and
+#'   \code{variation}, plus \code{objective}, resolved \code{geometry}, normalized
+#'   \code{weights}, \code{converged}, \code{termination}, \code{iterations},
+#'   \code{subgradient_residual} when applicable, controls, and an optional
+#'   \code{trace}. \code{variation} equals the normalized weighted sum of
+#'   distances at the returned matrix; for a projected ambient median this is
+#'   a descriptive manifold cost, not the optimized ambient objective.
+#'   An unsuccessful iteration warns and returns the last accepted estimate.
 #' 
 #' @examples 
 #' #-------------------------------------------------------------------
@@ -47,35 +76,6 @@
 #' 
 #' @concept inference
 #' @export
-riem.median <- function(riemobj, weight=NULL, geometry=c("intrinsic","extrinsic"), ...){
-  ## PREPARE
-  DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
-  if (!inherits(riemobj,"riemdata")){
-    stop(paste0("* riem.median : input ",DNAME," should be an object of 'riemdata' class."))
-  }
-  N = length(riemobj$data)
-  if ((length(weight)==0)&&(is.null(weight))){
-    myweight = rep(1/N, N)
-  } else {
-    myweight = check_weight(weight, N, "riem.median")
-  }
-  mygeom = ifelse(missing(geometry),"intrinsic",
-                  match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  
-  # IMPLICIT PARAMETERS 
-  pars   = list(...)
-  pnames = names(pars)
-  myiter = ifelse(("maxiter"%in%pnames), max(50, round(pars$maxiter)), 50)
-  myeps  = ifelse(("eps"%in%pnames), min(max(as.double(pars$eps),0),1e-5), 1e-5)
-
-  ## MAIN COMPUTATION
-  if (all(mygeom=="intrinsic")){
-    output = inference_median_intrinsic(riemobj$name, riemobj$data, myweight, myiter, myeps)
-  } else {
-    output = inference_median_extrinsic(riemobj$name, riemobj$data, myweight, myiter, myeps)
-  }
-  
-  ## WRAP AND RETURN
-  output$distvec = NULL # remove distance vector
-  return(output)
+riem.median <- function(riemobj, weight = NULL, geometry = NULL, ...) {
+  riem_fit_summary(riemobj, weight, geometry, list(...), "median", match.call())
 }

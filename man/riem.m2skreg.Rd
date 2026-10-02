@@ -4,74 +4,50 @@
 \alias{riem.m2skreg}
 \title{Manifold-to-Scalar Kernel Regression}
 \usage{
-riem.m2skreg(
-  riemobj,
-  y,
-  bandwidth = 0.5,
-  geometry = c("intrinsic", "extrinsic")
-)
+riem.m2skreg(riemobj, y, bandwidth = 0.5, geometry = NULL)
 }
 \arguments{
-\item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data corresponding to \eqn{X_1,\ldots,X_N}.}
+\item{riemobj}{A \code{riemdata} object containing the training predictors.}
 
-\item{y}{a length-\eqn{N} vector of dependent variable values.}
+\item{y}{A finite numeric response vector with one entry per predictor.}
 
-\item{bandwidth}{a nonnegative number that controls smoothness.}
+\item{bandwidth}{One finite, strictly positive bandwidth.}
 
-\item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
+\item{geometry}{Geometry name or specification. \code{NULL} resolves the
+input's geometry, defaulting to its intrinsic geometry when unspecified.
+Legacy \code{"intrinsic"} and \code{"extrinsic"} aliases are accepted.}
 }
 \value{
-a named list of S3 class \code{m2skreg} containing
-\describe{
-\item{ypred}{a length-\eqn{N} vector of smoothed responses.}
-\item{bandwidth}{the bandwidth value that was originally provided, which is saved for future use.}
-\item{inputs}{a list containing both \code{riemobj} and \code{y} for future use.}
-}
+An object of class \code{m2skreg}. Legacy fields \code{ypred},
+  \code{bandwidth}, and \code{inputs} are retained. Additional fields include
+  resolved \code{geometry}, \code{call}, input dimensions, schema and package
+  versions, and \code{training_diagnostics}. No distance matrix is retained.
 }
 \description{
-Given \eqn{N} observations \eqn{X_1, X_2, \ldots, X_N \in \mathcal{M}} and 
-scalars \eqn{y_1, y_2, \ldots, y_N \in \mathbf{R}}, perform the Nadaraya-Watson kernel 
-regression by 
-\deqn{\hat{m}_h (X) = \frac{\sum_{i=1}^n K \left( \frac{d(X,X_i)}{h}  \right) y_i}{\sum_{i=1}^n K \left( \frac{d(X,X_i)}{h}  \right)}}
-where the Gaussian kernel is defined as
-\deqn{K(x) := \frac{1}{\sqrt{2\pi}} \exp \left( - \frac{x^2}{2}\right)} 
-with the bandwidth parameter \eqn{h > 0} that controls the degree of smoothness.
+Fits the Nadaraya--Watson smoother for manifold-valued predictors and finite
+real scalar responses. For bandwidth \eqn{h>0}, weights at \eqn{x} are
+proportional to \eqn{\exp\{-d(x,X_i)^2/(2h^2)\}}. The selected distance and
+training observations are retained for prediction. Training fitted values
+include the observation's own weight; they are not cross-validated predictions.
+}
+\details{
+Weights are normalized after subtracting the smallest squared
+  distance in the exponent. The difference is evaluated without first
+  squaring the distances, avoiding all-zero weights for small bandwidths or
+  distant predictions. Numerically negligible relative weights can still
+  underflow to zero. This is floating-point evaluation of the Gaussian
+  smoother, not a change to a nearest-neighbor model.
+
+  The effective weight count and nearest training distance divided by the
+  bandwidth describe the weights and distance scale. They are not confidence
+  intervals or assurances of adequate statistical support.
 }
 \examples{
-\donttest{
-#-------------------------------------------------------------------
-#                    Example on Sphere S^2
-#
-#  X : equi-spaced points from (0,0,1) to (0,1,0)
-#  y : sin(x) with perturbation
-#-------------------------------------------------------------------
-# GENERATE DATA
-npts = 100
-nlev = 0.25
-thetas = seq(from=0, to=pi/2, length.out=npts)
-Xstack = cbind(rep(0,npts), sin(thetas), cos(thetas))
-
-Xriem  = wrap.sphere(Xstack)
-ytrue  = sin(seq(from=0, to=2*pi, length.out=npts))
-ynoise = ytrue + rnorm(npts, sd=nlev)
-
-# FIT WITH DIFFERENT BANDWIDTHS
-fit1 = riem.m2skreg(Xriem, ynoise, bandwidth=0.001)
-fit2 = riem.m2skreg(Xriem, ynoise, bandwidth=0.01)
-fit3 = riem.m2skreg(Xriem, ynoise, bandwidth=0.1)
-
-# VISUALIZE
-xgrd <- 1:npts
-opar <- par(no.readonly=TRUE)
-par(mfrow=c(1,3))
-plot(xgrd, fit1$ypred, pch=19, cex=0.5, "b", xlab="", ylim=c(-2,2), main="h=1e-3")
-lines(xgrd, ytrue, col="red", lwd=1.5)
-plot(xgrd, fit2$ypred, pch=19, cex=0.5, "b", xlab="", ylim=c(-2,2), main="h=1e-2")
-lines(xgrd, ytrue, col="red", lwd=1.5)
-plot(xgrd, fit3$ypred, pch=19, cex=0.5, "b", xlab="", ylim=c(-2,2), main="h=1e-1")
-lines(xgrd, ytrue, col="red", lwd=1.5)
-par(opar)
-}
+theta <- seq(0, pi / 2, length.out = 8)
+X <- wrap.sphere(cbind(cos(theta), sin(theta)))
+fit <- riem.m2skreg(X, sin(2 * theta), bandwidth = 0.3)
+predict(fit, X)
+summary(fit)
 
 }
 \concept{inference}

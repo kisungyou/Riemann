@@ -151,68 +151,59 @@ arma::mat alg_GMMLreg(arma::mat X, arma::uvec label, double lambda){
 }
 // [[Rcpp::export]]
 arma::mat learning_rmml(std::string mfdname, Rcpp::List& data, double lambda, arma::uvec label){
-  // PREPARE
-  arma::mat tmpmat = Rcpp::as<arma::mat>(data[0]);
-  int nrow = tmpmat.n_rows;
-  int ncol = tmpmat.n_cols;
-  int nrcs = nrow*ncol;
-  int N    = data.size();
-  arma::cube mydata(nrow,ncol,N,fill::zeros);
-  for (int n=0; n<N; n++){
-    mydata.slice(n) = Rcpp::as<arma::mat>(data[n]);
+  const arma::uword N = data.size();
+  if (N < 2 || label.n_elem != N || !std::isfinite(lambda) || lambda < 0.0)
+    Rcpp::stop("RMML requires at least two observations, compatible labels, and finite nonnegative regularization.");
+  const arma::mat exemplar = Rcpp::as<arma::mat>(data[0]);
+  const arma::vec first = riem_equiv(mfdname, exemplar, exemplar.n_rows, exemplar.n_cols);
+  if (first.n_elem == 0 || !first.is_finite())
+    Rcpp::stop("RMML encountered an empty or nonfinite equivariant embedding.");
+  // Projector embeddings can be wider than the original matrix representation.
+  arma::mat eqmat(N, first.n_elem, fill::zeros);
+  eqmat.row(0) = first.t();
+  for (arma::uword n = 1; n < N; ++n) {
+    const arma::mat point = Rcpp::as<arma::mat>(data[n]);
+    if (point.n_rows != exemplar.n_rows || point.n_cols != exemplar.n_cols)
+      Rcpp::stop("RMML observations have incompatible dimensions.");
+    const arma::vec embedded = riem_equiv(mfdname, point, point.n_rows, point.n_cols);
+    if (embedded.n_elem != first.n_elem || !embedded.is_finite())
+      Rcpp::stop("RMML encountered inconsistent or nonfinite equivariant embeddings.");
+    eqmat.row(n) = embedded.t();
   }
-  
-  // EQUIVARIANT EMBEDDING
-  arma::mat eqmat(N, nrcs, fill::zeros);
-  for (int n=0; n<N; n++){
-    eqmat.row(n) = arma::trans(riem_equiv(mfdname, mydata.slice(n), nrow, ncol));
-  }
-
-  // COMPUTE GMML
-  arma::mat output = alg_GMMLreg(eqmat, label, lambda);
-  return(output);
+  return alg_GMMLreg(eqmat, label, lambda);
 }
 
 // 3. learning_coreset18B : lightweight coreset ================================
 // [[Rcpp::export]]
 Rcpp::List learning_coreset18B(std::string mfdname, std::string geoname, Rcpp::List& data, int M, int myiter, double myeps){
-  // PARAMETER AND DATA PREP
-  int N = data.size(); double NN = static_cast<double>(N);
-  arma::mat exemplar = Rcpp::as<arma::mat>(data[0]);
-  int nrow = exemplar.n_rows;
-  int ncol = exemplar.n_cols;  
-  arma::cube mydata(nrow,ncol,N,fill::zeros);
-  for (int n=0; n<N; n++){
-    mydata.slice(n) = Rcpp::as<arma::mat>(data[n]);
+  const int N = data.size();
+  if (N < 1 || M < 1 || myiter < 1 || !std::isfinite(myeps) || myeps <= 0.0)
+    Rcpp::stop("Coreset construction requires nonempty data and positive sampling and mean controls.");
+  if (geoname != "intrinsic" && geoname != "extrinsic")
+    Rcpp::stop("Unknown coreset geometry.");
+  const arma::mat exemplar = Rcpp::as<arma::mat>(data[0]);
+  arma::cube observations(exemplar.n_rows, exemplar.n_cols, N);
+  for (int n = 0; n < N; ++n) observations.slice(n) = Rcpp::as<arma::mat>(data[n]);
+  const arma::mat mean = internal_mean(mfdname, geoname, observations, myiter, myeps);
+  arma::vec distances(N);
+  for (int n = 0; n < N; ++n) {
+    distances(n) = arma::approx_equal(mean, observations.slice(n), "absdiff", 0.0) ? 0.0 :
+      (geoname == "intrinsic" ? riem_dist(mfdname, mean, observations.slice(n)) :
+       riem_distext(mfdname, mean, observations.slice(n)));
   }
-  
-  // STEP 1. COMPUTE MEAN AND DISTANCE
-  arma::mat Xmean = internal_mean(mfdname, geoname, mydata, myiter, myeps);
-  arma::vec distsq(N,fill::zeros);
-  double    dval = 0.0;
-  for (int n=0; n<N; n++){
-    if (geoname=="intrinsic"){
-      dval = riem_dist(mfdname, Xmean, mydata.slice(n));
-    } else {
-      dval = riem_distext(mfdname, Xmean, mydata.slice(n));
-    }
-    distsq(n) = dval*dval;
+  if (!distances.is_finite() || arma::any(distances < 0.0))
+    Rcpp::stop("Coreset construction encountered invalid distances.");
+  arma::vec probability(N, fill::ones);
+  probability /= static_cast<double>(N);
+  const double scale = distances.max();
+  if (scale > 0.0) {
+    // Normalize before squaring: q is invariant to a common distance scale.
+    const arma::vec squared = arma::square(distances / scale);
+    probability = 0.5 * probability + 0.5 * squared / arma::accu(squared);
   }
-  double distsqsum = arma::accu(distsq);
-  
-  // STEP 2. COMPUTE PROBABILITY
-  arma::vec probability(N,fill::zeros);
-  for (int n=0; n<N; n++){
-    probability(n) = (0.5/NN) + (0.5*distsq(n)/distsqsum);
-  }
-  
-  // STEP 3. DRAW INDEX FOR CORESET
-  arma::uvec coreid = helper_sample(N, M, probability, false);
-  
-  // RETURN
-  Rcpp::List output;
-  output["qx"] = probability;
-  output["id"] = coreid;
-  return(output);
+  probability /= arma::accu(probability);
+  // The weight 1 / (M q_i) is valid for independent draws with replacement.
+  const arma::uvec indices = helper_sample(N, M, probability, true);
+  return Rcpp::List::create(Rcpp::Named("qx") = probability,
+                            Rcpp::Named("id") = indices);
 }
-

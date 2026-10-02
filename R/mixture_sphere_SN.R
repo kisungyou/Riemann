@@ -518,6 +518,11 @@ label.moSN <- function(object, newdata){
 #' @rdname moSN
 #' @concept sphere
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 density.moSN <- function(object, newdata){
   # PREPARE
   if (!inherits(object, "moSN")){

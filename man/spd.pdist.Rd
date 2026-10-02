@@ -19,7 +19,19 @@ a S3 \code{dist} object or \eqn{(N\times N)} symmetric matrix of pairwise distan
 \description{
 Given \eqn{N} observations \eqn{X_1, X_2, \ldots, X_N} in SPD manifold, compute 
 pairwise distances among observations.
+Stein distances use a scaled relative spectrum, and Wasserstein distances
+use an aligned Cholesky-factor residual, avoiding determinant overflow and
+cancellation of nearly equal traces. Numerically singular inputs can still
+prevent these factorizations and are reported as errors.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 \donttest{
 #-------------------------------------------------------------------

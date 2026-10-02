@@ -15,6 +15,13 @@
 #' \item{weight2}{a length-\eqn{N} weight vector for \eqn{\nu}; if \code{NULL} (default), uniform weight is set.}
 #' }
 #' 
+#' @details Weights must be finite and nonnegative with positive total mass;
+#'   they are normalized to probability vectors. The ground distance follows the
+#'   saved geometry. The linear-program transport solver receives jointly scaled
+#'   distances to reduce overflow, and the returned plan is checked for finite
+#'   entries and correct marginals. A numerical solution is not an independent
+#'   optimality certificate.
+#'
 #' @return a named list containing \describe{
 #' \item{distance}{\eqn{\mathcal{W_p}} distance between two empirical measures.}
 #' \item{plan}{an \eqn{(M\times N)} matrix whose rowSums and columnSums are \code{weight1} and \code{weight2} respectively.}
@@ -60,58 +67,21 @@
 #' 
 #' @concept basic
 #' @export
-riem.wasserstein <- function(riemobj1, riemobj2, p=2, geometry=c("intrinsic","extrinsic"), ...){
-  ## INPUTS : EXPLICIT
-  DNAME1 = paste0("'",deparse(substitute(riemobj1)),"'")
-  DNAME2 = paste0("'",deparse(substitute(riemobj2)),"'")
-  if (!inherits(riemobj1,"riemdata")){
-    stop(paste0("* riem.wasserstein : input ",DNAME1," should be an object of 'riemdata' class."))
-  }
-  if (!inherits(riemobj2,"riemdata")){
-    stop(paste0("* riem.wasserstein : input ",DNAME2," should be an object of 'riemdata' class."))
-  }
-  myp = max(1, as.double(p))
-  mygeometry = ifelse(missing(geometry),"intrinsic",
-                      match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  M = length(riemobj1$data)
-  N = length(riemobj2$data)
-  
-  ## INPUTS : IMPLICIT
-  param  = list(...)
-  pnames = names(param)
-  
-  if ("weight1"%in%pnames){
-    myweight1 = param$weight1
-    if ((length(myweight1)<1)&&is.null(myweight1)){
-      myweight1 = rep(1/M, M)
-    } else {
-      myweight1 = myweight1/sum(myweight1)
-    }
-  } else {
-    myweight1 = rep(1/M, M)
-  }
-  if ("weight2"%in%pnames){
-    myweight2 = param$weight2
-    if ((length(myweight2)<1)&&is.null(myweight2)){
-      myweight2 = rep(1/N, N)
-    } else {
-      myweight2 = myweight2/sum(myweight2)
-    }
-  } else {
-    myweight2 = rep(1/N, N)
-  }
-  
-  if ((length(myweight1)!=M)||(any(myweight1<0))){
-    stop("* riem.wasserstein : 'weight1' should be of length matching to 'riemobj1' & no negative values are admitted.")
-  }
-  if ((length(myweight2)!=N)||(any(myweight2<0))){
-    stop("* riem.wasserstein : 'weight2' should be of length matching to 'riemobj2' & no negative values are admitted.")
-  }
-  
-  ## SWITCHING, COMPUTATION, AND RETURN
-  dxy    = riem.pdist2(riemobj1, riemobj2, geometry=mygeometry)
-  output = T4transport::wassersteinD(dxy, myp, wx=myweight1, wy=myweight2)
-  return(output)
+riem.wasserstein <- function(riemobj1, riemobj2, p = 2, geometry = NULL, ...) {
+  inputs <- riem_transport_inputs(riemobj1, riemobj2, p, geometry)
+  parameters <- riem_legacy_parameters(list(...), c("weight1", "weight2"))
+  M <- length(riemobj1$data)
+  N <- length(riemobj2$data)
+  wx <- if (is.null(parameters$weight1)) rep(1 / M, M) else
+    check_weight(parameters$weight1, M, "riem.wasserstein weight1")
+  wy <- if (is.null(parameters$weight2)) rep(1 / N, N) else
+    check_weight(parameters$weight2, N, "riem.wasserstein weight2")
+  distances <- basic_pdist2(riemobj1$name, riemobj1$data, riemobj2$data,
+                            inputs$geometry$backend)
+  output <- riem_transport_solve(distances, inputs$p, wx, wy)
+  output$geometry <- inputs$geometry
+  output$p <- inputs$p
+  output
 }
 
 # ## WANT TO SEE CONCENTRATION OF EMPIRICAL DISTANCE FOR

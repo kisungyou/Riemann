@@ -2,9 +2,18 @@
 % Please edit documentation in R/clustering_kmeans.R
 \name{riem.kmeans}
 \alias{riem.kmeans}
+\alias{predict.riem_kmeans}
+\alias{print.riem_kmeans}
+\alias{summary.riem_kmeans}
 \title{K-Means Clustering}
 \usage{
-riem.kmeans(riemobj, k = 2, geometry = c("intrinsic", "extrinsic"), ...)
+riem.kmeans(riemobj, k = 2, geometry = NULL, ...)
+
+\method{predict}{riem_kmeans}(object, newdata, type = c("class", "distance"), ...)
+
+\method{print}{riem_kmeans}(x, ...)
+
+\method{summary}{riem_kmeans}(object, ...)
 }
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
@@ -14,14 +23,26 @@ riem.kmeans(riemobj, k = 2, geometry = c("intrinsic", "extrinsic"), ...)
 \item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
 
 \item{...}{extra parameters including\describe{
-\item{algorithm}{(case-insensitive) name of an algorithm; \code{"MacQueen"} (default), or \code{"Lloyd"}.}
-\item{init}{(case-insensitive) name of an initialization scheme; \code{"plus"} for k-means++ (default), or \code{"random"}.}
+\item{algorithm}{(case-insensitive) name of an algorithm; \code{"Lloyd"} (default), or \code{"MacQueen"}.}
+\item{init}{\code{"plus"} for squared-distance k-means++ (default), \code{"random"} for sampled observations, or a vector of k distinct observation indices.}
 \item{maxiter}{maximum number of iterations to be run (default:50).}
-\item{nstart}{the number of random starts (default: 5).}
+\item{nstart}{the number of starts (default: 5).}
+\item{eps}{relative objective-increase tolerance (default: 1e-8).}
+\item{mean.maxiter}{maximum iterations for each cluster mean (default: 200).}
+\item{mean.eps}{cluster-mean convergence tolerance (default: 1e-8).}
 }}
+
+\item{object}{a fitted clustering object.}
+
+\item{newdata}{compatible wrapped observations.}
+
+\item{type}{return cluster labels (\code{"class"}) or distances to all trained
+centers (\code{"distance"}).}
+
+\item{x}{a fitted clustering object.}
 }
 \value{
-a named list containing\describe{
+a fitted \code{riem_kmeans} object containing\describe{
 \item{cluster}{a length-\eqn{N} vector of class labels (from \eqn{1:k}).}
 \item{means}{a 3d array where each slice along 3rd dimension is a matrix representation of class mean.}
 \item{score}{within-cluster sum of squares (WCSS).}
@@ -32,6 +53,19 @@ Given \eqn{N} observations  \eqn{X_1, X_2, \ldots, X_N \in \mathcal{M}},
 perform k-means clustering by minimizing within-cluster sum of squares (WCSS). 
 Since the problem is NP-hard and sensitive to the initialization, we provide an 
 option with multiple starts and return the best result with respect to WCSS.
+}
+\details{
+The default is now Lloyd iteration, with each cluster updated by
+  the shared Fr\ifelse{html}{\out{&eacute;}}{\ifelse{latex}{\out{\'e}}{e}}chet-mean solver. A Lloyd objective increase beyond tolerance
+  is rejected and reported. The retained MacQueen option sequentially assigns
+  observations and recomputes affected cluster means; no global monotonicity
+  guarantee is claimed for approximate or nonconvex manifold means.
+  Tied distances choose the lowest cluster index. Empty clusters are reseeded
+  using a maximal-residual observation from a nonsingleton cluster; impossible
+  separation and failed mean solves invalidate that start. Returned labels
+  always assign observations to the final stored centers. Nonconverged finite
+  starts remain visible, and returning one produces a warning. Use
+  \code{set.seed()} to reproduce random initializations.
 }
 \examples{
 #-------------------------------------------------------------------

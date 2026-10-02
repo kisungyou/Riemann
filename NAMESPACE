@@ -2,11 +2,31 @@
 
 S3method(density,moSL)
 S3method(density,moSN)
+S3method(fitted,m2skreg)
 S3method(label,moSL)
 S3method(label,moSN)
 S3method(loglkd,moSL)
 S3method(loglkd,moSN)
+S3method(plot,riem_pga)
+S3method(plot,riem_summary)
 S3method(predict,m2skreg)
+S3method(predict,riem_kmeans)
+S3method(predict,riem_pga)
+S3method(print,m2skreg)
+S3method(print,riem_geometry)
+S3method(print,riem_kmeans)
+S3method(print,riem_pga)
+S3method(print,riem_summary)
+S3method(print,riemdata)
+S3method(print,summary.m2skreg)
+S3method(print,summary.riem_pga)
+S3method(residuals,m2skreg)
+S3method(riem.reconstruct,riem_pga)
+S3method(summary,m2skreg)
+S3method(summary,riem_kmeans)
+S3method(summary,riem_pga)
+S3method(summary,riem_summary)
+S3method(summary,riemdata)
 export(dacg)
 export(density)
 export(dmacg)
@@ -24,12 +44,14 @@ export(mle.spnorm)
 export(moSL)
 export(moSN)
 export(racg)
+export(riem.capabilities)
 export(riem.clrq)
 export(riem.coreset18B)
 export(riem.distlp)
 export(riem.dtw)
 export(riem.fanova)
 export(riem.fanovaP)
+export(riem.geometry)
 export(riem.hclust)
 export(riem.interp)
 export(riem.interps)
@@ -50,6 +72,7 @@ export(riem.pdist)
 export(riem.pdist2)
 export(riem.pga)
 export(riem.phate)
+export(riem.reconstruct)
 export(riem.rmml)
 export(riem.sammon)
 export(riem.sc05Z)
@@ -90,28 +113,31 @@ import(Rdpack)
 import(maotai)
 importFrom(Matrix,nearPD)
 importFrom(Rcpp,evalCpp)
-importFrom(Rdimtools,aux.shortestpath)
-importFrom(RiemBase,riemfactory)
-importFrom(T4cluster,sc05Z)
-importFrom(T4cluster,scNJW)
-importFrom(T4cluster,scSM)
-importFrom(T4cluster,scUL)
+importFrom(T4cluster,
+  sc05Z,
+  scNJW,
+  scSM,
+  scUL
+)
 importFrom(T4transport,wassersteinD)
-importFrom(lpSolve,lp)
-importFrom(stats,as.dist)
-importFrom(stats,cor)
-importFrom(stats,cov)
-importFrom(stats,cutree)
-importFrom(stats,hclust)
-importFrom(stats,integrate)
-importFrom(stats,kmeans)
-importFrom(stats,optimize)
-importFrom(stats,pchisq)
-importFrom(stats,pnorm)
-importFrom(stats,rnorm)
-importFrom(stats,runif)
-importFrom(stats,var)
-importFrom(utils,getFromNamespace)
-importFrom(utils,packageVersion)
-importFrom(utils,tail)
+importFrom(stats,
+  as.dist,
+  cor,
+  cov,
+  cutree,
+  hclust,
+  integrate,
+  kmeans,
+  optimize,
+  pchisq,
+  pnorm,
+  rnorm,
+  runif,
+  var
+)
+importFrom(utils,
+  getFromNamespace,
+  packageVersion,
+  tail
+)
 useDynLib(Riemann)

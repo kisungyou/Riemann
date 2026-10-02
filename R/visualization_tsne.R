@@ -53,6 +53,11 @@
 #' 
 #' @concept visualization
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 riem.tsne <- function(riemobj, ndim=2, geometry=c("intrinsic","extrinsic"), ...){
   ## PREPARE
   DNAME = paste0("'",deparse(substitute(riemobj)),"'") 

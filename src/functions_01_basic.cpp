@@ -22,6 +22,21 @@ arma::mat basic_pdist(std::string mfdname, Rcpp::List& data, std::string dtype){
   
   // COMPUTE
   arma::mat output(N,N,fill::zeros);
+  if (mfdname == "spd" && dtype == "extrinsic") {
+    // The log-Euclidean chart is data-dependent, not pair-dependent.
+    // Cache each logarithm once while retaining direct differences for small distances.
+    arma::field<arma::vec> logs(N);
+    for (int i=0; i<N; ++i) {
+      logs(i) = riem_equiv(mfdname, mydata(i), mydata(i).n_rows, mydata(i).n_cols);
+    }
+    for (int i=0; i<N-1; ++i) {
+      for (int j=i+1; j<N; ++j) {
+        output(i,j) = arma::norm(logs(i)-logs(j), 2);
+        output(j,i) = output(i,j);
+      }
+    }
+    return output;
+  }
   for (int i=0; i<(N-1); i++){
     for (int j=(i+1); j<N; j++){
       if (dtype=="intrinsic"){
@@ -46,6 +61,21 @@ arma::mat basic_pdist2(std::string mfdname, Rcpp::List& data1, Rcpp::List& data2
   arma::mat mat1;
   arma::mat mat2;
   arma::mat output(M,N,fill::zeros);
+  if (mfdname == "spd" && dtype == "extrinsic") {
+    arma::field<arma::vec> logs1(M), logs2(N);
+    for (int m=0; m<M; ++m) {
+      mat1 = Rcpp::as<arma::mat>(data1[m]);
+      logs1(m) = riem_equiv(mfdname, mat1, mat1.n_rows, mat1.n_cols);
+    }
+    for (int n=0; n<N; ++n) {
+      mat2 = Rcpp::as<arma::mat>(data2[n]);
+      logs2(n) = riem_equiv(mfdname, mat2, mat2.n_rows, mat2.n_cols);
+    }
+    for (int m=0; m<M; ++m) {
+      for (int n=0; n<N; ++n) output(m,n) = arma::norm(logs1(m)-logs2(n), 2);
+    }
+    return output;
+  }
   for (int m=0; m<M; m++){
     mat1 = Rcpp::as<arma::mat>(data1[m]);
     for (int n=0; n<N; n++){
@@ -85,4 +115,3 @@ arma::cube basic_interpolate(std::string mfdname, std::string dtype, arma::mat m
   }
   return(output);
 }
-

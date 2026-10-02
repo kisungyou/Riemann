@@ -30,6 +30,14 @@ nearest neighbor. Then the affinity matrix is defined as
 \deqn{A_{ij} = \exp(-d(x_i, d_j)^2 / \sigma_i \sigma_j)} and the standard 
 spectral clustering of Ng, Jordan, and Weiss (\code{\link{riem.scNJW}}) is applied.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #          Example on Sphere : a dataset with three types
@@ -74,6 +82,6 @@ par(opar)
 
 }
 \references{
-Zelnik-manor L, Perona P (2005). "Self-Tuning Spectral Clustering." In Saul LK, Weiss Y, Bottou L (eds.), \emph{Advances in Neural Information Processing Systems 17}, 1601–1608. MIT Press.
+Zelnik-manor L, Perona P (2005). "Self-Tuning Spectral Clustering." In Saul LK, Weiss Y, Bottou L (eds.), \emph{Advances in Neural Information Processing Systems 17}, 1601-1608. MIT Press.
 }
 \concept{clustering}

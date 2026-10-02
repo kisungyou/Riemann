@@ -35,6 +35,14 @@ adapted for the Riemannian manifold setting is used with the gain factor sequenc
 where two parameters \eqn{a,b} are represented by \code{par.a} and \code{par.b}. For 
 initialization, we provide k-means++ and random seeding options as in k-means.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #          Example on Sphere : a dataset with three types

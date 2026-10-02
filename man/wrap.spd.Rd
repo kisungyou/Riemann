@@ -24,8 +24,10 @@ a named \code{riemdata} S3 object containing
 \description{
 The collection of symmetric positive-definite matrices is a well-known example 
 of matrix manifold. It is defined as
-\deqn{\mathcal{S}_{++}^p = \lbrace X \in \mathbf{R}^{p\times p} ~\vert~ X^\top = X,~ \textrm{rank}(X)=p \rbrace}
-where the rank condition means it is strictly positive definite. Please note that 
+\deqn{\mathcal{S}_{++}^p = \lbrace X \in \mathbf{R}^{p\times p} ~\vert~ X^\top = X,~ v^\top Xv>0~\textrm{for all}~v\ne0 \rbrace}
+where positivity is verified by Cholesky factorization after a scale-relative symmetry check.
+No ridge or positive-definite projection is applied. Tiny physical units alone
+do not make a matrix ill-conditioned. Please note that
 the geometry involving semi-definite matrices is considered in \code{wrap.spdk}.
 }
 \examples{

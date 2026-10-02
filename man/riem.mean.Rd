@@ -2,35 +2,59 @@
 % Please edit documentation in R/inference_mean.R
 \name{riem.mean}
 \alias{riem.mean}
-\title{Fréchet Mean and Variation}
+\title{Fr\ifelse{html}{\out{&eacute;}}{\ifelse{latex}{\out{\'e}}{e}}chet Mean and Variation}
 \usage{
-riem.mean(riemobj, weight = NULL, geometry = c("intrinsic", "extrinsic"), ...)
+riem.mean(riemobj, weight = NULL, geometry = NULL, ...)
 }
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
 
-\item{weight}{weight of observations; if \code{NULL} it assumes equal weights, or a nonnegative length-\eqn{N} vector that sums to 1 should be given.}
+\item{weight}{Finite nonnegative observation weights with positive sum. They
+are normalized internally. \code{NULL} uses equal weights. Zero-weight
+observations are validated but do not enter the calculation.}
 
-\item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
+\item{geometry}{Geometry name or specification. \code{NULL} selects the
+default geometry. Legacy \code{"intrinsic"} and \code{"extrinsic"}
+aliases remain available for supported combinations. SPD names include
+\code{"affine_invariant"} and \code{"log_euclidean"}.}
 
-\item{...}{extra parameters including\describe{
-\item{maxiter}{maximum number of iterations to be run (default:50).}
-\item{eps}{tolerance level for stopping criterion (default: 1e-5).}
-}}
+\item{...}{Named controls: \describe{
+  \item{maxiter}{Positive maximum number of accepted iterations (default 50).}
+  \item{eps}{Positive absolute tolerance for the compatible gradient norm
+    (default \code{1e-5}).}
+  \item{max_backtrack}{Positive maximum number of trial steps per iteration,
+    at most 1024 (default 50).}
+  \item{trace}{Whether to retain the iteration history (default \code{FALSE}).}
+  \item{init}{Optional initial matrix with the observation dimensions.
+    Closed-form calculations do not use an initializer.}
+} Unknown controls are errors.}
 }
 \value{
-a named list containing\describe{
-\item{mean}{a mean matrix on \eqn{\mathcal{M}}.}
-\item{variation}{sum of (weighted) squared distances.}
-}
+A \code{riem_summary} object retaining \code{mean} and
+  \code{variation}, plus \code{objective}, resolved \code{geometry}, normalized
+  \code{weights}, \code{converged}, \code{termination}, \code{iterations},
+  \code{gradient_norm}, \code{step_norm}, controls, and an optional \code{trace}.
+  \code{variation} equals the normalized weighted sum of squared distances
+  at the returned mean. An unsuccessful iteration warns and returns the last
+  accepted estimate. For a curved extrinsic embedding, diagnostics and trace
+  refer to the ambient calculation, as recorded in \code{diagnostic_scope}.
 }
 \description{
 Given \eqn{N} observations \eqn{X_1, X_2, \ldots, X_N \in \mathcal{M}}, 
-compute Fréchet mean and variation with respect to the geometry by minimizing
+compute Fr\ifelse{html}{\out{&eacute;}}{\ifelse{latex}{\out{\'e}}{e}}chet mean and variation with respect to the geometry by minimizing
 \deqn{\textrm{min}_x \sum_{n=1}^N w_n \rho^2 (x, x_n),\quad x\in\mathcal{M}} where
 \eqn{\rho (x, y)} is a distance for two points \eqn{x,y\in\mathcal{M}}. 
 If non-uniform weights are given, normalized version of the mean is computed 
 and if \code{weight=NULL}, it automatically sets equal weights (\eqn{w_i = 1/n}) for all observations.
+}
+\details{
+Intrinsic iteration uses the average logarithm direction and an
+  Armijo backtracking rule for the stated squared-distance objective.
+  Euclidean and log-Euclidean SPD means use closed forms. On spaces with
+  nonconvex objectives, termination with \code{"stationary"} establishes
+  first-order stationarity to the requested tolerance only. A stationary
+  point may be a local minimum, a saddle, or a local maximum; the criterion
+  does not establish local minimality, uniqueness, or global optimality.
 }
 \examples{
 #-------------------------------------------------------------------

@@ -4,14 +4,14 @@
 \alias{riem.kmeanspp}
 \title{K-Means++ Clustering}
 \usage{
-riem.kmeanspp(riemobj, k = 2, geometry = c("intrinsic", "extrinsic"))
+riem.kmeanspp(riemobj, k = 2, geometry = NULL)
 }
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
 
 \item{k}{the number of clusters.}
 
-\item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
+\item{geometry}{a name or saved specification accepted by \code{\link{riem.geometry}}.}
 }
 \value{
 a named list containing\describe{

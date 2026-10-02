@@ -22,6 +22,14 @@ In \eqn{\mathbf{R}^p}, random samples are drawn
 where \eqn{\mu \in \mathbf{R}^p} is a mean vector and \eqn{\Sigma \in \textrm{SPD}(p)} 
 is a positive definite covariance matrix.
 }
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #   Generate Random Data and Compare with Empirical Covariances

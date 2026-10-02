@@ -4,12 +4,13 @@
 \alias{riem.pdist}
 \title{Compute Pairwise Distances for Data}
 \usage{
-riem.pdist(riemobj, geometry = c("intrinsic", "extrinsic"), as.dist = FALSE)
+riem.pdist(riemobj, geometry = NULL, as.dist = FALSE)
 }
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
 
-\item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) in geometry}
+\item{geometry}{A name or saved specification accepted by \code{\link{riem.geometry}}.
+NULL uses the object's saved geometry, or intrinsic geometry for an ordinary wrapper.}
 
 \item{as.dist}{logical; if \code{TRUE}, it returns \code{dist} object, else it returns a symmetric matrix.}
 }

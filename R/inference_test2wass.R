@@ -14,9 +14,16 @@
 #' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
 #' @param ... extra parameters including\describe{
 #' \item{nperm}{the number of permutations (default: 999).}
-#' \item{use.smooth}{a logical; \code{TRUE} to use a smoothed Wasserstein distance, \code{FALSE} otherwise.}
+#' \item{use.smooth}{a logical, default \code{FALSE}. \code{TRUE} requests an experimental IPOT approximation, without an optimality certificate.}
 #' }
 #' 
+#' @details Random label permutations require independent observations that are
+#'   exchangeable under the identical-distributions null. This procedure does not
+#'   handle paired, clustered or repeated observations. The Monte Carlo p-value
+#'   includes ties and uses the plus-one correction. All assignments use the same
+#'   solver and exponent. Saved geometry, permuted statistics, and the Monte Carlo
+#'   standard-error diagnostic are retained.
+#'
 #' @return a (list) object of \code{S3} class \code{htest} containing: \describe{
 #' \item{statistic}{a test statistic.}
 #' \item{p.value}{\eqn{p}-value under \eqn{H_0}.}
@@ -77,62 +84,39 @@
 #' 
 #' @concept inference
 #' @export
-riem.test2wass <- function(riemobj1, riemobj2, p=2, geometry=c("intrinsic","extrinsic"), ...){
-  ## INPUTS : EXPLICIT
-  DNAME1 = paste0("'",deparse(substitute(riemobj1)),"'")
-  DNAME2 = paste0("'",deparse(substitute(riemobj2)),"'")
-  if (!inherits(riemobj1,"riemdata")){
-    stop(paste0("* wass.test2wass : input ",DNAME1," should be an object of 'riemdata' class."))
+riem.test2wass <- function(riemobj1, riemobj2, p = 2, geometry = NULL, ...) {
+  inputs <- riem_transport_inputs(riemobj1, riemobj2, p, geometry)
+  parameters <- riem_legacy_parameters(list(...), c("nperm", "use.smooth"))
+  nperm <- if (is.null(parameters$nperm)) 999L else
+    riem_regression_integer(parameters$nperm, "nperm", 1L)
+  smooth <- if (is.null(parameters$use.smooth)) FALSE else parameters$use.smooth
+  if (!is.logical(smooth) || length(smooth) != 1L || is.na(smooth)) {
+    stop("use.smooth must be TRUE or FALSE.", call. = FALSE)
   }
-  if (!inherits(riemobj2,"riemdata")){
-    stop(paste0("* wass.test2wass : input ",DNAME2," should be an object of 'riemdata' class."))
+  if (smooth) warning("use.smooth uses an experimental IPOT approximation without an optimality certificate; the statistic is not an exact Wasserstein distance.",
+                       call. = FALSE)
+  M <- length(riemobj1$data)
+  N <- length(riemobj2$data)
+  wx <- rep(1 / M, M)
+  wy <- rep(1 / N, N)
+  distances <- basic_pdist(riemobj1$name, c(riemobj1$data, riemobj2$data), inputs$geometry$backend)
+  compute <- function(ix, iy) riem_transport_solve(distances[ix, iy, drop = FALSE],
+                                                  inputs$p, wx, wy, smooth)$distance
+  observed <- compute(seq_len(M), M + seq_len(N))
+  permuted <- numeric(nperm)
+  for (b in seq_len(nperm)) {
+    ids <- sample.int(M + N)
+    permuted[b] <- compute(ids[seq_len(M)], ids[M + seq_len(N)])
   }
-  myp = max(1, as.double(p))
-  mygeometry = ifelse(missing(geometry),"intrinsic",
-                      match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  M = length(riemobj1$data)
-  N = length(riemobj2$data)
-  w1 = rep(1/M, M)
-  w2 = rep(1/N, N)
-  
-  ## INPUTS : IMPLICIT
-  param    = list(...)
-  pnames   = names(param)
-  mynperm  = ifelse(("nperm"%in%pnames), max(9, round(param$nperm)), 999)
-  myipot   = as.logical(ifelse(("use.smooth"%in%pnames), param$use.smooth, TRUE))
-  
-  ## COMPUTE : DISTANCE AND STATISTIC UNDER NULL
-  distmat = basic_pdist(riemobj1$name, c(riemobj1$data, riemobj2$data), mygeometry)
-  if (myipot){
-    thestat = T4transport_ipotD(distmat[1:M, (M+1):(M+N)],p=myp,wx = w1, wy=w2)$distance
-  } else {
-    thestat = T4transport::wassersteinD(distmat[1:M, (M+1):(M+N)], myp, wx=w1, wy=w2)$distance
-  }
-  
-  ## COMPUTE : ITERATION
-  distvals = rep(0, mynperm)
-  for (i in 1:mynperm){
-    id.all  = sample(1:(M+N))
-    id.gp1  = id.all[1:M]
-    id.gp2  = id.all[(M+1):(M+N)]
-    partdxy = distmat[id.gp1, id.gp2]
-    
-    if (myipot){
-      distvals[i] = T4transport_ipotD(partdxy,p=myp,wx = w1, wy=w2)$distance
-    } else {
-      distvals[i] = T4transport::wassersteinD(partdxy, myp, wx=w1, wy=w2)$distance
-    }
-  }
-  
-  ## WRAP
-  pvalue   = (sum(distvals >= thestat)+1)/(mynperm+1)
-  dataname = paste0(DNAME1," and ",DNAME2)
-  mfdname  = wrap_mfd2full(riemobj1$name)
-  hname    = paste0("Wasserstein Two-Sample Test on ",mfdname," Manifold")
-  Ha       = "two distributions are not equal."
-  names(thestat) = "Wmn"
-  
-  res   = list(statistic=thestat, p.value=pvalue, alternative = Ha, method=hname, data.name=dataname)
-  class(res) = "htest"
-  return(res)
+  pvalue <- (1 + sum(permuted >= observed)) / (nperm + 1)
+  structure(list(statistic = c(Wmn = observed), p.value = pvalue,
+    alternative = "the group distributions differ",
+    null.value = c(exchangeable_group_distributions = 0),
+    method = if (smooth) "Two-sample permutation test using approximate transport costs" else
+      "Wasserstein two-sample permutation test",
+    data.name = "Supplied samples", geometry = inputs$geometry, p = inputs$p,
+    calibration = "random_label_permutation", nperm = nperm,
+    permutation_statistics = permuted,
+    mc_se = sqrt(pvalue * (1 - pvalue) / (nperm + 1)),
+    solver = if (smooth) "IPOT_approximation" else "linear_program"), class = "htest")
 }

@@ -4,13 +4,7 @@
 \alias{riem.test2wass}
 \title{Two-Sample Test with Wasserstein Metric}
 \usage{
-riem.test2wass(
-  riemobj1,
-  riemobj2,
-  p = 2,
-  geometry = c("intrinsic", "extrinsic"),
-  ...
-)
+riem.test2wass(riemobj1, riemobj2, p = 2, geometry = NULL, ...)
 }
 \arguments{
 \item{riemobj1}{a S3 \code{"riemdata"} class for \eqn{M} manifold-valued data.}
@@ -23,7 +17,7 @@ riem.test2wass(
 
 \item{...}{extra parameters including\describe{
 \item{nperm}{the number of permutations (default: 999).}
-\item{use.smooth}{a logical; \code{TRUE} to use a smoothed Wasserstein distance, \code{FALSE} otherwise.}
+\item{use.smooth}{a logical, default \code{FALSE}. \code{TRUE} requests an experimental IPOT approximation, without an optimality certificate.}
 }}
 }
 \value{
@@ -43,6 +37,14 @@ more details) is applied to test whether two distributions are same or not, i.e.
 \deqn{H_0~:~\mathcal{P}_X = \mathcal{P}_Y}
 with Wasserstein metric \eqn{\mathcal{W}_p} being the measure of discrepancy 
 between two samples.
+}
+\details{
+Random label permutations require independent observations that are
+  exchangeable under the identical-distributions null. This procedure does not
+  handle paired, clustered or repeated observations. The Monte Carlo p-value
+  includes ties and uses the plus-one correction. All assignments use the same
+  solver and exponent. Saved geometry, permuted statistics, and the Monte Carlo
+  standard-error diagnostic are retained.
 }
 \examples{
 #-------------------------------------------------------------------

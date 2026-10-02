@@ -6,7 +6,15 @@
 #' 
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
 #' @param ndim an integer-valued target dimension (default: 2).
-#' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
+#' @param geometry A geometry name or saved specification.
+#' @param negative Treatment of materially negative eigenvalues: \code{"truncate"}
+#'   returns positive-spectrum coordinates and retains the full spectrum;
+#'   \code{"error"} rejects a non-Euclidean dissimilarity matrix.
+#' @details Coordinates are ordered by decreasing positive eigenvalue. Requested
+#'   dimensions beyond positive rank are zero-filled and recorded separately.
+#'   The returned spectrum reports non-Euclidean dissimilarity rather than taking
+#'   square roots of negative values. Stress is normalized distance stress; it
+#'   is zero for constant data. No new-data prediction is defined by this display.
 #' 
 #' @return a named list containing \describe{
 #' \item{embed}{an \eqn{(N\times ndim)} matrix whose rows are embedded observations.}
@@ -54,24 +62,12 @@
 #' 
 #' @concept visualization
 #' @export
-riem.mds <- function(riemobj, ndim=2, geometry=c("intrinsic","extrinsic")){
-  ## PREPARE
-  DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
-  if (!inherits(riemobj,"riemdata")){
-    stop(paste0("* riem.mds : input ",DNAME," should be an object of 'riemdata' class."))
-  }
-  myndim = max(2, round(ndim))
-  mygeom = ifelse(missing(geometry),"intrinsic",
-                  match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  
-  # ## OLD PART : FUNCTION IMPORT FROM MAOTAI
-  # distobj = stats::as.dist(basic_pdist(riemobj$name, riemobj$data, mygeom))
-  # 
-  # ## COMPUTE MDS AND RETURN
-  # func.import = utils::getFromNamespace("hidden_cmds", "maotai")
-  # out.cmds    = func.import(distobj, ndim=myndim)
-  # return(out.cmds)
-  
-  # COMPUTE WITH CPP
-  return(visualize_cmds(riemobj$name, mygeom, riemobj$data, myndim))
+riem.mds <- function(riemobj, ndim = 2, geometry = NULL,
+                     negative = c("truncate", "error")) {
+  result <- riem_legacy_distances(riemobj, geometry)
+  ndim <- riem_legacy_dimensions(ndim, length(riemobj$data))
+  out <- riem_legacy_cmds(result$distances, ndim, negative)
+  out$geometry <- result$geometry
+  out$method <- "classical_mds_positive_spectrum"
+  out
 }

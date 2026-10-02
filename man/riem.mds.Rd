@@ -4,14 +4,18 @@
 \alias{riem.mds}
 \title{Multidimensional Scaling}
 \usage{
-riem.mds(riemobj, ndim = 2, geometry = c("intrinsic", "extrinsic"))
+riem.mds(riemobj, ndim = 2, geometry = NULL, negative = c("truncate", "error"))
 }
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
 
 \item{ndim}{an integer-valued target dimension (default: 2).}
 
-\item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
+\item{geometry}{A geometry name or saved specification.}
+
+\item{negative}{Treatment of materially negative eigenvalues: \code{"truncate"}
+returns positive-spectrum coordinates and retains the full spectrum;
+\code{"error"} rejects a non-Euclidean dissimilarity matrix.}
 }
 \value{
 a named list containing \describe{
@@ -23,6 +27,13 @@ a named list containing \describe{
 Given \eqn{N} observations \eqn{X_1, X_2, \ldots, X_N \in \mathcal{M}}, 
 apply multidimensional scaling to get low-dimensional embedding 
 in Euclidean space. Usually, \code{ndim=2,3} are chosen for visualization.
+}
+\details{
+Coordinates are ordered by decreasing positive eigenvalue. Requested
+  dimensions beyond positive rank are zero-filled and recorded separately.
+  The returned spectrum reports non-Euclidean dissimilarity rather than taking
+  square roots of negative values. Stress is normalized distance stress; it
+  is zero for constant data. No new-data prediction is defined by this display.
 }
 \examples{
 #-------------------------------------------------------------------

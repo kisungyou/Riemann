@@ -22,7 +22,7 @@ a named \code{riemdata} S3 object containing
 }
 }
 \description{
-Multinomial manifold is referred to the data that is nonnegative and sums to 1. 
+Multinomial manifold is referred to the strictly positive data that sums to 1.
 Also known as probability simplex or positive orthant, we denote \eqn{(p-1)} simplex 
 in \eqn{\mathbf{R}^p} by 
 \deqn{\Delta^{p-1} = \lbrace
@@ -30,7 +30,8 @@ x \in \mathbf{R}^p~\vert~ \sum_{i=1}^p x_i = 1, x_i > 0
 \rbrace}
 in that data are positive \eqn{L_1} unit-norm vectors. 
 In \code{wrap.multinomial}, normalization is applied when each data point is not on the simplex, 
-but if vectors contain values not in \eqn{(0,1)}, it returns errors.
+accepting positive counts or masses. Zero, negative, and nonfinite inputs are
+rejected before normalization; no pseudocount is added.
 }
 \examples{
 #-------------------------------------------------------------------

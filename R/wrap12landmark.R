@@ -7,7 +7,10 @@
 #' are omitted. The wrapper takes translation and scaling out from the data to make it 
 #' \emph{preshape} (centered, unit-norm). Also, for convenience, orthogonal 
 #' Procrustes analysis is applied with the first observation being the reference so 
-#' that all the other data are rotated to match the shape of the first.
+#' that all the other data are aligned to that reference. The full orthogonal
+#' group O(p), including reflections, is used. This is not an SO(p)-only
+#' orientation-preserving analysis. Singular configurations are rejected.
+#' Fitted tangent models retain and apply their own training reference.
 #' 
 #' @param input data matrices to be wrapped as \code{riemdata} class. Following inputs are considered,
 #' \describe{
@@ -15,6 +18,8 @@
 #' \item{list}{a length-\eqn{n} list whose elements are \eqn{k}-ads.}
 #' }
 #' 
+#' @param reference optional reference configuration for alignment. If NULL,
+#'   the first observation is used.
 #' @return a named \code{riemdata} S3 object containing
 #' \describe{
 #'   \item{data}{a list of preshapes in \eqn{\mathbf{R}^p}.}
@@ -32,59 +37,60 @@
 #' 
 #' @concept wrapper
 #' @export
-wrap.landmark <- function(input){
-  ## TAKE EITHER 3D ARRAY OR A LIST
-  #  1. data format
-  if (is.array(input)){
-    if (!check_3darray(input, symmcheck=FALSE)){
-      stop("* wrap.landmark : input does not follow the size requirement as described.")
+wrap.landmark <- function(input, reference = NULL) {
+  if (is.array(input)) {
+    if (!check_3darray(input, symmcheck = FALSE)) {
+      stop("Landmark input must be a nonempty three-dimensional array.", call. = FALSE)
     }
-    N = dim(input)[3]
-    tmpdata = list()
-    for (n in 1:N){
-      tmpdata[[n]] = input[,,n]
-    }
-  } else if (is.list(input)){
-    tmpdata = input
-  } else {
-    stop("* wrap.landmark : input should be either a 3d array or a list.")
+    data <- lapply(seq_len(dim(input)[3L]), function(i) {
+      matrix(input[, , i, drop = FALSE], nrow = dim(input)[1L],
+             dimnames = dimnames(input)[1:2])
+    })
+  } else if (is.list(input)) data <- input
+  else stop("Landmark input must be a list of matrices or a three-dimensional array.", call. = FALSE)
+  if (!check_list_eqsize(data) || !all(vapply(data, is.matrix, logical(1)))) {
+    stop("Landmark configurations must be nonempty matrices of the same size.", call. = FALSE)
   }
-  #  2. check all same size
-  if (!check_list_eqsize(tmpdata, check.square=FALSE)){
-    stop("* wrap.landmark : elements are not of same size.")
+  if (ncol(data[[1L]]) < 2L || nrow(data[[1L]]) <= ncol(data[[1L]])) {
+    stop("Regular landmark configurations require at least p+1 landmarks in p >= 2 dimensions.", call. = FALSE)
   }
-  #  3. normalize
-  N = length(tmpdata)
-  for (n in 1:N){
-    tmpdata[[n]] = aux_landmark_nearest(tmpdata[[n]])
+  nm <- dimnames(data[[1L]])
+  if (!all(vapply(data, function(x) identical(dimnames(x), nm), logical(1)))) {
+    stop("Landmark and coordinate names must have the same order in every observation.", call. = FALSE)
   }
-  #  4. compute extrinsic mean
-  rot.center = tmpdata[[1]]%*%base::solve(base::eigen(stats::cov(tmpdata[[1]]))$vectors)
-  # rot.center = tmpdata[[1]]
-  for (n in 1:N){
-    tmpdata[[n]] = aux_landmark_match(rot.center, tmpdata[[n]])
-  }
-  
-  ############################################################
-  # WRAP AND RETURN THE S3 CLASS
-  output = list()
-  output$data = tmpdata
-  output$size = dim(tmpdata[[1]])
-  output$name = "landmark"
-  return(structure(output, class="riemdata"))
+  data <- lapply(data, aux_landmark_nearest)
+  reference <- if (is.null(reference)) data[[1L]] else aux_landmark_nearest(reference)
+  if (!identical(dim(reference), dim(data[[1L]]))) stop("Reference has incompatible dimensions.", call. = FALSE)
+  data <- lapply(data, function(x) aux_landmark_match(reference, x))
+  data <- lapply(data, function(x) { dimnames(x) <- nm; x })
+  structure(list(data = data, size = dim(data[[1L]]), name = "landmark",
+    dimnames = nm, representation = "centered_unit_preshape_O(p)",
+    alignment_reference = reference, preprocessing = list(center = TRUE, scale = TRUE, reflections = TRUE)),
+    class = "riemdata")
 }
 
-
-# auxiliary function for the wrapper --------------------------------------
 #' @keywords internal
 #' @noRd
-aux_landmark_nearest <- function(x){
-  y = x - matrix(rep(base::colMeans(x),nrow(x)),nrow=nrow(x),byrow=TRUE)
-  return(y/base::norm(y,"F"))
+aux_landmark_nearest <- function(x) {
+  if (!is.matrix(x) || !is.numeric(x) || is.complex(x) || !length(x) || any(!is.finite(x))) {
+    stop("A landmark configuration must be a finite real matrix.", call. = FALSE)
+  }
+  scale <- max(abs(x))
+  if (scale == 0) stop("A constant landmark configuration has no shape.", call. = FALSE)
+  y <- sweep(x / scale, 2L, colMeans(x / scale), "-")
+  size <- sqrt(sum(y * y))
+  if (size == 0) stop("A constant landmark configuration has no shape.", call. = FALSE)
+  y <- y / size
+  values <- svd(y, nu = 0L, nv = 0L)$d
+  if (length(values) < ncol(y) || min(values) <= 64 * .Machine$double.eps * max(values)) {
+    stop("Singular landmark configurations are outside the supported regular shape space.", call. = FALSE)
+  }
+  y
 }
+
 #' @keywords internal
 #' @noRd
-aux_landmark_match <- function(x,y){
-  sxy = base::svd(t(x)%*%y)
-  return(y%*%sxy$v%*%t(sxy$u))
+aux_landmark_match <- function(x, y) {
+  decomposition <- svd(crossprod(x, y))
+  y %*% decomposition$v %*% t(decomposition$u)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrap08spdk.R
 \name{wrap.spdk}
 \alias{wrap.spdk}
-\title{Prepare Data on SPD Manifold of Fixed-Rank}
+\title{Prepare Data on Positive Semidefinite Manifold of Fixed Rank}
 \usage{
 wrap.spdk(input, k)
 }
@@ -13,7 +13,7 @@ wrap.spdk(input, k)
 \item{list}{a length-\eqn{n} list whose elements are \eqn{(p\times p)} matrices of rank-\eqn{k}.}
 }}
 
-\item{k}{rank of the SPD matrices.}
+\item{k}{rank of the positive semidefinite matrices, an integer in \eqn{[1,p-1]}.}
 }
 \value{
 a named \code{riemdata} S3 object containing
@@ -24,13 +24,17 @@ a named \code{riemdata} S3 object containing
 }
 }
 \description{
-When \eqn{(p\times p)} SPD matrices are of fixed-rank \eqn{k < p}, they form 
+When \eqn{(p\times p)} positive semidefinite matrices are of fixed rank \eqn{k < p}, they form
 a geometric structure represented by \eqn{(p\times k)} matrices,
 \deqn{SPD(k,p) = \lbrace X \in \mathbf{R}^{(p\times p)}~\vert~ Y Y^\top = X, \textrm{rank}(X) = k \rbrace}
 It's key difference from \eqn{\mathcal{S}_{++}^p} is that all matrices should be 
 of fixed rank \eqn{k} where \eqn{k} is usually smaller than \eqn{p}. Inputs are 
 given as \eqn{(p\times p)} matrices with specified \eqn{k} and \code{wrap.spdk} 
-automatically decomposes input square matrices into rank-\eqn{k} representation matrices.
+decomposes matrices whose numerical rank is exactly \eqn{k}. Higher-rank inputs
+are rejected; rank reduction must be performed explicitly before wrapping.
+Numerical rank uses eigenvalues exceeding \eqn{64p} times machine precision
+relative to the largest absolute eigenvalue. Negative eigenvalues beyond this
+roundoff tolerance are rejected.
 }
 \examples{
 #-------------------------------------------------------------------
@@ -40,8 +44,8 @@ automatically decomposes input square matrices into rank-\eqn{k} representation 
 d1 = array(0,c(10,10,3))
 d2 = list()
 for (i in 1:3){
-  dat = matrix(rnorm(10*10),ncol=10)
-  d1[,,i] = stats::cov(dat)
+  dat = matrix(rnorm(10*2),nrow=10)
+  d1[,,i] = tcrossprod(dat)
   d2[[i]] = d1[,,i]
 }
 

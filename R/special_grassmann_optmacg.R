@@ -4,7 +4,7 @@
 #' and the attained minimum value with estimation of distribution algorithm 
 #' using MACG distribution.
 #' 
-#' @param func a function to be \emph{minimized}.
+#' @param func a function to be \emph{minimized}, returning one finite numeric value.
 #' @param p dimension parameter as in \eqn{Gr(k,p)}.
 #' @param k dimension parameter as in \eqn{Gr(k,p)}.
 #' @param ... extra parameters including\describe{
@@ -16,7 +16,7 @@
 #' }
 #' 
 #' @return a named list containing: \describe{
-#' \item{cost}{minimized function value.}
+#' \item{cost}{smallest function value attained during the iterative search runs; a global minimum is not guaranteed.}
 #' \item{solution}{a \eqn{(p\times k)} matrix that attains the \code{cost}.}
 #' }
 #' 
@@ -60,6 +60,11 @@
 #' 
 #' @concept grassmann
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 grassmann.optmacg <- function(func, p, k, ...){
   # Preprocessing
   # 1. function
@@ -82,7 +87,10 @@ grassmann.optmacg <- function(func, p, k, ...){
   }
   myp = round(p)
   myk = round(k)
-  toppick = round(ratio*popsize)
+  if (length(myp) != 1L || length(myk) != 1L || !is.finite(myp) ||
+      !is.finite(myk) || myk < 1 || myp < myk)
+    stop("* grassmann.optmacg : dimensions must satisfy 1 <= k <= p.", call. = FALSE)
+  toppick = max(1L, round(ratio*popsize))
   
   ## MAIN COMPUTATION
   #  set up initial covariance matrices
@@ -92,7 +100,7 @@ grassmann.optmacg <- function(func, p, k, ...){
     sam_mats  = runif_stiefel(myp,myk,2*popsize) # 3d array with C++
     vec_fvals = rep(0,(2*popsize))
     for (i in 1:(2*popsize)){
-      vec_fvals[i] = as.double(func(as.matrix(sam_mats[,,i])))
+      vec_fvals[i] = grassmann_optmacg_value(func, as.matrix(sam_mats[,,i]))
     }
     min_ids = base::order(vec_fvals)[1:toppick]
     min_mat = list()
@@ -121,7 +129,7 @@ grassmann.optmacg <- function(func, p, k, ...){
 #' @noRd
 grassmann.optmacg.single <- function(func, myp, myk, Sigma, maxiter, popsize, toppick, runid, printer){
   mleS    = Sigma
-  min_f   = 10000000
+  min_f   = Inf
   min_mat = NULL
   
   counter = 0
@@ -131,7 +139,7 @@ grassmann.optmacg.single <- function(func, myp, myk, Sigma, maxiter, popsize, to
     # step 2. evaluate function values
     vec_fvals = rep(0,popsize)
     for (i in 1:popsize){
-      vec_fvals[i] = as.double(func(random_sample[[i]]))
+      vec_fvals[i] = grassmann_optmacg_value(func, random_sample[[i]])
     }
     # step 3. update the minimal ones
     if (min(vec_fvals) < min_f){
@@ -160,3 +168,12 @@ grassmann.optmacg.single <- function(func, myp, myk, Sigma, maxiter, popsize, to
   return(output)
 }
 
+
+#' @keywords internal
+#' @noRd
+grassmann_optmacg_value <- function(func, x) {
+  value <- func(x)
+  if (!is.numeric(value) || length(value) != 1L || !is.finite(value))
+    stop("* grassmann.optmacg : 'func' must return a finite numeric scalar.", call. = FALSE)
+  as.double(value)
+}

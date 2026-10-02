@@ -9,14 +9,14 @@
 #' 
 #' @param data data vectors in form of either an \eqn{(n\times p)} matrix or a length-\eqn{n} list.  See \code{\link{wrap.sphere}} for descriptions on supported input types.
 #' @param mu a length-\eqn{p} unit-norm vector of location.
-#' @param sigma a scale parameter that is positive.
+#' @param sigma a positive scale parameter; \code{Inf} gives the uniform limit.
 #' @param n the number of samples to be generated.
 #' @param log a logical; \code{TRUE} to return log-density, \code{FALSE} for densities without logarithm applied.
-#' @param method an algorithm name for concentration parameter estimation. It should be one of \code{"Newton"}, \code{"Optimize"}, and \code{"DE"} (case-sensitive).
+#' @param method an algorithm name for scale parameter estimation. It should be one of \code{"Newton"}, \code{"Optimize"}, and \code{"DE"} (case-sensitive).
 #' @param ... extra parameters for computations, including\describe{
-#' \item{maxiter}{maximum number of iterations to be run (default:50).}
-#' \item{eps}{tolerance level for stopping criterion (default: 1e-6).}
-#' \item{use.exact}{a logical to use exact (\code{TRUE}) or approximate (\code{FALSE}) updating rules (default: \code{FALSE}).}
+#' \item{maxiter}{iteration budget for each location, likelihood-search, or polishing stage; rounded and raised to at least 10 (default: 50).}
+#' \item{eps}{positive tolerance, capped at 1e-6; the relative likelihood-score tolerance is additionally floored at 1e-10 (default: 1e-6).}
+#' \item{use.exact}{for Newton, use moment-based derivatives (\code{TRUE}) or finite differences of the score (\code{FALSE}, default). Both use adaptive radial quadrature.}
 #' }
 #' 
 #' @return 
@@ -24,6 +24,21 @@
 #' unit-norm vectors in \eqn{\mathbf{R}^p} wrapped in a list. \code{mle.splaplace} computes MLEs and returns a list 
 #' containing estimates of location (\code{mu}) and scale (\code{sigma}) parameters.
 #' 
+#' @details
+#' Scale estimation uses an adaptively bracketed likelihood in the reciprocal
+#' scale. Newton updates are safeguarded by that bracket; Optimize and DE search
+#' the log reciprocal scale and use safeguarded Newton polishing if their score
+#' has not reached the requested tolerance. The uniform boundary is returned as
+#' \code{sigma = Inf}. For coincident observations the likelihood is unbounded
+#' and \code{sigma = 0} is returned with a warning; this point-mass limit has no
+#' surface-area density and is not accepted by \code{dsplaplace} or
+#' \code{rsplaplace}. The location is obtained by local intrinsic-median
+#' optimization and need not be globally optimal for data spread across the
+#' sphere. Failure of the location iteration to converge produces a warning;
+#' the returned scale then optimizes the likelihood conditional on that last
+#' location estimate. Log densities use the log kernel and logarithmic
+#' normalizer directly.
+#'
 #' @examples 
 #' \donttest{
 #' # -------------------------------------------------------------------
@@ -72,32 +87,30 @@ NULL
 
 #' @rdname splaplace
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 dsplaplace <- function(data, mu, sigma, log=FALSE){
-  ## PREPROCESSING
-  spobj  = wrap.sphere(data)
-  x      = sp2mat(spobj)
-  FNAME  = "dsplaplace"
-  mu     = check_unitvec(mu, FNAME)
-  sigma  = check_num_nonneg(sigma, FNAME)
-  p      = length(mu)-1 # dimension along with paper's notation
-  
-  ## EVALUATION
-  #   1. normalizing constant
-  nconstant = dsplaplace.constant(sigma, p)
-  #   2. case branching
-  if (is.vector(x)){
-    logmux = auxsphere_log(mu, x)
-    output = exp(-sum(logmux*logmux)/sigma)
-  } else {
-    dvec   = as.vector(cppdist_int_1toN(mu, x));
-    output = exp(-dvec/sigma)
-  }
-  #   3. scale by normalizing constant and RETURN
-  if (log){
-    return(log(output)-log(nconstant))
-  } else {
-    return(exp(log(output)-log(nconstant)))
-  } 
+  x <- sp2mat(wrap.sphere(data))
+  mu <- check_unitvec(mu, "dsplaplace")
+  sigma <- splaplace_check_scale(sigma)
+  dvec <- sphere_distribution_distances(mu, x)
+  eta <- 1/sigma
+  logdensity <- -dvec/sigma -
+    sphere_radial_stats(eta, length(mu), 1, moments = FALSE)$logZ
+  if (log) logdensity else exp(logdensity)
+}
+
+#' @keywords internal
+#' @noRd
+splaplace_check_scale <- function(sigma) {
+  if (!is.numeric(sigma) || length(sigma) != 1L || is.na(sigma) || sigma <= 0)
+    stop("'sigma' must be positive (Inf denotes the uniform limit).", call. = FALSE)
+  if (is.finite(sigma) && !is.finite(1/sigma))
+    stop("'sigma' is too small to represent its reciprocal rate.", call. = FALSE)
+  sigma
 }
 
 #' @rdname splaplace
@@ -107,7 +120,7 @@ rsplaplace <- function(n, mu, sigma){
   FNAME = "rsplaplace"
   n     = max(1, round(n))
   mu    = check_unitvec(mu, FNAME)
-  sigma = check_num_nonneg(sigma, FNAME)
+  sigma = splaplace_check_scale(sigma)
   D     = length(as.vector(mu))
   
   ## ITERATE or RANDOM
@@ -145,27 +158,20 @@ mle.splaplace <- function(data, method=c("DE","Optimize","Newton"), ...){
   pars   = list(...)
   pnames = names(pars)
   
-  if ("maxiter"%in%pnames){
-    myiter = max(10, round(pars$maxiter))
-  } else {
-    myiter = 50
-  }
-  if ("eps"%in%pnames){
-    myeps = min(1e-6, max(0, as.double(pars$eps)))
-  } else {
-    myeps = 1e-6
-  }
+  controls <- sphere_distribution_controls(pars)
+  myiter <- controls$maxiter
+  myeps <- controls$eps
   myway = tolower(match.arg(method))
   if ("use.exact" %in% pnames){
-    use_exact = as.logical(pars$use.exact)
+    if (!is.logical(pars$use.exact) || length(pars$use.exact) != 1L || is.na(pars$use.exact))
+      stop("'use.exact' must be TRUE or FALSE.", call. = FALSE)
+    use_exact = pars$use.exact
   } else {
     use_exact = FALSE
   }
   
   ## STEP 1. INTRINSIC MEDIAN
-  N = length(spobj$data)
-  myweight   = rep(1/N, N)
-  opt.median = as.vector(inference_median_intrinsic(spobj$name, spobj$data, myweight, myiter, myeps)$median)
+  opt.median <- sphere_distribution_location(spobj, x, myiter, myeps, median = TRUE)
   
   ## STEP 2. OPTIMAL SIGMA
   opt.sigma = switch(myway,
@@ -180,261 +186,42 @@ mle.splaplace <- function(data, method=c("DE","Optimize","Newton"), ...){
 
 
 
-# estimation of the scale parameters --------------------------------------
+# Scale estimation uses the natural rate eta = 1/sigma.
 #' @keywords internal
 #' @noRd
-sigma_method_DE <- function(data, median, myiter, myeps){
-  # 1. parameters
-  p = length(median)-1  # dimension S^p
-  n = nrow(data)        # number of data 
-  
-  # 2. compute a constant
-  d1N  = as.vector(auxsphere_dist_1toN(median, data))
-  Chat = mean(d1N)
-  
-  # 3. the objective function
-  opt.fun <- function(sigma){
-    norm_constant <- function(par_p, par_sigma){
-      # term : surface
-      t1 = 2*(pi^(par_p/2))/gamma(par_p/2)
-      # term : intergration
-      myfunc <- function(par_r){
-        return(exp(-par_r/par_sigma)*(sin(par_r)^(par_p-1)))
-      }
-      t2 = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
-      # return
-      return(t1*t2)
-    }
-    term1 = Chat/sigma
-    term2 = log(norm_constant(p, sigma))
-    return(term1+term2)
-  }
-  
-  # 4. optimize : DEoptim 
-  mymin = stats::var(d1N)*0.01
-  mymax = stats::var(d1N)*100
-  output = as.double(utils::tail(DEoptim::DEoptim(opt.fun, mymin, mymax, control=DEoptim.control(trace=FALSE, itermax=myiter, reltol=myeps))$member$bestmemit, n=1L))
-  
-  return(output)
+sigma_fit <- function(data, median, myiter, myeps, method, exact = TRUE) {
+  d <- if (sphere_coincident_rows(data)) rep(0, nrow(data)) else
+    sphere_distribution_distances(median, data)
+  eta <- sphere_radial_mle(mean(d), length(median), 1, method,
+                          myiter, myeps, exact)
+  if (is.infinite(eta) && all(d == 0))
+    warning("Coincident observations have no positive scale MLE; returning sigma = 0.", call. = FALSE)
+  1/eta
 }
 #' @keywords internal
 #' @noRd
-sigma_method_opt <- function(data, median, myiter, myeps){
-  # 1. parameters
-  p = length(median)-1  # dimension S^p
-  n = nrow(data)  # number of data 
-  
-  # 2. compute a constant
-  d1N  = as.vector(auxsphere_dist_1toN(median, data))
-  Chat = mean(d1N)
-  
-  # 3. the objective function
-  opt.fun <- function(sigma){
-    norm_constant <- function(par_p, par_sigma){
-      # term : surface
-      t1 = 2*(pi^(par_p/2))/gamma(par_p/2)
-      # term : intergration
-      myfunc <- function(par_r){
-        return(exp(-par_r/par_sigma)*(sin(par_r)^(par_p-1)))
-      }
-      t2 = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
-      # return
-      return(t1*t2)
-    }
-    term1 = Chat/sigma
-    term2 = log(norm_constant(p, sigma))
-    return(term1+term2)
-  }
-  
-  # 4. optimize a log-likelihood function
-  myint  = c(0.01, 100)*mean(d1N)
-  output = stats::optimize(opt.fun, interval=myint, maximum=FALSE, tol=myeps)$minimum
-  return(output)
-}
+sigma_method_DE <- function(data, median, myiter, myeps)
+  sigma_fit(data, median, myiter, myeps, "de")
 #' @keywords internal
 #' @noRd
-sigma_method_newton <- function(data, median, myiter, myeps, myexact){
-  if (myexact){
-    return(sigma_method_newton_exact(data, median, myiter, myeps))
-  } else {
-    return(sigma_method_newton_approx(data, median, myiter, myeps))
-  }
-}
+sigma_method_opt <- function(data, median, myiter, myeps)
+  sigma_fit(data, median, myiter, myeps, "optimize")
 #' @keywords internal
 #' @noRd
-sigma_method_newton_exact <- function(data, median, myiter, myeps){
-  # 1. parameters
-  p = length(median)-1
-  n = nrow(data)
-  
-  # 2. compute a constant
-  d1N  = as.vector(auxsphere_dist_1toN(median, data))
-  Chat = mean(d1N)
-  
-  # 3. integral evaluators
-  integral_I0 <- function(sigma){
-    # define an objective
-    tgt_funI0 <- function(r){
-      return(exp(-r/sigma)*(sin(r)^(p-1)))
-    }
-    # integrate
-    output = as.double(stats::integrate(tgt_funI0, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol = sqrt(.Machine$double.eps))$value)
-    return(output)
-  }
-  integral_I1 <- function(sigma){
-    # define an objective
-    tgt_funI1 <- function(r){
-      t1 = (r/(sigma^2))
-      t2 = exp(-r/sigma)*(sin(r)^(p-1))
-      return(t1*t2)
-    }
-    # integrate
-    output = as.double(stats::integrate(tgt_funI1, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol = sqrt(.Machine$double.eps))$value)
-    return(output)
-  }
-  integral_I2 <- function(sigma){
-    # define an objective
-    tgt_funI2 <- function(r){
-      t1 = ((r^2)/(sigma^4)) - ((2*r)/(sigma^3))
-      t2 = exp(-r/sigma)*(sin(r)^(p-1))
-      return(t1*t2)
-    }
-    # integrate
-    output = as.double(stats::integrate(tgt_funI2, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol = sqrt(.Machine$double.eps))$value)
-    return(output)
-  }
-  
-  # 4. initialize
-  ntest = 20
-  grid.sigma = base::exp(seq(from=-1,to=1,length.out=ntest))*sqrt(stats::var(d1N))
-  grid.value = rep(0,ntest)
-  for (i in 1:ntest){
-    sigma_now     = grid.sigma[i]
-    grid.value[i] = (Chat/sigma_now) + log(integral_I0(sigma_now))
-  }
-  sigma_old = grid.sigma[which.min(grid.value)]
-  sigma_new = 0
-  
-  # 5. Newton-Raphson update
-  for (it in 1:myiter){
-    # compute : quantities
-    valI0 = integral_I0(sigma_old)
-    valI1 = integral_I1(sigma_old)
-    valI2 = integral_I2(sigma_old)
-    
-    # compute : rationals
-    term_top = -(Chat/(sigma_old^2)) + (valI1/valI0)
-    term_bot = (2*Chat/(sigma_old^3)) + ((valI0*valI2 - (valI1^2))/(valI0^2))
-  
-    # update
-    sigma_new = sigma_old - term_top/term_bot
-    sigma_inc = abs(sigma_old - sigma_new)/abs(sigma_old)
-    sigma_old = sigma_new
-    if (sigma_inc < myeps){
-      break
-    }
-  }
-  
-  # return
-  return(sigma_old)
-}
-
-
+sigma_method_newton <- function(data, median, myiter, myeps, myexact)
+  sigma_fit(data, median, myiter, myeps, "newton", exact = myexact)
 #' @keywords internal
 #' @noRd
-sigma_method_newton_approx <- function(data, median, myiter, myeps){
-  # 1. parameters
-  p = length(median)-1  # dimension S^p
-  n = nrow(data)  # number of data 
-  
-  # 2. compute a constant
-  d1N  = as.vector(auxsphere_dist_1toN(median, data))
-  Chat = mean(d1N)
-  
-  # 3. the objective function
-  # fun_g <- function(sigma){
-  #   norm_constant <- function(par_p, par_sigma){
-  #     # term : surface
-  #     t1 = 2*(pi^(par_p/2))/gamma(par_p/2)
-  #     # term : intergration
-  #     myfunc <- function(par_r){
-  #       return(exp(-par_r/par_sigma)*(sin(par_r)^(par_p-1)))
-  #     }
-  #     t2 = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
-  #     # return
-  #     return(t1*t2)
-  #   }
-  #   term1 = Chat/sigma
-  #   term2 = log(norm_constant(p, sigma))
-  #   return(term1+term2)
-  # }
-  vec_r = seq(from=0, to=pi, length.out=1000)
-  inc_r = vec_r[2]-vec_r[1]
-  fun_g <- function(sigma){
-    # approximate integral
-    vec_f = exp(-vec_r/sigma)*(sin(vec_r)^(p-1))
-    
-    term1 = Chat/sigma
-    term2 = log((2*sum(vec_f)-(vec_f[1] + vec_f[length(vec_r)]))*inc_r/2)
-    return(term1+term2)
-  }
-  
-  # 4. Newton's Method
-  # start with a grid
-  ntest = 20
-  grid.sigma = base::exp(seq(from=-1,to=1,length.out=ntest))*sqrt(stats::var(d1N))
-  grid.value = rep(0,ntest)
-  for (i in 1:ntest){
-    grid.value[i] = fun_g(grid.sigma[i])
-  }
-  
-  # iterate
-  h_true    = 1e-4
-  sigma_old = grid.sigma[which.min(grid.value)]
-  sigma_new = 0
-  for (it in 1:myiter){
-    # compute : quantities
-    h      = min(h_true, sigma_old/2)
-    eval_l = fun_g(sigma_old-h)
-    eval_r = fun_g(sigma_old+h)
-    eval_m = fun_g(sigma_old)
-    
-    # compute : derivatives
-    gderiv1 = (eval_r - eval_l)/(2*h)
-    gderiv2 = (eval_r - 2*eval_m + eval_l)/(h^2)
-    # gderiv1 = (fun_g(sigma_old + h) - fun_g(sigma_old - h))/(2*h) 
-    # gderiv2 = (fun_g(sigma_old+h) - 2*fun_g(sigma_old) + fun_g(sigma_old-h))/(2*(h^2))
-    # gderiv1 = -Chat/(sigma_old^2) + valQ/valP
-    # gderiv2 = 2*Chat/(sigma_old^3) + ((valP*valR - (valQ^2))/(valP^2))
-    
-    # update
-    sigma_new = sigma_old - gderiv1/gderiv2
-    sigma_inc = abs(sigma_old - sigma_new)/abs(sigma_old)
-    sigma_old = sigma_new
-    if (sigma_inc < myeps){
-      break
-    }
-  }
-  
-  # return
-  return(sigma_old)
-}
-
-
-# auxiliary functions for 'splaplace' distributions -----------------------
-#  Formula for C_p(sigma)
+sigma_method_newton_exact <- function(data, median, myiter, myeps)
+  sigma_fit(data, median, myiter, myeps, "newton", exact = TRUE)
+#' @keywords internal
+#' @noRd
+sigma_method_newton_approx <- function(data, median, myiter, myeps)
+  sigma_fit(data, median, myiter, myeps, "newton", exact = FALSE)
 #' @keywords internal
 #' @noRd
 dsplaplace.constant <- function(sigma, p){
-  # define a function
-  myfunc <- function(r){
-    return(exp(-r/sigma)*(sin(r)^(p-1)))
-  }
-  
-  # compute
-  t1 = 2*(pi^(p/2))/(gamma(p/2))
-  t2 = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
-  return(t1*t2)
+  exp(sphere_radial_stats(1/sigma, p+1, 1, moments = FALSE)$logZ)
 }
 
 #  Rejection sampling for the splaplace distribution

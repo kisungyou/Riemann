@@ -1,19 +1,16 @@
 Package: Riemann
 Type: Package
 Title: Learning with Data on Riemannian Manifolds
-Version: 0.1.7
+Version: 0.2.0
 Authors@R: c(person("Kisung", "You", role = c("aut", "cre"), email = "kisung.you@outlook.com",comment=c(ORCID="0000-0002-8584-459X")))
 Description: We provide a variety of algorithms for manifold-valued data, including Fréchet summaries, hypothesis testing, clustering, visualization, and other learning tasks. See Bhattacharya and Bhattacharya (2012) <doi:10.1017/CBO9781139094764> for general exposition to statistics on manifolds.
-License: MIT + file LICENSE
+License: GPL-3
 Imports: 
     Rcpp (>= 1.0.5),
     Rdpack,
-    RiemBase,
-    Rdimtools,
     T4cluster,
     T4transport,
     DEoptim,
-    lpSolve,
     Matrix,
     maotai (>= 0.2.2),
     stats,
@@ -22,11 +19,14 @@ Encoding: UTF-8
 URL: https://www.kisungyou.com/Riemann/
 BugReports: https://github.com/kisungyou/Riemann/issues
 LinkingTo: Rcpp, RcppArmadillo
-RoxygenNote: 7.3.3
 RdMacros: Rdpack
 Depends: 
-    R (>= 2.10)
+    R (>= 4.4.0)
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
 LazyData: true
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.1.0
+VignetteBuilder: knitr

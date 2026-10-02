@@ -18,7 +18,7 @@ mle.spnorm(data, method = c("Newton", "Halley", "Optimize", "DE"), ...)
 
 \item{mu}{a length-\eqn{p} unit-norm vector of location.}
 
-\item{lambda}{a concentration parameter that is positive.}
+\item{lambda}{a finite nonnegative concentration parameter; zero is the uniform distribution.}
 
 \item{log}{a logical; \code{TRUE} to return log-density, \code{FALSE} for densities without logarithm applied.}
 
@@ -27,8 +27,8 @@ mle.spnorm(data, method = c("Newton", "Halley", "Optimize", "DE"), ...)
 \item{method}{an algorithm name for concentration parameter estimation. It should be one of \code{"Newton"},\code{"Halley"},\code{"Optimize"}, and \code{"DE"} (case sensitive).}
 
 \item{...}{extra parameters for computations, including\describe{
-\item{maxiter}{maximum number of iterations to be run (default:50).}
-\item{eps}{tolerance level for stopping criterion (default: 1e-5).}
+\item{maxiter}{iteration budget for each location, likelihood-search, or polishing stage; rounded and raised to at least 10 (default: 50).}
+\item{eps}{positive tolerance, capped at 1e-6; the relative likelihood-score tolerance is additionally floored at 1e-10 (default: 1e-6).}
 }}
 }
 \value{
@@ -43,6 +43,30 @@ of the parameters where the density is defined as
 \deqn{f_{SN}(x; \mu, \lambda) = \frac{1}{Z(\lambda)} \exp \left( -\frac{\lambda}{2} d^2(x,\mu) \right)}
 for location and concentration parameters \eqn{\mu} and \eqn{\lambda} respectively and the normalizing constant \eqn{Z(\lambda)}.
 }
+\details{
+Concentration estimation uses an adaptively bracketed likelihood score.
+Newton and Halley updates are safeguarded by that bracket; Optimize and DE
+search the log concentration and use safeguarded Newton polishing if their
+score has not reached the requested tolerance. All methods check the uniform
+boundary, returning \code{lambda = 0} when appropriate. For coincident
+observations the likelihood is unbounded and \code{lambda = Inf} is returned
+with a warning; this point-mass limit has no density with respect to spherical
+surface area and is not accepted by \code{dspnorm} or \code{rspnorm}.
+The location is obtained by local intrinsic-mean optimization; a globally
+optimal location is not guaranteed for data spread across the sphere.
+Failure of the location iteration to converge produces a warning; the
+returned concentration then optimizes the likelihood conditional on that
+last location estimate.
+Log densities are evaluated directly, including a logarithmic normalizer.
+}
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 \donttest{
 # -------------------------------------------------------------------

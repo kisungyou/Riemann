@@ -73,6 +73,11 @@
 #' 
 #' @concept clustering
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 riem.clrq <- function(riemobj, k=2, init=c("plus","random"), gain.a = 1, gain.b = 1){
   ## PREPARE
   DNAME = paste0("'",deparse(substitute(riemobj)),"'") 

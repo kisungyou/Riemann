@@ -1,269 +1,187 @@
-#' Fréchet Analysis of Variance
-#' 
-#' Given sets of manifold-valued data \eqn{X^{(1)}_{1:{n_1}}, X^{(2)}_{1:{n_2}}, \ldots, X^{(m)}_{1:{n_m}}}, 
-#' performs analysis of variance to test equality of distributions. This means, small \eqn{p}-value implies that 
-#' at least one of the equalities does not hold. 
-#' 
-#' @param ... S3 objects of \code{riemdata} class for manifold-valued data.
-#' @param nperm the number of permutations for resampling-based test.
-#' @param maxiter maximum number of iterations to be run.
-#' @param eps tolerance level for stopping criterion.
-#' 
-#' @return a (list) object of \code{S3} class \code{htest} containing: \describe{
-#' \item{statistic}{a test statistic.}
-#' \item{p.value}{\eqn{p}-value under \eqn{H_0}.}
-#' \item{alternative}{alternative hypothesis.}
-#' \item{method}{name of the test.}
-#' \item{data.name}{name(s) of provided sample data.}
-#' }
-#' 
-#' @examples 
-#' #-------------------------------------------------------------------
-#' #            Example on Sphere : Uniform Samples
-#' #
-#' #  Each of 4 classes consists of 20 uniform samples from uniform 
-#' #  density on 2-dimensional sphere S^2 in R^3.
-#' #-------------------------------------------------------------------
-#' ## PREPARE DATA OF 4 CLASSES
-#' ndata  = 200
-#' class1 = list()
-#' class2 = list()
-#' class3 = list()
-#' class4 = list()
-#' for (i in 1:ndata){
-#'   tmpxy = matrix(rnorm(4*2, sd=0.1), ncol=2)
-#'   tmpz  = rep(1,4)
-#'   tmp3d = cbind(tmpxy, tmpz)
-#'   tmp  = tmp3d/sqrt(rowSums(tmp3d^2))
-#'   
-#'   class1[[i]] = tmp[1,]
-#'   class2[[i]] = tmp[2,]
-#'   class3[[i]] = tmp[3,]
-#'   class4[[i]] = tmp[4,]
-#' }
-#' obj1 = wrap.sphere(class1)
-#' obj2 = wrap.sphere(class2)
-#' obj3 = wrap.sphere(class3)
-#' obj4 = wrap.sphere(class4)
-#' 
-#' ## RUN THE ASYMPTOTIC TEST
-#' riem.fanova(obj1, obj2, obj3, obj4)
-#' 
-#' \donttest{
-#' ## RUN THE PERMUTATION TEST WITH MANY PERMUTATIONS
-#' riem.fanovaP(obj1, obj2, obj3, obj4, nperm=999)
-#' }
-#' 
-#' @references 
+#' Frechet Analysis of Variance
+#'
+#' Compares population Frechet means and variances using the statistic of Dubey
+#' and Muller (2019), equation (14). The asymptotic chi-squared calibration
+#' targets equality of those summaries, not arbitrary equality of distributions.
+#' The permutation version requires exchangeable observations under the stronger
+#' null of identical group distributions, and targets alternatives detected by
+#' the same mean-and-variance statistic.
+#'
+#' @param ... At least two compatible \code{riemdata} objects, each containing
+#'   at least three observations. Observations must be independent within and
+#'   across groups for the documented calibration; paired, repeated or clustered
+#'   observations require a separate restricted resampling procedure.
+#' @param maxiter Positive integer iteration budget for each Frechet mean.
+#' @param eps Finite positive tolerance for the shared mean solver.
+#' @param nperm Positive integer number of random label permutations.
+#' @param geometry A geometry name or saved specification with a compatible
+#'   mean and distance implementation. By default all groups must resolve to
+#'   the same geometry.
+#'
+#' @details The asymptotic result requires unique population/sample means,
+#'   positive variances of the squared distances to each group mean, suitable
+#'   moment/metric-entropy conditions, and group proportions bounded away from
+#'   zero. The cited paper gives sufficient bounded-space conditions; accepting
+#'   an input manifold does not establish them for every population distribution.
+#'   The function rejects failed mean fits and a degenerate empirical denominator.
+#'
+#'   For group proportions \eqn{\lambda_j=n_j/n}, the two denominators are
+#'   \eqn{\sum_j\lambda_j/\widehat\sigma_j^2} and
+#'   \eqn{\sum_j\lambda_j^2\widehat\sigma_j^2}. Distances are jointly rescaled
+#'   before forming the statistic; this leaves it unchanged and avoids unit-scale
+#'   overflow. Numerical rescaling does not transform the underlying geometry.
+#'
+#'   \code{riem.fanovaP} refits all group means for every sampled label assignment.
+#'   It uses \eqn{(1+\#\{T_b\geq T_{obs}\})/(nperm+1)}, including ties. The pooled
+#'   fit is unchanged by label permutation and is reused. Permutations follow R's
+#'   current random-number state. The returned Monte Carlo standard error is a
+#'   plug-in diagnostic for simulation variability, not inferential uncertainty
+#'   in the scientific effect.
+#'
+#' @return An \code{htest} object with statistic, p-value, null/alternative,
+#'   resolved geometry, calibration, group sizes and mean diagnostics.
+#'   The permutation version additionally retains permuted statistics,
+#'   \code{nperm}, and \code{mc_se}.
+#'
+#' @examples
+#' X <- wrap.euclidean(matrix(c(-1, 0, 2, 3), ncol = 1))
+#' Y <- wrap.euclidean(matrix(c(0, 1, 4, 8), ncol = 1))
+#' riem.fanova(X, Y)
+#' set.seed(17)
+#' riem.fanovaP(X, Y, nperm = 19)
+#'
+#' @references
 #' \insertRef{dubey_frechet_2019}{Riemann}
-#' 
 #' @name riem.fanova
 #' @concept inference
-#' @rdname riem.fanova
 NULL
 
 #' @rdname riem.fanova
 #' @export
-riem.fanova <- function(..., maxiter=50, eps=1e-5){
-  ## PREPARE
-  #  data
-  datalist = base::list(...)
-  k = length(datalist)
-  for (i in 1:k){
-    riemobj = datalist[[i]]
-    if (!inherits(riemobj, "riemdata")){
-      stop(paste0("* riem.fanova : ",i,"-th input should be an object of 'riemdata' class."))
-    }
-  }
-  # hypothesis testing argument
-  DNAME = ""
-  DOBJ  = as.list(substitute(list(...)))[-1L]
-  for (i in 1:(k-1)){
-    DNAME = paste0(DNAME, as.character(DOBJ[[i]]), ", ")
-  }
-  DNAME = paste0(DNAME, "and ",as.character(DOBJ[[k]]))
-  MNAME = riemobj$name
-  # iteration
-  myiter = max(50, round(maxiter))
-  myeps  = min(max(as.double(eps),0),1e-5)
-  
-  ## COMPUTATION
-  # Step 1. compute pooled frechet objective
-  pooled.data = list()
-  for (i in 1:k){
-    pooled.data = c(pooled.data, datalist[[i]]$data)
-  }
-  pooled.ndata   = length(pooled.data)
-  pooled.weight  = rep(1/pooled.ndata, pooled.ndata)
-  frechet.pooled = inference_mean_intrinsic(MNAME, pooled.data, pooled.weight, myiter, myeps)
-  
-  # Step 2. compute individual frechet objective
-  frechet.each = list()
-  for (i in 1:k){
-    tgt.ndata  = length(datalist[[i]]$data)
-    tgt.weight = rep(1/tgt.ndata, tgt.ndata)
-    frechet.each[[i]] = inference_mean_intrinsic(MNAME, datalist[[i]]$data, tgt.weight, myiter, myeps)
-  }
-  
-  # Step 3. get distance information only and compute via 'common_fanova'
-  dist.pooled = as.vector(frechet.pooled$distvec)
-  dist.class  = list()
-  for (i in 1:k){
-    dist.class[[i]] = as.vector(frechet.each[[i]]$distvec)
-  }
-  statinfo = common_fanova(dist.pooled, dist.class, MNAME, DNAME)
-  
-  # RETURN
-  return(statinfo)
+riem.fanova <- function(..., maxiter = 50, eps = 1e-5, geometry = NULL) {
+  prepared <- riem_fanova_prepare(list(...), geometry, maxiter, eps)
+  fitted <- riem_fanova_fits(prepared)
+  output <- common_fanova(fitted$pooled$distvec,
+                          lapply(fitted$groups, `[[`, "distvec"),
+                          prepared$geometry$manifold_id, "Supplied groups")
+  output$geometry <- prepared$geometry
+  output$calibration <- "asymptotic_chisquared"
+  output$null.value <- c(equal_frechet_means_and_variances = 0)
+  output$mean_diagnostics <- riem_fanova_diagnostics(fitted)
+  output$call <- match.call()
+  output
 }
 
 #' @rdname riem.fanova
 #' @export
-riem.fanovaP <- function(..., maxiter=50, eps=1e-5, nperm=99){
-  ## PREPARE
-  #  data
-  datalist = base::list(...)
-  k = length(datalist)
-  for (i in 1:k){
-    riemobj = datalist[[i]]
-    if (!inherits(riemobj, "riemdata")){
-      stop(paste0("* riem.fanovaP : ",i,"-th input should be an object of 'riemdata' class."))
-    }
+riem.fanovaP <- function(..., maxiter = 50, eps = 1e-5, nperm = 99, geometry = NULL) {
+  nperm <- riem_regression_integer(nperm, "nperm", 1L)
+  prepared <- riem_fanova_prepare(list(...), geometry, maxiter, eps)
+  fitted <- riem_fanova_fits(prepared)
+  output <- common_fanova(fitted$pooled$distvec,
+                          lapply(fitted$groups, `[[`, "distvec"),
+                          prepared$geometry$manifold_id, "Supplied groups")
+  statistics <- numeric(nperm)
+  sizes <- vapply(prepared$groups, function(x) length(x$data), integer(1))
+  ends <- cumsum(sizes)
+  starts <- c(1L, utils::head(ends, -1L) + 1L)
+  for (b in seq_len(nperm)) {
+    permutation <- sample.int(sum(sizes))
+    distances <- lapply(seq_along(sizes), function(j) {
+      group <- prepared$pooled
+      group$data <- prepared$pooled$data[permutation[seq.int(starts[j], ends[j])]]
+      fit <- riem.mean(group, geometry = prepared$geometry,
+                       maxiter = prepared$maxiter, eps = prepared$eps)
+      if (!isTRUE(fit$converged)) stop("A permuted group mean did not converge; no calibrated p-value is returned.",
+                                      call. = FALSE)
+      as.vector(basic_pdist2(group$name, group$data, list(fit$mean),
+                             prepared$geometry$backend))
+    })
+    statistics[b] <- common_fanova(fitted$pooled$distvec, distances,
+                                   prepared$geometry$manifold_id, "Permutation")$statistic
   }
-  # hypothesis testing argument
-  DNAME = ""
-  DOBJ  = as.list(substitute(list(...)))[-1L]
-  for (i in 1:(k-1)){
-    DNAME = paste0(DNAME, as.character(DOBJ[[i]]), ", ")
-  }
-  DNAME = paste0(DNAME, "and ",as.character(DOBJ[[k]]))
-  MNAME = riemobj$name
-  # parameters
-  myiter = max(50, round(maxiter))
-  myeps  = min(max(as.double(eps),0),1e-5)  
-  myperm = max(19, round(nperm))
-  
-  ## COMPUTATION
-  #  Step 1. compute pooled frechet objective
-  pooled.data = list()
-  for (i in 1:k){
-    pooled.data = c(pooled.data, datalist[[i]]$data)
-  }
-  pooled.ndata   = length(pooled.data)
-  pooled.weight  = rep(1/pooled.ndata, pooled.ndata)
-  frechet.pooled = inference_mean_intrinsic(MNAME, pooled.data, pooled.weight, myiter, myeps)
-  
-  # Step 2. compute individual frechet objective
-  frechet.each = list()
-  vec.ndata    = rep(0,k)
-  for (i in 1:k){
-    tgt.ndata    = length(datalist[[i]]$data)
-    tgt.weight   = rep(1/tgt.ndata, tgt.ndata)
-    vec.ndata[i] = tgt.ndata
-    frechet.each[[i]] = inference_mean_intrinsic(MNAME, datalist[[i]]$data, tgt.weight, myiter, myeps)
-  }
-  
-  # Step 3. get distance information only and compute via 'common_fanova'
-  dist.pooled = as.vector(frechet.pooled$distvec)
-  dist.class  = list()
-  for (i in 1:k){
-    dist.class[[i]] = as.vector(frechet.each[[i]]$distvec)
-  }
-  statinfo = common_fanova(dist.pooled, dist.class, MNAME, DNAME)
-  Tnow     = as.double(statinfo$statistic)
-  
-  # Step 4. Monte Carlo simulation via permutation 
-  Tvec = rep(0,myperm)
-  for (i in 1:myperm){
-    # permutation index generation
-    randidx = aux_shuffle(vec.ndata)
-    # compute individual-class statistic
-    for (j in 1:k){
-      tgt.data    = pooled.data[randidx[[j]]]
-      tgt.ndata   = vec.ndata[j]
-      tgt.weight  = rep(1/tgt.ndata, tgt.ndata)
-      frechet.tmp = inference_mean_intrinsic(MNAME, tgt.data, tgt.weight, myiter, myeps)
-      dist.class[[j]] = as.vector(frechet.tmp$distvec)
-    }
-    # compute the statistic
-    statnow = common_fanova(dist.pooled, dist.class, MNAME, DNAME)
-    Tvec[i] = as.double(statnow$statistic)
-  }
-
-  ############################################################
-  # WRAP AND RETURN
-  statinfo$p.value = (sum(Tvec >= Tnow)+1)/(myperm+1)
-  return(statinfo)
-}
-#' @keywords internal
-#' @noRd
-common_fanova <- function(distall, distvecs, manifold, dataname){
-  # get some parameters
-  k = length(distvecs)  # number of classes
-  n = length(distall)
-  
-  # get local information
-  vec.nj    = rep(0,k)
-  vec.Vj    = rep(0,k)
-  vec.sig2j = rep(0,k)
-  for (j in 1:k){
-    distj = as.vector(distvecs[[j]])
-    nj    = length(distj)
-    
-    vec.nj[j]    = nj
-    vec.Vj[j]    = sum(distj^2)/nj
-    vec.sig2j[j] = (sum(distj^4)/nj) - ((sum(distj^2)/nj)^2)
-  }
-  
-  # get global information
-  Vp   = sum(distall^2)/n
-  lbdj = vec.nj/n
-  
-  # compute statistics
-  Fn = Vp - sum(lbdj*vec.Vj)
-  Un = 0
-  for (j in 1:(k-1)){
-    for (l in (j+1):k){
-      Un = Un + ((lbdj[j]*lbdj[l])/(vec.sig2j[j]*vec.sig2j[l]))*((vec.Vj[j]-vec.Vj[l])^2)
-    }
-  }
-  term1   = (n*Un)/sum(vec.nj/vec.sig2j)
-  term2   = (n*(Fn^2))/sum((vec.nj^2)*vec.sig2j)
-  thestat = term1+term2
-  
-  # compute p-value
-  pvalue = stats::pchisq(thestat, df=(k-1), lower.tail = FALSE)
-  
-  # return output
-  mfdname  = wrap_mfd2full(manifold)
-  hname    = paste0("Frechet Analysis of Variance on ",mfdname," Manifold")
-  Ha       = "at least one of equalities does not hold."
-  names(thestat) = "Tn"
-  
-  res   = list(statistic=thestat, p.value=pvalue, alternative = Ha, method=hname, data.name=dataname)
-  class(res) = "htest"
-  return(res)
+  exceed <- sum(statistics >= output$statistic)
+  output$p.value <- (exceed + 1) / (nperm + 1)
+  output$geometry <- prepared$geometry
+  output$calibration <- "random_label_permutation"
+  output$null.value <- c(exchangeable_group_distributions = 0)
+  output$method <- paste(output$method, "(permutation calibration)")
+  output$nperm <- nperm
+  output$permutation_statistics <- statistics
+  output$mc_se <- sqrt(output$p.value * (1 - output$p.value) / (nperm + 1))
+  output$mean_diagnostics <- riem_fanova_diagnostics(fitted)
+  output$call <- match.call()
+  output
 }
 
+riem_fanova_prepare <- function(groups, geometry, maxiter, eps) {
+  if (length(groups) < 2L) stop("Frechet ANOVA requires at least two groups.", call. = FALSE)
+  maxiter <- riem_regression_integer(maxiter, "maxiter", 1L)
+  eps <- riem_legacy_positive(eps, "eps")
+  specs <- lapply(groups, riem_resolve_geometry, geometry = geometry, capability = "mean")
+  for (i in seq_along(groups)) {
+    riem_check_newdata(groups[[1L]], groups[[i]])
+    if (length(groups[[i]]$data) < 3L) stop("Each group needs at least three observations and a nondegenerate squared-distance variance.",
+                                           call. = FALSE)
+    if (!identical(specs[[i]], specs[[1L]])) stop("All groups must use the same geometry.", call. = FALSE)
+  }
+  pooled <- groups[[1L]]
+  pooled$data <- unlist(lapply(groups, `[[`, "data"), recursive = FALSE)
+  list(groups = groups, pooled = pooled, geometry = specs[[1L]], maxiter = maxiter, eps = eps)
+}
 
+riem_fanova_fits <- function(prepared) {
+  fit <- function(data) {
+    result <- riem.mean(data, geometry = prepared$geometry,
+                        maxiter = prepared$maxiter, eps = prepared$eps)
+    if (!isTRUE(result$converged)) stop("A Frechet mean did not converge; no calibrated test is returned.", call. = FALSE)
+    result$distvec <- as.vector(basic_pdist2(data$name, data$data,
+                                            list(result$mean), prepared$geometry$backend))
+    result
+  }
+  list(pooled = fit(prepared$pooled), groups = lapply(prepared$groups, fit))
+}
 
-# set.seed(777)
-# ntest = 1000
-# pvals.a = rep(0,ntest)
-# pvals.p = rep(0,ntest)
-# 
-# for (i in 1:ntest){
-#   X = cbind(matrix(rnorm(30*2, sd=0.1),ncol=2), rep(1,30))
-#   Y = cbind(matrix(rnorm(30*2, sd=0.1),ncol=2), rep(1,30))
-#   Xnorm = X/sqrt(rowSums(X^2))
-#   Ynorm = Y/sqrt(rowSums(Y^2))
-# 
-#   Xriem = wrap.sphere(Xnorm)
-#   Yriem = wrap.sphere(Ynorm)
-#   pvals.a[i] = riem.fanova(Xriem, Yriem)$p.value
-#   pvals.p[i] = riem.fanovaP(Xriem, Yriem, nperm=999)$p.value
-#   print(paste0("iteration ",i,"/",ntest," complete.."))
-# }
-# 
-# round(sum((pvals.a <= 0.05))/ntest, 5) # asymptotic theory is nice
-# round(sum((pvals.p <= 0.05))/ntest, 5) # but PERMUTATION SEEMS TO WORK BETTER! (0.052)
+riem_fanova_diagnostics <- function(fits) {
+  lapply(c(list(pooled = fits$pooled), fits$groups), function(fit)
+    fit[c("converged", "termination", "iterations", "objective", "gradient_norm")])
+}
+
+common_fanova <- function(distall, distvecs, manifold, dataname) {
+  k <- length(distvecs)
+  sizes <- vapply(distvecs, length, integer(1))
+  n <- length(distall)
+  if (k < 2L || any(sizes < 3L) || sum(sizes) != n) {
+    stop("Invalid group sizes for the Frechet ANOVA statistic.", call. = FALSE)
+  }
+  all_distances <- c(distall, unlist(distvecs, use.names = FALSE))
+  if (any(!is.finite(all_distances)) || any(all_distances < 0)) {
+    stop("Frechet ANOVA requires finite nonnegative distances.", call. = FALSE)
+  }
+  scale <- max(all_distances)
+  if (scale == 0) stop("Squared-distance variances are degenerate; the ANOVA statistic is undefined.", call. = FALSE)
+  squared <- lapply(distvecs, function(d) (d / scale)^2)
+  variances <- vapply(squared, mean, numeric(1))
+  sigma2 <- vapply(squared, function(d) mean((d - mean(d))^2), numeric(1))
+  if (any(sigma2 <= 0)) stop("Squared-distance variances are degenerate; the ANOVA statistic is undefined.", call. = FALSE)
+  lambda <- sizes / n
+  pooled <- mean((distall / scale)^2)
+  F <- pooled - sum(lambda * variances)
+  tolerance <- 100 * .Machine$double.eps * max(pooled, variances)
+  if (F < -tolerance) stop("The pooled mean objective is inconsistent with the group objectives; review the mean fits.", call. = FALSE)
+  F <- max(0, F)
+  U <- 0
+  for (j in seq_len(k - 1L)) for (l in seq.int(j + 1L, k)) {
+    U <- U + lambda[j] * lambda[l] * (variances[j] - variances[l])^2 / (sigma2[j] * sigma2[l])
+  }
+  terms <- c(variance = n * U / sum(lambda / sigma2),
+             mean = n * F^2 / sum(lambda^2 * sigma2))
+  statistic <- sum(terms)
+  if (!is.finite(statistic)) stop("The ANOVA statistic is not numerically representable.", call. = FALSE)
+  structure(list(statistic = c(Tn = statistic), parameter = c(df = k - 1L),
+    p.value = stats::pchisq(statistic, df = k - 1L, lower.tail = FALSE),
+    alternative = "at least one population Frechet mean or variance differs",
+    method = paste("Frechet Analysis of Variance on", manifold), data.name = dataname,
+    terms = terms, group_sizes = sizes, group_proportions = lambda,
+    numerical_distance_scale = scale), class = "htest")
+}

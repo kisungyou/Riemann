@@ -1,21 +1,23 @@
-# MIT License
+# GNU General Public License, version 3
 
-Copyright (c) 2020 Kisung You
+Copyright (c) 2020-2026 Kisung You.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+The author-owned software in this revised Riemann 0.2.0 source snapshot is
+licensed under the GNU General Public License, version 3 (GPL-3.0-only).
+The complete license is included in `COPYING` and is available from
+[the GNU Project](https://www.gnu.org/licenses/gpl-3.0.html).
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for details.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+This license change applies to the September 21, 2026 source revision.
+Earlier releases and preserved source archives retain their original MIT
+license; permissions already granted under that license are unchanged.
+Third-party notices and the historical MIT notice are retained in the
+installed `COPYRIGHTS` file (`inst/COPYRIGHTS` in the source).
+Dependencies retain their own licenses and are not relicensed by this package.
+
+The manuscript and replication materials in the separate `write-JSS-Riemann`
+workspace carry their own notices. Dataset attribution and any data-specific
+terms are separate from the software license; consult the dataset help pages.

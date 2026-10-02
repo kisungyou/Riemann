@@ -4,7 +4,8 @@
 #' pairwise distances.
 #' 
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
-#' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) in geometry
+#' @param geometry A name or saved specification accepted by \code{\link{riem.geometry}}.
+#'   NULL uses the object's saved geometry, or intrinsic geometry for an ordinary wrapper.
 #' @param as.dist logical; if \code{TRUE}, it returns \code{dist} object, else it returns a symmetric matrix.
 #' 
 #' @return a S3 \code{dist} object or \eqn{(N\times N)} symmetric matrix of pairwise distances according to \code{as.dist} parameter.
@@ -42,21 +43,12 @@
 #' 
 #' @concept basic
 #' @export
-riem.pdist <- function(riemobj, geometry=c("intrinsic","extrinsic"), as.dist=FALSE){
-  ## PREPARE
-  DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
-  if (!inherits(riemobj,"riemdata")){
-    stop(paste0("* riem.pdist : input ",DNAME," should be an object of 'riemdata' class."))
+riem.pdist <- function(riemobj, geometry = NULL, as.dist = FALSE) {
+  spec <- riem_resolve_geometry(riemobj, geometry, "distance")
+  if (!is.logical(as.dist) || length(as.dist) != 1L || is.na(as.dist)) {
+    stop("as.dist must be TRUE or FALSE.", call. = FALSE)
   }
-  mygeometry = ifelse(missing(geometry),"intrinsic",
-                      match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  mydist     = as.logical(as.dist)
-
-  ## COMPUTE
-  distmat = basic_pdist(riemobj$name, riemobj$data, mygeometry)
-  if (mydist){
-    return(stats::as.dist(distmat))
-  } else {
-    return(distmat)
-  }
+  out <- basic_pdist(riemobj$name, riemobj$data, spec$backend)
+  if (any(!is.finite(out)) || any(out < 0)) stop("Distance computation returned invalid values.", call. = FALSE)
+  if (as.dist) stats::as.dist(out) else out
 }

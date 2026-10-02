@@ -4,14 +4,17 @@
 \alias{riem.kpca}
 \title{Kernel Principal Component Analysis}
 \usage{
-riem.kpca(riemobj, ndim = 2, sigma = 1)
+riem.kpca(riemobj, ndim = 2, sigma = 1, negative = c("truncate", "error"))
 }
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
 
 \item{ndim}{an integer-valued target dimension (default: 2).}
 
-\item{sigma}{the bandwidth parameter (default: 1).}
+\item{sigma}{A finite, strictly positive Gaussian bandwidth.}
+
+\item{negative}{Treatment of an empirically indefinite kernel: \code{"truncate"}
+warns and returns a positive-spectrum embedding; \code{"error"} stops.}
 }
 \value{
 a named list containing \describe{
@@ -27,6 +30,15 @@ The algorithm uses Gaussian kernel with
 \deqn{K(X_i, X_j) = \exp\left( - \frac{d^2 (X_i, X_j)}{2 \sigma^2} \right )}
 where \eqn{\sigma} is a bandwidth parameter and \eqn{d(\cdot, \cdot)} is 
 an extrinsic distance defined on a specific manifold.
+}
+\details{
+Scores are eigenvectors multiplied by square roots of the centered
+  Gram eigenvalues. They are ordered by decreasing eigenvalue. A Gaussian of
+  an arbitrary manifold dissimilarity is not automatically a positive-definite
+  kernel. For an indefinite Gram matrix, truncated coordinates are an
+  approximation, not exact kernel principal component scores. The full
+  spectrum, negative eigenvalues, and empirical kernel status are returned.
+  This function remains a training-data embedding, without a predict method.
 }
 \examples{
 #-------------------------------------------------------------------

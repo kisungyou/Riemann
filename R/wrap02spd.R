@@ -2,8 +2,10 @@
 #' 
 #' The collection of symmetric positive-definite matrices is a well-known example 
 #' of matrix manifold. It is defined as
-#' \deqn{\mathcal{S}_{++}^p = \lbrace X \in \mathbf{R}^{p\times p} ~\vert~ X^\top = X,~ \textrm{rank}(X)=p \rbrace}
-#' where the rank condition means it is strictly positive definite. Please note that 
+#' \deqn{\mathcal{S}_{++}^p = \lbrace X \in \mathbf{R}^{p\times p} ~\vert~ X^\top = X,~ v^\top Xv>0~\textrm{for all}~v\ne0 \rbrace}
+#' where positivity is verified by Cholesky factorization after a scale-relative symmetry check.
+#' No ridge or positive-definite projection is applied. Tiny physical units alone
+#' do not make a matrix ill-conditioned. Please note that
 #' the geometry involving semi-definite matrices is considered in \code{wrap.spdk}. 
 #' 
 #' @param input SPD data matrices to be wrapped as \code{riemdata} class. Following inputs are considered,
@@ -40,59 +42,36 @@
 #' 
 #' @concept wrapper
 #' @export
-wrap.spd <- function(input){
-  ## TAKE EITHER 3D ARRAY OR A LIST
-  #  1. data format
-  if (is.array(input)){
-    if (!check_3darray(input, symmcheck=TRUE)){
-      stop("* wrap.spd : input does not follow the size requirement as described.")
+wrap.spd <- function(input) {
+  if (is.array(input)) {
+    if (!check_3darray(input, symmcheck = TRUE)) {
+      stop("wrap.spd requires a nonempty square three-dimensional array.", call. = FALSE)
     }
-    N = dim(input)[3]
-    tmpdata = list()
-    for (n in 1:N){
-      tmpdata[[n]] = input[,,n]
-    }
-  } else if (is.list(input)){
-    tmpdata = input
-  } else {
-    stop("* wrap.spd : input should be either a 3d array or a list.")
+    tmpdata <- lapply(seq_len(dim(input)[3L]), function(i) {
+      matrix(input[, , i, drop = FALSE], nrow = dim(input)[1L],
+             dimnames = dimnames(input)[1:2])
+    })
+  } else if (is.list(input)) {
+    tmpdata <- input
+  } else stop("wrap.spd requires a list of matrices or a three-dimensional array.", call. = FALSE)
+  if (!check_list_eqsize(tmpdata, check.square = TRUE)) {
+    stop("wrap.spd requires nonempty square matrices of the same dimensions.", call. = FALSE)
   }
-  #  2. check all same size
-  if (!check_list_eqsize(tmpdata, check.square=TRUE)){
-    stop("* wrap.spd : elements are not of same size.")
+  tmpdata <- lapply(seq_along(tmpdata), function(i) check_spd(tmpdata[[i]], i))
+  if (!all(vapply(tmpdata, function(x) identical(dimnames(x), dimnames(tmpdata[[1L]])), logical(1)))) {
+    stop("wrap.spd requires consistent feature ordering, including whether names are supplied.", call. = FALSE)
   }
-  #  3. check
-  N = length(tmpdata)
-  for (n in 1:N){
-    tmpdata[[n]] = check_spd(tmpdata[[n]], n)
-  }  
-  
-  # WRAP AND RETURN THE S3 CLASS
-  output = list()
-  output$data = tmpdata
-  output$size = dim(tmpdata[[1]])
-  output$name = "spd"
-  return(structure(output, class="riemdata"))
+  structure(list(data = tmpdata, size = dim(tmpdata[[1L]]), name = "spd",
+                 dimnames = dimnames(tmpdata[[1L]])), class = "riemdata")
 }
+
 #' @keywords internal
 #' @noRd
-check_spd <- function(x, id){
-  p = nrow(x)
-  cond1 = (nrow(x)==ncol(x))
-  cond2 = (round(mat_rank(x))==p) # full-rank
-  cond3 = isSymmetric(x)
-  if (cond1&&cond2&&cond3){
-    return(x)
-  } else {
-    remainder = (id%%10)
-    if (remainder==1){
-      stop(paste0(" wrap.spd : ",id,"st object is not a valid SPD object."))
-    } else if (remainder==2){
-      stop(paste0(" wrap.spd : ",id,"nd object is not a valid SPD object."))
-    } else if (remainder==3){
-      stop(paste0(" wrap.spd : ",id,"rd object is not a valid SPD object."))
-    } else {
-      stop(paste0(" wrap.spd : ",id,"th object is not a valid SPD object."))
-    }
+check_spd <- function(x, id) {
+  if (!check_spdmat(x)) {
+    stop("wrap.spd: observation ", id,
+         " must be a finite real symmetric positive-definite matrix.", call. = FALSE)
   }
+  # Only remove symmetry error already bounded by the validation tolerance.
+  x / 2 + t(x) / 2
 }

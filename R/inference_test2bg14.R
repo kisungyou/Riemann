@@ -9,7 +9,14 @@
 #' 
 #' @param riemobj1 a S3 \code{"riemdata"} class for \eqn{M} manifold-valued data.
 #' @param riemobj2 a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
-#' @param geometry (case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.
+#' @param geometry A geometry name or saved specification.
+#' @details The statistic compares within-group and cross-group mean distances.
+#'   Random-label calibration requires exchangeability under the equal-distribution
+#'   null, with independent observations; it is not valid for unaccounted paired
+#'   or repeated observations. Generalizing the distance to a manifold does not
+#'   establish consistency against every alternative. Monte Carlo p-values include
+#'   the observed assignment and all ties, and cannot be zero. Each group must
+#'   contain at least two observations.
 #' @param ... extra parameters including\describe{
 #' \item{nperm}{the number of permutations (default: 999).}
 #' }
@@ -77,73 +84,48 @@
 #' 
 #' @concept inference
 #' @export
-riem.test2bg14 <- function(riemobj1, riemobj2, geometry=c("intrinsic","extrinsic"), ...){
-  ## INPUTS : EXPLICIT
-  DNAME1 = paste0("'",deparse(substitute(riemobj1)),"'")
-  DNAME2 = paste0("'",deparse(substitute(riemobj2)),"'")
-  if (!inherits(riemobj1,"riemdata")){
-    stop(paste0("* riem.test2bg14 : input ",DNAME1," should be an object of 'riemdata' class."))
+riem.test2bg14 <- function(riemobj1, riemobj2, geometry = NULL, ...) {
+  riem_validate_data(riemobj1)
+  riem_check_newdata(riemobj1, riemobj2)
+  spec <- riem_resolve_geometry(riemobj1, geometry, capability = "distance")
+  other <- riem_resolve_geometry(riemobj2, geometry, capability = "distance")
+  if (!identical(spec, other)) stop("Both groups must use the same geometry.", call. = FALSE)
+  m <- length(riemobj1$data)
+  n <- length(riemobj2$data)
+  if (m < 2L || n < 2L) stop("Each group requires at least two observations.", call. = FALSE)
+  options <- list(...)
+  if (length(options) && (is.null(names(options)) || any(!names(options) %in% "nperm") ||
+                          anyDuplicated(names(options)))) stop("Only the named nperm option is supported.", call. = FALSE)
+  nperm <- riem_regression_integer(if (is.null(options$nperm)) 999L else options$nperm,
+                                    "nperm", 1L)
+  distances <- basic_pdist(riemobj1$name, c(riemobj1$data, riemobj2$data), spec$backend)
+  if (any(!is.finite(distances)) || any(distances < 0)) stop("Invalid pairwise distances.", call. = FALSE)
+  statistic <- function(ix) {
+    iy <- setdiff(seq_len(m + n), ix)
+    R_eqdist_2014BG_statistic(distances[ix, ix, drop = FALSE], distances[iy, iy, drop = FALSE],
+                             distances[ix, iy, drop = FALSE])
   }
-  if (!inherits(riemobj2,"riemdata")){
-    stop(paste0("* riem.test2bg14 : input ",DNAME2," should be an object of 'riemdata' class."))
-  }
-  mygeometry = ifelse(missing(geometry),"intrinsic",
-                      match.arg(tolower(geometry),c("intrinsic","extrinsic")))
-  m = length(riemobj1$data)
-  n = length(riemobj2$data)
-  
-  ## INPUTS : IMPLICIT
-  param    = list(...)
-  pnames   = names(param)
-  mynperm  = ifelse(("nperm"%in%pnames), max(9, round(param$nperm)), 999)
-  
-  ## COMPUTE PAIRWISE DISTANCE AND PREPARE
-  DXY = basic_pdist(riemobj1$name, c(riemobj1$data, riemobj2$data), mygeometry)
-  DX0 = DXY[1:m,1:m]                   # under null
-  DY0 = DXY[(m+1):(m+n),(m+1):(m+n)]
-  DZ0 = DXY[1:m,(m+1):(m+n)]
-  Tmn = R_eqdist_2014BG_statistic(DX0,DY0,DZ0)
-  
-  ## PERMUTATION
-  Tvec = rep(0,mynperm)
-  for (i in 1:mynperm){
-    idx = sample(1:(m+n), m, replace=FALSE)
-    idy = setdiff(1:(m+n), idx)
-    
-    DX1 = DXY[idx,idx]
-    DY1 = DXY[idy,idy]
-    DZ1 = DXY[idx,idy]
-    Tvec[i] = R_eqdist_2014BG_statistic(DX1,DY1,DZ1)
-  }
-  pvalue = (sum(Tvec>=Tmn)+1)/(mynperm+1)
-  
-  ## WRAP
-  dataname = paste0(DNAME1," and ",DNAME2)
-  mfdname  = wrap_mfd2full(riemobj1$name)
-  hname    = paste0("Two-Sample Test on ",mfdname," as of Biswas and Ghosh (2014)")
-  Ha       = "two distributions are not equal."
-  names(Tmn) = "Tmn"
-  
-  res   = list(statistic=Tmn, p.value=pvalue, alternative = Ha, method=hname, data.name=dataname)
-  class(res) = "htest"
-  return(res)
+  observed <- statistic(seq_len(m))
+  permuted <- replicate(nperm, statistic(sample.int(m + n, m)))
+  pvalue <- (1 + sum(permuted >= observed)) / (nperm + 1)
+  structure(list(statistic = c(Tmn = observed), p.value = pvalue,
+    alternative = "the group distributions differ in the distance summaries",
+    null.value = c(exchangeable_group_distributions = 0),
+    method = "Biswas-Ghosh distance-summary random-label test",
+    data.name = paste(deparse(substitute(riemobj1)), "and", deparse(substitute(riemobj2))),
+    geometry = spec, calibration = "random_label_permutation", nperm = nperm,
+    permutation_statistics = permuted,
+    mc_se = sqrt(pvalue * (1 - pvalue) / (nperm + 1))), class = "htest")
 }
 
-
-
-# auxiliary functions -----------------------------------------------------
-#' @keywords internal
-#' @noRd
-R_eqdist_2014BG_statistic <- function(DX,DY,DXY){
-  m = nrow(DXY)
-  n = ncol(DXY)
-  
-  muff = sum(DX[upper.tri(DX)])/(m*(m-1)/2)
-  mufg = sum(DXY)/(m*n)
-  mugg = sum(DY[upper.tri(DY)])/(n*(n-1)/2)
-  
-  vec1 = c(muff,mufg)
-  vec2 = c(mufg,mugg)
-  output = sum((vec1-vec2)^2)
-  return(output)
+R_eqdist_2014BG_statistic <- function(DX, DY, DXY) {
+  m <- nrow(DXY)
+  n <- ncol(DXY)
+  if (m < 2L || n < 2L) stop("Distance-summary statistic requires two observations per group.", call. = FALSE)
+  within_x <- mean(DX[upper.tri(DX)])
+  within_y <- mean(DY[upper.tri(DY)])
+  between <- mean(DXY)
+  value <- (within_x - between)^2 + (within_y - between)^2
+  if (!is.finite(value)) stop("The distance-summary statistic is nonfinite; review units.", call. = FALSE)
+  value
 }

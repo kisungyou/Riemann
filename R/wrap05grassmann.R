@@ -39,38 +39,8 @@
 #' 
 #' @concept wrapper
 #' @export
-wrap.grassmann <- function(input){
-  ## TAKE EITHER 3D ARRAY OR A LIST
-  #  1. data format
-  if (is.array(input)){
-    if (!check_3darray(input, symmcheck=FALSE)){
-      stop("* wrap.grassmann : input does not follow the size requirement as described.")
-    }
-    N = dim(input)[3]
-    tmpdata = list()
-    for (n in 1:N){
-      tmpdata[[n]] = input[,,n]
-    }
-  } else if (is.list(input)){
-    tmpdata = input
-  } else {
-    stop("* wrap.grassmann : input should be either a 3d array or a list.")
-  }
-  #  2. check all same size
-  if (!check_list_eqsize(tmpdata, check.square=FALSE)){
-    stop("* wrap.grassmann : elements are not of same size.")
-  }
-  #  3. check and transform to Stiefel
-  N = length(tmpdata)
-  for (n in 1:N){
-    tmpdata[[n]] = check_stiefel(tmpdata[[n]])
-  }
-  
-  ############################################################
-  # WRAP AND RETURN THE S3 CLASS
-  output = list()
-  output$data = tmpdata
-  output$size = dim(tmpdata[[1]])
-  output$name = "grassmann"
-  return(structure(output, class="riemdata"))
+wrap.grassmann <- function(input) {
+  data <- riem_matrix_input(input, square = FALSE)
+  data <- lapply(data, function(x) check_stiefel(x))
+  riem_wrap_matrices(data, "grassmann")
 }

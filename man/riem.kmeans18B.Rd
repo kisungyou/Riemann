@@ -7,7 +7,7 @@
 riem.kmeans18B(
   riemobj,
   k = 2,
-  M = length(riemobj$data)/2,
+  M = max(k, ceiling(length(riemobj$data)/2)),
   geometry = c("intrinsic", "extrinsic"),
   ...
 )
@@ -17,12 +17,12 @@ riem.kmeans18B(
 
 \item{k}{the number of clusters.}
 
-\item{M}{the size of coreset (default: \eqn{N/2}).}
+\item{M}{integer number of independent draws, at least \eqn{k} (default: the larger of \eqn{k} and \eqn{\lceil N/2 \rceil}). Values greater than \eqn{N} are permitted.}
 
-\item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
+\item{geometry}{(case-insensitive) name or saved specification of a geometry supporting means. Legacy aliases \code{"intrinsic"} and \code{"extrinsic"} are accepted; see \code{\link{riem.geometry}}.}
 
 \item{...}{extra parameters including\describe{
-\item{maxiter}{maximum number of iterations to be run (default:50).}
+\item{maxiter}{maximum number of weighted Lloyd passes per start (default:50).}
 \item{nstart}{the number of random starts (default: 5).}
 }}
 }
@@ -30,14 +30,41 @@ riem.kmeans18B(
 a named list containing\describe{
 \item{cluster}{a length-\eqn{N} vector of class labels (from \eqn{1:k}).}
 \item{means}{a 3d array where each slice along 3rd dimension is a matrix representation of class mean.}
-\item{score}{within-cluster sum of squares (WCSS).}
+\item{score}{unweighted full-data within-cluster sum of squares (WCSS), used to select the best start.}
+\item{coreset}{the selected start's sampled indices and importance weights.}
+\item{iterations,converged,termination}{iteration count, convergence flag, and stopping reason for the selected start.}
+\item{objective_history}{weighted coreset costs, including the initialization.}
+\item{empty_clusters}{cluster indices unoccupied by the full data.}
+\item{starts}{per-start validity, full-data score, convergence, and errors.}
 }
 }
 \description{
-The modified version of lightweight coreset for scalable \eqn{k}-means computation 
-is applied for manifold-valued data \eqn{X_1,X_2,\ldots,X_N \in \mathcal{M}}. 
-The smaller the set is, the faster the execution becomes with potentially larger quantization errors.
+Apply weighted Lloyd iterations to an independently sampled lightweight
+coreset of manifold-valued observations. The Euclidean coreset approximation
+theorem is not asserted for arbitrary manifold geometries.
 }
+\details{
+Sampling is with replacement, using the same probabilities and
+weights as \code{riem.coreset18B}. Repeated indices remain separate weighted
+observations. Each start uses weighted squared-distance initialization and
+weighted cluster means. Mean solves use at most 200 iterations and tolerance
+\code{1e-8}; failed mean solves invalidate that start. A Lloyd step that
+materially increases weighted coreset cost is rejected. No global minimum
+is guaranteed. Final labels assign every original observation to its nearest
+stored center, with distance ties choosing the lowest cluster index.
+A coreset can contain fewer than \eqn{k} distinct locations; empty centers are
+retained rather than redrawing and conditioning the sampling distribution.
+A warning identifies an empty cluster or a nonconverged selected start.
+Use \code{set.seed()} for reproducibility.
+}
+\section{Validation status}{
+
+This retained legacy interface is experimental. Its full numerical and
+statistical contract has not been independently verified across supported
+inputs. See \code{\link{riem-method-contracts}} and the installed contract
+table for method-specific assumptions, restrictions, and evidence scope.
+}
+
 \examples{
 #-------------------------------------------------------------------
 #          Example on Sphere : a dataset with three types
@@ -63,7 +90,7 @@ for (i in 21:30){
 myriem = wrap.sphere(mydata)
 mylabs = rep(c(1,2,3), each=10)
 
-## TRY DIFFERENT SIZES OF CORESET WITH K=4 FIXED
+## TRY DIFFERENT SIZES OF CORESET WITH K=3 FIXED
 core1 = riem.kmeans18B(myriem, k=3, M=5)
 core2 = riem.kmeans18B(myriem, k=3, M=10)
 core3 = riem.kmeans18B(myriem, k=3, M=15)

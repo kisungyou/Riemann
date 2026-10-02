@@ -10,12 +10,12 @@
 #' @param data data vectors in form of either an \eqn{(n\times p)} matrix or a length-\eqn{n} list.  See \code{\link{wrap.sphere}} for descriptions on supported input types.
 #' @param mu a length-\eqn{p} unit-norm vector of location.
 #' @param log a logical; \code{TRUE} to return log-density, \code{FALSE} for densities without logarithm applied.
-#' @param lambda a concentration parameter that is positive.
+#' @param lambda a finite nonnegative concentration parameter; zero is the uniform distribution.
 #' @param n the number of samples to be generated.
 #' @param method an algorithm name for concentration parameter estimation. It should be one of \code{"Newton"},\code{"Halley"},\code{"Optimize"}, and \code{"DE"} (case sensitive).
 #' @param ... extra parameters for computations, including\describe{
-#' \item{maxiter}{maximum number of iterations to be run (default:50).}
-#' \item{eps}{tolerance level for stopping criterion (default: 1e-5).}
+#' \item{maxiter}{iteration budget for each location, likelihood-search, or polishing stage; rounded and raised to at least 10 (default: 50).}
+#' \item{eps}{positive tolerance, capped at 1e-6; the relative likelihood-score tolerance is additionally floored at 1e-10 (default: 1e-6).}
 #' }
 #' 
 #' @return 
@@ -23,6 +23,22 @@
 #' unit-norm vectors in \eqn{\mathbf{R}^p} wrapped in a list. \code{mle.spnorm} computes MLEs and returns a list 
 #' containing estimates of location (\code{mu}) and concentration (\code{lambda}) parameters.
 #' 
+#' @details
+#' Concentration estimation uses an adaptively bracketed likelihood score.
+#' Newton and Halley updates are safeguarded by that bracket; Optimize and DE
+#' search the log concentration and use safeguarded Newton polishing if their
+#' score has not reached the requested tolerance. All methods check the uniform
+#' boundary, returning \code{lambda = 0} when appropriate. For coincident
+#' observations the likelihood is unbounded and \code{lambda = Inf} is returned
+#' with a warning; this point-mass limit has no density with respect to spherical
+#' surface area and is not accepted by \code{dspnorm} or \code{rspnorm}.
+#' The location is obtained by local intrinsic-mean optimization; a globally
+#' optimal location is not guaranteed for data spread across the sphere.
+#' Failure of the location iteration to converge produces a warning; the
+#' returned concentration then optimizes the likelihood conditional on that
+#' last location estimate.
+#' Log densities are evaluated directly, including a logarithmic normalizer.
+#'
 #' @examples 
 #' \donttest{
 #' # -------------------------------------------------------------------
@@ -74,74 +90,24 @@ NULL
 
 #' @rdname spnorm
 #' @export
+#' @section Validation status:
+#' This retained legacy interface is experimental. Its full numerical and
+#' statistical contract has not been independently verified across supported
+#' inputs. See \code{\link{riem-method-contracts}} and the installed contract
+#' table for method-specific assumptions, restrictions, and evidence scope.
 dspnorm <- function(data, mu, lambda, log=FALSE){
-  ## PREPROCESSING
-  spobj  = wrap.sphere(data)
-  x      = sp2mat(spobj)
-  FNAME  = "dspnorm"
-  mu     = check_unitvec(mu, FNAME)
-  lambda = check_num_nonneg(lambda, FNAME)
-  p      = length(mu) # dimension
-
-  ## EVALUATION
-  #   1. normalizing constant
-  nconstant = dspnorm.constant(lambda, p)
-  #   2. case branching
-  if (is.vector(x)){
-    logmux = auxsphere_log(mu, x)
-    output = exp(-(lambda/2)*sum(logmux*logmux))
-  } else {
-    dvec   = as.vector(cppdist_int_1toN(mu, x));
-    output = exp((-lambda/2)*(dvec^2))
-    
-    # nx     = nrow(x)
-    # output = rep(0,nx)
-    # for (i in 1:nx){
-    #   logmux = aux_log(mu, as.vector(x[i,]))
-    #   output[i] = exp(-(lambda/2)*sum(logmux*logmux))
-    # }
-  }
-  #   3. scale by normalizing constant and RETURN
-  if (log){
-    return(log(output)-log(nconstant))
-  } else {
-    return(exp(log(output)-log(nconstant)))
-  } 
+  dspnorm.spobj(wrap.sphere(data), mu, lambda, log)
 }
 #' @keywords internal
 #' @noRd
 dspnorm.spobj <- function(spobj, mu, lambda, log=FALSE){
-  ## PREPROCESSING
-  x      = sp2mat(spobj)
-  FNAME  = "dspnorm"
-  mu     = check_unitvec(mu, FNAME)
-  lambda = check_num_nonneg(lambda, FNAME)
-  p      = length(mu) # dimension
-  
-  ## EVALUATION
-  #   1. normalizing constant
-  nconstant = dspnorm.constant(lambda, p)
-  #   2. case branching
-  if (is.vector(x)){
-    logmux = auxsphere_log(mu, x)
-    output = exp(-(lambda/2)*sum(logmux*logmux))
-  } else {
-    dvec   = as.vector(cppdist_int_1toN(mu, x));
-    output = exp((-lambda/2)*(dvec^2))
-    
-    # nx     = nrow(x)
-    # output = rep(0,nx)
-    # for (i in 1:nx){
-    #   logmux = aux_log(mu, as.vector(x[i,]))
-    #   output[i] = exp(-(lambda/2)*sum(logmux*logmux))
-    # }
-  }
-  #   3. scale by normalizing constant and RETURN
-  if (log){
-    return(log(output)-log(nconstant))
-  } else {
-    return(exp(log(output)-log(nconstant)))
-  } 
+  x <- sp2mat(spobj)
+  mu <- check_unitvec(mu, "dspnorm")
+  lambda <- check_num_nonneg(lambda, "dspnorm")
+  dvec <- sphere_distribution_distances(mu, x)
+  logdensity <- -(lambda/2)*dvec^2 -
+    sphere_radial_stats(lambda/2, length(mu), 2, moments = FALSE)$logZ
+  if (log) logdensity else exp(logdensity)
 }
 
 #' @rdname spnorm
@@ -195,22 +161,13 @@ mle.spnorm <- function(data, method=c("Newton","Halley","Optimize","DE"), ...){
   pars   = list(...)
   pnames = names(pars)
   
-  if ("maxiter"%in%pnames){
-    myiter = max(10, round(pars$maxiter))
-  } else {
-    myiter = 50
-  }
-  if ("eps"%in%pnames){
-    myeps = min(1e-6, max(0, as.double(pars$eps)))
-  } else {
-    myeps = 1e-6
-  }
+  controls <- sphere_distribution_controls(pars)
+  myiter <- controls$maxiter
+  myeps <- controls$eps
   myway = tolower(match.arg(method))
   
   ## STEP 1. INTRINSIC MEAN
-  N = length(spobj$data)
-  myweight = rep(1/N, N)
-  opt.mean = as.vector(inference_mean_intrinsic(spobj$name, spobj$data, myweight, myiter, myeps)$mean)
+  opt.mean <- sphere_distribution_location(spobj, x, myiter, myeps)
   
   ## STEP 2. OPTIMAL LAMBDA
   opt.lambda = switch(myway,
@@ -227,239 +184,36 @@ mle.spnorm <- function(data, method=c("Newton","Halley","Optimize","DE"), ...){
 
 
 
-# all others --------------------------------------------------------------
+# Concentration methods share a bracketed likelihood and stable moments.
 #' @keywords internal
 #' @noRd
-lambda_method_halley <- function(data, mean, myiter, myeps){
-  # 1. parameters
-  D = length(mean)
-  n = nrow(data)
-  
-  # 2. compute a constant
-  d1N = as.vector(auxsphere_dist_1toN(mean, data))
-  C   = base::sum(d1N^2)
-  
-  # 3. compute a negative log-likelihood function to be minimized
-  opt.fun <- function(lambda){
-    dspnorm.constant <- function(lbd, D){ # lbd : lambda / D : dimension
-      myfunc <- function(r){
-        return(exp(-lbd*(r^2)/2)*((sin(r))^(D-2)))
-      }
-      t1 = 2*(pi^((D-1)/2))/gamma((D-1)/2) # one possible source of error
-      t2 = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
-      return(t1*t2)
-    }
-    myfun <- function(r){
-      return(exp(-lambda*(r^2)/2)*((sin(r))^(D-2)))
-    }
-    term1 = (lambda*C)/2
-    term2 = n*log(dspnorm.constant(lambda,D))
-    return(term1+term2)
-  }
-  
-  t0 = n*log(2*(pi^((D-1)/2))/gamma((D-1)/2))
-  opt.fun.red <- function(lambda){
-    dspnorm.constant <- function(lbd, D){ # lbd : lambda / D : dimension
-      myfunc <- function(r){
-        return(exp(-lbd*(r^2)/2)*((sin(r))^(D-2)))
-      }
-      return(stats::integrate(myfunc, lower=0, upper=pi, rel.tol=sqrt(.Machine$double.eps))$value)
-    }
-    myfun <- function(r){
-      return(exp(-lambda*(r^2)/2)*((sin(r))^(D-2)))
-    }
-    term1 = (lambda*C)/2
-    term2 = n*log(dspnorm.constant(lambda,D)) + t0
-    return(term1+term2)
-  }
-  
-  # 4. run Halley's Method
-  # 4-1. try several inputs and rough start over a grid
-  ntest = 25
-  grid.lambda = base::exp(seq(from=-2,to=2,length.out=ntest))*stats::var(d1N)
-  grid.values = rep(0,ntest)
-  for (i in 1:ntest){
-    grid.values[i] = opt.fun.red(grid.lambda[i])
-  }
-  xold = grid.lambda[which.min(grid.values)]
-  
-  # 4-2. run iterations
-  maxiter = myiter
-  abstol  = myeps
-  for (i in 1:maxiter){
-    
-    # h = min(abs(xold), sqrteps)/8
-    h = min(abs(xold)/2, 1e-4)
-    
-    # 5-point grid evaluation
-    grr = opt.fun.red(xold+2*h)
-    gr  = opt.fun.red(xold+h)
-    g   = opt.fun.red(xold)
-    gl  = opt.fun.red(xold-h)
-    gll = opt.fun.red(xold-2*h)
-    
-    gd1 = (gr-gl)/(2*h)                       # first derivative
-    gd2 = (gr-(2*g)+gl)/(h^2)                 # second derivative
-    gd3 = (grr - 2*gr + 2*gl - gll)/(2*(h^3)) # third derivative
-    
-    xnew    = xold - ((2*gd1*gd2)/(2*(gd2^2) - gd1*gd3))
-    # print(paste("iteration for Halley's : ",i," done with lambda=",xnew, sep=""))
-    xinc    = abs(xnew-xold)
-    xold    = xnew
-    
-    if (xinc < abstol){
-      break
-    }
-  }
-  
-  # 5. return an optimal solution
-  return(xold)
+lambda_fit <- function(data, mean, myiter, myeps, method) {
+  d <- if (sphere_coincident_rows(data)) rep(0, nrow(data)) else
+    sphere_distribution_distances(mean, data)
+  target <- base::mean(d^2)
+  if (target == 0 && any(d > 0))
+    warning("The finite concentration MLE exceeds the representable parameter range.", call. = FALSE)
+  eta <- sphere_radial_mle(target, length(mean), 2, method, myiter, myeps)
+  if (is.infinite(eta) && all(d == 0))
+    warning("Coincident observations have no finite concentration MLE; returning lambda = Inf.", call. = FALSE)
+  2*eta
 }
 #' @keywords internal
 #' @noRd
-lambda_method_newton <- function(data, mean, myiter, myeps){
-  # 1. parameters
-  D = length(mean)
-  n = nrow(data)
-  
-  # 2. compute a constant
-  d1N = as.vector(auxsphere_dist_1toN(mean, data))
-  C   = base::sum(d1N^2)
-  
-  # 3. compute a negative log-likelihood function to be minimized
-  opt.fun <- function(lambda){
-    dspnorm.constant <- function(lbd, D){ # lbd : lambda / D : dimension
-      myfunc <- function(r){
-        return(exp(-lbd*(r^2)/2)*((sin(r))^(D-2)))
-      }
-      t1 = 2*(pi^((D-1)/2))/gamma((D-1)/2) # one possible source of error
-      t2 = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
-      return(t1*t2)
-    }
-    myfun <- function(r){
-      return(exp(-lambda*(r^2)/2)*((sin(r))^(D-2)))
-    }
-    term1 = (lambda*C)/2
-    term2 = n*log(dspnorm.constant(lambda,D))
-    return(term1+term2)
-  }
-  
-  t0 = n*log(2*(pi^((D-1)/2))/gamma((D-1)/2))
-  opt.fun.red <- function(lambda){
-    dspnorm.constant <- function(lbd, D){ # lbd : lambda / D : dimension
-      myfunc <- function(r){
-        return(exp(-lbd*(r^2)/2)*((sin(r))^(D-2)))
-      }
-      return(stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value)
-    }
-    myfun <- function(r){
-      return(exp(-lambda*(r^2)/2)*((sin(r))^(D-2)))
-    }
-    term1 = (lambda*C)/2
-    term2 = n*log(dspnorm.constant(lambda,D)) + t0
-    return(term1+term2)
-  }
-  
-  # 4. run Newton's iteration
-  # 4-1. try several inputs and rough start over a grid
-  ntest = 25
-  grid.lambda = base::exp(seq(from=-2,to=2,length.out=ntest))*stats::var(d1N)
-  grid.values = rep(0,ntest)
-  for (i in 1:ntest){
-    grid.values[i] = opt.fun.red(grid.lambda[i])
-  }
-  xold = grid.lambda[which.min(grid.values)]
-  
-  # 4-2. run iterations
-  maxiter = myiter
-  for (i in 1:maxiter){
-    # print(paste("iteration for Method 3 : ",i," initiated..", sep=""))
-    h = min(abs(xold)/2, 1e-4)
-    g.right = opt.fun.red(xold+h)
-    g.mid   = opt.fun.red(xold)
-    g.left  = opt.fun.red(xold-h)
-    xnew    = xold - (h/2)*(g.right-g.left)/(g.right-(2*g.mid)+g.left)
-    xinc    = abs(xnew-xold)
-    xold    = xnew
-    
-    if (xinc < myeps){
-      break
-    }
-  }
-  
-  # 5. return an optimal solution
-  return(xold)
-}
+lambda_method_halley <- function(data, mean, myiter, myeps)
+  lambda_fit(data, mean, myiter, myeps, "halley")
 #' @keywords internal
 #' @noRd
-lambda_method_opt <- function(data, mean, myiter, myeps){
-  # 1. parameters
-  D = length(mean)
-  n = nrow(data)
-  
-  # 2. compute a constant
-  d1N = as.vector(auxsphere_dist_1toN(mean, data))
-  C   = base::sum(d1N^2)
-  
-  # 3. compute a log-likelihood function
-  opt.fun <- function(lambda){
-    dspnorm.constant <- function(lbd, D){ # lbd : lambda / D : dimension
-      myfunc <- function(r){
-        return(exp(-lbd*(r^2)/2)*((sin(r))^(D-2)))
-      }
-      t1 = 2*(pi^((D-1)/2))/gamma((D-1)/2) # one possible source of error
-      t2 = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
-      return(t1*t2)
-    }
-    myfun <- function(r){
-      return(exp(-lambda*(r^2)/2)*((sin(r))^(D-2)))
-    }
-    term1 = -(lambda*C)/2
-    term2 = -n*log(dspnorm.constant(lambda,D))
-    return(term1+term2)
-  }
-  
-  # 4. optimize a log-likelihood function with DEoptim
-  myint  = c(0.01, 100)*stats::var(d1N)
-  output = stats::optimize(opt.fun, interval=myint, maximum=TRUE, tol=myeps)$maximum
-  return(output)
-}
+lambda_method_newton <- function(data, mean, myiter, myeps)
+  lambda_fit(data, mean, myiter, myeps, "newton")
 #' @keywords internal
 #' @noRd
-lambda_method_DE <- function(data, mean, myiter, myeps){
-  # 1. parameters
-  D = length(mean)
-  n = nrow(data)
-  
-  # 2. compute a constant
-  d1N = as.vector(auxsphere_dist_1toN(mean, data))
-  C   = base::sum(d1N^2)
-  
-  # 3. compute a of log-likelihood function
-  opt.fun <- function(lambda){
-    dspnorm.constant <- function(lbd, D){ # lbd : lambda / D : dimension
-      myfunc <- function(r){
-        return(exp(-lbd*(r^2)/2)*((sin(r))^(D-2)))
-      }
-      t1 = 2*(pi^((D-1)/2))/gamma((D-1)/2) # one possible source of error
-      t2 = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
-      return(t1*t2)
-    }
-    myfun <- function(r){
-      return(exp(-lambda*(r^2)/2)*((sin(r))^(D-2)))
-    }
-    term1 = -(lambda*C)/2
-    term2 = -n*log(dspnorm.constant(lambda,D))
-    return(-(term1+term2))
-  }
-  
-  # 4. optimize a log-likelihood function with DEoptim; careful with negative sign; take the last one as the optimum
-  mymin  = stats::var(d1N)*0.01
-  mymax  = stats::var(d1N)*100
-  # output = as.double(tail(DEoptim(opt.fun, 10*.Machine$double.eps, 12345678, control=DEoptim.control(trace=FALSE))$member$bestmemit, n=1L))
-  output = as.double(utils::tail(DEoptim::DEoptim(opt.fun, mymin, mymax, control=DEoptim.control(trace=FALSE, itermax=myiter, reltol=myeps))$member$bestmemit, n=1L))
-  return(output)
-}
+lambda_method_opt <- function(data, mean, myiter, myeps)
+  lambda_fit(data, mean, myiter, myeps, "optimize")
+#' @keywords internal
+#' @noRd
+lambda_method_DE <- function(data, mean, myiter, myeps)
+  lambda_fit(data, mean, myiter, myeps, "de")
 
 #' @keywords internal
 #' @noRd
@@ -531,21 +285,12 @@ auxsphere_exp <- function(x, d){
 #' @keywords internal
 #' @noRd
 auxsphere_dist_1toN <- function(x, maty){
-  dist_one <- function(y){
-    logxy = auxsphere_log(x, y)
-    return(sqrt(sum((logxy)^2)))
-  }
-  return(as.vector(apply(maty, 1, dist_one)))
+  sphere_distribution_distances(x, maty)
 }
 #' @keywords internal
 #' @noRd
-dspnorm.constant <- function(lbd, D){ # lbd : lambda / D : dimension
-  myfunc <- function(r){
-    return(exp(-lbd*(r^2)/2)*((sin(r))^(D-2)))
-  }
-  t1 = 2*(pi^((D-1)/2))/gamma((D-1)/2) # one possible source of error
-  t2 = stats::integrate(myfunc, lower=sqrt(.Machine$double.eps), upper=pi, rel.tol=sqrt(.Machine$double.eps))$value
-  return(t1*t2)
+dspnorm.constant <- function(lbd, D){
+  exp(sphere_radial_stats(lbd/2, D, 2, moments = FALSE)$logZ)
 }
 
 

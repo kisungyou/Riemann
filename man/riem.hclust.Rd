@@ -6,7 +6,7 @@
 \usage{
 riem.hclust(
   riemobj,
-  geometry = c("intrinsic", "extrinsic"),
+  geometry = NULL,
   method = c("single", "complete", "average", "mcquitty", "ward.D", "ward.D2",
     "centroid", "median"),
   members = NULL
@@ -15,7 +15,7 @@ riem.hclust(
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
 
-\item{geometry}{(case-insensitive) name of geometry; either geodesic (\code{"intrinsic"}) or embedded (\code{"extrinsic"}) geometry.}
+\item{geometry}{A geometry name or saved specification.}
 
 \item{method}{agglomeration method to be used. This must be one of \code{"single"}, \code{"complete"}, \code{"average"}, \code{"mcquitty"}, \code{"ward.D"}, \code{"ward.D2"}, \code{"centroid"} or \code{"median"}.}
 
@@ -27,7 +27,14 @@ an object of class \code{hclust}. See \code{\link[stats]{hclust}} for details.
 \description{
 Given \eqn{N} observations \eqn{X_1, X_2, \ldots, X_M \in \mathcal{M}}, 
 perform hierarchical agglomerative clustering with 
-\pkg{fastcluster} package's implementation.
+\code{stats::hclust}. The supplied manifold distances are treated as dissimilarities.
+}
+\details{
+Ward, centroid and median linkage require care when interpreted as
+  Euclidean sums of squares. In particular, Ward linkage of geodesic distances
+  is not manifold k-means. \code{ward.D} is the historical R update and does
+  not implement the Ward criterion implemented by \code{ward.D2}. See the
+  \code{stats::hclust} documentation for distance powers and member weights.
 }
 \examples{
 #-------------------------------------------------------------------

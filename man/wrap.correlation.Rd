@@ -24,8 +24,8 @@ a named \code{riemdata} S3 object containing
 \description{
 The collection of correlation matrices is considered as a subset (and quotient) of 
 the well-known SPD manifold. In our package, it is defined as
-\deqn{\mathcal{C}_{++}^p = \lbrace X \in \mathbf{R}^{p\times p} ~\vert~ X^\top = X,~ \textrm{rank}(X)=p,~ \textrm{diag}(X) = 1 \rbrace}
-where the rank condition means it is strictly positive definite. Please note that 
+\deqn{\mathcal{C}_{++}^p = \lbrace X \in \mathbf{R}^{p\times p} ~\vert~ X^\top = X,~ X \succ 0,~ \textrm{diag}(X) = 1 \rbrace}
+where \eqn{X \succ 0} means strictly positive definite. Please note that
 the geometry involving semi-definite correlation matrices is not the objective here.
 }
 \examples{
