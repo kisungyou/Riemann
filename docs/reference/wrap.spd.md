@@ -24,13 +24,12 @@ wrap.spd(input)
 
   array
 
-  :   an \\(p\times p\times n)\\ array where each slice along 3rd
-      dimension is a SPD matrix.
+  : an \\(p\times p\times n)\\ array where each slice along 3rd
+    dimension is a SPD matrix.
 
   list
 
-  :   a length-\\n\\ list whose elements are \\(p\times p)\\ SPD
-      matrices.
+  : a length-\\n\\ list whose elements are \\(p\times p)\\ SPD matrices.
 
 ## Value
 

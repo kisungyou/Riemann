@@ -95,19 +95,21 @@ in conjunction with silhouette criterion.</p>
 
 
 <dt id="arg-h">h<a class="anchor" aria-label="anchor" href="#arg-h"></a></dt>
-<dd><p>bandwidth parameter. The larger the \(h\) is, the more blurring is applied.</p></dd>
+<dd><p>Finite positive bandwidth for the Gaussian weights.</p></dd>
 
 
 <dt id="arg-maxk">maxk<a class="anchor" aria-label="anchor" href="#arg-maxk"></a></dt>
-<dd><p>maximum number of clusters to determine the optimal number of clusters.</p></dd>
+<dd><p>Integer upper limit for the silhouette search, at least two.
+Candidate counts run from two through the smaller of this limit and one
+less than the sample size. At least three observations are required.</p></dd>
 
 
 <dt id="arg-maxiter">maxiter<a class="anchor" aria-label="anchor" href="#arg-maxiter"></a></dt>
-<dd><p>maximum number of iterations to be run.</p></dd>
+<dd><p>Positive integer maximum number of updates per observation.</p></dd>
 
 
 <dt id="arg-eps">eps<a class="anchor" aria-label="anchor" href="#arg-eps"></a></dt>
-<dd><p>tolerance level for stopping criterion.</p></dd>
+<dd><p>Finite positive tolerance for the change in the matrix representation.</p></dd>
 
 </dl></div>
     <div class="section level2">

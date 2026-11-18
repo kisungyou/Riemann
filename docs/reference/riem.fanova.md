@@ -56,8 +56,11 @@ variances of the squared distances to each group mean, suitable
 moment/metric-entropy conditions, and group proportions bounded away
 from zero. The cited paper gives sufficient bounded-space conditions;
 accepting an input manifold does not establish them for every population
-distribution. The function rejects failed mean fits and a degenerate
-empirical denominator.
+distribution. Groups can have identical Frechet means but different
+Frechet variances. Such a difference in spread is an alternative for
+this test, including with positive-definite matrix observations. The
+asymptotic calibration is a large-sample approximation. The function
+rejects failed mean fits and a degenerate empirical denominator.
 
 For group proportions \\\lambda_j=n_j/n\\, the two denominators are
 \\\sum_j\lambda_j/\widehat\sigma_j^2\\ and

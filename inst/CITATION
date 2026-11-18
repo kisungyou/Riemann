@@ -1,0 +1,8 @@
+bibentry(
+  bibtype = "Manual",
+  title = "Riemann: Learning with Data on Riemannian Manifolds",
+  author = person("Kisung", "You", comment = c(ORCID = "0000-0002-8584-459X")),
+  year = "2026",
+  note = paste("R package version", meta$Version),
+  url = "https://github.com/kisungyou/Riemann"
+)

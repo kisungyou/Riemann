@@ -22,11 +22,11 @@ sphere.utest(spobj, method = c("Rayleigh", "RayleighM"))
 
   `"Rayleigh"`
 
-  :   original Rayleigh statistic.
+  : original Rayleigh statistic.
 
   `"RayleighM"`
 
-  :   modified Rayleigh statistic with better order of error.
+  : modified Rayleigh statistic with better order of error.
 
 ## Value
 

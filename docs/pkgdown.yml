@@ -1,11 +1,11 @@
-pandoc: 3.8.3
+pandoc: '3.10'
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   data-workflows: data-workflows.html
   geometry-workflows: geometry-workflows.html
   migration: migration.html
-last_built: 2026-10-02T15:31Z
+last_built: 2026-11-18T17:04Z
 urls:
   reference: https://www.kisungyou.com/Riemann/reference
   article: https://www.kisungyou.com/Riemann/articles

@@ -29,13 +29,13 @@ wrap.spdk(input, k)
 
   array
 
-  :   a \\(p\times p\times n)\\ array where each slice along 3rd
-      dimension is a rank-\\k\\ matrix.
+  : a \\(p\times p\times n)\\ array where each slice along 3rd dimension
+    is a rank-\\k\\ matrix.
 
   list
 
-  :   a length-\\n\\ list whose elements are \\(p\times p)\\ matrices of
-      rank-\\k\\.
+  : a length-\\n\\ list whose elements are \\(p\times p)\\ matrices of
+    rank-\\k\\.
 
 - k:
 

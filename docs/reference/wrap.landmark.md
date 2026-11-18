@@ -29,12 +29,12 @@ wrap.landmark(input, reference = NULL)
 
   array
 
-  :   a \\(k\times p\times n)\\ array where each slice along 3rd
-      dimension is a \\k\\-ad in \\\mathbf{R}^p\\.
+  : a \\(k\times p\times n)\\ array where each slice along 3rd dimension
+    is a \\k\\-ad in \\\mathbf{R}^p\\.
 
   list
 
-  :   a length-\\n\\ list whose elements are \\k\\-ads.
+  : a length-\\n\\ list whose elements are \\k\\-ads.
 
 - reference:
 

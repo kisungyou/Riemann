@@ -55,19 +55,19 @@ mle.splaplace(data, method = c("DE", "Optimize", "Newton"), ...)
 
   maxiter
 
-  :   iteration budget for each location, likelihood-search, or
-      polishing stage; rounded and raised to at least 10 (default: 50).
+  : iteration budget for each location, likelihood-search, or polishing
+    stage; rounded and raised to at least 10 (default: 50).
 
   eps
 
-  :   positive tolerance, capped at 1e-6; the relative likelihood-score
-      tolerance is additionally floored at 1e-10 (default: 1e-6).
+  : positive tolerance, capped at 1e-6; the relative likelihood-score
+    tolerance is additionally floored at 1e-10 (default: 1e-6).
 
   use.exact
 
-  :   for Newton, use moment-based derivatives (`TRUE`) or finite
-      differences of the score (`FALSE`, default). Both use adaptive
-      radial quadrature.
+  : for Newton, use moment-based derivatives (`TRUE`) or finite
+    differences of the score (`FALSE`, default). Both use adaptive
+    radial quadrature.
 
 ## Value
 

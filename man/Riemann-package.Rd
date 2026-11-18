@@ -16,8 +16,7 @@ licensed under the GNU General Public License, version 3 (GPL-3).
 Earlier MIT releases and preserved archives retain their original licenses.
 Third-party notices are in the installed \file{COPYRIGHTS} file.
 Dataset attribution and any data-specific terms are separate; consult the
-dataset help pages. The separate manuscript and replication workspace has
-its own license notices.
+dataset help pages and the installed \file{provenance/README.md} record.
 }
 
 \seealso{

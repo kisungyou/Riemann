@@ -45,7 +45,7 @@ riem.distlp(
 
   p
 
-  :   an exponent (default: 2).
+  : an exponent (default: 2).
 
 ## Value
 
@@ -103,7 +103,7 @@ rcurve3 = wrap.sphere(mat3)
 
 ## COMPUTE DISTANCES
 riem.distlp(rcurve1, rcurve2, vect=vecx)
-#> [1] 0.06649554
+#> [1] 0.08262101
 riem.distlp(rcurve1, rcurve3, vect=vecx)
-#> [1] 0.5885871
+#> [1] 0.5895424
 ```

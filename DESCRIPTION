@@ -9,9 +9,8 @@ Imports:
     Rcpp (>= 1.0.5),
     Rdpack,
     T4cluster,
-    T4transport,
+    T4transport (>= 0.1.7),
     DEoptim,
-    Matrix,
     maotai (>= 0.2.2),
     stats,
     utils
@@ -28,5 +27,5 @@ Suggests:
     rmarkdown
 LazyData: true
 Config/testthat/edition: 3
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1
 VignetteBuilder: knitr

@@ -17,15 +17,15 @@ observations (default: 2).}
 \item{...}{named controls including\describe{
 \item{maxiter}{positive maximum number of iterations (default: 50).}
 \item{eps}{nonnegative tolerance for the root mean squared coordinate step,
-after distances are divided by their maximum (default: 1e-5).}
+  after distances are divided by their maximum (default: 1e-5).}
 } Unknown controls are errors.}
 }
 \value{
 a named list containing \describe{
 \item{embed}{an \eqn{(N\times ndim)} matrix whose rows are embedded observations.}
 \item{stress}{normalized distance stress,
-\eqn{\sqrt{\sum_{i<j}(D_{ij}-d_{ij})^2/\sum_{i<j}D_{ij}^2}}.
-This legacy diagnostic differs from the optimized Sammon loss.}
+  \eqn{\sqrt{\sum_{i<j}(D_{ij}-d_{ij})^2/\sum_{i<j}D_{ij}^2}}.
+  This legacy diagnostic differs from the optimized Sammon loss.}
 }
 }
 \description{

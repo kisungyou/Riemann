@@ -1,0 +1,36 @@
+{
+  "source": "https://api.datacite.org/dois/10.18112/openneuro.ds000248.v1.2.4",
+  "checked": "2026-09-21",
+  "fields": {
+    "creators": [
+      {
+        "name": "Alexandre Gramfort",
+        "nameType": "Personal",
+        "affiliation": [],
+        "nameIdentifiers": []
+      },
+      {
+        "name": "Matti S H\u00e4m\u00e4l\u00e4inen",
+        "nameType": "Personal",
+        "affiliation": [],
+        "nameIdentifiers": []
+      }
+    ],
+    "titles": [
+      {
+        "title": " "
+      }
+    ],
+    "publisher": "OpenNeuro",
+    "publicationYear": 2020,
+    "dates": [
+      {
+        "date": "2020",
+        "dateType": "Issued"
+      }
+    ],
+    "version": null,
+    "rightsList": [],
+    "url": "https://openneuro.org/datasets/ds000248/versions/1.2.4"
+  }
+}

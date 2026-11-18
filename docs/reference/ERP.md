@@ -39,9 +39,9 @@ source metadata and CC0
 declaration](https://raw.githubusercontent.com/OpenNeuroDatasets/ds000248/0a357f1276dbf7fcc3c3fc35f74cb24ffe4a68a8/dataset_description.json).
 The [MNE sample
 description](https://mne.tools/stable/documentation/datasets.html#sample)
-identifies the audiovisual experiment. The separate writing workspace
-records the reconstruction in
-`maintenance/reports/erp-provenance-followup-2026-09-21.md`.
+identifies the audiovisual experiment. Reconstruction records are
+included in the installed `provenance` directory; see
+`system.file("provenance", "README.md", package = "Riemann")`.
 
 ## Details
 

@@ -32,29 +32,28 @@ stiefel.optSA(func, p, k, ...)
 
   n.start
 
-  :   number of runs; algorithm is executed `n.start` times (default:
-      5).
+  : number of runs; algorithm is executed `n.start` times (default: 5).
 
   stepsize
 
-  :   size of random walk on each component (default: 0.1).
+  : size of random walk on each component (default: 0.1).
 
   maxiter
 
-  :   maximum number of iterations for each run (default: 100).
+  : maximum number of iterations for each run (default: 100).
 
   cooling
 
-  :   triplet for cooling schedule. See the section for the usage.
+  : triplet for cooling schedule. See the section for the usage.
 
   init.val
 
-  :   if `NULL`, starts from a random point. Otherwise, a Stiefel matrix
-      of size \\(p,k)\\ should be provided for fixed starting point.
+  : if `NULL`, starts from a random point. Otherwise, a Stiefel matrix
+    of size \\(p,k)\\ should be provided for fixed starting point.
 
   print.progress
 
-  :   a logical; if `TRUE`, it prints each iteration.
+  : a logical; if `TRUE`, it prints each iteration.
 
 ## Value
 

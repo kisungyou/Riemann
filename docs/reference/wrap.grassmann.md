@@ -24,13 +24,13 @@ wrap.grassmann(input)
 
   array
 
-  :   an \\(p\times k\times n)\\ array where each slice along 3rd
-      dimension is a \\k\\-subspace basis in dimension \\p\\.
+  : an \\(p\times k\times n)\\ array where each slice along 3rd
+    dimension is a \\k\\-subspace basis in dimension \\p\\.
 
   list
 
-  :   a length-\\n\\ list whose elements are \\(p\times k)\\ basis for
-      \\k\\-subspace.
+  : a length-\\n\\ list whose elements are \\(p\times k)\\ basis for
+    \\k\\-subspace.
 
 ## Value
 

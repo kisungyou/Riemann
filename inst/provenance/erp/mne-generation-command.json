@@ -1,0 +1,44 @@
+{
+  "source_url": "https://github.com/mne-tools/mne-scripts/blob/3fc78c7670c8c857304c9498155ddd5902f720a7/sample-data/run_meg_tutorial.sh#L60-L68",
+  "commit": "3fc78c7670c8c857304c9498155ddd5902f720a7",
+  "source_file_sha256": "db0910294c1b6bc933af5be2bc70993e2da6a5b57855ac73b1ace729c196e66c",
+  "lines": [
+    61,
+    62,
+    65,
+    66,
+    67,
+    68
+  ],
+  "working_directory": "MNE-sample-data/MEG/sample",
+  "commands": [
+    [
+      "mne_process_raw",
+      "--raw",
+      "sample_audvis_raw.fif",
+      "--lowpass",
+      "40",
+      "--save",
+      "sample_audvis_filt-0-40.fif",
+      "--projoff",
+      "--decim",
+      "4"
+    ],
+    [
+      "mne_process_raw",
+      "--raw",
+      "sample_audvis_raw.fif",
+      "--eventsout",
+      "sample_audvis_raw-eve.fif"
+    ],
+    [
+      "mne_process_raw",
+      "--raw",
+      "sample_audvis_filt-0-40_raw.fif",
+      "--eventsout",
+      "sample_audvis_filt-0-40_raw-eve.fif"
+    ]
+  ],
+  "executed_for_this_audit": false,
+  "note": "Records the primary historical MNE-C generation commands. The numerical replay uses downloaded filtered input; no modern filter approximation is substituted."
+}

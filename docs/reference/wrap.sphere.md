@@ -22,12 +22,12 @@ wrap.sphere(input)
 
   matrix
 
-  :   an \\(n \times p)\\ matrix of row observations of unit norm.
+  : an \\(n \times p)\\ matrix of row observations of unit norm.
 
   list
 
-  :   a length-\\n\\ list whose elements are length-\\p\\ vectors of
-      unit norm.
+  : a length-\\n\\ list whose elements are length-\\p\\ vectors of unit
+    norm.
 
 ## Value
 

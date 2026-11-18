@@ -134,7 +134,6 @@ arma::mat clustering_nmshift_single(std::string mfdname, int id, arma::field<arm
   arma::mat term1(nrow, ncol, fill::zeros);
   double    term2 = 0.0;
   double    gval = 0.0;
-  double    h2   = myh*myh;
   
   // ITERATION
   for (int it=0; it<myiter; it++){
@@ -146,9 +145,14 @@ arma::mat clustering_nmshift_single(std::string mfdname, int id, arma::field<arm
     term1.fill(0.0);
     term2 = 0.0;
     for (int n=0; n<N; n++){
-      gval = std::exp(-(Ydists(n)*Ydists(n))/h2);
+      const double scaled = Ydists(n) / myh;
+      gval = std::exp(-scaled * scaled);
+      if (gval == 0.0) continue;
       term1 += gval*riem_log(mfdname, Yold, mydata(n));
       term2 += gval;
+    }
+    if (!(term2 > 0.0) || !std::isfinite(term2)) {
+      Rcpp::stop("Mean shift has no finite positive total kernel weight.");
     }
     Ytmp = term1/term2;
     Ynew = riem_exp(mfdname, Yold, Ytmp, 1.0);

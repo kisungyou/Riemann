@@ -32,16 +32,16 @@ riem.phate(riemobj, ndim = 2, geometry = c("intrinsic", "extrinsic"), ...)
 
   nbdk
 
-  :   size of nearest neighborhood (default: 5).
+  : size of nearest neighborhood (default: 5).
 
   alpha
 
-  :   decay parameter for Gaussian kernel exponent (default: 2).
+  : decay parameter for Gaussian kernel exponent (default: 2).
 
   potential
 
-  :   type of potential distance transformation; `"log"` or `"sqrt"`
-      (default: `"log"`).
+  : type of potential distance transformation; `"log"` or `"sqrt"`
+    (default: `"log"`).
 
 ## Value
 

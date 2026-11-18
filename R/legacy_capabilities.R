@@ -157,6 +157,18 @@ riem_angular_density <- function(data, parameter, log) {
   if (log) values else exp(values)
 }
 
+# If S = L L' and Q spans L^{-1} X, the MACG fixed-point summand
+# X (X' S^{-1} X)^{-1} X' equals (L Q)(L Q)'. QR avoids forming
+# normal equations; the cross-product is symmetric by construction.
+riem_angular_update <- function(data, estimate) {
+  root <- t(chol(estimate))
+  Reduce(`+`, lapply(data, function(x) {
+    whitened <- forwardsolve(root, x)
+    basis <- qr.Q(qr(whitened, LAPACK = TRUE))
+    tcrossprod(root %*% basis)
+  }))
+}
+
 riem_angular_mle <- function(data, parameters, matrix_variant) {
   parameters <- riem_legacy_parameters(parameters, c("maxiter", "eps"))
   maxiter <- if (is.null(parameters$maxiter)) 50L else
@@ -172,12 +184,7 @@ riem_angular_mle <- function(data, parameters, matrix_variant) {
   estimate <- diag(p)
   converged <- FALSE
   for (iteration in seq_len(maxiter)) {
-    root <- chol(estimate)
-    update <- Reduce(`+`, lapply(data, function(x) {
-      whitened <- forwardsolve(t(root), x)
-      cross <- crossprod(whitened)
-      x %*% solve(cross, t(x))
-    }))
+    update <- riem_angular_update(data, estimate)
     update <- riem_angular_parameter(update, "Shape update")
     step <- norm(update - estimate, "F")
     estimate <- update

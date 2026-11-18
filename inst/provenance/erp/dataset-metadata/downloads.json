@@ -1,0 +1,30 @@
+[
+  {
+    "file": "dataset_description.json",
+    "url": "https://raw.githubusercontent.com/OpenNeuroDatasets/ds000248/0a357f1276dbf7fcc3c3fc35f74cb24ffe4a68a8/dataset_description.json",
+    "size": 1536,
+    "sha256": "07fbafe6daab4385b064c8eaa2ffb5a666f483745061328ac0dce89c34cccc71",
+    "md5": "8fd18bd7d8baa764c82b96fe12e2f2c9"
+  },
+  {
+    "file": "README",
+    "url": "https://raw.githubusercontent.com/OpenNeuroDatasets/ds000248/0a357f1276dbf7fcc3c3fc35f74cb24ffe4a68a8/README",
+    "size": 2697,
+    "sha256": "25e3476c22b52154d407716be6f3dbb66e6222996da84950390354dccacf5122",
+    "md5": "283fa0f1e154e8bc153eafe29cd54a02"
+  },
+  {
+    "file": "sub-01_task-audiovisual_run-01_meg.json",
+    "url": "https://raw.githubusercontent.com/OpenNeuroDatasets/ds000248/0a357f1276dbf7fcc3c3fc35f74cb24ffe4a68a8/sub-01/meg/sub-01_task-audiovisual_run-01_meg.json",
+    "size": 560,
+    "sha256": "7f00d1d65f3e82a5fa986e8b420722761b98df0ad06a2972b7439e3aadaaa318",
+    "md5": "f989eb6cf9774c5784b9e5ffbcca802b"
+  },
+  {
+    "file": "sub-01_task-audiovisual_run-01_meg.fif",
+    "url": "https://s3.amazonaws.com/openneuro.org/ds000248/sub-01/meg/sub-01_task-audiovisual_run-01_meg.fif?versionId=plteJGmBaF0Nlquy40KlEI2ZoHPcBowD",
+    "size": 128461384,
+    "sha256": "d92a44c6e6e62503ec75e9e07e70e9b650cf444bc0f0e8ff37e2bed162548966",
+    "md5": "c1d77edb3d2f47abbe3e58befe5b6d52"
+  }
+]

@@ -2,6 +2,19 @@
 
 ## Riemann 0.2.0
 
+- Stabilize Grassmann optimization when its sampled subspaces
+  concentrate. The MACG update now preserves symmetry numerically, and
+  the search retains the best evaluated subspace. The example compares
+  projected eigenvalues.
+
+- Honor the requested iteration and cluster limits in non-blurring mean
+  shift. Clarify that Fréchet ANOVA tests equality of group means and
+  variances jointly.
+
+- Require T4transport \>= 0.1.7 to exclude older releases that import
+  the removed `CVXR::solve` export and can prevent Riemann from loading
+  ([\#3](https://github.com/kisungyou/Riemann/issues/3)).
+
 - Correct the October 2026 audit findings: Sammon curvature and descent,
   coreset sampling with replacement and weighted clustering, stable
   Stein and Bures-Wasserstein distances, spherical likelihood bounds and
@@ -74,12 +87,11 @@
   of remaining legacy routines.
 
 - Cache log-Euclidean matrix transforms within pairwise and
-  cross-distance calls. Add executed data workflows, matched software
-  comparisons, and migration help.
+  cross-distance calls. Add executed data workflows and migration help.
 
-- Validation and remaining publication requirements are tracked in the
-  separate write-JSS-Riemann/maintenance/ workspace. Journal submission
-  remains a separate step.
+- Keep package maintenance scripts and data-provenance records in the
+  source repository, so documentation and verification do not need a
+  separate workspace.
 
 ## Riemann 0.1.7
 

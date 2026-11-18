@@ -33,7 +33,7 @@ riem.test2bg14(riemobj1, riemobj2, geometry = NULL, ...)
 
   nperm
 
-  :   the number of permutations (default: 999).
+  : the number of permutations (default: 999).
 
 ## Value
 

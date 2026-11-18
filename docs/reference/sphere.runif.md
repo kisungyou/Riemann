@@ -26,17 +26,17 @@ sphere.runif(n, p, type = c("list", "matrix", "riemdata"))
 
   `"list"`
 
-  :   a length-\\n\\ list of length-\\p\\ vectors.
+  : a length-\\n\\ list of length-\\p\\ vectors.
 
   `"matrix"`
 
-  :   a \\(n\times p)\\ where rows are unit vectors.
+  : a \\(n\times p)\\ where rows are unit vectors.
 
   `"riemdata"`
 
-  :   a S3 object. See
-      [`wrap.sphere`](https://www.kisungyou.com/Riemann/reference/wrap.sphere.md)
-      for more details (*Default*).
+  : a S3 object. See
+    [`wrap.sphere`](https://www.kisungyou.com/Riemann/reference/wrap.sphere.md)
+    for more details (*Default*).
 
 ## Value
 

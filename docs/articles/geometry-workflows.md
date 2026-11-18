@@ -25,12 +25,12 @@ x <- wrap.spd(matrices)
 airm <- riem.geometry(x, "affine_invariant")
 log_euclidean <- riem.geometry(x, "log_euclidean")
 airm
-#> Geometry: affine_invariant on spd 
-#> Representation: 2 x 2 ; intrinsic dimension: 3 
+#> Geometry: affine_invariant on spd
+#> Representation: 2 x 2 ; intrinsic dimension: 3
 #> Validation: core_contract
 log_euclidean
-#> Geometry: log_euclidean on spd 
-#> Representation: 2 x 2 ; intrinsic dimension: 3 
+#> Geometry: log_euclidean on spd
+#> Representation: 2 x 2 ; intrinsic dimension: 3
 #> Validation: core_contract
 ```
 
@@ -81,24 +81,24 @@ matrix by itself is not a convergence certificate.
 
 m <- riem.mean(x, geometry = airm, maxiter = 200, eps = 1e-8, trace = TRUE)
 m
-#> Geometric mean under affine_invariant on spd 
-#> Termination: stationary ; converged: TRUE ; iterations: 4 
-#> Objective: 0.224607 
-#> Estimand: intrinsic_frechet_mean 
+#> Geometric mean under affine_invariant on spd
+#> Termination: stationary ; converged: TRUE ; iterations: 4
+#> Objective: 0.224607
+#> Estimand: intrinsic_frechet_mean
 #>               [,1]          [,2]
 #> [1,]  1.000000e+00 -1.663168e-10
 #> [2,] -1.663168e-10  1.000000e+00
 stopifnot(m$converged)
 c(objective = m$objective, iterations = m$iterations)
-#>  objective iterations 
+#>  objective iterations
 #>   0.224607   4.000000
 mlog <- riem.mean(x, geometry = log_euclidean)
 stopifnot(mlog$converged)
 riem.median(x, geometry = log_euclidean, maxiter = 200)
-#> Geometric median under log_euclidean on spd 
-#> Termination: stationary ; converged: TRUE ; iterations: 0 
-#> Objective: 0.41860924 
-#> Estimand: extrinsic_frechet_median 
+#> Geometric median under log_euclidean on spd
+#> Termination: stationary ; converged: TRUE ; iterations: 0
+#> Objective: 0.41860924
+#> Estimand: extrinsic_frechet_median
 #>               [,1]          [,2]
 #> [1,]  1.000000e+00 -2.489623e-18
 #> [2,] -2.489623e-18  1.000000e+00
@@ -118,7 +118,7 @@ pca
 #> Tangent PCA on spd ( log_euclidean )
 #> 12 observations; 2 components retained; numerical rank 2
 summary(pca)
-#> Variance explained in the fitted tangent representation 
+#> Variance explained in the fitted tangent representation
 #>                  PC1         PC2
 #> variance   0.2435162 0.001509638
 #> proportion 0.9938389 0.006161138
@@ -180,14 +180,14 @@ start. Labels returned by prediction refer to the final trained centers.
 set.seed(1702)
 clusters <- riem.kmeans(x, k = 2, geometry = log_euclidean, nstart = 2)
 clusters
-#> Manifold k-means: 2 clusters on log_euclidean 
+#> Manifold k-means: 2 clusters on log_euclidean
 #> Within-cluster sum of squares: 0.6083241 ; termination: stable_assignment
 clusters$starts
 #>   start valid converged       termination objective iterations empty_clusters
 #> 1     1  TRUE      TRUE stable_assignment 0.6083241          3              0
 #> 2     2  TRUE      TRUE stable_assignment 0.6083241          1              0
 #>   error
-#> 1      
+#> 1
 #> 2
 stopifnot(identical(predict(clusters, x), clusters$cluster))
 predict(clusters, new_x)
@@ -224,7 +224,7 @@ prediction <- predict(regression, new_x, diagnostics = TRUE)
 prediction
 #> $prediction
 #> [1] 0.2900565
-#> 
+#>
 #> $diagnostics
 #>   effective_n nearest_distance nearest_over_bandwidth
 #> 1    2.408551       0.03040861              0.3040861
@@ -247,57 +247,56 @@ stopifnot(isTRUE(all.equal(predict(restored, new_x), new_scores)))
 sessionInfo()
 #> R version 4.5.2 (2025-10-31)
 #> Platform: aarch64-apple-darwin20
-#> Running under: macOS Tahoe 26.6.2
-#> 
+#> Running under: macOS 27.2.1
+#>
 #> Matrix products: default
-#> BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
+#> BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib
 #> LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
-#> 
+#>
 #> locale:
 #> [1] C.UTF-8/C.UTF-8/C.UTF-8/C/C.UTF-8/C.UTF-8
-#> 
+#>
 #> time zone: America/New_York
 #> tzcode source: internal
-#> 
+#>
 #> attached base packages:
-#> [1] stats     graphics  grDevices utils     datasets  methods   base     
-#> 
+#> [1] stats     graphics  grDevices utils     datasets  methods   base
+#>
 #> other attached packages:
 #> [1] Riemann_0.2.0
-#> 
+#>
 #> loaded via a namespace (and not attached):
-#>  [1] tidyselect_1.2.1     hdrcde_3.5.0         dplyr_1.2.1         
-#>  [4] farver_2.1.2         bitops_1.1-0         S7_0.2.2            
-#>  [7] RCurl_1.98-1.20      fastmap_1.2.0        pracma_2.4.6        
-#> [10] maotai_0.3.0         RANN_2.6.3           digest_0.6.39       
-#> [13] lifecycle_1.0.5      cluster_2.1.8.3      rstiefel_1.0.1      
-#> [16] magrittr_2.0.5       dbscan_1.2.6         compiler_4.5.2      
-#> [19] rlang_1.3.0          sass_0.4.10          tools_4.5.2         
-#> [22] mclustcomp_0.3.5     yaml_2.3.12          knitr_1.51          
-#> [25] htmlwidgets_1.6.4    scatterplot3d_0.3-45 mclust_6.1.3        
-#> [28] RColorBrewer_1.1-3   rainbow_3.8          KernSmooth_2.23-27  
-#> [31] fda_6.3.0            Rtsne_0.17           desc_1.4.3          
-#> [34] pcaPP_2.0-5          grid_4.5.2           clarabel_0.11.3     
-#> [37] colorspace_2.1-3     ADMM_0.3.4           T4cluster_0.1.4     
-#> [40] fastcluster_1.3.0    ggplot2_4.0.3        scales_1.4.0        
-#> [43] iterators_1.0.14     MASS_7.3-66          mvtnorm_1.4-2       
-#> [46] cli_3.6.6            rmarkdown_2.31       ragg_1.5.2          
-#> [49] generics_0.1.4       otel_0.2.0           RSpectra_0.16-2     
-#> [52] RcppDE_0.1.9         CVXR_1.9.2           scs_3.2.7           
-#> [55] fds_1.9              cachem_1.1.0         splines_4.5.2       
-#> [58] parallel_4.5.2       vctrs_0.7.3          T4transport_0.1.9   
-#> [61] Matrix_1.7-6         jsonlite_2.0.0       systemfonts_1.3.2   
-#> [64] foreach_1.5.2        gsignal_0.3-7        jquerylib_0.1.4     
-#> [67] glue_1.8.1           pkgdown_2.2.1        codetools_0.2-20    
-#> [70] DEoptim_2.2-8        gtable_0.3.6         osqp_1.0.0          
-#> [73] gmp_0.7-5.1          tibble_3.3.1         pillar_1.11.1       
-#> [76] htmltools_0.5.9      deSolve_1.42         R6_2.6.1            
-#> [79] textshaping_1.0.5    Rdpack_2.6.6         ks_1.15.3           
-#> [82] doParallel_1.0.17    lpSolve_5.6.23       evaluate_1.0.5      
-#> [85] lattice_0.23-1       rbibutils_2.4.1      backports_1.5.1     
-#> [88] highs_1.14.0-2       bslib_0.12.0         Rcpp_1.1.2          
-#> [91] checkmate_2.3.4      xfun_0.60            fs_2.1.0            
-#> [94] Rdimtools_1.1.5      pkgconfig_2.0.3
+#>  [1] tidyselect_1.2.1     hdrcde_3.5.0         dplyr_1.2.1
+#>  [4] farver_2.1.2         S7_0.2.2             fastmap_1.2.0
+#>  [7] pracma_2.4.6         maotai_0.3.0         RANN_2.6.3
+#> [10] digest_0.6.39        lifecycle_1.0.5      cluster_2.1.8.3
+#> [13] rstiefel_1.0.1       magrittr_2.0.5       dbscan_1.2.7
+#> [16] compiler_4.5.2       rlang_1.3.0          sass_0.4.10
+#> [19] tools_4.5.2          mclustcomp_0.3.5     yaml_2.3.12
+#> [22] knitr_1.52           htmlwidgets_1.6.4    scatterplot3d_0.3-45
+#> [25] mclust_6.1.3         RColorBrewer_1.1-3   rainbow_3.8
+#> [28] KernSmooth_2.23-27   fda_6.3.0            Rtsne_0.17
+#> [31] desc_1.4.3           pcaPP_2.0-7          grid_4.5.2
+#> [34] clarabel_0.11.3      colorspace_2.1-4     ADMM_0.3.4
+#> [37] T4cluster_0.1.5      fastcluster_1.3.0    ggplot2_4.0.3
+#> [40] scales_1.4.0         iterators_1.0.14     MASS_7.3-66
+#> [43] mvtnorm_1.4-2        cli_3.6.6            rmarkdown_2.32
+#> [46] ragg_1.5.2           generics_0.1.4       otel_0.3.0
+#> [49] RSpectra_0.16-2      RcppDE_0.1.9         CVXR_1.9.3
+#> [52] scs_3.2.7            fds_2.0              cachem_1.1.0
+#> [55] splines_4.5.2        parallel_4.5.2       vctrs_0.7.3
+#> [58] T4transport_0.1.9    Matrix_1.7-6         jsonlite_2.0.0
+#> [61] systemfonts_1.3.2    foreach_1.5.2        gsignal_0.3-7
+#> [64] jquerylib_0.1.4      glue_1.8.1           pkgdown_2.2.1
+#> [67] codetools_0.2-20     DEoptim_2.2-8        gtable_0.3.6
+#> [70] osqp_1.0.0           gmp_0.7-5.1          tibble_3.3.1
+#> [73] pillar_1.11.1        htmltools_0.5.9      deSolve_1.42
+#> [76] R6_2.6.1             textshaping_1.0.5    Rdpack_2.6.6
+#> [79] ks_1.15.3            doParallel_1.0.17    lpSolve_5.6.23
+#> [82] evaluate_1.0.5       lattice_0.23-1       rbibutils_2.4.1
+#> [85] backports_1.5.1      highs_1.15.1-2       bslib_0.12.0
+#> [88] Rcpp_1.1.2           checkmate_2.3.4      xfun_0.62
+#> [91] fs_2.1.0             Rdimtools_1.1.5      pkgconfig_2.0.3
 ```
 
 Regular landmark tangent workflows use equivalence under the full

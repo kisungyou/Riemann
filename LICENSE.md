@@ -18,6 +18,5 @@ Third-party notices and the historical MIT notice are retained in the
 installed `COPYRIGHTS` file (`inst/COPYRIGHTS` in the source).
 Dependencies retain their own licenses and are not relicensed by this package.
 
-The manuscript and replication materials in the separate `write-JSS-Riemann`
-workspace carry their own notices. Dataset attribution and any data-specific
-terms are separate from the software license; consult the dataset help pages.
+Dataset attribution and any data-specific terms are separate from the software
+license; consult the dataset help pages and `inst/provenance/README.md`.

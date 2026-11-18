@@ -1,0 +1,23 @@
+[
+  {
+    "file": "sub-01_task-audiovisual_run-01_meg.fif",
+    "url": "https://s3.amazonaws.com/openneuro.org/ds000248/sub-01/meg/sub-01_task-audiovisual_run-01_meg.fif?versionId=plteJGmBaF0Nlquy40KlEI2ZoHPcBowD",
+    "size": 128461384,
+    "sha256": "d92a44c6e6e62503ec75e9e07e70e9b650cf444bc0f0e8ff37e2bed162548966",
+    "md5": "c1d77edb3d2f47abbe3e58befe5b6d52"
+  },
+  {
+    "file": "sample_audvis_filt-0-40_raw.fif",
+    "url": "https://osf.io/szh6d/download",
+    "sha256": "327e163c9d4ee6855d41d887d86cec3fa7d6dea3c870e8263edf802889b4f844",
+    "size": 65729928,
+    "link_source": "https://mnelab.readthedocs.io/en/latest/documentation/erp/"
+  },
+  {
+    "file": "sample_audvis_filt-0-40_raw-eve.fif",
+    "url": "https://osf.io/xbvt2/download",
+    "sha256": "63b6cf49907f136c4ff0ad76a19db8db2ae3a404848922a04f9be4e700091b1f",
+    "size": 3999,
+    "link_source": "https://mnelab.readthedocs.io/en/latest/documentation/erp/"
+  }
+]

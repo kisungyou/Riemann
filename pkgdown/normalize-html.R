@@ -23,3 +23,12 @@ for (path in list.files("docs", pattern = "\\.html$", recursive = TRUE,
     writeLines(enc2utf8(corrected), path, useBytes = TRUE)
   }
 }
+
+# R pads columns in printed session information with spaces.
+for (path in list.files("docs/articles", pattern = "\\.md$", full.names = TRUE)) {
+  original <- readLines(path, warn = FALSE, encoding = "UTF-8")
+  corrected <- sub("^(#>.*?)[[:blank:]]+$", "\\1", original, perl = TRUE)
+  if (!identical(original, corrected)) {
+    writeLines(enc2utf8(corrected), path, useBytes = TRUE)
+  }
+}

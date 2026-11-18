@@ -11,10 +11,12 @@
 #' in conjunction with silhouette criterion.
 #' 
 #' @param riemobj a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.
-#' @param h bandwidth parameter. The larger the \eqn{h} is, the more blurring is applied.
-#' @param maxk maximum number of clusters to determine the optimal number of clusters.
-#' @param maxiter maximum number of iterations to be run.
-#' @param eps tolerance level for stopping criterion.
+#' @param h Finite positive bandwidth for the Gaussian weights.
+#' @param maxk Integer upper limit for the silhouette search, at least two.
+#'   Candidate counts run from two through the smaller of this limit and one
+#'   less than the sample size. At least three observations are required.
+#' @param maxiter Positive integer maximum number of updates per observation.
+#' @param eps Finite positive tolerance for the change in the matrix representation.
 #' 
 #' @return a named list containing\describe{
 #' \item{distance}{an \eqn{(N\times N)} distance between modes corresponding to each data point.}
@@ -77,89 +79,18 @@
 #' statistical contract has not been independently verified across supported
 #' inputs. See \code{\link{riem-method-contracts}} and the installed contract
 #' table for method-specific assumptions, restrictions, and evidence scope.
-riem.nmshift <- function(riemobj, h=1, maxk=5, maxiter=50, eps=1e-5){
-  ## PREPARE
-  DNAME = paste0("'",deparse(substitute(riemobj)),"'") 
-  if (!inherits(riemobj,"riemdata")){
-    stop(paste0("* riem.nmshift : input ",DNAME," should be an object of 'riemdata' class."))
-  }
-  myh    = max(0, as.double(h))    # min(max(as.double(h),0),1e-5)
-  myiter = max(50, round(maxiter))
-  myeps  = min(max(as.double(eps),0),1e-5)
-  
-  ## COMPUTE LIMIT POINTS AND PAIRWISE DISTANCE
-  tmprun  = clustering_nmshift(riemobj$name, riemobj$data, myh, myiter, myeps)
-  limit3d = tmprun$limits
-  pdmat   = tmprun$distance
-  objmat  = stats::as.dist(pdmat)
-  
-  ## USE K-MEDOIDS + SILHOUETTE FOR DETERMINATION
-  mink = 2
-  maxk = max(min(round(maxk), nrow(pdmat)-1), (mink+1))
-  
-  fimport = utils::getFromNamespace("hidden_kmedoids_best", "maotai")
-  hcout   = fimport(objmat, mink, maxk)
-  k.opt   = as.integer(hcout$opt.k)
-  k.label = hcout$label[,(k.opt-1)]
-  
-  # ## USE HCLUST + SINGLE LINKAGE + SILHOUETTE FOR DETERMINATION
-  # #  prepare for multiple k inspection
-  # mink = 2
-  # maxk = max(min(round(maxk), nrow(pdmat)-1), (mink+1))
-  # veck = seq(from=mink, to=maxk, by=1)
-  # silk = rep(0, length(veck))
-  # 
-  # #  prepare for hclust
-  # fimport = utils::getFromNamespace("hidden_hclust", "maotai")
-  # hcout   = fimport(objmat, "single", NULL)
-  # 
-  # #  compute for multiple k's
-  # silfunc = utils::getFromNamespace("hidden_silhouette", "maotai")
-  # for (i in 1:length(veck)){
-  #   labels = stats::cutree(hcout, k=round(veck[i]))
-  #   silrun = silfunc(objmat, labels)
-  #   silk[i] = silrun$global
-  # }
-  # k.opt    = veck[which.max(silk)]
-  # k.label  = as.integer(as.factor(stats::cutree(hcout, k=k.opt)))
-  # dat.nrow = dim(limit3d)[1]
-  # dat.ncol = dim(limit3d)[2]
+riem.nmshift <- function(riemobj, h = 1, maxk = 5, maxiter = 50, eps = 1e-5) {
+  riem_resolve_geometry(riemobj, "intrinsic", capability = "mean")
+  n <- length(riemobj$data)
+  if (n < 3L) stop("Mean-shift grouping requires at least three observations.", call. = FALSE)
+  h <- riem_legacy_positive(h, "h")
+  maxiter <- riem_regression_integer(maxiter, "maxiter", 1L)
+  eps <- riem_legacy_positive(eps, "eps")
+  maxk <- min(riem_regression_integer(maxk, "maxk", 2L), n - 1L)
 
-  # ## COMPUTE MEAN PER CLASS
-  # out.means = array(0,c(dat.nrow, dat.ncol, k.opt))
-  # for (i in 1:k.opt){
-  #   idk = which(k.label==i)
-  #   if (length(idk)==1){
-  #     out.means[,,i] = limit3d[,,idk]
-  #   } else {
-  #     # heuristic : choose the median
-  #     partdist = pdmat[idk,idk]
-  #     idmin    = idk[which.min(base::rowSums(partdist^2))]
-  #     out.means[,,i] = (limit3d[,,idmin])
-  # 
-  #     # tmplist = list()
-  #     # for (j in 1:length(idk)){
-  #     #   tmplist[[j]] = wrap_vec2mat(limit3d[,,idk[j]])
-  #     # }
-  #     # tmpweight = rep(1/length(idk), length(idk))
-  #     # tmpmean   = inference_mean_intrinsic(riemobj$name, tmplist, tmpweight, myiter, myeps)
-  #     # out.means[,,i] = wrap_vec2mat(tmpmean$mean)
-  #   }
-  # }
-  
-  ## WRAP AND RETURN
-  output = list()
-  output$distance = pdmat
-  output$cluster  = k.label
-  return(output)
+  shifted <- clustering_nmshift(riemobj$name, riemobj$data, h, maxiter, eps)
+  select_medoids <- utils::getFromNamespace("hidden_kmedoids_best", "maotai")
+  selection <- select_medoids(stats::as.dist(shifted$distance), 2L, maxk)
+  labels <- selection$label[, selection$opt.k - 1L]
+  list(distance = shifted$distance, cluster = labels)
 }
-
-# p=2
-# x = c(1,rep(0,p))
-# y = -x
-# acos(sum(x*y))
-
-# which(run3$clustering==9)
-# partdata = mydata[c(24,30)]
-# partriem = wrap.sphere(partdata)
-# riem.mean(partriem)

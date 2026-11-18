@@ -41,11 +41,11 @@ riem.coreset18B(
 
   maxiter
 
-  :   maximum number of iterations to be run (default:50).
+  : maximum number of iterations to be run (default:50).
 
   eps
 
-  :   tolerance level for stopping criterion (default: 1e-5).
+  : tolerance level for stopping criterion (default: 1e-5).
 
 ## Value
 

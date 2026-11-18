@@ -40,12 +40,12 @@ riem.test2wass(riemobj1, riemobj2, p = 2, geometry = NULL, ...)
 
   nperm
 
-  :   the number of permutations (default: 999).
+  : the number of permutations (default: 999).
 
   use.smooth
 
-  :   a logical, default `FALSE`. `TRUE` requests an experimental IPOT
-      approximation, without an optimality certificate.
+  : a logical, default `FALSE`. `TRUE` requests an experimental IPOT
+    approximation, without an optimality certificate.
 
 ## Value
 

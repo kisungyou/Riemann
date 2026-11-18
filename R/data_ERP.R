@@ -47,9 +47,9 @@
 #'   \href{https://doi.org/10.18112/openneuro.ds000248.v1.2.4}{MNE sample data on OpenNeuro, version 1.2.4};
 #'   \href{https://raw.githubusercontent.com/OpenNeuroDatasets/ds000248/0a357f1276dbf7fcc3c3fc35f74cb24ffe4a68a8/dataset_description.json}{pinned source metadata and CC0 declaration}.
 #'   The \href{https://mne.tools/stable/documentation/datasets.html#sample}{MNE sample description}
-#'   identifies the audiovisual experiment. The separate writing workspace
-#'   records the reconstruction in
-#'   \code{maintenance/reports/erp-provenance-followup-2026-09-21.md}.
+#'   identifies the audiovisual experiment. Reconstruction records are included
+#'   in the installed \file{provenance} directory; see
+#'   \code{system.file("provenance", "README.md", package = "Riemann")}.
 #'
 #' @usage data(ERP)
 #' 

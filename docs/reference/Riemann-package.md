@@ -11,8 +11,8 @@ Author-owned software in the September 21, 2026 revision of version
 (GPL-3). Earlier MIT releases and preserved archives retain their
 original licenses. Third-party notices are in the installed `COPYRIGHTS`
 file. Dataset attribution and any data-specific terms are separate;
-consult the dataset help pages. The separate manuscript and replication
-workspace has its own license notices.
+consult the dataset help pages and the installed `provenance/README.md`
+record.
 
 ## See also
 

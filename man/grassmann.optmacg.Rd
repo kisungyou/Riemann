@@ -13,7 +13,7 @@ grassmann.optmacg(func, p, k, ...)
 
 \item{k}{dimension parameter as in \eqn{Gr(k,p)}.}
 
-\item{...}{extra parameters including\describe{
+\item{...}{named controls including\describe{
 \item{n.start}{number of runs; algorithm is executed \code{n.start} times (default: 10).}
 \item{maxiter}{maximum number of iterations for each run (default: 100).}
 \item{popsize}{the number of samples generated at each step for stochastic search (default: 100).}
@@ -28,9 +28,19 @@ a named list containing: \describe{
 }
 }
 \description{
-For a function \eqn{f : Gr(k,p) \rightarrow \mathbf{R}}, find the minimizer 
-and the attained minimum value with estimation of distribution algorithm 
-using MACG distribution.
+Search for a subspace minimizing a basis-invariant objective by adapting a
+matrix angular central Gaussian (MACG) sampling distribution to elite frames.
+}
+\details{
+The first run starts with uniform samples. Each additional run
+begins with a uniform pilot population twice the requested size. At each
+update, the best frames determine a trace-normalized MACG proposal via
+at most 50 fixed-point steps. Each step mixes in a fraction
+\code{sqrt(.Machine$double.eps)} of the identity to keep the search
+distribution positive definite even when the elite subspaces coincide.
+This regularization applies only to the optimizer's sampling proposal.
+A run ends after five generations without improvement or at \code{maxiter}.
+For \eqn{k=p}, the Grassmannian contains only one subspace.
 }
 \section{Validation status}{
 
@@ -50,18 +60,19 @@ table for method-specific assumptions, restrictions, and evidence scope.
 #-------------------------------------------------------------------
 \donttest{
 ## PREPARE
+set.seed(17)
 A = cov(matrix(rnorm(100*5), ncol=5)) # define covariance
 myfunc <- function(p){                # cost function to minimize
   return(sum(-diag(t(p)\%*\%A\%*\%p)))
 } 
 
 ## SOLVE THE OPTIMIZATION PROBLEM
-Aout = grassmann.optmacg(myfunc, p=5, k=3, popsize=100, n.start=30)
+Aout = grassmann.optmacg(myfunc, p=5, k=3, popsize=100, n.start=3, maxiter=30)
 
 ## COMPUTE EIGENVALUES
 #  1. USE SOLUTIONS TO THE ABOVE OPTIMIZATION 
 abase   = Aout$solution
-eig3sol = sort(diag(t(abase)\%*\%A\%*\%abase), decreasing=TRUE)
+eig3sol = eigen(crossprod(abase, A \%*\% abase), symmetric=TRUE)$values
 
 #  2. USE BASIC 'EIGEN' FUNCTION
 eig3dec = sort(eigen(A)$values, decreasing=TRUE)[1:3]

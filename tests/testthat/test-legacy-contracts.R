@@ -222,3 +222,18 @@ test_that("uniformity formulas reject singular dimension regimes", {
   full <- wrap.grassmann(list(diag(2), diag(2)))
   expect_error(grassmann.utest(full), "proper subspace")
 })
+
+test_that("MACG shape updates retain symmetry and the fixed-point equation", {
+  set.seed(151)
+  frames <- lapply(seq_len(8), function(i) qr.Q(qr(matrix(rnorm(10), 5, 2))))
+  S <- diag(c(1, 2, 3, 4, 5))
+  target <- Reduce(`+`, lapply(frames, function(x) {
+    x %*% solve(crossprod(x, solve(S, x)), t(x))
+  }))
+  expect_equal(riem_angular_update(frames, S), target, tolerance = 1e-12)
+  # Ill-conditioning must not create any antisymmetric component.
+  S <- diag(c(1e-9, 1e-7, .3, 1, 2))
+  update <- riem_angular_update(frames, S)
+  expect_identical(update, t(update))
+  expect_true(all(eigen(update, symmetric = TRUE, only.values = TRUE)$values > 0))
+})

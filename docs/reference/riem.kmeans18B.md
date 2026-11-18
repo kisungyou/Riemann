@@ -45,11 +45,11 @@ riem.kmeans18B(
 
   maxiter
 
-  :   maximum number of weighted Lloyd passes per start (default:50).
+  : maximum number of weighted Lloyd passes per start (default:50).
 
   nstart
 
-  :   the number of random starts (default: 5).
+  : the number of random starts (default: 5).
 
 ## Value
 

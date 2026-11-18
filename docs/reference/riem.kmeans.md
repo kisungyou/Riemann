@@ -42,34 +42,33 @@ summary(object, ...)
 
   algorithm
 
-  :   (case-insensitive) name of an algorithm; `"Lloyd"` (default), or
-      `"MacQueen"`.
+  : (case-insensitive) name of an algorithm; `"Lloyd"` (default), or
+    `"MacQueen"`.
 
   init
 
-  :   `"plus"` for squared-distance k-means++ (default), `"random"` for
-      sampled observations, or a vector of k distinct observation
-      indices.
+  : `"plus"` for squared-distance k-means++ (default), `"random"` for
+    sampled observations, or a vector of k distinct observation indices.
 
   maxiter
 
-  :   maximum number of iterations to be run (default:50).
+  : maximum number of iterations to be run (default:50).
 
   nstart
 
-  :   the number of starts (default: 5).
+  : the number of starts (default: 5).
 
   eps
 
-  :   relative objective-increase tolerance (default: 1e-8).
+  : relative objective-increase tolerance (default: 1e-8).
 
   mean.maxiter
 
-  :   maximum iterations for each cluster mean (default: 200).
+  : maximum iterations for each cluster mean (default: 200).
 
   mean.eps
 
-  :   cluster-mean convergence tolerance (default: 1e-8).
+  : cluster-mean convergence tolerance (default: 1e-8).
 
 - object:
 

@@ -21,11 +21,11 @@ grassmann.utest(grobj, method = c("Bing", "BingM"))
 
   `"Bing"`
 
-  :   Bingham statistic.
+  : Bingham statistic.
 
   `"BingM"`
 
-  :   modified Bingham statistic with better order of error.
+  : modified Bingham statistic with better order of error.
 
 ## Value
 
@@ -113,7 +113,7 @@ grassmann.utest(myobj1, method="Bing")
 #>  Bingham Test of Uniformity on Grassmann Manifold
 #> 
 #> data:  myobj1
-#> statistic = 10.278, p-value = 0.3284
+#> statistic = 8.6478, p-value = 0.4704
 #> alternative hypothesis: data is not uniformly distributed on Gr(2,4).
 #> 
 grassmann.utest(myobj1, method="BingM")
@@ -121,7 +121,7 @@ grassmann.utest(myobj1, method="BingM")
 #>  Modified Bingham Test of Uniformity on Grassmann Manifold
 #> 
 #> data:  myobj1
-#> statistic = 10.275, p-value = 0.3287
+#> statistic = 8.6386, p-value = 0.4713
 #> alternative hypothesis: data is not uniformly distributed on Gr(2,4).
 #> 
 
@@ -131,7 +131,7 @@ grassmann.utest(myobj2, method="bINg")   # method names are
 #>  Bingham Test of Uniformity on Grassmann Manifold
 #> 
 #> data:  myobj2
-#> statistic = 203.24, p-value < 2.2e-16
+#> statistic = 229.33, p-value < 2.2e-16
 #> alternative hypothesis: data is not uniformly distributed on Gr(2,4).
 #> 
 grassmann.utest(myobj2, method="BiNgM")  # CASE - INSENSITIVE !
@@ -139,7 +139,7 @@ grassmann.utest(myobj2, method="BiNgM")  # CASE - INSENSITIVE !
 #>  Modified Bingham Test of Uniformity on Grassmann Manifold
 #> 
 #> data:  myobj2
-#> statistic = 221, p-value < 2.2e-16
+#> statistic = 252.08, p-value < 2.2e-16
 #> alternative hypothesis: data is not uniformly distributed on Gr(2,4).
 #> 
 ```

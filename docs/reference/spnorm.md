@@ -57,13 +57,13 @@ mle.spnorm(data, method = c("Newton", "Halley", "Optimize", "DE"), ...)
 
   maxiter
 
-  :   iteration budget for each location, likelihood-search, or
-      polishing stage; rounded and raised to at least 10 (default: 50).
+  : iteration budget for each location, likelihood-search, or polishing
+    stage; rounded and raised to at least 10 (default: 50).
 
   eps
 
-  :   positive tolerance, capped at 1e-6; the relative likelihood-score
-      tolerance is additionally floored at 1e-10 (default: 1e-6).
+  : positive tolerance, capped at 1e-6; the relative likelihood-score
+    tolerance is additionally floored at 1e-10 (default: 1e-6).
 
 ## Value
 

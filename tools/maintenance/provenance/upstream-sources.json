@@ -1,0 +1,37 @@
+[
+  {
+    "file": "upstream/pyriemann/estimation.py",
+    "upstream_commit": "176e766f540bd4c7846f38573165fc3d27fc69ca",
+    "url": "https://raw.githubusercontent.com/pyRiemann/pyRiemann/176e766f540bd4c7846f38573165fc3d27fc69ca/pyriemann/estimation.py",
+    "sha256": "4b746651a51b960c6dbefe70dcd7562c9b2eb3c28519f18516d40c62035f5fd3",
+    "bytes": 18128
+  },
+  {
+    "file": "upstream/pyriemann/spatialfilters.py",
+    "upstream_commit": "176e766f540bd4c7846f38573165fc3d27fc69ca",
+    "url": "https://raw.githubusercontent.com/pyRiemann/pyRiemann/176e766f540bd4c7846f38573165fc3d27fc69ca/pyriemann/spatialfilters.py",
+    "sha256": "14f07c2cebaa4799e6cb2280da9a1bfa78a12e9d2e9855643091dbf51bb05332",
+    "bytes": 25496
+  },
+  {
+    "file": "upstream/pyriemann/utils/covariance.py",
+    "upstream_commit": "176e766f540bd4c7846f38573165fc3d27fc69ca",
+    "url": "https://raw.githubusercontent.com/pyRiemann/pyRiemann/176e766f540bd4c7846f38573165fc3d27fc69ca/pyriemann/utils/covariance.py",
+    "sha256": "58568c6c081dfdcaf1e495dc61ae1a234916b1846609271f5a5909a933d3f27d",
+    "bytes": 10991
+  },
+  {
+    "file": "upstream/examples/ERP/plot_embedding_EEG.py",
+    "upstream_commit": "176e766f540bd4c7846f38573165fc3d27fc69ca",
+    "url": "https://raw.githubusercontent.com/pyRiemann/pyRiemann/176e766f540bd4c7846f38573165fc3d27fc69ca/examples/ERP/plot_embedding_EEG.py",
+    "sha256": "73353b2764c5f28bf6a2580a257a4914e869508baeefba7870483d1d7c582e32",
+    "bytes": 2625
+  },
+  {
+    "file": "upstream/LICENSE-pyRiemann",
+    "upstream_commit": "176e766f540bd4c7846f38573165fc3d27fc69ca",
+    "url": "https://raw.githubusercontent.com/pyRiemann/pyRiemann/176e766f540bd4c7846f38573165fc3d27fc69ca/LICENSE",
+    "sha256": "9d4e7dbc094d1edfbe9091e48e243ff8a02753da73b8a1f57689a9ed60de45aa",
+    "bytes": 1519
+  }
+]

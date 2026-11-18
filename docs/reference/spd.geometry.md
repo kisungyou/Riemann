@@ -20,23 +20,23 @@ spd.geometry(geometry)
 
   AIRM
 
-  :   Affine-Invariant Riemannian Metric.
+  : Affine-Invariant Riemannian Metric.
 
   LERM
 
-  :   Log-Euclidean Riemannian Metric.
+  : Log-Euclidean Riemannian Metric.
 
   Jeffrey
 
-  :   Jeffrey's divergence.
+  : Jeffrey's divergence.
 
   Stein
 
-  :   Stein's metric.
+  : Stein's metric.
 
   Wasserstein
 
-  :   2-Wasserstein geometry.
+  : 2-Wasserstein geometry.
 
 ## Value
 

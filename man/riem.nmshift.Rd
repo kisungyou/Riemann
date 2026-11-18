@@ -9,13 +9,15 @@ riem.nmshift(riemobj, h = 1, maxk = 5, maxiter = 50, eps = 1e-05)
 \arguments{
 \item{riemobj}{a S3 \code{"riemdata"} class for \eqn{N} manifold-valued data.}
 
-\item{h}{bandwidth parameter. The larger the \eqn{h} is, the more blurring is applied.}
+\item{h}{Finite positive bandwidth for the Gaussian weights.}
 
-\item{maxk}{maximum number of clusters to determine the optimal number of clusters.}
+\item{maxk}{Integer upper limit for the silhouette search, at least two.
+Candidate counts run from two through the smaller of this limit and one
+less than the sample size. At least three observations are required.}
 
-\item{maxiter}{maximum number of iterations to be run.}
+\item{maxiter}{Positive integer maximum number of updates per observation.}
 
-\item{eps}{tolerance level for stopping criterion.}
+\item{eps}{Finite positive tolerance for the change in the matrix representation.}
 }
 \value{
 a named list containing\describe{

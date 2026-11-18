@@ -5,11 +5,9 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Estimation of Distribution Algorithm with MACG Distribution — grassmann.optmacg"><meta name="description" content="For a function \(f : Gr(k,p) \rightarrow \mathbf{R}\), find the minimizer
-and the attained minimum value with estimation of distribution algorithm
-using MACG distribution."><meta property="og:description" content="For a function \(f : Gr(k,p) \rightarrow \mathbf{R}\), find the minimizer
-and the attained minimum value with estimation of distribution algorithm
-using MACG distribution."><meta property="og:image" content="https://www.kisungyou.com/Riemann/logo.png"><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-163713603-1"></script><script>
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Estimation of Distribution Algorithm with MACG Distribution — grassmann.optmacg"><meta name="description" content="Search for a subspace minimizing a basis-invariant objective by adapting a
+matrix angular central Gaussian (MACG) sampling distribution to elite frames."><meta property="og:description" content="Search for a subspace minimizing a basis-invariant objective by adapting a
+matrix angular central Gaussian (MACG) sampling distribution to elite frames."><meta property="og:image" content="https://www.kisungyou.com/Riemann/logo.png"><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-163713603-1"></script><script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
@@ -58,9 +56,8 @@ using MACG distribution."><meta property="og:image" content="https://www.kisungy
     </div>
 
     <div class="ref-description section level2">
-    <p>For a function \(f : Gr(k,p) \rightarrow \mathbf{R}\), find the minimizer
-and the attained minimum value with estimation of distribution algorithm
-using MACG distribution.</p>
+    <p>Search for a subspace minimizing a basis-invariant objective by adapting a
+matrix angular central Gaussian (MACG) sampling distribution to elite frames.</p>
     </div>
 
     <div class="section level2">
@@ -85,7 +82,7 @@ using MACG distribution.</p>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>extra parameters including</p><dl><dt>n.start</dt>
+<dd><p>named controls including</p><dl><dt>n.start</dt>
 <dd><p>number of runs; algorithm is executed <code>n.start</code> times (default: 10).</p></dd>
 
 <dt>maxiter</dt>
@@ -115,6 +112,18 @@ using MACG distribution.</p>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The first run starts with uniform samples. Each additional run
+begins with a uniform pilot population twice the requested size. At each
+update, the best frames determine a trace-normalized MACG proposal via
+at most 50 fixed-point steps. Each step mixes in a fraction
+<code>sqrt(.Machine$double.eps)</code> of the identity to keep the search
+distribution positive definite even when the elite subspaces coincide.
+This regularization applies only to the optimizer's sampling proposal.
+A run ends after five generations without improvement or at <code>maxiter</code>.
+For \(k=p\), the Grassmannian contains only one subspace.</p>
+    </div>
+    <div class="section level2">
     <h2 id="validation-status">Validation status<a class="anchor" aria-label="anchor" href="#validation-status"></a></h2>
 
 
@@ -135,22 +144,19 @@ table for method-specific assumptions, restrictions, and evidence scope.</p>
 <span class="r-in"><span><span class="co">#-------------------------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co">## PREPARE</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">17</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">A</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cov</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">*</span><span class="fl">5</span><span class="op">)</span>, ncol<span class="op">=</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="co"># define covariance</span></span></span>
 <span class="r-in"><span><span class="va">myfunc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">{</span>                <span class="co"># cost function to minimize</span></span></span>
 <span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="va">A</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="va">p</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> </span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## SOLVE THE OPTIMIZATION PROBLEM</span></span></span>
-<span class="r-in"><span><span class="va">Aout</span> <span class="op">=</span> <span class="fu">grassmann.optmacg</span><span class="op">(</span><span class="va">myfunc</span>, p<span class="op">=</span><span class="fl">5</span>, k<span class="op">=</span><span class="fl">3</span>, popsize<span class="op">=</span><span class="fl">100</span>, n.start<span class="op">=</span><span class="fl">30</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The angular shape iteration did not converge; the last positive-definite estimate is returned.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Shape update must be a finite symmetric positive-definite matrix.</span>
+<span class="r-in"><span><span class="va">Aout</span> <span class="op">=</span> <span class="fu">grassmann.optmacg</span><span class="op">(</span><span class="va">myfunc</span>, p<span class="op">=</span><span class="fl">5</span>, k<span class="op">=</span><span class="fl">3</span>, popsize<span class="op">=</span><span class="fl">100</span>, n.start<span class="op">=</span><span class="fl">3</span>, maxiter<span class="op">=</span><span class="fl">30</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## COMPUTE EIGENVALUES</span></span></span>
 <span class="r-in"><span><span class="co">#  1. USE SOLUTIONS TO THE ABOVE OPTIMIZATION </span></span></span>
 <span class="r-in"><span><span class="va">abase</span>   <span class="op">=</span> <span class="va">Aout</span><span class="op">$</span><span class="va">solution</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'Aout' not found</span>
-<span class="r-in"><span><span class="va">eig3sol</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">abase</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="va">A</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="va">abase</span><span class="op">)</span>, decreasing<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'abase' not found</span>
+<span class="r-in"><span><span class="va">eig3sol</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">abase</span>, <span class="va">A</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">abase</span><span class="op">)</span>, symmetric<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">values</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#  2. USE BASIC 'EIGEN' FUNCTION</span></span></span>
 <span class="r-in"><span><span class="va">eig3dec</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">$</span><span class="va">values</span>, decreasing<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span></span>
@@ -159,15 +165,12 @@ table for method-specific assumptions, restrictions, and evidence scope.</p>
 <span class="r-in"><span><span class="va">opar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>no.readonly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">yran</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">eig3sol</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">eig3dec</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="fl">0.95</span>,</span></span>
 <span class="r-in"><span>         <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">eig3sol</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">eig3dec</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="fl">1.05</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'eig3sol' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="va">eig3sol</span>, type<span class="op">=</span><span class="st">"b"</span>, col<span class="op">=</span><span class="st">"red"</span>,  pch<span class="op">=</span><span class="fl">19</span>, ylim<span class="op">=</span><span class="va">yran</span>,</span></span>
 <span class="r-in"><span>     xlab<span class="op">=</span><span class="st">"index"</span>, ylab<span class="op">=</span><span class="st">"eigenvalue"</span>, main<span class="op">=</span><span class="st">"compare top 3 eigenvalues"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'eig3sol' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="va">eig3dec</span>, type<span class="op">=</span><span class="st">"b"</span>, col<span class="op">=</span><span class="st">"blue"</span>, pch<span class="op">=</span><span class="fl">19</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plot.xy(xy.coords(x, y), type = type, ...):</span> plot.new has not been called yet</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="fl">1.55</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">yran</span><span class="op">)</span>, legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"optimization"</span>,<span class="st">"decomposition"</span><span class="op">)</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="st">"blue"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>       lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, pch<span class="op">=</span><span class="fl">19</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'yran' not found</span>
+<span class="r-plt img"><img src="grassmann.optmacg-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">opar</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>

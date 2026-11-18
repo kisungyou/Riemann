@@ -35,8 +35,8 @@ apply, including Armadillo's Apache-2.0 notices and RcppArmadillo's GPL-2-or-lat
 integration license. Other dependencies likewise retain their own notices;
 their source is neither copied into nor relicensed by this package.
 
-Data and separate writing materials
-----------------------------------
+Data provenance
+---------------
 
 The GPL-3 designation above applies to author-owned software. It does not
 assert ownership of third-party datasets or replace their upstream terms.
@@ -57,7 +57,7 @@ The maximum relative Frobenius error was 5.56e-12; this is not a claim of
 byte identity or reproduction of the original 2021 runtime. The matrices are
 xDAWN prototype-augmented covariances of MEG test epochs from one participant.
 The historical example credits Pedro Rodrigues and declares BSD 3-clause;
-it is referenced rather than copied into this package:
+the maintained provenance tools retain its BSD notice alongside pinned sources:
 https://github.com/pyRiemann/pyRiemann/blob/176e766f540bd4c7846f38573165fc3d27fc69ca/examples/ERP/plot_embedding_EEG.py
 
 The gorilla configurations are redistributed under the upstream shapes 1.2.8
@@ -72,11 +72,9 @@ shapes::gorf.dat. This historical rearrangement was verified September 12,
 2026; the present revision does not modify either dataset.
 https://cran.r-project.org/package=shapes
 
-Consult the dataset help and separate provenance reports for construction
+Consult the dataset help and installed provenance/README.md for construction
 details. The public upstream license declarations are documented evidence;
 this notice does not assert independent verification of original ownership.
-The manuscript and replication workspace is distributed separately and has
-its own notices.
 
 Retained MIT notices
 --------------------

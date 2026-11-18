@@ -24,11 +24,11 @@ wrap.multinomial(input)
 
   matrix
 
-  :   an \\(n \times p)\\ matrix of row observations.
+  : an \\(n \times p)\\ matrix of row observations.
 
   list
 
-  :   a length-\\n\\ list whose elements are length-\\p\\ vectors.
+  : a length-\\n\\ list whose elements are length-\\p\\ vectors.
 
 ## Value
 

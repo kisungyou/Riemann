@@ -24,13 +24,12 @@ wrap.stiefel(input)
 
   array
 
-  :   a \\(p\times k\times n)\\ array where each slice along 3rd
-      dimension is a \\k\\-frame.
+  : a \\(p\times k\times n)\\ array where each slice along 3rd dimension
+    is a \\k\\-frame.
 
   list
 
-  :   a length-\\n\\ list whose elements are \\(p\times k)\\
-      \\k\\-frames.
+  : a length-\\n\\ list whose elements are \\(p\times k)\\ \\k\\-frames.
 
 ## Value
 

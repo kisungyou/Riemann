@@ -42,13 +42,13 @@ riem.wasserstein(riemobj1, riemobj2, p = 2, geometry = NULL, ...)
 
   weight1
 
-  :   a length-\\M\\ weight vector for \\\mu\\; if `NULL` (default),
-      uniform weight is set.
+  : a length-\\M\\ weight vector for \\\mu\\; if `NULL` (default),
+    uniform weight is set.
 
   weight2
 
-  :   a length-\\N\\ weight vector for \\\nu\\; if `NULL` (default),
-      uniform weight is set.
+  : a length-\\N\\ weight vector for \\\nu\\; if `NULL` (default),
+    uniform weight is set.
 
 ## Value
 

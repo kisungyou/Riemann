@@ -111,7 +111,6 @@ export(wrap.stiefel)
 import(DEoptim)
 import(Rdpack)
 import(maotai)
-importFrom(Matrix,nearPD)
 importFrom(Rcpp,evalCpp)
 importFrom(T4cluster,
   sc05Z,

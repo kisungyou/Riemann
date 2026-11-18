@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use Riemann in your research, please cite the software and record the version used."
+type: software
+title: "Riemann: Learning with Data on Riemannian Manifolds"
+version: 0.2.0
+authors:
+  - family-names: You
+    given-names: Kisung
+    orcid: https://orcid.org/0000-0002-8584-459X
+license: GPL-3.0-only
+repository-code: https://github.com/kisungyou/Riemann
+url: https://www.kisungyou.com/Riemann/

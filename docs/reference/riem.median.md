@@ -39,26 +39,26 @@ riem.median(riemobj, weight = NULL, geometry = NULL, ...)
 
   maxiter
 
-  :   Positive maximum number of accepted iterations (default 50).
+  : Positive maximum number of accepted iterations (default 50).
 
   eps
 
-  :   Positive absolute tolerance for the compatible subgradient
-      residual (default `1e-5`).
+  : Positive absolute tolerance for the compatible subgradient residual
+    (default `1e-5`).
 
   max_backtrack
 
-  :   Positive maximum number of trial steps per iteration, at most 1024
-      (default 50).
+  : Positive maximum number of trial steps per iteration, at most 1024
+    (default 50).
 
   trace
 
-  :   Whether to retain the iteration history (default `FALSE`).
+  : Whether to retain the iteration history (default `FALSE`).
 
   init
 
-  :   Optional initial matrix with the observation dimensions.
-      Closed-form calculations do not use an initializer.
+  : Optional initial matrix with the observation dimensions. Closed-form
+    calculations do not use an initializer.
 
   Unknown controls are errors.
 

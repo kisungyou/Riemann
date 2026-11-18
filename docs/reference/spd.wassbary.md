@@ -33,11 +33,11 @@ spd.wassbary(spdobj, weight = NULL, method = c("RU02", "AE16"), ...)
 
   maxiter
 
-  :   maximum number of iterations to be run (default:20).
+  : maximum number of iterations to be run (default:20).
 
   abstol
 
-  :   tolerance level for stopping criterion (default: 1e-8).
+  : tolerance level for stopping criterion (default: 1e-8).
 
 ## Value
 

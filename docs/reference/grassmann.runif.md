@@ -28,18 +28,18 @@ grassmann.runif(n, k, p, type = c("list", "array", "riemdata"))
 
   `"list"`
 
-  :   a length-\\n\\ list of \\(p\times k)\\ basis of \\k\\-subspaces.
+  : a length-\\n\\ list of \\(p\times k)\\ basis of \\k\\-subspaces.
 
   `"array"`
 
-  :   a \\(p\times k\times n)\\ 3D array whose slices are \\k\\-subspace
-      basis.
+  : a \\(p\times k\times n)\\ 3D array whose slices are \\k\\-subspace
+    basis.
 
   `"riemdata"`
 
-  :   a S3 object. See
-      [`wrap.grassmann`](https://www.kisungyou.com/Riemann/reference/wrap.grassmann.md)
-      for more details.
+  : a S3 object. See
+    [`wrap.grassmann`](https://www.kisungyou.com/Riemann/reference/wrap.grassmann.md)
+    for more details.
 
 ## Value
 

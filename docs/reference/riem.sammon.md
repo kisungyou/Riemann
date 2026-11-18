@@ -33,12 +33,12 @@ riem.sammon(riemobj, ndim = 2, geometry = c("intrinsic", "extrinsic"), ...)
 
   maxiter
 
-  :   positive maximum number of iterations (default: 50).
+  : positive maximum number of iterations (default: 50).
 
   eps
 
-  :   nonnegative tolerance for the root mean squared coordinate step,
-      after distances are divided by their maximum (default: 1e-5).
+  : nonnegative tolerance for the root mean squared coordinate step,
+    after distances are divided by their maximum (default: 1e-5).
 
   Unknown controls are errors.
 

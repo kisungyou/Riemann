@@ -23,13 +23,13 @@ wrap.correlation(input)
 
   array
 
-  :   an \\(p\times p\times n)\\ array where each slice along 3rd
-      dimension is a correlation matrix.
+  : an \\(p\times p\times n)\\ array where each slice along 3rd
+    dimension is a correlation matrix.
 
   list
 
-  :   a length-\\n\\ list whose elements are \\(p\times p)\\ correlation
-      matrices.
+  : a length-\\n\\ list whose elements are \\(p\times p)\\ correlation
+    matrices.
 
 ## Value
 

@@ -53,32 +53,47 @@ The author-owned software in the September 21, 2026 revision of version
 0.2.0 is licensed under
 [GPL-3](https://www.gnu.org/licenses/gpl-3.0.html). Earlier MIT releases
 and preserved archives retain their original license. Third-party
-notices are retained in `inst/COPYRIGHTS`; dependencies and the separate
-manuscript/replication workspace retain their own license notices.
+notices are retained in `inst/COPYRIGHTS`; dependencies retain their own
+license notices. Dataset sources and verification records are documented
+in
+[inst/provenance/README.md](https://github.com/kisungyou/Riemann/blob/master/inst/provenance/README.md).
 
 ### Installation
 
-- Option 1 : **released** version from
-  [CRAN](https://CRAN.R-project.org).
+Install the released version from
+[CRAN](https://CRAN.R-project.org/package=Riemann).
 
 ``` r
 
 install.packages("Riemann")
 ```
 
-- Option 2 : **development** version from
-  [GitHub](https://github.com/kisungyou/Riemann).
+To install the development version from GitHub, use R 4.4 or later and
+the tools for building R packages from source. Windows users need
+[Rtools for their version of
+R](https://cran.r-project.org/bin/windows/Rtools/). On macOS, see the [R
+toolchain instructions](https://mac.r-project.org/tools/). On Linux,
+install the R development tools supplied by your distribution.
 
 ``` r
 
-if (!require("devtools")) {
-  install.packages("devtools")
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
 }
-devtools::install_github("kisungyou/Riemann")
+remotes::install_github("kisungyou/Riemann")
+packageVersion("Riemann")
 ```
+
+For a reproducible installation, supply the commit SHA from your
+analysis or review as the `ref` argument to `install_github()`. Use the
+example above to check that a fitted tangent model can score
+observations.
 
 ### Contact
 
-Report bugs through [GitHub
-issues](https://github.com/kisungyou/Riemann/issues) or contact [Kisung
-You](mailto:kisung.you@outlook.com).
+Run `citation("Riemann")` in R for the citation of your installed
+version. Report a problem or ask a usage question in the [issue
+tracker](https://github.com/kisungyou/Riemann/issues). The [contributing
+guide](https://github.com/kisungyou/Riemann/blob/master/CONTRIBUTING.md)
+explains how to reproduce a problem, test a change, and propose a pull
+request.

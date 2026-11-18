@@ -25,21 +25,21 @@ riem.nmshift(riemobj, h = 1, maxk = 5, maxiter = 50, eps = 1e-05)
 
 - h:
 
-  bandwidth parameter. The larger the \\h\\ is, the more blurring is
-  applied.
+  Finite positive bandwidth for the Gaussian weights.
 
 - maxk:
 
-  maximum number of clusters to determine the optimal number of
-  clusters.
+  Integer upper limit for the silhouette search, at least two. Candidate
+  counts run from two through the smaller of this limit and one less
+  than the sample size. At least three observations are required.
 
 - maxiter:
 
-  maximum number of iterations to be run.
+  Positive integer maximum number of updates per observation.
 
 - eps:
 
-  tolerance level for stopping criterion.
+  Finite positive tolerance for the change in the matrix representation.
 
 ## Value
 

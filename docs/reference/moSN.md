@@ -58,16 +58,16 @@ density(object, newdata)
 
   maxiter
 
-  :   the maximum number of iterations (default: 50).
+  : the maximum number of iterations (default: 50).
 
   eps
 
-  :   stopping criterion for the EM algorithm (default: 1e-6).
+  : stopping criterion for the EM algorithm (default: 1e-6).
 
   printer
 
-  :   a logical; `TRUE` to show history of the algorithm, `FALSE`
-      otherwise.
+  : a logical; `TRUE` to show history of the algorithm, `FALSE`
+    otherwise.
 
 - object:
 

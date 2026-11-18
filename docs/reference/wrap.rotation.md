@@ -21,13 +21,13 @@ wrap.rotation(input)
 
   array
 
-  :   a \\(p\times p\times n)\\ array where each slice along 3rd
-      dimension is a rotation matrix.
+  : a \\(p\times p\times n)\\ array where each slice along 3rd dimension
+    is a rotation matrix.
 
   list
 
-  :   a length-\\n\\ list whose elements are \\(p\times p)\\ rotation
-      matrices.
+  : a length-\\n\\ list whose elements are \\(p\times p)\\ rotation
+    matrices.
 
 ## Value
 

@@ -40,9 +40,8 @@ riem.isomap(riemobj, ndim = 2, nnbd = 5, geometry = NULL, ...)
 
   padding
 
-  :   a logical, default `FALSE`; if `TRUE`, disconnected distances are
-      replaced by twice the largest finite graph distance, with a
-      warning.
+  : a logical, default `FALSE`; if `TRUE`, disconnected distances are
+    replaced by twice the largest finite graph distance, with a warning.
 
 ## Value
 
